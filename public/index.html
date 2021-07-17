@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="Hompage of Nabla Ltd. Design Endeavors."
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
@@ -24,10 +24,38 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Nabla</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+      <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+    
+      <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+      <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+    
+      <!-- Add the standard Performance Monitoring library -->
+      <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-performance.js"></script>
+
+        <!-- Previously loaded Firebase SDKs -->
+        
+        <script>
+          // TODO: Replace the following with your app's Firebase project configuration
+          const firebaseConfig = {
+  apiKey: "AIzaSyA4tsYcUe2IakgP6bsw50sqiN_JxBZSsTY",
+  authDomain: "nabla7.firebaseapp.com",
+  projectId: "nabla7",
+  storageBucket: "nabla7.appspot.com",
+  messagingSenderId: "22669283456",
+  appId: "1:22669283456:web:ebd01b9cc2653ea9e7d665",
+  measurementId: "G-FQ3S1GMV92"
+};
+        
+          // Initialize Firebase
+          firebase.initializeApp(firebaseConfig);
+        
+          // Initialize Performance Monitoring and get a reference to the service
+          var perf = firebase.performance();
+        </script>
     <div id="root"></div>
     <!--
       This HTML file is a template.
