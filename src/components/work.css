@@ -1,12 +1,13 @@
 .slider {
   top: 200px;
   bottom: 200px;
-  height: calc(100vh - 302px);
+  height: calc(100vh - 280px);
   position: fixed;
   left: 281px;
   z-index: 50;
-  width: 10vw;
-  background-color: rgba(77, 77, 77, 0.15);
+  width: 20vw;
+  border: 1px solid #eca72c;
+  border-radius: 25px 25px 25px 25px;
   margin: auto;
   display: inline-block;
   overflow-x: hidden;

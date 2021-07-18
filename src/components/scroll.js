@@ -1,7 +1,7 @@
 var y = 0;
 var maxStep;
 
-var edgeSize = 200;
+var edgeSize = 150;
 var timer = null;
 
 window.addEventListener("mousemove", handleMousemove, false);
@@ -167,8 +167,8 @@ function drawEdge() {
   edge.style.bottom = edgeSize - 50 + "px";
   edge.style.left = edgeSize + 80 + "px";
   edge.style.right = edgeSize + 81 + "px";
-  edge.style.border = "1px solid #f91a2a";
-  edge.style.borderRadius = "5px 5px 5px 5px";
+  edge.style.border = "1px solid #eca72c";
+  edge.style.borderRadius = "25px 25px 25px 25px";
   document.body.appendChild(edge);
   edge.classList.add("edge");
 }

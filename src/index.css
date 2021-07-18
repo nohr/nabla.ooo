@@ -38,7 +38,6 @@ ul {
   grid-template-columns: 1fr 1fr 1fr;
   padding: 0;
   height: min-content;
-  width: 15vw;
   justify-self: end;
   align-self: center;
   font-family: Arial, Helvetica, sans-serif;
@@ -47,12 +46,13 @@ ul {
 
 li {
   margin: 5px;
+  width: min-content;
   height: fit-content;
   width: min-content;
 }
 
-li a {
-  text-align: center;
+ul li {
+  justify-self: center;
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */

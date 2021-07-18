@@ -13,17 +13,35 @@ export default function CD(props) {
    });
 
   return (
-    <group  {...props} dispose={null}>
-      <group ref={group} position={[0, 800, 2000]}>
-        <group position={[0.47, -57.27, -3.71]} scale={1.5}>
-          <mesh geometry={nodes.Sphere2.geometry} material={nodes.Sphere2.material} position={[5.28, 57.74, -265.23]} />
-          <mesh geometry={nodes.Sphere1.geometry} material={nodes.Sphere1.material} position={[306.5, 57.74, 134.46]} />
-          <mesh geometry={nodes.Sphere.geometry} material={nodes.Sphere.material} position={[-296.7, 57.74, 134.46]} />
+    <group  {...props} dispose={null}  >
+      <group ref={group} position={[0, 800, 2000]} receiveShadow castShadow >
+        <group position={[0.47, -57.27, -3.71]} scale={5}>
+        <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Sphere2.geometry}
+            material={nodes.Sphere2.material}
+            position={[5.28, 57.74, -265.23]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Sphere1.geometry}
+            material={nodes.Sphere1.material}
+            position={[306.5, 57.74, 134.46]}
+          />
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodes.Sphere.geometry}
+            material={nodes.Sphere.material}
+            position={[-296.7, 57.74, 134.46]}
+          />
         </group>
       </group>
     </group>
   )
 }
 
-useGLTF.preload('/Canvas_CD.glb')
+useGLTF.preload('Canvas_CD.glb')
 

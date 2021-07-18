@@ -1,6 +1,7 @@
 footer {
   position: fixed;
-  text-align: center;
+  text-align: left;
+  padding: 0 30px;
   vertical-align: middle;
   z-index: 100 !important;
   line-height: 2;
