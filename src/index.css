@@ -88,6 +88,7 @@ svg:hover {
   border: 1px solid #a1a1a1;
   justify-self: center;
   align-self: center;
+  opacity: 0;
 }
 
 .filler {
