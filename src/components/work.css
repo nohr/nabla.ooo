@@ -1,0 +1,131 @@
+.slider {
+  top: 200px;
+  bottom: 200px;
+  height: calc(100vh - 302px);
+  position: fixed;
+  left: 281px;
+  z-index: 50;
+  width: 10vw;
+  background-color: rgba(77, 77, 77, 0.15);
+  margin: auto;
+  display: inline-block;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  order: 4;
+}
+.slider:hover {
+  background-color: rgba(88, 88, 88, 0);
+  border-left: #4d9366 1px dashed;
+  transition: ease-in;
+}
+.slider::-webkit-scrollbar {
+  width: 0px !important;
+}
+
+.slider {
+  overflow: -moz-scrollbars-none;
+}
+
+.slider {
+  -ms-overflow-style: none;
+}
+.sectionTitle {
+  position: absolute;
+  margin-top: 50px;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: none;
+}
+.slideTitle {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: 50px;
+  display: none;
+}
+.slide:hover > .slideTitle {
+  display: block;
+}
+.slide:hover > .sectionTitle {
+  display: block;
+}
+.slide:hover > img,
+.slide:hover > a {
+  opacity: 0.1;
+  animation-name: fade-in;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: none;
+}
+@keyframes fade-in {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+
+.section:hover > img,
+.section:hover > a {
+  opacity: 0.1;
+  animation-name: fade-in;
+  animation-duration: 0.2s;
+  animation-timing-function: ease-out;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: none;
+}
+
+.slide {
+  width: 225px;
+  flex-shrink: 0;
+  height: 112.5px;
+  margin: 18px auto;
+  scroll-behavior: smooth;
+  cursor: pointer;
+  text-align: -webkit-center;
+  text-align: center;
+}
+
+.slide img:active {
+  border: 1px solid #f91a2a;
+  border-radius: 5px 5px 5px 5px;
+}
+
+.slide img {
+  width: 225px;
+  height: 112.5px;
+  border-radius: 5px 5px 5px 5px;
+  display: inline-block;
+  vertical-align: middle;
+  user-drag: none;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -webkit-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+}
+
+.slide > div {
+  scroll-snap-align: start;
+}
+
+.section {
+  text-align: center;
+  margin-top: 5vh;
+}

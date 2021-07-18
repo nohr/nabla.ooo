@@ -1,0 +1,56 @@
+#CD {
+  height: 50px;
+}
+#CDchat {
+  overflow: hidden;
+  margin-left: 36vw;
+  border: rgba(0, 0, 0, 0) !important;
+  width: 200px;
+  height: 60px;
+}
+.CD {
+  margin-left: 36vw;
+  cursor: progress;
+}
+
+.feed {
+  margin: auto;
+  order: 3;
+}
+
+.feed img:not(.CD),
+.feed video,
+.feed iframe:not(#CDchat),
+.feed svg,
+.feed #web {
+  height: 40vw;
+  border: 1px solid #f91a2a;
+  margin: 0 15px;
+  -webkit-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+  border-radius: 5px 5px 5px 5px;
+}
+
+#tidal {
+  height: 40vw;
+  width: 64vw;
+}
+
+[data-src] {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+.feed:nth-child(n + 1) {
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+#placeHolder {
+  display: inline;
+}
+
+.WIP {
+  margin-left: 15px;
+}

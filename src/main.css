@@ -1,0 +1,235 @@
+html {
+  overflow: hidden;
+  height: 100%;
+  background-color: rgb(21, 21, 21);
+  color: rgb(255, 255, 255);
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    background-color: rgb(21, 21, 21);
+    color: rgb(255, 255, 255);
+    content: "dark";
+  }
+
+  #darkness {
+    background: rgba(21, 21, 21, 0.85);
+  }
+
+  .loader {
+    background-color: rgb(21, 21, 21);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  html {
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    content: "light";
+  }
+
+  #darkness {
+    background: rgba(255, 255, 255, 0.85);
+  }
+
+  .loader {
+    background-color: rgb(255, 255, 255);
+  }
+}
+
+.loader {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader.hidden {
+  z-index: -100;
+  animation: fadeOut 0.1s;
+  animation-fill-mode: forwards;
+  animation-timing-function: linear;
+}
+
+#loaderSVG img {
+  height: 50px;
+}
+
+#loaderSVG #CD {
+  height: 50px;
+}
+
+@keyframes fadeOut {
+  100% {
+    opacity: 0%;
+    visibility: hidden;
+  }
+}
+#CDchat {
+  overflow: hidden;
+  margin-left: 36vw;
+  border: rgba(253, 15, 15, 0) !important;
+  display: none;
+  width: 200px;
+  height: 60px;
+}
+.CD {
+  margin-left: 36vw;
+  cursor: progress;
+}
+.bigContainer {
+  display: flex;
+  grid-template-rows: 100%;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 20;
+  top: 0;
+  left: 0;
+}
+
+.container {
+  display: inline-grid;
+  grid-template-columns: 280px calc(100vw - (561px + 35vw)) 100px 281px;
+  grid-gap: 50px;
+  margin: auto 0;
+  height: 100%;
+  touch-action: none;
+}
+
+.Main {
+  display: flex;
+  grid-template-rows: 50% 50%;
+  margin: auto 15px;
+  order: 2;
+}
+.main::-webkit-scrollbar {
+  display: none;
+}
+.caution {
+  color: #f5bb00;
+}
+#nabla-logo {
+  display: block;
+  margin: auto;
+  order: 1;
+}
+
+#nabla-logo #logo {
+  height: 30px;
+  position: fixed;
+  left: 79px;
+  z-index: 90;
+  cursor: pointer;
+}
+
+.cls-1 {
+  fill: #f91a2a;
+}
+
+#darkness {
+  display: none;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 60;
+}
+
+.textBox {
+  margin: auto;
+}
+
+p {
+  padding: auto 30px auto;
+  margin: 0px;
+  text-transform: lowercase;
+}
+
+#cap {
+  text-transform: lowercase;
+  margin-left: 30px;
+  display: flex;
+  grid-template-rows: 0.2fr 0.2fr 0.4fr 0.4fr;
+}
+
+#c1,
+#c2,
+#c3,
+#c4 {
+  margin-top: 1.3vh;
+  margin-bottom: 1.3vh;
+}
+
+.caption {
+  align-self: self-end;
+}
+
+#capTitle {
+  font-weight: 900;
+}
+
+.feed {
+  margin: auto;
+  order: 3;
+}
+
+.feed img:not(.CD),
+.feed video,
+.feed iframe:not(#CDchat),
+.feed svg,
+.feed #web {
+  height: 40vw;
+  border: 1px solid #f91a2a;
+  margin: 0 15px;
+  -webkit-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+  border-radius: 5px 5px 5px 5px;
+}
+
+.EkoDigital {
+  height: 40vw;
+  border: 1px solid #f91a2a;
+  margin: 0 15px;
+  -webkit-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+  border-radius: 5px 5px 5px 5px;
+}
+
+#tidal {
+  height: 40vw;
+  width: 64vw;
+}
+#snvr {
+  width: 64vw;
+}
+[data-src] {
+  width: 50px !important;
+  height: 50px !important;
+}
+
+.feed:nth-child(n + 1) {
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+#placeHolder {
+  display: inline;
+}
+
+.WIP {
+  margin-left: 15px;
+}

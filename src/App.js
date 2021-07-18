@@ -1,86 +1,15 @@
-import './App.css';
-import SvgNabla from './svg';
-import CD from './Canvas_CD';
+import './App.css'
+import './main.css'
+import CD from './Canvas_CD'
+import UI from './ui'
+import useWindowDimensions from './components/window'
 import React, { useRef, useState, useEffect , Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { softShadows, OrbitControls, useGLTF, PerspectiveCamera, CameraShake  } from '@react-three/drei'
 import { EffectComposer, DepthOfField, Noise, Vignette, ChromaticAberration   } from '@react-three/postprocessing';
-import { BlendFunction, UnrealBloomPass } from 'postprocessing';
-import { useSpring, a } from '@react-spring/three';
-import reactDom from 'react-dom';
+import { BlendFunction, UnrealBloomPass } from 'postprocessing'
+import { useSpring, a } from '@react-spring/three'
 
-
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height
-  };
-}
- function useWindowDimensions() {
-  const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-    }
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  return windowDimensions;
-}
-
-
-// HTML 
-const Filler = (props) => {
-     return <div className="filler" style={{ width: `${props.percentage}%` }} />
-   } 
- const ProgressBar = (props) => {
-   
-    return (
-      <div className="progress-bar">
-          <Filler percentage={props.percentage} />
-      </div>
-    )
-  }
-class ProgressBarHandler extends React.Component{
-  constructor(props){
-    super(props)
-      this.state = {
-        percentage: 60
-      }
-  }
-  render() {
-    return (
-      <div>
-        <ProgressBar percentage={this.state.percentage} />
-      </div>
-    )
-  }
-}
-const Header = () =>{
-  return (
-      <header>
-          <div className='logo' >
-          <SvgNabla title="nabla" fill='#a1a1a1'  />
-          </div>
-          <ProgressBar  />
-          <ul>
-            <li>
-              <a href="https://nablaooo.gumroad.com/" target="_blank">Store</a>
-            </li>
-            <li>
-              <a href="/" >Contact</a>
-            </li>
-            <li>
-              <a href="/" >About</a>
-            </li>
-          </ul>
-      </header>
-  );
-};
 
 // Canvas
 softShadows();
@@ -106,18 +35,15 @@ function Plane({ color, ...props }) {
   )
 }
 
+
 //App
 function App() {
-  
   const myCamera = useRef();
   const { height, width } = useWindowDimensions();
-  console.log(width, height);
   return (
-    <>
-    <Header />
+    <><UI />
     <Canvas shadows colorManagement>
-      <PerspectiveCamera makeDefault ref={myCamera} position={[900,750,-1000]}  fov={50} aspect={width / height} far={80000} />
-      <gridHelper />
+      <PerspectiveCamera makeDefault ref={myCamera} position={[900,550,-1000]} rotation={[ 0,Math.PI,  0]} fov={50} aspect={width / height} far={80000} />
       <fog attach="fog" args={[0x848484, 1000, 40]} />
       <directionalLight  intensity={3} color={0x848484 } position={[9000, 6000, -5000]} />
       <Suspense fallback={null}>
@@ -131,11 +57,12 @@ function App() {
   />
         {/* <DepthOfField focusDistance={5} focalLength={5} bokehScale={10} height={480} /> */}
         <Noise opacity={.059} />
-        <Vignette eskil={false} offset={0.1} darkness={1} />
+        <Vignette eskil={false} offset={0.1} darkness={.9} />
       </EffectComposer>
       </Suspense>
-      <OrbitControls enablePan={true} enableRotate={true} enableZoom={true} camera={myCamera.current}/>
-    </Canvas>
+      {/* <OrbitControls enablePan={true} enableRotate={true} enableZoom={true} camera={myCamera.current}/> */}
+      </Canvas>
+      
     </>
   );
 }
