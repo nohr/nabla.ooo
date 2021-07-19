@@ -43,7 +43,7 @@ function App() {
   return (
     <><UI />
     <Canvas shadowMap colorManagement>
-      <PerspectiveCamera makeDefault ref={myCamera} position={[900,550,-1000]} rotation={[ 0,Math.PI,  0]} near={100} fov={80} aspect={width / height} far={80000} />
+      <PerspectiveCamera makeDefault ref={myCamera} position={[20,550,-1000]} rotation={[ 0,Math.PI,  0]} near={100} fov={80} aspect={width / height} far={80000} />
       <fog attach="fog" args={[0x848484, 1000, 40]} />
       <directionalLight castShadow shadow-mapSize-height={512} shadow-mapSize-width={512} intensity={3} color={0x848484 } position={[9000, 6000, -5000]} />
       <Suspense fallback={null}>
