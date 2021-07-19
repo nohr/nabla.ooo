@@ -1,15 +1,50 @@
+svg {
+  margin: 0;
+}
+
+svg:hover {
+  fill: #ffffff;
+}
+
+.footer {
+  font-size: 9px;
+  width: 100%;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.List a {
+  float: left;
+  clear: left;
+  height: max-content;
+  padding: 3px 0;
+  width: 12vw;
+  text-indent: 5px;
+}
+.List a:hover {
+  background-color: #eca52c67;
+  color: rgb(255, 255, 255);
+}
+
+.List {
+  list-style-type: none;
+  padding: 0;
+}
+
 .slider {
-  top: 200px;
-  bottom: 200px;
-  height: calc(100vh - 280px);
+  top: 70px;
+  bottom: 0px;
+  height: 300px;
+  width: fit-content;
   position: fixed;
-  left: 281px;
+  left: 81px;
   z-index: 50;
-  width: 20vw;
   border: 1px solid #eca72c;
   border-radius: 25px 25px 25px 25px;
-  margin: auto;
-  display: inline-block;
+  /* margin: 10px auto; */
+  padding: 2em 2em;
   overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
@@ -18,23 +53,32 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  order: 4;
-}
-.slider:hover {
-  background-color: rgba(88, 88, 88, 0);
-  border-left: #4d9366 1px dashed;
-  transition: ease-in;
-}
-.slider::-webkit-scrollbar {
-  width: 0px !important;
 }
 
-.slider {
-  overflow: -moz-scrollbars-none;
+.logo {
+  margin: 0 auto;
 }
 
-.slider {
-  -ms-overflow-style: none;
+/* width */
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  display: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #a1a1a1;
+  border-radius: 25px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #eca72c;
 }
 .sectionTitle {
   position: absolute;

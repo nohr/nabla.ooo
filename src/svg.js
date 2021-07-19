@@ -5,8 +5,9 @@ function SvgNabla(props) {
     <a href="/"><svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 931.96 200.4"
-      width="6em"
+      width="7em"
       height="2em"
+      className="logoSVG"
       {...props}
     >
       <path

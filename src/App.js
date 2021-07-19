@@ -5,7 +5,7 @@ import UI from './ui'
 import useWindowDimensions from './components/window'
 import React, { useRef, useState, useEffect , Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { softShadows, OrbitControls, useGLTF, PerspectiveCamera, ContactShadows  } from '@react-three/drei'
+import { softShadows, OrbitControls, useGLTF, PerspectiveCamera, Stars  } from '@react-three/drei'
 import { EffectComposer, DepthOfField, Noise, Vignette, ChromaticAberration   } from '@react-three/postprocessing';
 import { BlendFunction, UnrealBloomPass } from 'postprocessing'
 import { useSpring, a } from '@react-spring/three'
