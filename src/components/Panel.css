@@ -15,7 +15,7 @@ svg:hover {
   user-select: none;
 }
 
-.List a {
+.nav li {
   float: left;
   clear: left;
   height: max-content;
@@ -23,12 +23,13 @@ svg:hover {
   width: 12vw;
   text-indent: 5px;
 }
-.List a:hover {
+
+.nav li:hover {
   background-color: #eca52c67;
   color: rgb(255, 255, 255);
 }
 
-.List {
+.nav {
   list-style-type: none;
   padding: 0;
 }
@@ -61,7 +62,7 @@ svg:hover {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 2px;
+  display: none;
 }
 
 /* Track */
