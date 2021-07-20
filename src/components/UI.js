@@ -1,9 +1,8 @@
 import React from "react";
+import '../App.css'
 import "./Panel.css";
-import SvgNabla from '../svg';
-import Nav from './Nav'
-import "../App.css";
-// import "./components/scroll.js"
+import { SvgNabla } from '../svg';
+import Nav from './Nav.jsx'
 import Feed from "./Feed";
 import Home from './Home'
 import About from './About'
@@ -14,8 +13,6 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import { useSpring, animated } from '@react-spring/three'
-import { useDrag } from '@use-gesture/react'
 
 
 
@@ -25,9 +22,6 @@ function Panel() {
       <div className="slider">
         <div className='logo' >
          <SvgNabla title="nabla" fill='#a1a1a1'  />        
-         <div className="footer">
-        ©2017-2021 nabla ltd.
-      </div>
         </div>
         <Nav />    
       </div>

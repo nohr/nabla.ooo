@@ -1,10 +1,11 @@
 import React from "react";
-import '../index.css'
+import '../App.css'
+import { HomeCD } from '../svg';
 
 function Home() {
     return (
         <div>
-        <h1>Home</h1>
+        <HomeCD title="CD"  />  
         </div>
     )}
 export default Home;

@@ -1,8 +1,7 @@
 import './App.css'
-import './main.css'
 import CD from './Canvas_CD'
-import UI from './components/ui'
-import useWindowDimensions from './components/window'
+import UI from './components/UI.js'
+import useWindowDimensions from './components/Portfolio'
 import React, { useRef, useState, useEffect , Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { softShadows, OrbitControls, useGLTF, PerspectiveCamera, Stars  } from '@react-three/drei'
@@ -51,10 +50,10 @@ function App() {
         <CD />
         <Plane color="#736fbd" position-y={-250} scale={[16000.2, 200, 10000]} />
       <EffectComposer>
-      <ChromaticAberration
+      {/* <ChromaticAberration
     blendFunction={BlendFunction.NORMAL} // blend mode
     offset={[0.00008, 0.0008]} // color offset
-  />
+  /> */}
         {/* <DepthOfField focusDistance={5} focalLength={5} bokehScale={10} height={480} /> */}
         <Noise opacity={.059} />
         <Vignette eskil={false} offset={0.1} darkness={.9} />

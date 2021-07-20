@@ -1,37 +1,59 @@
-svg {
+svg a {
   margin: 0;
+  fill: #a1a1a1;
 }
 
-svg:hover {
+svg a:hover {
   fill: #ffffff;
 }
 
-.footer {
-  font-size: 9px;
-  width: 100%;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+text {
+  font-size: 95px;
 }
 
-.nav li {
+.nav .li {
   float: left;
   clear: left;
   height: max-content;
   padding: 3px 0;
   width: 12vw;
-  text-indent: 5px;
+  cursor: none;
 }
 
-.nav li:hover {
+.nav .li:hover {
   background-color: #eca52c67;
   color: rgb(255, 255, 255);
+}
+.active {
+  background-color: #a1a1a167;
+  color: rgb(255, 255, 255);
+}
+
+.nav .li:hover > svg {
+  fill: #ffffff;
+}
+.w {
+  text-indent: 15px;
 }
 
 .nav {
   list-style-type: none;
   padding: 0;
+  text-indent: 5px;
+}
+
+a {
+  color: #a1a1a1;
+  text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.group {
+}
+.arrow {
+  fill: #a1a1a1;
+  height: 12px;
+  float: right;
 }
 
 .slider {
