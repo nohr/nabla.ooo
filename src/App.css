@@ -56,8 +56,8 @@ body {
 }
 
 canvas {
-  position: relative;
-  z-index: -1;
+  position: fixed;
+  z-index: -100;
   top: 0;
   left: 0;
   -webkit-user-select: none; /* Safari */

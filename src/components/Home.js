@@ -4,7 +4,7 @@ import { HomeCD } from '../svg';
 
 function Home() {
     return (
-        <div>
+        <div className="head">
         <HomeCD title="CD"  />  
         </div>
     )}

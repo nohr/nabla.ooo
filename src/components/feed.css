@@ -1,6 +1,16 @@
 .container {
+  height: 100%;
+  width: 500vw;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+  column-gap: 40px;
+  row-gap: 45px;
+  padding: 71px 81px;
+}
+.head {
   position: fixed;
-  z-index: 1;
+  z-index: 50;
 }
 
 h1 {
@@ -19,4 +29,58 @@ h1 {
 .HomeCD {
   margin-top: 30px;
   margin-left: 20px;
+}
+
+.scroll-horizontal {
+  position: fixed !important;
+  top: 0;
+  z-index: 20;
+}
+
+.feed {
+  background: #a1a1a167;
+  color: #ffffff;
+  border: 1px solid #eca72c;
+  border-radius: 25px 25px 25px 25px;
+  /* margin: 10px auto; */
+  padding: 2em 2em;
+  overflow-y: scroll;
+  max-width: 100%;
+  max-height: 100%;
+  line-height: 2;
+}
+
+.under {
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 3;
+  grid-row-end: 6;
+}
+
+.small {
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 4;
+}
+
+.large {
+  grid-column-start: 3;
+  grid-column-end: 5;
+  grid-row-start: 2;
+  grid-row-end: 4;
+}
+
+.end {
+  grid-column-start: 8;
+  grid-column-end: 8;
+  grid-row-start: 1;
+  grid-row-end: 6;
+}
+
+.pic {
+  grid-column-start: 5;
+  grid-column-end: 6;
+  grid-row-start: 1;
+  grid-row-end: 6;
 }

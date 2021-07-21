@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, Component  } from "react";
 import '../App.css'
 import "./Panel.css";
 import { SvgNabla } from '../svg';
@@ -13,6 +13,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import HorizontalScroll from 'react-scroll-horizontal'
 
 function HeaderState() {
   const header = "header";
@@ -39,7 +40,6 @@ function UI() {
   return (
       <>
     <div className="bigContainer">
-      <div className="container">
       <Router>
         <Panel />
         <Switch>
@@ -49,8 +49,7 @@ function UI() {
           <Route path="/contact" component={Contact} />
         </Switch>
         </Router> 
-        <Feed />
-      </div>
+        {/* <Feed /> */}
     </div>
     </>
   );

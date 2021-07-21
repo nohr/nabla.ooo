@@ -16,7 +16,7 @@ text {
   clear: left;
   height: max-content;
   padding: 3px 0;
-  width: 12vw;
+  width: 15vw;
   /* ^Same as .header and .header2 */
   cursor: none;
 }
@@ -66,11 +66,11 @@ a {
   width: fit-content;
   position: fixed;
   left: 81px;
-  z-index: 50;
+  z-index: 500;
   border: 1px solid #eca72c;
   border-radius: 25px 25px 25px 25px;
   /* margin: 10px auto; */
-  padding: 2em 2em;
+  padding: 0em 2em 2em 2em;
   overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
@@ -83,20 +83,24 @@ a {
 
 .header {
   margin: 0;
+  padding: 2em 0 0 0;
   position: fixed;
-  z-index: 20;
-  width: 12vw;
-  /* ^Same as .nav .li and .header2 */
+  left: -50;
+  z-index: 530;
+  width: calc(15vw + 0em);
+  /* ^Same as .header */
+  text-indent: 5px;
 }
 .header2 {
   margin: 0;
+  padding: 2em 0 0 0;
   position: fixed;
-  z-index: 20;
-  width: 12vw;
-  /* ^Same as .nav .li and .header */
-  background-color: gray;
-  color: rosybrown;
-  transform: translateY(10);
+  left: -50;
+  z-index: 530;
+  width: calc(15vw + 0em);
+  /* ^Same as .header */
+  text-indent: 5px;
+  background-color: rgba(46, 46, 46, 0.575);
   transition: transform 6s ease;
   animation: myanimation 3s;
 }

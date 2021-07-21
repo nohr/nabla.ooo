@@ -3,7 +3,7 @@ import '../App.css'
 
 function Store() {
     return (
-        <div>
+        <div className="head">
         <h1>Store</h1>
         </div>
     )}
