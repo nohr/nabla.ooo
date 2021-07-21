@@ -1,44 +1,41 @@
-import React, { Component, useState } from "react";
+import React from "react";
 import "./Panel.css";
 import { Arrow, SideArrow } from '../svg'
 import Portfolio from "./Portfolio";
-import { useLocation, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import useSound from 'use-sound';
-import select from './select.mp3';
-
-//Current Locator
-function HeaderView() {
-    const location = useLocation();
-    console.log(location.pathname);
-    return <span>Path : {location.pathname}</span>
-  }
+import sound1 from './select.mp3';
+import sound2 from './open.mp3'
+import sound3 from './close.mp3'
 
 const Nav = () =>{
-    const [isOpen, openPortfolio] = React.useState(true)
+    const [isOpen, openPortfolio] = React.useState(false)
     const togglePort = () => { 
         if (isOpen) {openPortfolio(false)
-        
+            close()
     } else if (!isOpen) {
         openPortfolio(true)
-    } play()}
+        open()
+    }}
     
-    const group = document.querySelectorAll('.group');
-    const [play] = useSound(select);  
-
+    const [select] = useSound(sound1);  
+    const [open] = useSound(sound2);  
+    const [close] = useSound(sound3);  
+    
     return(
-        <div className="nav">
-           <NavLink className="li" activeClassName="active" onClick={()=> play()} to="/Store">
+        <nav className="nav" id="nav">
+           <NavLink className="li" activeClassName="active" onClick={()=> select()} to="/Store">
            <div  >Store</div>
            </NavLink >
-           <NavLink className="li" activeClassName="active" onClick={()=> play()} to="/Contact">
+           <NavLink className="li" activeClassName="active" onClick={()=> select()} to="/Contact">
            <div >Contact</div>
            </NavLink >
-           <NavLink className="li" activeClassName="active" onClick={()=> play()} to="/About">
+           <NavLink className="li" activeClassName="active" onClick={()=> select()} to="/About">
            <div >About</div> 
            </NavLink >
            <div className="group"><div onClick={togglePort} className="li">Portfolio {isOpen ? <Arrow /> : <SideArrow />}</div>
             {isOpen ? <Portfolio /> : null}</div>
-        </div>
+        </nav>
     )
 }
 

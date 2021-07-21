@@ -1,14 +1,17 @@
 import React, {useState, useEffect} from "react";
 import useSound from 'use-sound';
-import select from './select.mp3';
+import sound1 from './select.mp3';
 import db from '../firebase'
-import { useLocation, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 function Portfolio(work){
     const[works, setWorks] = useState([]);
     const[loading, setLoading] = useState(false);
     
-    const [play] = useSound(select);  
+    const [select] = useSound(sound1);  
+    
     const ref = db.collection("portfolio").orderBy("projectYear", "desc");
+    const fer = db. collection("studentWork").orderBy("projectYear", "desc");
+    
     function getWorks(){
         setLoading(true);
         ref.onSnapshot((querySnapshot) => {
@@ -31,7 +34,7 @@ if (loading) {
 return(
     <div>
         {works.map((work)=>(
-            <NavLink exact className="li w" activeClassName="active" onClick={()=> play()} to={`/${work.id}`}><div key={work.id} >{work.projectName}</div></NavLink>
+            <NavLink exact className="li w" activeClassName="active" onClick={()=> select()} to={`/${work.id}`} key={work.id} ><div>{work.projectName}</div></NavLink>
         ))}
     </div>
 )

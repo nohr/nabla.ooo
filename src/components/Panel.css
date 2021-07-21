@@ -1,9 +1,9 @@
-svg a {
+a svg {
   margin: 0;
   fill: #a1a1a1;
 }
 
-svg a:hover {
+a svg:hover {
   fill: #ffffff;
 }
 
@@ -17,6 +17,7 @@ text {
   height: max-content;
   padding: 3px 0;
   width: 12vw;
+  /* ^Same as .header and .header2 */
   cursor: none;
 }
 
@@ -38,8 +39,10 @@ text {
 
 .nav {
   list-style-type: none;
-  padding: 0;
+  margin-top: 4em;
+  padding: 15px 0;
   text-indent: 5px;
+  height: min-content;
 }
 
 a {
@@ -56,7 +59,7 @@ a {
   float: right;
 }
 
-.slider {
+.Panel {
   top: 70px;
   bottom: 0px;
   height: 300px;
@@ -78,8 +81,24 @@ a {
   user-select: none;
 }
 
-.logo {
-  margin: 0 auto;
+.header {
+  margin: 0;
+  position: fixed;
+  z-index: 20;
+  width: 12vw;
+  /* ^Same as .nav .li and .header2 */
+}
+.header2 {
+  margin: 0;
+  position: fixed;
+  z-index: 20;
+  width: 12vw;
+  /* ^Same as .nav .li and .header */
+  background-color: gray;
+  color: rosybrown;
+  transform: translateY(10);
+  transition: transform 6s ease;
+  animation: myanimation 3s;
 }
 
 /* width */

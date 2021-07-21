@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import '../App.css'
 import "./Panel.css";
 import { SvgNabla } from '../svg';
@@ -14,15 +14,21 @@ import {
   Route
 } from "react-router-dom";
 
+function HeaderState() {
+  const header = "header";
+  return (
+    <div className={header} >
+      <SvgNabla title="nabla" />        
+    </div>
+  );
+}
 
 
 function Panel() {
     return (
       
-      <div className="slider">
-        <div className='logo' >
-         <SvgNabla title="nabla" fill='#a1a1a1'  />        
-        </div>
+      <div className="Panel">
+        <HeaderState />
         <Nav />    
       </div>
       
