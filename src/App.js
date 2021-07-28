@@ -1,7 +1,7 @@
 import './App.css'
-import CD from './Canvas_CD'
-import UI from './components/UI.js'
-import useWindowDimensions from './components/Portfolio'
+import CD from './components/Canvas/Canvas_CD'
+import UI from './components/UI/UI'
+import useWindowDimensions from './components/UI/Portfolio'
 import React, { useRef, useState, useEffect , Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { softShadows, useGLTF, PerspectiveCamera, Stars  } from '@react-three/drei'

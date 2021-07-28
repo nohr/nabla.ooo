@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import HorizontalScroll from 'react-scroll-horizontal'
-import "./feed.css";
+import "./Stream.css";
 
 
 
-class Feed extends Component {
+class Stream extends Component {
   render() {
     const child = { width: `300em`, height: `100vw`}
     return (
@@ -16,4 +16,4 @@ class Feed extends Component {
   }
 }
 
-export default Feed;
+export default Stream;

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import useSound from 'use-sound';
-import sound1 from './select.mp3';
-import db from '../firebase'
+import sound1 from '../Sounds/select.mp3';
+import db from '../../firebase'
 import { NavLink } from "react-router-dom";
 function Portfolio(work){
     const[works, setWorks] = useState([]);

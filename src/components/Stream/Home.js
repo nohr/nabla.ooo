@@ -1,6 +1,6 @@
 import React from "react";
-import '../App.css'
-import { HomeCD } from '../svg';
+import '../../App.css'
+import { HomeCD } from '../UI/svg';
 
 function Home() {
     return (

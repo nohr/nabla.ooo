@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import '../App.css'
-import "./feed.css";
+import '../../App.css'
+import "./Stream.css";
 import HorizontalScroll from 'react-scroll-horizontal'
 
 
@@ -11,16 +11,14 @@ class About extends Component {
     return (
        <div className="head">
         <h1>About</h1>
-        <HorizontalScroll
-        reverseScroll={true}
-        ><div className="container">
+      <div className="container">
           <div className="feed under">{text} <img src="https://global.yamaha-motor.com/design_technology/design/concept/motoroid/img/sec03_img05.jpg" alt="bike" width="1000" /></div>
           <div className="feed large">{text}</div>
           <div className="feed pic"><img src="https://global.yamaha-motor.com/design_technology/design/concept/motoroid/img/sec03_img05.jpg" alt="bike" width="1500" />{text}</div>
           <div className="feed small">{text}</div>
           <div className="feed end">{text}</div>
         </div>
-        </HorizontalScroll>
+
       </div>
 
     )

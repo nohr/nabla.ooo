@@ -1,7 +1,7 @@
 import * as React from "react";
-import {  Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import useSound from 'use-sound';
-import home from './components/home.mp3';
+import home from '../Sounds/home.mp3';
 
  const SvgNabla = () => {
   const [play] = useSound(home); 

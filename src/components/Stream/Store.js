@@ -1,10 +1,10 @@
 import React from "react";
-import '../App.css'
+import '../../App.css'
 
-function Contact() {
+function Store() {
     return (
         <div className="head">
-        <h1>Contact</h1>
+        <h1>Store</h1>
         </div>
     )}
-export default Contact;
+export default Store;

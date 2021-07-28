@@ -1,6 +1,10 @@
 a svg {
   margin: 0;
   fill: #a1a1a1;
+  background: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(5.5px);
+  -webkit-backdrop-filter: blur(5.5px);
+  /* border-radius: 10px; */
 }
 
 a svg:hover {

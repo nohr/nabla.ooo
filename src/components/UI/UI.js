@@ -1,13 +1,13 @@
 import React, { useState, Component  } from "react";
-import '../App.css'
+import '../../App.css'
 import "./Panel.css";
-import { SvgNabla } from '../svg';
+import { SvgNabla } from './svg';
 import Nav from './Nav.jsx'
-import Feed from "./Feed";
-import Home from './Home'
-import About from './About'
-import Store from './Store'
-import Contact from "./Contact";
+import Stream from "../Stream/Stream";
+import Home from '../Stream/Home'
+import About from '../Stream/About'
+import Store from '../Stream/Store'
+import Contact from "../Stream/Contact";
 import {
   BrowserRouter as Router,
   Switch,

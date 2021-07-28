@@ -1,12 +1,12 @@
 import React from "react";
 import "./Panel.css";
-import { Arrow, SideArrow } from '../svg'
+import { Arrow, SideArrow } from './svg'
 import Portfolio from "./Portfolio";
 import { NavLink } from "react-router-dom";
 import useSound from 'use-sound';
-import sound1 from './select.mp3';
-import sound2 from './open.mp3'
-import sound3 from './close.mp3'
+import sound1 from '../Sounds/select.mp3';
+import sound2 from '../Sounds/open.mp3'
+import sound3 from '../Sounds/close.mp3'
 
 const Nav = () =>{
     const [isOpen, openPortfolio] = React.useState(false)
