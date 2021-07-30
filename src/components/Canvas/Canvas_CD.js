@@ -19,24 +19,27 @@ export default function CD(props) {
         <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Sphere2.geometry}
             material={nodes.Sphere2.material}
             position={[5.28, 57.74, -265.23]}
-          />
+          >
+            <sphereGeometry args={[100, 100, 100]} />
+          </mesh>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Sphere1.geometry}
             material={nodes.Sphere1.material}
             position={[306.5, 57.74, 134.46]}
-          />
+          >
+            <sphereGeometry args={[100, 100, 100]} />
+          </mesh>
           <mesh
             castShadow
             receiveShadow
-            geometry={nodes.Sphere.geometry}
             material={nodes.Sphere.material}
             position={[-296.7, 57.74, 134.46]}
-          />
+          >
+            <sphereGeometry args={[100, 100, 100]} />
+          </mesh>
         </group>
       </group>
     </group>

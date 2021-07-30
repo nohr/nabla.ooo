@@ -13,7 +13,6 @@ import {
   Switch,
   Route
 } from "react-router-dom";
-import HorizontalScroll from 'react-scroll-horizontal'
 
 function HeaderState() {
   const header = "header";
@@ -24,24 +23,20 @@ function HeaderState() {
   );
 }
 
-
 function Panel() {
     return (
-      
       <div className="Panel">
         <HeaderState />
         <Nav />    
       </div>
-      
     )}
-
 
 function UI() {
   return (
-      <>
-    <div className="bigContainer">
-      <Router>
-        <Panel />
+    <>
+    <div className="bigContainer">      
+    <Router>
+    <Panel />
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/Store" component={Store} />

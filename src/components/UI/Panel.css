@@ -2,9 +2,11 @@ a svg {
   margin: 0;
   fill: #a1a1a1;
   background: rgba(255, 255, 255, 0);
-  backdrop-filter: blur(5.5px);
+  /* backdrop-filter: blur(5.5px);
   -webkit-backdrop-filter: blur(5.5px);
-  /* border-radius: 10px; */
+  border-radius: 10px; */
+  -webkit-filter: drop-shadow(1px 1px 3px rgb(39, 39, 39));
+  filter: drop-shadow(1px 1px 3px rgb(39, 39, 39));
 }
 
 a svg:hover {
@@ -23,6 +25,7 @@ text {
   width: 15vw;
   /* ^Same as .header and .header2 */
   cursor: none;
+  text-shadow: 1px 1px 3px rgb(39, 39, 39);
 }
 
 .nav .li:hover {
@@ -64,13 +67,14 @@ a {
 }
 
 .Panel {
+  position: fixed;
+  left: 70px;
+  z-index: 500;
   top: 70px;
   bottom: 0px;
   height: 300px;
   width: fit-content;
-  position: fixed;
-  left: 81px;
-  z-index: 500;
+
   border: 1px solid #eca72c;
   border-radius: 25px 25px 25px 25px;
   /* margin: 10px auto; */
