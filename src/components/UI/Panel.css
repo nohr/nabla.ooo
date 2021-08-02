@@ -5,8 +5,8 @@ a svg {
   /* backdrop-filter: blur(5.5px);
   -webkit-backdrop-filter: blur(5.5px);
   border-radius: 10px; */
-  -webkit-filter: drop-shadow(1px 1px 3px rgb(39, 39, 39));
-  filter: drop-shadow(1px 1px 3px rgb(39, 39, 39));
+  -webkit-filter: drop-shadow(1px 1px 3px rgba(39, 39, 39, 0.808));
+  filter: drop-shadow(1px 1px 3px rgba(39, 39, 39, 0.808));
 }
 
 a svg:hover {
@@ -25,16 +25,22 @@ text {
   width: 15vw;
   /* ^Same as .header and .header2 */
   cursor: none;
-  text-shadow: 1px 1px 3px rgb(39, 39, 39);
+  text-shadow: 1px 1px 3px rgba(39, 39, 39, 0.808);
 }
 
 .nav .li:hover {
   background-color: #eca52c67;
   color: rgb(255, 255, 255);
+  -webkit-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
+  -moz-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
+  box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
 }
 .active {
   background-color: #a1a1a167;
   color: rgb(255, 255, 255);
+  -webkit-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
+  -moz-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
+  box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
 }
 
 .nav .li:hover > svg {
@@ -64,6 +70,8 @@ a {
   fill: #a1a1a1;
   height: 12px;
   float: right;
+  -webkit-filter: drop-shadow(1px 1px 3px rgba(39, 39, 39, 0.808));
+  filter: drop-shadow(1px 1px 3px rgba(39, 39, 39, 0.808));
 }
 
 .Panel {
@@ -215,9 +223,9 @@ a {
   -webkit-user-drag: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  -webkit-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
-  box-shadow: 0px 3px 10px 1px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
+  -moz-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
+  box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
 }
 
 .slide > div {
