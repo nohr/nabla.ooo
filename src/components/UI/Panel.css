@@ -1,16 +1,18 @@
-a svg {
+a .SvgNabla {
   margin: 0;
-  fill: #a1a1a1;
+  fill: #444444;
   background: rgba(255, 255, 255, 0);
   /* backdrop-filter: blur(5.5px);
   -webkit-backdrop-filter: blur(5.5px);
   border-radius: 10px; */
-  -webkit-filter: drop-shadow(1px 1px 3px rgba(39, 39, 39, 0.808));
-  filter: drop-shadow(1px 1px 3px rgba(39, 39, 39, 0.808));
+  -webkit-filter: drop-shadow(1px 1px 3px rgba(39, 39, 39, 0.253));
+  filter: drop-shadow(1px 1px 3px rgba(39, 39, 39, 0.253));
 }
 
-a svg:hover {
-  fill: #ffffff;
+a .SvgNabla:hover {
+  fill: rgba(156, 38, 38, 0);
+  stroke: #444444;
+  stroke-width: 10px;
 }
 
 text {
@@ -22,25 +24,25 @@ text {
   clear: left;
   height: max-content;
   padding: 3px 0;
-  width: 15vw;
+  width: 380px;
   /* ^Same as .header and .header2 */
   cursor: none;
-  text-shadow: 1px 1px 3px rgba(39, 39, 39, 0.808);
+  text-shadow: 1px 1px 3px rgba(39, 39, 39, 0.5);
 }
 
 .nav .li:hover {
-  background-color: #eca52c67;
-  color: rgb(255, 255, 255);
-  -webkit-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
-  -moz-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
-  box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
-}
-.active {
   background-color: #a1a1a167;
   color: rgb(255, 255, 255);
-  -webkit-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
-  -moz-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
-  box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
+  -webkit-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.253);
+  -moz-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.253);
+  box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.253);
+}
+.active {
+  background-color: #44444467;
+  color: rgb(255, 255, 255);
+  -webkit-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.253);
+  -moz-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.253);
+  box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.253);
 }
 
 .nav .li:hover > svg {
@@ -51,27 +53,25 @@ text {
 }
 
 .nav {
+  /* height: fit-content; */
   list-style-type: none;
-  margin-top: 4em;
+  margin-top: 4.5em;
   padding: 15px 0;
   text-indent: 5px;
-  height: min-content;
 }
 
 a {
-  color: #a1a1a1;
+  color: #444444;
   text-decoration: none;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.group {
-}
 .arrow {
-  fill: #a1a1a1;
+  fill: #444444;
   height: 12px;
   float: right;
-  -webkit-filter: drop-shadow(1px 1px 3px rgba(39, 39, 39, 0.808));
-  filter: drop-shadow(1px 1px 3px rgba(39, 39, 39, 0.808));
+  -webkit-filter: drop-shadow(1px 1px 3px rgba(39, 39, 39, 0.253));
+  filter: drop-shadow(1px 1px 3px rgba(39, 39, 39, 0.253));
 }
 
 .Panel {
@@ -80,15 +80,15 @@ a {
   z-index: 500;
   top: 70px;
   bottom: 0px;
-  height: 300px;
+  height: min-content;
   width: fit-content;
-
-  border: 1px solid #eca72c;
-  border-radius: 25px 25px 25px 25px;
+  color: #444444;
+  border: 1px solid #444444;
+  border-radius: 1px;
   /* margin: 10px auto; */
-  padding: 0em 2em 2em 2em;
+  padding: 0em 2.5em 2.5em 2.5em;
   overflow-x: hidden;
-  overflow-y: scroll;
+  overflow-y: visible;
   -webkit-overflow-scrolling: touch;
   scroll-snap-type: none;
   -webkit-user-select: none;
@@ -99,13 +99,14 @@ a {
 
 .header {
   margin: 0;
-  padding: 2em 0 0 0;
+  padding: 2.5em 0 0 0;
   position: fixed;
   left: -50;
   z-index: 530;
-  width: calc(15vw + 0em);
+  width: 380px;
   /* ^Same as .header */
   text-indent: 5px;
+  border-bottom: 1px solid #444444;
 }
 .header2 {
   margin: 0;
@@ -223,9 +224,9 @@ a {
   -webkit-user-drag: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  -webkit-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
-  -moz-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
-  box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.808);
+  -webkit-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.253);
+  -moz-box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.253);
+  box-shadow: 0px 3px 10px 1px rgba(39, 39, 39, 0.253);
 }
 
 .slide > div {

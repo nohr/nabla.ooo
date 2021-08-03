@@ -1,3 +1,7 @@
+.bigContainer {
+  position: fixed;
+  z-index: 70;
+}
 .container {
   height: 100%;
   width: 500vw;
@@ -11,20 +15,25 @@
 }
 .head {
   position: fixed;
+  width: max-content;
   top: 0;
   left: 0;
   z-index: 50;
 }
 
 h1 {
-  font-size: 18vw;
-  color: transparent;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: #eca72c;
-  margin: 0;
   position: fixed;
   z-index: -20;
-  font-family: "Times New Roman", Times, serif;
+  top: -0vw;
+  font-size: 15vw;
+  letter-spacing: -1vw;
+  color: transparent;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #444444;
+  margin: 0;
+  font-family: "ekodigital";
+  font-weight: 400;
+  font-style: normal;
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
@@ -34,11 +43,14 @@ h1 {
 .HomeCD {
   margin-top: 30px;
   margin-left: 20px;
+  width: 200%;
+  overflow: visible;
 }
+
 .feed {
-  background: #a1a1a167;
   color: #ffffff;
-  border-radius: 25px 25px 25px 25px;
+  border-radius: 1px;
+  /* border: 1px dashed #5f5f5f; */
   /* margin: 10px auto; */
   padding: 2em 2em;
   max-width: 100%;

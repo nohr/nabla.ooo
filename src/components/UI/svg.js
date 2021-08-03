@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import useSound from 'use-sound';
 import home from '../Sounds/home.mp3';
 
+
+
+
  const SvgNabla = () => {
   const [play] = useSound(home); 
 
@@ -12,7 +15,7 @@ import home from '../Sounds/home.mp3';
       viewBox="0 0 1031.96 300.4"
       width="7em"
       height="2.5em"
-      className="logoSVG"
+      className="SvgNabla"
     >
       <path
         fill="ffffff"
@@ -26,15 +29,28 @@ import home from '../Sounds/home.mp3';
 }
 
 const HomeCD = () => {
+  function getAccel(){
+    if (typeof DeviceMotionEvent.requestPermission === 'function') {
+        DeviceMotionEvent.requestPermission()
+          .then(response => {
+            if (response === 'granted') {
+              window.addEventListener('devicemotion', () => {});
+            }
+          })
+          .catch(console.error);
+      } else {
+        // handle regular non iOS 13+ devices
+      }
+    } 
+
   return (
-    <svg 
+   <svg 
     xmlns="http://www.w3.org/2000/svg" 
     viewBox="0 0 840.25 690"
-    height="200%"
-    width="200%"
     className='HomeCD'
+    
     >
-      <g fill="none" stroke="#eca72c">
+      <g fill="none" stroke="#444444">
         <circle cx="670.25" cy="170.25" r="170"></circle>
         <circle cx="420" cy="520" r="170"></circle>
         <circle cx="170" cy="170" r="170"></circle>
@@ -48,7 +64,7 @@ const Arrow = () => {
     <svg 
     className="arrow" 
     focusable="false" 
-    viewBox="0 0 24 24" 
+    viewBox="0 0 25 24" 
     aria-hidden="true"
     >
       <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>

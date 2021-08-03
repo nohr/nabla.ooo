@@ -10,7 +10,7 @@ function Portfolio(work){
     const [select] = useSound(sound1);  
     
     const ref = db.collection("portfolio").orderBy("projectYear", "desc");
-    const fer = db. collection("studentWork").orderBy("projectYear", "desc");
+    const fer = db.collection("studentWork").orderBy("projectYear", "desc");
     
     function getWorks(){
         setLoading(true);
