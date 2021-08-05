@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
+import { Color } from './Colors';
 import useSound from 'use-sound';
 import home from '../Sounds/home.mp3';
 
@@ -12,9 +13,8 @@ import home from '../Sounds/home.mp3';
   return (
       <Link to="/" onClick={() => play()}><svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 1031.96 300.4"
+      viewBox="0 0 950 300.4"
       width="7em"
-      height="2.5em"
       className="SvgNabla"
     >
       <path

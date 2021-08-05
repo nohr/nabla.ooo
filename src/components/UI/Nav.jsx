@@ -1,5 +1,6 @@
 import React from "react";
 import "./Panel.css";
+import { Color } from './Colors';
 import { Arrow, SideArrow } from './svg'
 import Portfolio from "./Portfolio";
 import { NavLink } from "react-router-dom";
@@ -18,30 +19,30 @@ const Nav = () =>{
             //Flash
             folder.style.border = "none";
             setTimeout(function(){
-                folder.style.border = "1px dotted #444444";
+                folder.style.border = "1px dotted " + Color.folderBorderLite;
                 setTimeout(function(){
                     folder.style.border = "none";
                     setTimeout(function(){
-                        folder.style.border = "1px dotted #444444";
+                        folder.style.border = "1px dotted " + Color.folderBorderLite;
                         setTimeout(function(){
                             folder.style.border = "none";
                         },40);},40);},40);},40);
     } else if (!isOpen) {
         openPortfolio(true)
         open()
-        folder.style.border = "1px dotted #444444";
+        folder.style.border = "1px dotted " + Color.folderBorderLite;
         setTimeout(function(){
             folder.style.border = "none";
             setTimeout(function(){
-                folder.style.border = "1px dotted #444444";
+                folder.style.border = "1px dotted " + Color.folderBorderLite;
                 setTimeout(function(){
                     folder.style.border = "none";
                     setTimeout(function(){
-                        folder.style.border = "1px dotted #444444";
+                        folder.style.border = "1px dotted " + Color.folderBorderLite;
                         setTimeout(function(){
                             folder.style.border = "none";
                             setTimeout(function(){
-                                folder.style.border = "1px dotted #444444";
+                                folder.style.border = "1px dotted " + Color.folderBorderLite;
                             },200);},200);},200);},200);},200);},200);
         
     }}
@@ -65,13 +66,13 @@ const Nav = () =>{
     return(
         <nav className="nav" id="nav">
            <NavLink className="li" activeClassName="active" onClick={()=> toggleLi()} to="/Store">
-           <div  >Store</div>
+           Store
            </NavLink >
            <NavLink className="li" activeClassName="active" onClick={()=> toggleLi()} to="/About">
-           <div >About</div> 
+           About 
            </NavLink >
            <NavLink className="li" activeClassName="active" onClick={()=> toggleLi()} to="/Contact">
-           <div >Contact</div>
+           Contact
            </NavLink >
            <div className="folder" ><div onClick={togglePort} id="folder" className="li">Portfolio {isOpen ? <Arrow /> : <SideArrow />}</div>
             {isOpen ? <Portfolio /> : null}</div>

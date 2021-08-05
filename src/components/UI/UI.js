@@ -3,11 +3,12 @@ import '../../App.css'
 import "./Panel.css";
 import { SvgNabla } from './svg';
 import Nav from './Nav.jsx'
-import Stream from "../Stream/Stream";
+import { useFrame } from "@react-three/fiber";
 import Home from '../Stream/Home'
 import About from '../Stream/About'
 import Store from '../Stream/Store'
 import Contact from "../Stream/Contact";
+import NotFound from "../Stream/NotFound";
 import {
   BrowserRouter as Router,
   Switch,
@@ -25,13 +26,15 @@ function HeaderState() {
 
 function Panel() {
     return (
-      <div className="Panel">
+      <div  data-augmented-ui="tl-clip tr-2-clip-x br-clip bl-2-clip-y both" className="Panel"> 
+      {/* tl-2-clip-x br-clip bl-2-clip-y */}
         <HeaderState />
         <Nav />    
       </div>
     )}
 
 function UI() {
+
   return (
     <>
     <div className="bigContainer">      
@@ -42,6 +45,7 @@ function UI() {
           <Route path="/Store" component={Store} />
           <Route path="/about" component={About} />
           <Route path="/contact" component={Contact} />
+          <Route component={NotFound} />
         </Switch>
         </Router> 
         {/* <Feed /> */}

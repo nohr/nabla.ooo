@@ -1,13 +1,20 @@
 import './App.css'
 import * as THREE from "three";
+import { Color } from './components/UI/Colors';
 import CD from './components/Canvas/Canvas_CD'
 import Sand from './components/Canvas/Landscape'
 import UI from './components/UI/UI'
+import { Dolly } from './components/Stream/Home'
 import useWindowDimensions from './components/UI/window'
 import React, { useRef, Suspense, useLayoutEffect } from 'react';
-import { Canvas } from '@react-three/fiber';
+import { Canvas, useFrame } from '@react-three/fiber';
 import { softShadows, PerspectiveCamera, OrbitControls, Reflector, useTexture } from '@react-three/drei'
 import { EffectComposer, Noise } from '@react-three/postprocessing';
+import {
+  BrowserRouter as Router,
+  Route,
+  useLocation
+} from "react-router-dom";
 
 // Canvas
 softShadows();
@@ -38,7 +45,7 @@ function Floor() {
     >
       {(Material, props) => (
         <Material
-          color="#AEDEFF"
+          color={Color.Surface}
           metalness={0}
           roughness={1}
           roughnessMap={roughness}
@@ -62,12 +69,10 @@ function Sky(){
 
   return(
   <mesh
-            castShadow
-            receiveShadow
             position={[0, 0, 0]}
             material={material}
           >
-            <sphereGeometry args={[1000, 1000, 1000]} />
+            <sphereGeometry args={[10, 10, 10]} />
           </mesh>
   )
 }
@@ -80,25 +85,27 @@ function App() {
     <>
     <UI />
     <Canvas shadowMap colorManagement pixelRatio={[1, 1.5]}>
-      <PerspectiveCamera makeDefault position={[-14,4,0]} rotation={[ 0, Math.PI, Math.PI]} near={1} fov={20} aspect={width / height} far={80000} />
+      <PerspectiveCamera makeDefault position={[-30,0,0]} rotation={[ 0, Math.PI, Math.PI]} near={.1} fov={20} aspect={width / height} far={1000} />
+      <Dolly />
       <fog attach="fog" args={[0x848484, 10, 40]} />
       <Suspense fallback={null}>
         <spotLight castShadow intensity={6} 
           decay ={1} 
           color={0x848484} 
-          position={[9000, 6000, -5000]} 
+          position={[90, 60, -50]} 
           shadow-mapSize-width={1024}
           shadow-mapSize-height={1024}
           shadow-focus={0.4} />
         <rectAreaLight
             intensity={5}
-            args={["#AEDEFF", 8, 8, 8]}
+            args={[Color.Surface, 8, 8, 8]}
             position={[0, -0.99, 0]}
             rotation-x={Math.PI / 2}
           />
         <ambientLight intensity={0.1} />
         <group position-y={-1}>
-        <CD /><Sky />
+        <CD />
+        {/* <Sky /> */}
         {/* <Sand /> */}
         <Floor />
         </group>
