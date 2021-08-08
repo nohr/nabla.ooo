@@ -85,7 +85,7 @@ function App() {
     <>
     <UI />
     <Canvas shadowMap colorManagement pixelRatio={[1, 1.5]}>
-      <PerspectiveCamera makeDefault position={[-30,0,0]} rotation={[ 0, Math.PI, Math.PI]} near={.1} fov={20} aspect={width / height} far={1000} />
+      <PerspectiveCamera makeDefault position={[-10,0,0]} rotation={[ 0, Math.PI, Math.PI]} near={.1} fov={20} aspect={width / height} far={1000} />
       <Dolly />
       <fog attach="fog" args={[0x848484, 10, 40]} />
       <Suspense fallback={null}>

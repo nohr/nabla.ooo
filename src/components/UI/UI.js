@@ -19,6 +19,7 @@ import {
 import { Color } from './Colors'
 import useSound from 'use-sound'
 import db from '../../firebase'
+import Tilt from 'react-parallax-tilt';
 
 function Settings(){
     return (null);
@@ -112,7 +113,6 @@ function Panel() {
       </div>
     </div>
       </div>
-
       {isOpen ? <Portfolio /> : null}
       </>
     )}
@@ -121,9 +121,8 @@ function Panel() {
 function UI() {
   return (
     <div className="bigContainer">      
-    <Router>            
+    <Router>          
     <Panel />
-
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/store" component={Store} />

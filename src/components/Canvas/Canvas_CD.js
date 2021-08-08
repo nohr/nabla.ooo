@@ -21,8 +21,8 @@ export default function CD(props) {
    const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(2048)
    const material = new THREE.MeshPhysicalMaterial({
     color: Color.CD,
-    reflectivity: 0,
-    refractionRatio:0,
+    reflectivity: 10,
+    refractionRatio:100,
     roughness: 0,
     metalness: 0.16,
     clearcoat: 0.1,
@@ -30,6 +30,13 @@ export default function CD(props) {
     transmission: 1.0,
     opacity: 1,
     transparent: true
+  })
+  const material1 = new THREE.MeshPhysicalMaterial({
+    color: Color.CD,
+    reflectivity: 0,
+    roughness: 0,
+    metalness: 0.16,
+    opacity: 1,
   })
   return (
     <group  {...props} dispose={null} >
@@ -39,7 +46,7 @@ export default function CD(props) {
             castShadow
             receiveShadow
             position={[5.28, 0, -265.23]}
-            material={material}
+            material={material1}
           >
             <sphereGeometry args={[100, 100, 100]} />
           </mesh>
@@ -47,7 +54,7 @@ export default function CD(props) {
             castShadow
             receiveShadow
             position={[306.5, 0, 134.46]}
-            material={material}
+            material={material1}
           >
            <sphereGeometry args={[100, 100, 100]} />
           </mesh>
@@ -55,7 +62,7 @@ export default function CD(props) {
             castShadow
             receiveShadow
             position={[-296.7, 0, 134.46]}
-            material={material}
+            material={material1}
           >
             <sphereGeometry args={[100, 100, 100]} />
           </mesh>

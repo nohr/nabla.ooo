@@ -107,7 +107,7 @@ a {
   padding: 0em 2.5em 2.5em 2.5em;
   position: fixed;
   left: var(--edge);
-  z-index: 500;
+  z-index: 5000;
   top: var(--edge);
   bottom: 0px;
   /* height: fit-content; */
@@ -119,7 +119,7 @@ a {
   padding: 2.5em;
   position: absolute;
   left: calc(var(--edge) + var(--panelWidth) + 20px);
-  z-index: 510;
+  z-index: 5100;
   /* top: 230px; */
   top: 90px;
 }
