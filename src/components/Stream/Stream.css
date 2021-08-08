@@ -49,6 +49,7 @@
   border-right: 1px solid #ebebeb;
   letter-spacing: -15px;
   padding-right: 15px;
+  text-shadow: 1px 1px 13px rgba(235, 235, 235, 0.5);
 }
 
 .desc {
@@ -62,31 +63,33 @@
   font-style: normal !important;
   vertical-align: middle;
 }
+.title p {
+  align-self: center;
+  display: inline-block;
+  vertical-align: baseline;
+  padding: 0 10px;
+  margin-left: 10px;
+  text-shadow: 1px 1px 3px rgba(235, 235, 235, 0.5);
+  background-color: #a1a1a167;
+}
 .buyBtn {
-  width: min-content;
-  height: min-content;
+  padding: 5px 9px;
   font-size: 10px;
   font-style: normal !important;
   font-weight: 800;
   background-color: #c94343;
   /* background-color: #00000000; */
-  box-shadow: inset 6px 6px 10px #973232, inset -6px -6px 10px #fb5454;
   color: #ebebeb;
   cursor: pointer;
   display: inline;
   justify-self: flex-end;
-  -webkit-appearance: button;
-  -moz-appearance: button;
-  appearance: button;
-  border-radius: 0;
   /* text-shadow: 1px 1px 3px rgba(39, 39, 39, 0.5); */
 }
-p {
-  align-self: center;
-  display: inline-block;
-  vertical-align: baseline;
-  margin-left: 20px;
+
+.buyBtn:hover {
+  background-color: #62b9ff67;
 }
+
 .head {
   position: fixed;
   width: max-content;

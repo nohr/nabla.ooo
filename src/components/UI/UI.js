@@ -122,7 +122,9 @@ function UI() {
   return (
     <div className="bigContainer">      
     <Router>          
+      <div>
     <Panel />
+    </div>
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/store" component={Store} />
