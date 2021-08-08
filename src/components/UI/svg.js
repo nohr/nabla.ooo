@@ -62,10 +62,11 @@ const HomeCD = () => {
 const Arrow = () => {
   return (
     <svg 
-    className="arrow" 
+    className="arrow svg-left" 
     focusable="false" 
     viewBox="0 0 25 24" 
     aria-hidden="true"
+    transform="rotate(-91)"
     >
       <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
     </svg>
@@ -75,15 +76,151 @@ const Arrow = () => {
 const SideArrow = () => {
   return (
     <svg 
-    className="arrow" 
+    className="arrow svg-right" 
     focusable="false" 
     viewBox="0 0 24 24" 
     aria-hidden="true"
-    transform="rotate(90)"
+    transform="rotate(91)"
     >
       <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
     </svg>
   );
 }
 
-export { SvgNabla, HomeCD, Arrow, SideArrow}
+function Spinner() {
+  return (
+    <svg
+      display="block"
+      preserveAspectRatio="xMidYMid"
+      viewBox="0 0 100 100"
+      className="spinner"
+    >
+      <rect width="7" height="14" x="46.5" y="28" fill="#444" rx="3.5" ry="7">
+        <animate
+          attributeName="opacity"
+          begin="-0.8571428571428571s"
+          dur="1s"
+          keyTimes="0;1"
+          repeatCount="indefinite"
+          values="1;0"
+        ></animate>
+      </rect>
+      <rect
+        width="7"
+        height="14"
+        x="46.5"
+        y="28"
+        fill="#444"
+        rx="3.5"
+        ry="7"
+        transform="rotate(51.429 50 50)"
+      >
+        <animate
+          attributeName="opacity"
+          begin="-0.7142857142857143s"
+          dur="1s"
+          keyTimes="0;1"
+          repeatCount="indefinite"
+          values="1;0"
+        ></animate>
+      </rect>
+      <rect
+        width="7"
+        height="14"
+        x="46.5"
+        y="28"
+        fill="#444"
+        rx="3.5"
+        ry="7"
+        transform="rotate(102.857 50 50)"
+      >
+        <animate
+          attributeName="opacity"
+          begin="-0.5714285714285714s"
+          dur="1s"
+          keyTimes="0;1"
+          repeatCount="indefinite"
+          values="1;0"
+        ></animate>
+      </rect>
+      <rect
+        width="7"
+        height="14"
+        x="46.5"
+        y="28"
+        fill="#444"
+        rx="3.5"
+        ry="7"
+        transform="rotate(154.286 50 50)"
+      >
+        <animate
+          attributeName="opacity"
+          begin="-0.42857142857142855s"
+          dur="1s"
+          keyTimes="0;1"
+          repeatCount="indefinite"
+          values="1;0"
+        ></animate>
+      </rect>
+      <rect
+        width="7"
+        height="14"
+        x="46.5"
+        y="28"
+        fill="#444"
+        rx="3.5"
+        ry="7"
+        transform="rotate(205.714 50 50)"
+      >
+        <animate
+          attributeName="opacity"
+          begin="-0.2857142857142857s"
+          dur="1s"
+          keyTimes="0;1"
+          repeatCount="indefinite"
+          values="1;0"
+        ></animate>
+      </rect>
+      <rect
+        width="7"
+        height="14"
+        x="46.5"
+        y="28"
+        fill="#444"
+        rx="3.5"
+        ry="7"
+        transform="rotate(257.143 50 50)"
+      >
+        <animate
+          attributeName="opacity"
+          begin="-0.14285714285714285s"
+          dur="1s"
+          keyTimes="0;1"
+          repeatCount="indefinite"
+          values="1;0"
+        ></animate>
+      </rect>
+      <rect
+        width="7"
+        height="14"
+        x="46.5"
+        y="28"
+        fill="#444"
+        rx="3.5"
+        ry="7"
+        transform="rotate(308.571 50 50)"
+      >
+        <animate
+          attributeName="opacity"
+          begin="0s"
+          dur="1s"
+          keyTimes="0;1"
+          repeatCount="indefinite"
+          values="1;0"
+        ></animate>
+      </rect>
+    </svg>
+  );
+}
+
+export { SvgNabla, HomeCD, Arrow, SideArrow, Spinner}
