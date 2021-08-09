@@ -1,8 +1,7 @@
 import React from "react";
 import '../../App.css'
-import { HomeCD } from '../UI/svg';
-import { useFrame } from "@react-three/fiber";
-import { useLocation } from "react-router-dom";
+// import { HomeCD } from '../UI/svg';
+//import { useFrame } from "@react-three/fiber";
 
 export const Dolly = () => {  
 
@@ -21,7 +20,7 @@ function Home(props) {
         
     return (
         <div className="head">
-        <HomeCD title="CD" />  
+         {/* <HomeCD title="CD" />   */}
         </div>
     )}
 export default Home;

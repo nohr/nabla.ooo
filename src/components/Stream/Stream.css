@@ -1,17 +1,21 @@
+@import "../UI/UI.css";
+@import "../UI/font/stylesheet.css";
+
 .bigContainer {
   position: fixed;
   z-index: 70;
 }
 .container {
-  height: 100vh;
+  height: 100%;
   display: grid;
-  margin: 0px 0px 15px 0vw;
+  /* margin: 0px 0px 15px 0vw; */
   color: #ebebeb;
   font-size: 14px;
+  overflow-y: scroll;
 }
 /* pages */
 .abt {
-  width: 200vw;
+  width: 100%;
   grid-template-columns: repeat(50, 20%);
   grid-template-rows: 34% 60% 6%;
   /* column-gap: 20px; */
@@ -19,7 +23,7 @@
 }
 
 .str {
-  width: 100vw;
+  width: 100%;
   grid-template-columns: 10% 80% 10%;
   grid-template-rows: 34% 60% 6%;
   column-gap: 20px;
@@ -34,10 +38,6 @@
   grid-column-end: 2;
   grid-row-start: 2;
   grid-row-end: 2;
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+/Edge */
-  user-select: none; /* Standard */
 }
 
 .eko-thumb {
@@ -50,6 +50,10 @@
   letter-spacing: -15px;
   padding-right: 15px;
   text-shadow: 1px 1px 13px rgba(235, 235, 235, 0.5);
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 }
 
 .desc {
@@ -84,15 +88,24 @@
   display: inline;
   justify-self: flex-end;
   /* text-shadow: 1px 1px 3px rgba(39, 39, 39, 0.5); */
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 }
 
 .buyBtn:hover {
   background-color: #62b9ff67;
 }
 
+.cnt {
+}
+
 .head {
+  display: flex;
   position: fixed;
-  width: max-content;
+  width: 100vw;
+  height: 100vh;
   top: 0;
   left: 0;
   z-index: 50;
@@ -100,10 +113,11 @@
 }
 
 h1 {
-  position: fixed;
-  z-index: -20;
-  top: -0vw;
-  font-size: 15vw;
+  justify-self: flex-start;
+  position: absolute;
+  top: calc(var(--edge) - 10px);
+  left: calc(var(--edge) + var(--panelWidth) + 20px);
+  font-size: 17vw;
   letter-spacing: -1vw;
   color: transparent;
   -webkit-text-stroke-width: 1px;
@@ -119,9 +133,7 @@ h1 {
 }
 
 .HomeCD {
-  margin-top: 30px;
-  margin-left: 20px;
-  width: 200%;
+  width: 50%;
   overflow: visible;
 }
 
@@ -156,10 +168,10 @@ img {
 }
 
 .large {
-  grid-column-start: 3;
-  grid-column-end: 3;
-  grid-row-start: 2;
-  grid-row-end: 2;
+  grid-column-start: 2;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 1;
 }
 
 .med {

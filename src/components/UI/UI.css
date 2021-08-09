@@ -1,6 +1,6 @@
-* {
+:root {
   --panelWidth: 180px;
-  --edge: 70px;
+  --edge: 20px;
 }
 a .SvgNabla {
   margin: 0;
@@ -26,17 +26,16 @@ a .SvgNabla text {
 }
 
 .li {
-  font-size: 0.81vw;
-  vertical-align: middle;
+  font-size: clamp(10px, 0.81vw, 12px);
   float: left;
   clear: left;
   height: min-content;
-  margin: 3px 0;
   width: 100%;
-  /* ^Same as .header and .header2 */
-  cursor: none;
+  margin: 2px 0;
+  padding-bottom: 1px;
+  display: block;
+  /* cursor: none; */
   text-shadow: 1px 1px 6px rgba(39, 39, 39, 0.5);
-  display: flex;
   font-family: "Anonymous Pro", monospace;
 }
 
@@ -59,8 +58,9 @@ a .SvgNabla text {
 .li:hover > svg {
   fill: #ffffff;
 }
+
 .w {
-  text-indent: 15px;
+  text-indent: 10px;
 }
 
 a {
@@ -71,12 +71,13 @@ a {
 
 .arrow {
   fill: #444444;
-  height: 12px;
+  height: clamp(8px, 12px, 12px);
   float: right;
   -webkit-filter: drop-shadow(1px 1px 6px rgba(39, 39, 39, 0.253));
   filter: drop-shadow(1px 1px 6px rgba(39, 39, 39, 0.253));
   justify-self: end;
   align-self: center;
+  margin: auto 0;
 }
 
 .Panel {
@@ -99,31 +100,30 @@ a {
   --aug-inlay-all: 7px;
   --aug-inlay-bg: linear-gradient(
     320deg,
-    rgba(184, 184, 184, 0) 40%,
-    rgb(195, 195, 195) 100%
+    rgba(184, 184, 184, 0) 0%,
+    rgba(195, 195, 195, 0.8) 50%
   );
 }
 
-.a {
+.nav {
   height: min-content;
   padding: 0em 2.5em 2.5em 2.5em;
   position: fixed;
   left: var(--edge);
   z-index: 5000;
   top: var(--edge);
-  bottom: 0px;
   /* height: fit-content; */
   /* padding: 15px 0; */
   text-indent: 5px;
 }
 
-.b {
+.prt {
   padding: 2.5em;
   position: absolute;
-  left: calc(var(--edge) + var(--panelWidth) + 20px);
+  left: var(--edge);
   z-index: 5100;
   /* top: 230px; */
-  top: 90px;
+  top: calc(var(--panelWidth) + 15px);
 }
 
 .header {
@@ -132,7 +132,6 @@ a {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 118px;
   /* ^Same as .header */
   text-indent: 5px;
   border-bottom: 1px solid #444444;

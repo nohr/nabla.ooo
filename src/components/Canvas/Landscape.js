@@ -1,7 +1,6 @@
 import React, { useRef, useLayoutEffect } from 'react'
 import * as THREE from "three";
 import { useGLTF, Reflector, useTexture  } from '@react-three/drei'
-import { } from '@react-three/drei'
 
 export default function Sand(props) {
     const group = useRef()

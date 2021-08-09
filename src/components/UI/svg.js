@@ -1,6 +1,5 @@
 import * as React from "react";
 import { Link } from "react-router-dom";
-import { Color } from './Colors';
 import useSound from 'use-sound';
 import home from '../Sounds/home.mp3';
 
@@ -29,26 +28,11 @@ import home from '../Sounds/home.mp3';
 }
 
 const HomeCD = () => {
-  function getAccel(){
-    if (typeof DeviceMotionEvent.requestPermission === 'function') {
-        DeviceMotionEvent.requestPermission()
-          .then(response => {
-            if (response === 'granted') {
-              window.addEventListener('devicemotion', () => {});
-            }
-          })
-          .catch(console.error);
-      } else {
-        // handle regular non iOS 13+ devices
-      }
-    } 
-
   return (
    <svg 
     xmlns="http://www.w3.org/2000/svg" 
     viewBox="0 0 840.25 690"
     className='HomeCD'
-    
     >
       <g fill="none" stroke="#444444">
         <circle cx="670.25" cy="170.25" r="170"></circle>
