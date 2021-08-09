@@ -2,9 +2,13 @@ import React, { useEffect, useRef } from "react";
 import LocomotiveScroll from 'locomotive-scroll'
 import '../../App.css'
 import "./Stream.css";
+import Draggable from "react-draggable";
+import { state } from '../UI/state'
+import { useSnapshot } from 'valtio'
 
 
 function About() {
+  const snap = useSnapshot(state);
   const ref = useRef(null);
   useEffect(() =>{
     if(ref){
@@ -32,7 +36,9 @@ function About() {
     return (
       <>
       <div className="head">
+      <Draggable position={snap.prtPosition} positionOffset={{x: '0%', y: '0%'}} onStart={() => false}>
         <h1>about</h1>
+      </Draggable>  
         </div>
       <div className="container abt" has-scroll-dragging="true" data-scroll-container ref={ref}>
           <img className="feed under" data-scroll src="https://global.yamaha-motor.com/design_technology/design/concept/motoroid/img/sec03_img05.jpg" alt="bike"/>

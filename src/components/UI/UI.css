@@ -81,9 +81,11 @@ a {
 }
 
 .Panel {
+  display: inline-block;
   width: var(--panelWidth);
   color: #444444;
   -webkit-overflow-scrolling: touch;
+  overflow: visible;
   scroll-snap-type: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -120,12 +122,35 @@ a {
 .prt {
   padding: 2.5em;
   position: absolute;
+  z-index: 500;
   left: var(--edge);
-  z-index: 5100;
+  margin: 20px 0;
   /* top: 230px; */
-  top: calc(var(--panelWidth) + 15px);
+  /* top: calc(var(--panelWidth) + 15px); */
 }
 
+.set {
+  padding: 2.5em;
+  position: absolute;
+  z-index: 500;
+  left: var(--edge);
+  margin: 20px 0;
+}
+
+.grip {
+  position: absolute;
+  z-index: 100;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  left: 8px;
+  border-left: #444444 solid 1px;
+  border-right: #444444 solid 1px;
+  height: 20%;
+  width: 3px;
+  cursor: grab;
+  padding: 0 3px;
+}
 .header {
   margin: 0 0 10px 0;
   padding: 2em 0px 0.5em;

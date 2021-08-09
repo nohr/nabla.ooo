@@ -6,27 +6,69 @@
   z-index: 70;
 }
 .container {
-  height: 100%;
+  position: absolute;
+  height: 100vh;
   display: grid;
   /* margin: 0px 0px 15px 0vw; */
   color: #ebebeb;
   font-size: 14px;
   overflow-y: scroll;
 }
+
+.head {
+  display: flex;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  pointer-events: none;
+}
+
+h1 {
+  justify-self: flex-start;
+  position: absolute;
+  top: calc(var(--edge) - 10px);
+  left: calc(var(--edge) + var(--panelWidth) + 20px);
+  font-size: clamp(10vw, 17vw, 2.5vw);
+  letter-spacing: -1vw;
+  color: transparent;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #444444;
+  margin: 0;
+  font-family: "ekodigital";
+  font-weight: 400;
+  font-style: normal;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
+}
+
+.HomeCD {
+  width: 50%;
+  overflow: visible;
+}
+
 /* pages */
 .abt {
-  width: 100%;
-  grid-template-columns: repeat(50, 20%);
-  grid-template-rows: 34% 60% 6%;
+  width: 100vw;
+  grid-template-columns: repeat(20, 20%);
+  grid-template-rows: 1fr auto 1fr;
   /* column-gap: 20px; */
   /* row-gap: 45px; */
 }
 
 .str {
-  width: 100%;
+  width: 100vw;
   grid-template-columns: 10% 80% 10%;
   grid-template-rows: 34% 60% 6%;
   column-gap: 20px;
+}
+
+.cnt {
+  width: 100vw;
 }
 
 .eko {
@@ -98,45 +140,6 @@
   background-color: #62b9ff67;
 }
 
-.cnt {
-}
-
-.head {
-  display: flex;
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
-  top: 0;
-  left: 0;
-  z-index: 50;
-  pointer-events: none;
-}
-
-h1 {
-  justify-self: flex-start;
-  position: absolute;
-  top: calc(var(--edge) - 10px);
-  left: calc(var(--edge) + var(--panelWidth) + 20px);
-  font-size: 17vw;
-  letter-spacing: -1vw;
-  color: transparent;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: #444444;
-  margin: 0;
-  font-family: "ekodigital";
-  font-weight: 400;
-  font-style: normal;
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+/Edge */
-  user-select: none; /* Standard */
-}
-
-.HomeCD {
-  width: 50%;
-  overflow: visible;
-}
-
 .feed {
   color: #ffffff;
   border-radius: 1px;
@@ -146,7 +149,7 @@ h1 {
   max-width: 100%;
   max-height: 100%;
   line-height: 2;
-  overflow: scroll;
+  /* overflow: scroll; */
 }
 
 img {

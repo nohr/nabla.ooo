@@ -2,7 +2,9 @@ import React, { useEffect, useRef } from "react"
 import LocomotiveScroll from 'locomotive-scroll'
 import '../../App.css'
 import "./Stream.css"
-
+import Draggable from "react-draggable";
+import { state } from '../UI/state'
+import { useSnapshot } from 'valtio'
 
 
 function Store() {
@@ -28,11 +30,15 @@ function Store() {
         })
       }
     },[])
+
+    const snap = useSnapshot(state);
     
     return (
       <>
       <div className="head">
+      <Draggable position={snap.prtPosition} positionOffset={{x: '0%', y: '0%'}} onStart={() => false}>
         <h1>store</h1>
+      </Draggable>
       </div>
       <div className="container str" has-scroll-dragging="true" data-scroll-container  ref={ref}> 
         
