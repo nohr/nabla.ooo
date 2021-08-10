@@ -1,14 +1,24 @@
 import React from "react";
 import '../../App.css'
+import Draggable from "react-draggable";
+import { state } from '../UI/state'
+import { useSnapshot } from 'valtio'
 
 const NotFound = () => {
-    return (
+    const snap = useSnapshot(state);
+    return (  
+        <div className="bigContainer">
         <div className="head">
-        <h1>404</h1>
-        <p>Cant find this page!</p>
+            <Draggable position={snap.prtPosition} onStart={() => false}>    
+                <h1>404</h1>
+            </Draggable>
         </div>
-    )
-}
+        <div className="container cnt">
+            <p>Can't find this page!</p>
+        </div>
+        
+        </div>
+    )}
 
 export default NotFound
 

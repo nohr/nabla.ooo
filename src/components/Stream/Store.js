@@ -33,10 +33,10 @@ function Store() {
 
     const snap = useSnapshot(state);
     
-    return (
-      <>
+    return (  
+      <div className="bigContainer">
       <div className="head">
-      <Draggable position={snap.prtPosition} positionOffset={{x: '0%', y: '0%'}} onStart={() => false}>
+      <Draggable position={snap.prtPosition} onStart={() => false}>
         <h1>store</h1>
       </Draggable>
       </div>
@@ -55,6 +55,6 @@ function Store() {
             </div>
           </div>
       </div>
-      </>
+      </div>
     )}
 export default Store;

@@ -1,38 +1,36 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
-import '../../App.css'
-import "./UI.css";
-import { SvgNabla, Spinner, Arrow, SideArrow  } from './svg';
+import Draggable from 'react-draggable'
+//import '../../App.css'
+import { GlobalStyle, Navagatior, Porter, Setter, Linker, Folder } from "./Theme"
+import { ThemeProvider } from "styled-components"
+import "./UI.css"
+import { SvgNabla, Spinner, Arrow, SideArrow  } from './svg'
 import Home from '../Stream/Home'
 import About from '../Stream/About'
 import Store from '../Stream/Store'
-import Contact from "../Stream/Contact";
-import NotFound from "../Stream/NotFound";
-import sound1 from '../Sounds/select.mp3';
+import Contact from "../Stream/Contact"
+import NotFound from "../Stream/NotFound"
+import sound1 from '../Sounds/select.mp3'
 import sound2 from '../Sounds/open.mp3'
 import sound3 from '../Sounds/close.mp3'
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  NavLink
+  Route
 } from "react-router-dom"
 import useSound from 'use-sound'
 import db from '../../firebase'
-import Draggable from 'react-draggable';
 
-//import Tilt from 'react-parallax-tilt';
 
 //Portfolio -- Child of Panel
-function Portfolio(work){
+function Portfolio(){
   const snap = useSnapshot(state);
-    const[works, setWorks] = useState([]);
-    const[loading, setLoading] = useState(false);
     const [select] = useSound(sound1);  
   
     useEffect(() => {
-    setLoading(true);
+    state.loading = true;
     const ref = db.collection("portfolio").orderBy("projectYear", "desc");  
     const getWorks = () => {
         
@@ -41,39 +39,45 @@ function Portfolio(work){
             querySnapshot.forEach((doc) => {
                 items.push(doc.data());
             });
-            setWorks(items);
-            setLoading(false);
+            state.works = items;
+            state.loading = false;
         });
     }
         getWorks();
     }, []);
 
-if (loading) {
-    return <Spinner />
-} return (
-  <Draggable position={snap.prtPosition} positionOffset={{x: '110%', y: '70%'}} onStart={() => false}>
-    <div  data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel prt"> 
-        {works.map((work)=>(
-            <NavLink exact className="li w" activeClassName="active" onClick={()=> select()} to={`/${work.id}`} key={work.id} >{work.projectName}</NavLink>
+if (!state.loading) {
+    return (
+  <Draggable position={snap.prtPosition} positionOffset={{x: '105%', y: '50%'}} onStart={() => false}>
+    <Porter  data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel prt"> 
+        {snap.works.map((work)=>(
+            <Linker exact className="li w" activeClassName="active" onClick={()=> select()} to={`/${work.id}`} key={work.id}>{work.projectName}</Linker>
         ))}
-    </div>
+    </Porter>
   </Draggable>
-)}
-
+)} else {
+  return null
+}
+}
 //Settings -- Child of Panel
 function Settings(){
   const snap = useSnapshot(state);
+
+  const themeToggeler = () =>{
+    state.wasClicked = true;
+    state.theme === 'light' ? state.theme = 'dark' : state.theme = 'light';
+  } 
     return (
-      <Draggable position={snap.prtPosition} positionOffset={{x: '0%', y: '160%'}} onStart={() => false}>
-      <div  data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel set"> 
+      <Draggable position={snap.prtPosition} positionOffset={{x: '0%', y: '150%'}} onStart={() => false}>
+      <Setter  data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel set"> 
         Audio <br/>
         Music Volume <br/>
         SFX Volume <br/>
         <br/>
         Display <br/>
-        Color Scheme <br/>
+        <Folder onClick={()=>themeToggeler()} className="li" > Color Scheme </Folder> <br/>
         Pause Canvas <br/>
-    </div>
+    </Setter>
     </Draggable>
     );
   }
@@ -92,20 +96,20 @@ function Panel() {
       const folder = document.getElementById("port");
       if (state.isPort){
         open()
-        folder.style.outline = "#444444 dotted 1px"
+        folder.classList.add("folderBorder")
     } else if (!state.isPort) {
         close()
-        folder.style.outline = "none";
+        folder.classList.remove("folderBorder")
     }
   } else if (n === 2){
     state.isSett ? (state.isSett = false) : (state.isSett = true);
     const folder = document.getElementById("sett");
         if (state.isSett){
           open()
-          folder.style.outline = "#444444 dotted 1px"
+          folder.classList.add("folderBorder")
       } else if (!state.isSett) {
           close()
-          folder.style.outline = "none";
+          folder.classList.remove("folderBorder")
       }
   }
 } 
@@ -119,34 +123,32 @@ const onControlledDrag = (e, position) => {
 };
     
     return (
-      <Draggable handle=".grip" bounds="body" position={snap.navPosition} onDrag={onControlledDrag} >
-      <div data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel nav"> 
+      //NAV
+      <Draggable handle=".grip" bounds=".bigContainer" position={snap.navPosition} onDrag={onControlledDrag} >
+      <Navagatior data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel nav"> 
       <div className='header' >
-        <SvgNabla title="nabla" />        
+        <SvgNabla title="nabla" />
+          {snap.loading ? <Spinner/> : null}
       </div>
-            <NavLink className="li" activeClassName="active" onClick={()=> toggleLi()} to="/Store">
+            <Linker className="li" activeClassName="active" onClick={()=> toggleLi()} to="/Store">
             Store
-            </NavLink >
-            <NavLink className="li" activeClassName="active" onClick={()=> toggleLi()} to="/About">
+            </Linker >
+            <Linker className="li" activeClassName="active" onClick={()=> toggleLi()} to="/About">
             About 
-            </NavLink >
-            <NavLink className="li" activeClassName="active" onClick={()=> toggleLi()} to="/Contact">
+            </Linker>
+            <Linker className="li" activeClassName="active" onClick={()=> toggleLi()} to="/Contact">
             Contact
-            </NavLink >
-    <div className="folder">
-      <div onClick={() => Toggle(1)} id="port" className="li">
+            </Linker >
+      <Folder onClick={() => Toggle(1)} id="port" className="li folder">
         Portfolio 
-        {snap.isPort ? <SideArrow /> : <Arrow />}
-      </div>
-    </div>      
-    <div className="folder">
-      <div onClick={() => Toggle(2)} id="sett" className="li">
+        {snap.isPort && snap.loading ? <SideArrow transform={"rotate(-45)"} /> : <Arrow />}
+      </Folder>
+      <Folder onClick={() => Toggle(2)} id="sett" className="li folder">
         Settings
-        {snap.isSett ? <SideArrow /> : <Arrow />}
-      </div>
-    </div>
+        {snap.isSett && snap.loading ? <SideArrow /> : <Arrow />}
+      </Folder>
     <div className="grip"></div>
-      </div>
+      </Navagatior>
       </Draggable>
     )}
 
@@ -154,12 +156,21 @@ const onControlledDrag = (e, position) => {
 function UI() {
   const snap = useSnapshot(state);
 
+  //Set theme automatically
+    const localTheme = window.localStorage.getItem('theme');
+    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !localTheme ?
+      (state.theme = 'dark') :
+      localTheme ?
+         (state.theme = localTheme) :
+        (state.theme = 'light')
+
   return (
     <Router>
+    <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
+      <GlobalStyle />
     <Panel /> 
-    <div className="bigContainer">
     {snap.isPort ? <Portfolio /> : null}
-    {snap.isSett ? <Settings /> : null}           
+    {snap.isSett ? <Settings /> : null}         
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/store" component={Store} />
@@ -167,10 +178,7 @@ function UI() {
           <Route path="/contact" component={Contact} />
           <Route component={NotFound} />
         </Switch>    
-    
-    
-        {/* <Feed /> */}
-    </div>
+    </ThemeProvider>
     </Router> 
   );
 }

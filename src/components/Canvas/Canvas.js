@@ -1,11 +1,11 @@
-import { Color } from '../UI/Colors'
+import { state } from '../UI/state'
+import { useSnapshot } from 'valtio'
 import CD from './Canvas_CD'
-import { Dolly } from '../Stream/Home'
 import useWindowDimensions from '../UI/window'
 import React, { Suspense } from 'react'
-import { Canvas } from '@react-three/fiber';
+import { Canvas } from '@react-three/fiber'
 import { softShadows, PerspectiveCamera, OrbitControls, Reflector, useTexture } from '@react-three/drei'
-import { EffectComposer, Noise } from '@react-three/postprocessing';
+import { EffectComposer, Noise } from '@react-three/postprocessing'
 
 // Canvas
 softShadows();
@@ -19,6 +19,7 @@ function Floor() {
     "../floor_rough.jpg"
   ]);
   const [ao, normal, height, roughness] = textures;
+  const snap = useSnapshot(state);
   return (
     <Reflector
       resolution={1024}
@@ -36,7 +37,7 @@ function Floor() {
     >
       {(Material, props) => (
         <Material
-          color={Color.Surface}
+          color={state.theme === 'light' ? snap.light.Surface : snap.dark.Surface}
           metalness={0}
           roughness={1}
           roughnessMap={roughness}
@@ -55,11 +56,14 @@ function Floor() {
 //App
 function CanvasComp() {
   const { height, width } = useWindowDimensions();
+  const snap = useSnapshot(state);
+  function setSurface() {
+    return snap.theme === 'light' ? snap.light.Surface : snap.dark.Surface
+  }
   return (
     <Canvas shadowMap colorManagement pixelRatio={[1, 1.5]}>
       <PerspectiveCamera makeDefault position={[-30, 3,0]} rotation={[ 0, Math.PI, Math.PI]} near={.1} fov={20} aspect={width / height} far={1000} />
-      <Dolly />
-      <fog attach="fog" args={[0x848484, 10, 40]} />
+      <fog attach="fog" args={[state.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, 40]} />
       <Suspense fallback={null}>
         <spotLight castShadow intensity={6} 
           decay ={1} 
@@ -70,7 +74,7 @@ function CanvasComp() {
           shadow-focus={0.4} />
         <rectAreaLight
             intensity={5}
-            args={[Color.Surface, 8, 8, 8]}
+            args={[setSurface(), 8, 8, 8]}
             position={[0, -0.99, 0]}
             rotation-x={Math.PI / 2}
           />

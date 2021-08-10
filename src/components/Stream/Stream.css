@@ -3,14 +3,16 @@
 
 .bigContainer {
   position: fixed;
-  z-index: 70;
+  z-index: 470;
+  padding: 20px 20px;
+  height: 100vh;
+  width: 100vw;
 }
 .container {
   position: absolute;
   height: 100vh;
   display: grid;
   /* margin: 0px 0px 15px 0vw; */
-  color: #ebebeb;
   font-size: 14px;
   overflow-y: scroll;
 }
@@ -29,13 +31,12 @@
 h1 {
   justify-self: flex-start;
   position: absolute;
-  top: calc(var(--edge) - 10px);
+  top: calc(var(--edge));
   left: calc(var(--edge) + var(--panelWidth) + 20px);
-  font-size: clamp(10vw, 17vw, 2.5vw);
-  letter-spacing: -1vw;
+  font-size: 7vw;
+  letter-spacing: -0.3vw;
   color: transparent;
   -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: #444444;
   margin: 0;
   font-family: "ekodigital";
   font-weight: 400;
@@ -47,8 +48,9 @@ h1 {
 }
 
 .HomeCD {
-  width: 50%;
   overflow: visible;
+  height: 160px;
+  position: absolute;
 }
 
 /* pages */
@@ -69,6 +71,9 @@ h1 {
 
 .cnt {
   width: 100vw;
+}
+.hom {
+  pointer-events: none;
 }
 
 .eko {
@@ -91,7 +96,7 @@ h1 {
   border-right: 1px solid #ebebeb;
   letter-spacing: -15px;
   padding-right: 15px;
-  text-shadow: 1px 1px 13px rgba(235, 235, 235, 0.5);
+  text-shadow: 1px 1px 13px #ebebeb;
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
@@ -116,7 +121,10 @@ h1 {
   padding: 0 10px;
   margin-left: 10px;
   text-shadow: 1px 1px 3px rgba(235, 235, 235, 0.5);
-  background-color: #a1a1a167;
+  background-color: #5e5e5e67;
+  -webkit-box-shadow: 0px 3px 10px 1px #5e5e5e67;
+  -moz-box-shadow: 0px 3px 10px 1px #5e5e5e67;
+  box-shadow: 0px 3px 10px 1px #5e5e5e67;
 }
 .buyBtn {
   padding: 5px 9px;
@@ -124,32 +132,22 @@ h1 {
   font-style: normal !important;
   font-weight: 800;
   background-color: #c94343;
-  /* background-color: #00000000; */
   color: #ebebeb;
   cursor: pointer;
   display: inline;
   justify-self: flex-end;
-  /* text-shadow: 1px 1px 3px rgba(39, 39, 39, 0.5); */
   -webkit-user-select: none; /* Safari */
   -moz-user-select: none; /* Firefox */
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
 }
 
-.buyBtn:hover {
-  background-color: #62b9ff67;
-}
-
 .feed {
-  color: #ffffff;
   border-radius: 1px;
-  /* border: 1px dashed #5f5f5f; */
-  /* margin: 10px auto; */
   padding: 2em 2em;
   max-width: 100%;
   max-height: 100%;
   line-height: 2;
-  /* overflow: scroll; */
 }
 
 img {

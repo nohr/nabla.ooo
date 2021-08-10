@@ -6,18 +6,16 @@ import { useSnapshot } from 'valtio'
 
 function Contact() {
     const snap = useSnapshot(state);
-    return (
-        <>
-        
+    return (  
+        <div className="bigContainer">
         <div className="head">
-            <Draggable position={snap.prtPosition} positionOffset={{x: '0%', y: '0%'}} onStart={() => false}>    
+            <Draggable position={snap.prtPosition} onStart={() => false}>    
                 <h1>contact</h1>
             </Draggable>
         </div>
         <div className="container cnt">
             <p>aite@nabla.ooo</p>
         </div>
-        
-        </>
+        </div>
     )}
 export default Contact;
