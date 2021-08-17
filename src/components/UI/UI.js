@@ -24,10 +24,10 @@ import useSound from 'use-sound'
 import db from '../../firebase'
 
 
-//Portfolio -- Child of Panel
-function Portfolio(){
+//Projects -- Child of Panel
+function Projects(){
   const snap = useSnapshot(state);
-    const [select] = useSound(sound1);  
+    const [select] = useSound(sound1, {volume:state.sfxVolume});  
   
     useEffect(() => {
     state.loading = true;
@@ -51,7 +51,7 @@ if (!state.loading) {
   <Draggable position={snap.prtPosition} positionOffset={{x: '105%', y: '50%'}} onStart={() => false}>
     <Porter  data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel prt"> 
         {snap.works.map((work)=>(
-            <Linker exact className="li w" activeClassName="active" onClick={()=> select()} to={`/${work.id}`} key={work.id}>{work.projectName}</Linker>
+            <Linker exact className="li w" activeClassName="any" onClick={()=> select()} to={`/${work.id}`} key={work.id}>{work.projectName}</Linker>
         ))}
     </Porter>
   </Draggable>
@@ -62,20 +62,30 @@ if (!state.loading) {
 //Settings -- Child of Panel
 function Settings(){
   const snap = useSnapshot(state);
-
+  const [select] = useSound(sound1, state.sfxVolume); 
   const themeToggeler = () =>{
+    select()
     state.wasClicked = true;
     state.theme === 'light' ? state.theme = 'dark' : state.theme = 'light';
+ 
   } 
+
+  const volume = () => {
+    state.sfxVolume -= 0.1; 
+    select()
+    console.log(state.sfxVolume)
+  }
+
+  
     return (
-      <Draggable position={snap.prtPosition} positionOffset={{x: '0%', y: '150%'}} onStart={() => false}>
+      <Draggable position={snap.prtPosition} positionOffset={{x: '0%', y: '150%'}} onStart={() => true}>
       <Setter  data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel set"> 
         Audio <br/>
         Music Volume <br/>
-        SFX Volume <br/>
+        <Folder onClick={()=>volume()} className="li">SFX Volume</Folder><br/>
         <br/>
         Display <br/>
-        <Folder onClick={()=>themeToggeler()} className="li" > Color Scheme </Folder> <br/>
+        <Folder onClick={()=>themeToggeler()} className="li">Color Scheme</Folder><br/>
         Pause Canvas <br/>
     </Setter>
     </Draggable>
@@ -85,9 +95,9 @@ function Settings(){
 //Panel -- Child of Parent UI
 function Panel() {
 
-      //Portfolio Folder
-      const [open] = useSound(sound2);
-      const [close] = useSound(sound3);
+      //Projects Folder
+      const [open] = useSound(sound2, state.sfxVolume);
+      const [close] = useSound(sound3, state.sfxVolume);
       const snap = useSnapshot(state);
 
     function Toggle(n) {
@@ -113,7 +123,7 @@ function Panel() {
       }
   }
 } 
-const [select] = useSound(sound1); 
+const [select] = useSound(sound1, state.sfxVolume); 
 const toggleLi = () => {select()};
 
 const onControlledDrag = (e, position) => {
@@ -124,23 +134,23 @@ const onControlledDrag = (e, position) => {
     
     return (
       //NAV
-      <Draggable handle=".grip" bounds=".bigContainer" position={snap.navPosition} onDrag={onControlledDrag} >
+      <Draggable handle=".grip" bounds=".container" position={snap.navPosition} onDrag={onControlledDrag} >
       <Navagatior data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel nav"> 
       <div className='header' >
         <SvgNabla title="nabla" />
-          {snap.loading ? <Spinner/> : null}
+          {snap.loading && <Spinner/>}
       </div>
-            <Linker className="li" activeClassName="active" onClick={()=> toggleLi()} to="/Store">
+            <Linker className="li" activeClassName="any" onClick={()=> toggleLi()} to="/Store">
             Store
             </Linker >
-            <Linker className="li" activeClassName="active" onClick={()=> toggleLi()} to="/About">
+            <Linker className="li" activeClassName="any" onClick={()=> toggleLi()} to="/About">
             About 
             </Linker>
-            <Linker className="li" activeClassName="active" onClick={()=> toggleLi()} to="/Contact">
+            <Linker className="li" activeClassName="any" onClick={()=> toggleLi()} to="/Contact">
             Contact
             </Linker >
       <Folder onClick={() => Toggle(1)} id="port" className="li folder">
-        Portfolio 
+        Projects 
         {snap.isPort && snap.loading ? <SideArrow transform={"rotate(-45)"} /> : <Arrow />}
       </Folder>
       <Folder onClick={() => Toggle(2)} id="sett" className="li folder">
@@ -157,20 +167,20 @@ function UI() {
   const snap = useSnapshot(state);
 
   //Set theme automatically
-    const localTheme = window.localStorage.getItem('theme');
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !localTheme ?
-      (state.theme = 'dark') :
-      localTheme ?
-         (state.theme = localTheme) :
-        (state.theme = 'light')
+    // const localTheme = window.localStorage.getItem('theme');
+    // window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !localTheme ?
+    //   (state.theme = 'dark') :
+    //   localTheme ?
+    //      (state.theme = localTheme) :
+    //     (state.theme = 'light')
 
   return (
     <Router>
     <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
       <GlobalStyle />
     <Panel /> 
-    {snap.isPort ? <Portfolio /> : null}
-    {snap.isSett ? <Settings /> : null}         
+    {snap.isPort && <Projects />}
+    {snap.isSett && <Settings />}         
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/store" component={Store} />

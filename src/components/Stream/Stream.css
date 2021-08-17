@@ -4,7 +4,7 @@
 .bigContainer {
   position: fixed;
   z-index: 470;
-  padding: 20px 20px;
+
   height: 100vh;
   width: 100vw;
 }
@@ -12,6 +12,7 @@
   position: absolute;
   height: 100vh;
   display: grid;
+  padding: 20px 20px;
   /* margin: 0px 0px 15px 0vw; */
   font-size: 14px;
   overflow-y: scroll;
@@ -47,6 +48,12 @@ h1 {
   user-select: none; /* Standard */
 }
 
+@media only screen and (min-width: 768px) {
+  h1 {
+    font-size: 14vw;
+  }
+}
+
 .HomeCD {
   overflow: visible;
   height: 160px;
@@ -56,7 +63,7 @@ h1 {
 /* pages */
 .abt {
   width: 100vw;
-  grid-template-columns: repeat(20, 20%);
+  grid-template-columns: repeat(1, 50%);
   grid-template-rows: 1fr auto 1fr;
   /* column-gap: 20px; */
   /* row-gap: 45px; */
@@ -67,13 +74,29 @@ h1 {
   grid-template-columns: 10% 80% 10%;
   grid-template-rows: 34% 60% 6%;
   column-gap: 20px;
+  color: #ebebeb !important;
 }
 
 .cnt {
   width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 .hom {
   pointer-events: none;
+  width: 100vw;
+}
+
+.notfound {
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .eko {
@@ -148,6 +171,7 @@ h1 {
   max-width: 100%;
   max-height: 100%;
   line-height: 2;
+  overflow-y: scroll;
 }
 
 img {
@@ -176,15 +200,15 @@ img {
 }
 
 .med {
-  grid-column-start: 5;
-  grid-column-end: 5;
-  grid-row-start: 2;
-  grid-row-end: 2;
+  grid-column-start: 1;
+  grid-column-end: 1;
+  grid-row-start: 3;
+  grid-row-end: 3;
 }
 
 .pic {
-  grid-column-start: 4;
-  grid-column-end: 4;
-  grid-row-start: 2;
-  grid-row-end: 2;
+  grid-column-start: 3;
+  grid-column-end: 3;
+  grid-row-start: 3;
+  grid-row-end: 3;
 }

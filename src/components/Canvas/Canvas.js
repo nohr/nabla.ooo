@@ -57,24 +57,21 @@ function Floor() {
 function CanvasComp() {
   const { height, width } = useWindowDimensions();
   const snap = useSnapshot(state);
-  function setSurface() {
-    return snap.theme === 'light' ? snap.light.Surface : snap.dark.Surface
-  }
-  return (
+   return (
     <Canvas shadowMap colorManagement pixelRatio={[1, 1.5]}>
-      <PerspectiveCamera makeDefault position={[-30, 3,0]} rotation={[ 0, Math.PI, Math.PI]} near={.1} fov={20} aspect={width / height} far={1000} />
+      <PerspectiveCamera makeDefault position={snap.cameraPosition} rotation={[ 0, Math.PI, Math.PI]} near={.1} fov={20} aspect={ width / height} far={1000} />
       <fog attach="fog" args={[state.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, 40]} />
       <Suspense fallback={null}>
         <spotLight castShadow intensity={6} 
           decay ={1} 
-          color={0x848484} 
+          color={state.theme === 'light' ? snap.light.fog : snap.dark.Surface} 
           position={[90, 60, -50]} 
           shadow-mapSize-width={1024}
           shadow-mapSize-height={1024}
           shadow-focus={0.4} />
         <rectAreaLight
             intensity={5}
-            args={[setSurface(), 8, 8, 8]}
+            args={[snap.theme === 'light' ? snap.light.Surface : snap.dark.Surface, 8, 8, 8]}
             position={[0, -0.99, 0]}
             rotation-x={Math.PI / 2}
           />
@@ -88,6 +85,7 @@ function CanvasComp() {
       </EffectComposer>
       </Suspense>
       <OrbitControls 
+      enabled={snap.userControlled}
       enablePan={false}
       autoRotate={ true }
       autoRotateSpeed={ 0.09 }

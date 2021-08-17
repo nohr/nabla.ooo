@@ -6,7 +6,7 @@ function Home() {
         <div className="bigContainer hom">
         <div className="head">
         </div>
-        <div className="container">
+        <div className="container hom">
         </div>
         </div>
     )}

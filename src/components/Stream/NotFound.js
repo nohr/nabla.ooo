@@ -13,7 +13,7 @@ const NotFound = () => {
                 <h1>404</h1>
             </Draggable>
         </div>
-        <div className="container cnt">
+        <div className="container notfound">
             <p>Can't find this page!</p>
         </div>
         

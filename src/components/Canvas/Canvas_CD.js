@@ -1,8 +1,8 @@
 import React, { useRef } from 'react';
 import * as THREE from "three";
-import { Color } from '../UI/Colors';
 import { useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
+import { state } from '../UI/state';
 
 export default function CD(props) {
   const group = useRef()
@@ -13,7 +13,7 @@ export default function CD(props) {
    });
 
   //  const material = new THREE.MeshPhysicalMaterial({
-  //   color: Color.CD,
+  //   color: "#E3B5A4",
   //   reflectivity: 1,
   //   ior:1.363,
   //   roughness: 0,
@@ -25,8 +25,16 @@ export default function CD(props) {
   //   transparent: true
   // })
 
+  const material = new THREE.MeshPhysicalMaterial({
+    color: "#0a0a0a",
+    reflectivity: 1,
+    roughness: 0.016,
+    metalness: 0.16,
+    opacity: 1,
+  })
+
   const material1 = new THREE.MeshPhysicalMaterial({
-    color: Color.CD,
+    color: "#E3B5A4",
     reflectivity: 0,
     roughness: 0,
     metalness: 0.16,
@@ -41,7 +49,7 @@ export default function CD(props) {
             castShadow
             receiveShadow
             position={[5.28, 0, -265.23]}
-            material={material1}
+            material={state.theme === 'light' ? material1 : material}
           >
             <sphereGeometry args={[100, 100, 100]} />
           </mesh>
@@ -49,7 +57,7 @@ export default function CD(props) {
             castShadow
             receiveShadow
             position={[306.5, 0, 134.46]}
-            material={material1}
+            material={state.theme === 'light' ? material1 : material}
           >
            <sphereGeometry args={[100, 100, 100]} />
           </mesh>
@@ -57,7 +65,7 @@ export default function CD(props) {
             castShadow
             receiveShadow
             position={[-296.7, 0, 134.46]}
-            material={material1}
+            material={state.theme === 'light' ? material1 : material}
           >
             <sphereGeometry args={[100, 100, 100]} />
           </mesh>

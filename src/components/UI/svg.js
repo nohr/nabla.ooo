@@ -1,15 +1,13 @@
 import * as React from "react"
 import useSound from 'use-sound'
 import home from '../Sounds/home.mp3'
-import { state } from './state'
-import Draggable from 'react-draggable'
-import { useSnapshot } from 'valtio'
 import { Homer } from './Theme'
+import { state } from './state'
 
 
 
  const SvgNabla = () => {
-  const [play] = useSound(home); 
+  const [play] = useSound(home, {volume:state.sfxVolume}); 
 
   return (
       <Homer className="nablaWrapper" to="/" onClick={() => play()}><svg
@@ -70,9 +68,7 @@ const SideArrow = () => {
 }
 
 function Spinner() {
-  const snap = useSnapshot(state);
   return (
-    <Draggable position={snap.navPosition} positionOffset={{x: '0%', y: '0%'}} onStart={() => false}>
     <svg
       display="block"
       preserveAspectRatio="xMidYMid"
@@ -204,7 +200,6 @@ function Spinner() {
         ></animate>
       </rect>
     </svg>
-    </Draggable>
   );
 }
 

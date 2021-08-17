@@ -111,15 +111,16 @@ export const Linker = styled(NavLink)`
   display: block;
   font-family: "Anonymous Pro", monospace;
 
-.active {
+    &.${props => props.activeClassName}{
   background-color: #5e5e5e67;
   color: #ebebeb;
-  -webkit-box-shadow: 0px 3px 10px 1px #5e5e5e67;
-  -moz-box-shadow: 0px 3px 10px 1px #5e5e5e67;
-  box-shadow: 0px 3px 10px 1px #5e5e5e67;
+  -webkit-box-shadow: 0px 2px 10px 1px #5e5e5e67;
+  -moz-box-shadow: 0px 2px 10px 1px #5e5e5e67;
+  box-shadow: 0px 2px 10px 1px #5e5e5e67;
   text-shadow: 1px 1px 3px #ebebeb;
 }
 `
+
 export const Homer = styled(NavLink)`
 
   clear: left;
@@ -147,16 +148,6 @@ export const Folder = styled.div`
   display: block;
   font-family: "Anonymous Pro", monospace;
   text-indent: 5px;
-
-.active {
-  background-color: #5e5e5e67;
-  color: #ebebeb;
-  -webkit-box-shadow: 0px 3px 10px 1px #5e5e5e67;
-  -moz-box-shadow: 0px 3px 10px 1px #5e5e5e67;
-  box-shadow: 0px 3px 10px 1px #5e5e5e67;
-  text-shadow: 1px 1px 3px #ebebeb;
-}
-
 `
 
 export const GlobalStyle = createGlobalStyle`
@@ -205,9 +196,9 @@ export const GlobalStyle = createGlobalStyle`
     .li:hover {
         color: ${props => props.theme.textHover};
         background-color: ${props => props.theme.LiHover};
-        -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
-        -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
-        box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
+        -webkit-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
+        -moz-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
+        box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
     }
     .arrow {
         fill: ${props => props.theme.panelColor};
@@ -221,13 +212,16 @@ export const GlobalStyle = createGlobalStyle`
         border-left: 1px solid ${props => props.theme.panelColor};
         border-right: 1px solid ${props => props.theme.panelColor};
     }
+    .spinner rect{
+        fill: ${props => props.theme.panelColor};
+    }
 
     //Stream
     h1{
         -webkit-text-stroke-color: ${props => props.theme.panelColor};
     }
     .container{
-        color: ${props => props.theme.textHover};
+        color: ${props => props.theme.panelColor};
     }
     .buyBtn:hover {
         background-color: ${props => props.theme.LiHover};
