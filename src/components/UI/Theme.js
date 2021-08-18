@@ -13,6 +13,8 @@ scroll-snap-type: none;
 -moz-user-select: none;
 -ms-user-select: none;
 user-select: none;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 /*Border*/
 --aug-bl: 12px;
 --aug-tl: 12px;
@@ -49,6 +51,8 @@ scroll-snap-type: none;
 -moz-user-select: none;
 -ms-user-select: none;
 user-select: none;
+backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 /*Border*/
 --aug-bl: 12px;
 --aug-tl: 12px;
@@ -82,6 +86,8 @@ scroll-snap-type: none;
 -moz-user-select: none;
 -ms-user-select: none;
 user-select: none;
+backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 /*Border*/
 --aug-bl: 12px;
 --aug-tl: 12px;
@@ -112,12 +118,13 @@ export const Linker = styled(NavLink)`
   font-family: "Anonymous Pro", monospace;
 
     &.${props => props.activeClassName}{
-  background-color: #5e5e5e67;
+  background-color: ${props => props.theme.LiActiveBackground};
   color: #ebebeb;
   -webkit-box-shadow: 0px 2px 10px 1px #5e5e5e67;
   -moz-box-shadow: 0px 2px 10px 1px #5e5e5e67;
   box-shadow: 0px 2px 10px 1px #5e5e5e67;
   text-shadow: 1px 1px 3px #ebebeb;
+  font-style: italic;
 }
 `
 
@@ -179,6 +186,8 @@ export const GlobalStyle = createGlobalStyle`
     .Panel {
         color: ${props => props.theme.panelColor};
         --aug-border-bg: ${props => props.theme.panelColor};
+        background: ${props => props.theme.panelBg};
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     }
     .header {
         border-bottom: 1px solid ${props => props.theme.panelColor};
@@ -223,18 +232,60 @@ export const GlobalStyle = createGlobalStyle`
     .container{
         color: ${props => props.theme.panelColor};
     }
+    //store
+    .eko{
+        background-color: ${props => props.theme.panelBg};
+    }
+    .eko-thumb{
+        text-shadow: 1px 1px 13px ${props => props.theme.panelColor};
+    }
     .buyBtn:hover {
         background-color: ${props => props.theme.LiHover};
         -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
         -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
         box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
     }
-    
+    .title p{
+        background-color:  ${props => props.theme.LiActiveBackground};;
+        -webkit-box-shadow: 0px 3px 10px 1px  ${props => props.theme.LiActiveBackground};;
+  -moz-box-shadow: 0px 3px 10px 1px  ${props => props.theme.LiActiveBackground};;
+  box-shadow: 0px 3px 10px 1px  ${props => props.theme.LiActiveBackground};;
+    }
     //App
     :root{
         --theme: ${props => props.theme.sky};
     }
     html, body, #root {
         background-color: ${props => props.theme.sky};
+}
+
+@media only screen and (min-width: 768px) {
+  h1 {
+    font-size: 14vw;
+  }
+  .eko {
+    flex-direction: row;
+    width: 80%;
+  }
+  .eko-thumb {
+    border-right: 1px solid ${props => props.theme.panelColor};
+  }
+}
+@media only screen and (max-width: 768px) {
+  h1 {
+    font-size: 10vh;
+  }
+  .eko {
+    flex-direction: column;
+    width: fit-content;
+    padding: 20px;
+  }
+  .buyBtn{
+    font-size: 25px;
+  }
+  .eko-thumb {
+    border-bottom: 1px solid ${props => props.theme.panelColor};
+    border-right: none;
+  }
 }
 `

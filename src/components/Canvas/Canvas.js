@@ -64,14 +64,14 @@ function CanvasComp() {
       <Suspense fallback={null}>
         <spotLight castShadow intensity={6} 
           decay ={1} 
-          color={state.theme === 'light' ? snap.light.fog : snap.dark.Surface} 
+          color={state.theme === 'light' ? snap.light.fog : snap.dark.spotlight} 
           position={[90, 60, -50]} 
           shadow-mapSize-width={1024}
           shadow-mapSize-height={1024}
           shadow-focus={0.4} />
         <rectAreaLight
             intensity={5}
-            args={[snap.theme === 'light' ? snap.light.Surface : snap.dark.Surface, 8, 8, 8]}
+            args={[snap.theme === 'light' ? snap.light.Surface : snap.dark.spotlight, 8, 8, 8]}
             position={[0, -0.99, 0]}
             rotation-x={Math.PI / 2}
           />

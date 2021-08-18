@@ -48,7 +48,7 @@ function Projects(){
 
 if (!state.loading) {
     return (
-  <Draggable position={snap.prtPosition} positionOffset={{x: '105%', y: '50%'}} onStart={() => false}>
+  <Draggable position={snap.prtPosition} positionOffset={{x: '150px', y: '50px'}} onStart={() => false}>
     <Porter  data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel prt"> 
         {snap.works.map((work)=>(
             <Linker exact className="li w" activeClassName="any" onClick={()=> select()} to={`/${work.id}`} key={work.id}>{work.projectName}</Linker>
@@ -78,7 +78,7 @@ function Settings(){
 
   
     return (
-      <Draggable position={snap.prtPosition} positionOffset={{x: '0%', y: '150%'}} onStart={() => true}>
+      <Draggable position={snap.navPosition} positionOffset={{x: '0px', y: '170px'}} onStart={() => true}>
       <Setter  data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel set"> 
         Audio <br/>
         Music Volume <br/>
@@ -151,11 +151,11 @@ const onControlledDrag = (e, position) => {
             </Linker >
       <Folder onClick={() => Toggle(1)} id="port" className="li folder">
         Projects 
-        {snap.isPort && snap.loading ? <SideArrow transform={"rotate(-45)"} /> : <Arrow />}
+        {snap.isPort ? <SideArrow /> : <Arrow />}
       </Folder>
       <Folder onClick={() => Toggle(2)} id="sett" className="li folder">
         Settings
-        {snap.isSett && snap.loading ? <SideArrow /> : <Arrow />}
+        {snap.isSett ? <SideArrow /> : <Arrow />}
       </Folder>
     <div className="grip"></div>
       </Navagatior>

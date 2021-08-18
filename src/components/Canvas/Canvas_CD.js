@@ -26,7 +26,7 @@ export default function CD(props) {
   // })
 
   const material = new THREE.MeshPhysicalMaterial({
-    color: "#0a0a0a",
+    color: "#2C2754",
     reflectivity: 1,
     roughness: 0.016,
     metalness: 0.16,
@@ -34,7 +34,7 @@ export default function CD(props) {
   })
 
   const material1 = new THREE.MeshPhysicalMaterial({
-    color: "#E3B5A4",
+    color: "#4F646F",
     reflectivity: 0,
     roughness: 0,
     metalness: 0.16,
