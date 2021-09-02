@@ -3,37 +3,6 @@
   --edge: 20px;
 }
 
-.arrow {
-  height: clamp(8px, 12px, 12px);
-  float: right;
-  justify-self: end;
-  align-self: center;
-  margin: auto 0;
-}
-
-.grip {
-  position: absolute;
-  z-index: 100;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-  left: 8px;
-  height: 40%;
-  width: 3px;
-  cursor: grab;
-  padding: 0 3px;
-}
-
-.header {
-  margin: 0 0 10px 0;
-  padding: 2em 0px 0.5em;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  height: 61px;
-  text-indent: 5px;
-}
-
 /* width */
 ::-webkit-scrollbar {
   display: none;
@@ -54,14 +23,4 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #eca72c;
-}
-
-.spinner {
-  width: 35px;
-  height: 35px;
-  background: none;
-  /* position: absolute; */
-  z-index: 500;
-  top: calc(var(--edge) + 15px);
-  left: calc(var(--edge) + 100px);
 }

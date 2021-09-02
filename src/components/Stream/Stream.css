@@ -57,8 +57,8 @@ h1 {
 /* pages */
 .abt {
   width: 100vw;
-  grid-template-columns: repeat(1, 50%);
-  grid-template-rows: 1fr auto 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   /* column-gap: 20px; */
   /* row-gap: 45px; */
 }
@@ -91,74 +91,6 @@ h1 {
   justify-items: center;
   justify-content: center;
   flex-direction: column;
-}
-
-.eko {
-  height: min-content;
-  display: flex;
-  align-self: center;
-  align-items: center;
-  grid-column-start: 2;
-  grid-column-end: 2;
-  grid-row-start: 2;
-  grid-row-end: 2;
-  padding: 10px;
-  background: rgba(5, 5, 5, 0.15);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 25px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
-
-.eko-thumb {
-  font-family: "ekodigital";
-  font-weight: 400;
-  font-style: normal;
-  font-size: 270px;
-  /* justify-self: center; */
-  letter-spacing: -15px;
-  padding-right: 15px;
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+/Edge */
-  user-select: none; /* Standard */
-}
-
-.desc {
-  padding-left: 20px;
-  line-height: 25px;
-  align-self: center;
-  font-style: italic;
-}
-.title {
-  padding: 0.5% 0;
-  font-style: normal !important;
-  vertical-align: middle;
-}
-.title p {
-  color: #ebebeb !important;
-  align-self: center;
-  display: inline-block;
-  vertical-align: baseline;
-  padding: 0 10px;
-  margin-left: 10px;
-  text-shadow: 1px 1px 3px rgba(235, 235, 235, 0.5);
-}
-.buyBtn {
-  padding: 5px 9px;
-  font-size: 10px;
-  font-style: normal !important;
-  font-weight: 800;
-  background-color: #c94343;
-  color: #ebebeb !important;
-  cursor: pointer;
-  display: inline;
-  justify-self: flex-end;
-  -webkit-user-select: none; /* Safari */
-  -moz-user-select: none; /* Firefox */
-  -ms-user-select: none; /* IE10+/Edge */
-  user-select: none; /* Standard */
 }
 
 .feed {

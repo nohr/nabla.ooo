@@ -6,13 +6,13 @@ import { state } from './components/UI/state'
 
 //App
 function App() {
-  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && state.wasClicked ?
-  (state.theme = 'dark') : console.log('not dark')
+  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !state.wasClicked ?
+    (state.theme = 'dark') : (state.theme = 'light')
 
   return (
     <>
-    <UI />
-    <CanvasComp />
+      <UI />
+      <CanvasComp />
     </>
   );
 }
