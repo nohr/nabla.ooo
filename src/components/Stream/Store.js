@@ -48,7 +48,7 @@ function Store() {
           </div>
           <div className="desc">
             <div className="title"> <p>Eko Digital</p></div>
-            Nabla‘s first decorative typeface offers a stencil with a distinct futuristic style. <br />
+            Our first decorative typeface offers a stencil with a distinct futuristic style. <br />
             <span style={{ opacity: ".5" }}>Just what your acid graphics were missing!</span>
             <br />
             <a className="buyBtn" href="https://nablaooo.gumroad.com/l/ekodigi" target="_blank" rel="noopener noreferrer">

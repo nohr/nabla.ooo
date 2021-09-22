@@ -32,8 +32,8 @@
 h1 {
   justify-self: flex-start;
   position: absolute;
-  top: calc(var(--edge));
-  left: calc(var(--edge) + var(--panelWidth) + 20px);
+  /* top: calc(var(--edge)); */
+  /* left: calc(var(--edge) + var(--panelWidth) + 20px); */
   font-size: 7vw;
   letter-spacing: -0.3vw;
   color: transparent;
@@ -79,10 +79,6 @@ h1 {
   justify-content: center;
   flex-direction: column;
 }
-.hom {
-  pointer-events: none;
-  width: 100vw;
-}
 
 .notfound {
   width: 100vw;
@@ -100,43 +96,4 @@ h1 {
   max-height: 100%;
   line-height: 2;
   overflow-y: scroll;
-}
-
-img {
-  height: max-content;
-}
-
-.under {
-  grid-column-start: 1;
-  grid-column-end: 1;
-  grid-row-start: 2;
-  grid-row-end: 2;
-}
-
-.small {
-  grid-column-start: 2;
-  grid-column-end: 2;
-  grid-row-start: 2;
-  grid-row-end: 2;
-}
-
-.large {
-  grid-column-start: 2;
-  grid-column-end: 2;
-  grid-row-start: 1;
-  grid-row-end: 1;
-}
-
-.med {
-  grid-column-start: 1;
-  grid-column-end: 1;
-  grid-row-start: 3;
-  grid-row-end: 3;
-}
-
-.pic {
-  grid-column-start: 3;
-  grid-column-end: 3;
-  grid-row-start: 3;
-  grid-row-end: 3;
 }

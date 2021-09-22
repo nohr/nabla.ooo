@@ -47,7 +47,6 @@ export const Linker = styled(NavLink)`
   margin: 2px 0;
   padding-bottom: 1px;
   display: block;
-  font-family: "Anonymous Pro", monospace;
 
     &.${props => props.activeClassName}{
   background-color: ${props => props.theme.LiActiveBackground};
@@ -68,8 +67,7 @@ export const Homer = styled(NavLink)`
   padding-top: 3px;
   padding-bottom: 1px;
   display: block;
-  font-family: "Anonymous Pro", monospace;
-
+  border-radius: 5px;
   margin: 0;
   background: rgba(255, 255, 255, 0);
   overflow: visible;
@@ -84,7 +82,64 @@ export const Folder = styled.div`
   margin: 2px 0;
   padding-bottom: 1px;
   display: block;
-  font-family: "Anonymous Pro", monospace;
+`
+export const Container = styled.div`
+  display: flex;
+  gap: 60px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow-y: scroll;
+  height: 100vh;
+  padding: 20px 20px;
+  font-size: 14px;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  
+`
+export const Sector = styled.div`
+      border: dashed 1px ${props => props.theme.panelColor};
+      display: flex;
+      flex-direction:row-reverse;
+      padding: 80px 20px;
+      height: 80%;
+      justify-content: space-between;
+      gap: 40px;
+  img{
+    height: 100%;
+    width: 100%;
+    user-drag: none;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+  }
+`
+export const TextWrapper = styled.div`
+flex-wrap: wrap;
+color: ${props => props.theme.panelColor};
+font-size: 14px;
+width:50%;
+text-align: justify;
+height: 100%;
+align-self: center;
+padding: 20px;
+display: grid;
+grid-template-rows: 45% 45% 10%;
+/* align-items: flex-end; */
+
+& h3, & h4{
+  clear:both;
+}
+
+& p {
+text-indent: 2em;
+line-height: 2;
+overflow-y: scroll;
+}
 `
 
 export const GlobalStyle = createGlobalStyle`
@@ -123,8 +178,8 @@ export const GlobalStyle = createGlobalStyle`
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       /*Border*/
       --aug-bl: 12px;
       --aug-tl: 12px;
@@ -137,8 +192,6 @@ export const GlobalStyle = createGlobalStyle`
       //--aug-inlay-all: 0px ;
       color: ${props => props.theme.panelColor};
       --aug-border-bg: ${props => props.theme.panelColor};
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
     }
     .header {
         border-bottom: 1px solid ${props => props.theme.panelColor};
@@ -151,6 +204,9 @@ export const GlobalStyle = createGlobalStyle`
         text-indent: 5px;
     }
 
+    .li{
+      border-radius: 5px;
+    }
     .li, .folder {
         color: ${props => props.theme.panelColor};
     }
@@ -203,14 +259,32 @@ export const GlobalStyle = createGlobalStyle`
       stroke:  ${props => props.theme.panelColor} !important;
       stroke-width: 1px;
       position: absolute;
-      top: calc(var(--edge));
-      left: calc(var(--edge) + var(--panelWidth) + 20px);
+      /* top: calc(var(--edge)); */
+      /* left: calc(var(--edge) + var(--panelWidth) + 20px); */
       height: 14vw;
       width: auto;
       overflow: visible;
     } 
     .container{
         color: ${props => props.theme.panelColor};
+    }
+
+    .hom {
+        pointer-events: none;
+        width: 100vw;
+    }
+    .carousel-root{
+      grid-column-start: 2;
+      grid-column-end: 2;
+      grid-row-start: 2;
+      grid-row-end: 3;
+    }
+
+    @media only screen and (max-width: 768px) {
+    .section{
+        flex-direction: 'column-reverse';
+        border-top: none;
+      }
     }
     //store
     .eko{
@@ -305,6 +379,14 @@ export const GlobalStyle = createGlobalStyle`
         background-color: ${props => props.theme.sky};
 }
 
+@media only screen and (min-width: 1441px) {
+  .li{
+    font-size: 12px;
+  }
+  h1 {
+    font-size: 12vw;
+  }
+}
 //Not Mobile
 @media only screen and (min-width: 768px) {
   h1 {
@@ -332,7 +414,16 @@ export const GlobalStyle = createGlobalStyle`
     --aug-tr: 10px;
   }
   .nav{
-    width: 140px;
+    grid-column-start: 1;
+  grid-column-end: 4;
+  grid-row-start:1;
+  grid-row-end: 2;
+  width: 90vw;
+  height: min-content;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 33% 33% 33%;
+  /* FIX THIS  */
   }
 
   .prt{
@@ -352,8 +443,16 @@ export const GlobalStyle = createGlobalStyle`
     width: max-content;
   }
 
+  .header{
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 1;
+  }
+
+
   .li{
-    font-size: 12px;
+    font-size: 18px;
     padding: 6px 0;
   }
 
@@ -367,9 +466,19 @@ export const GlobalStyle = createGlobalStyle`
     padding-top: 7px;
     padding-right: 7px;
   }
+  .head svg {
+    stroke-width: 0.5px;
+  }
 
   .head{
     justify-content: center;
+  }
+  
+  .sector{
+    flex-direction: column-reverse;
+  }
+  .textWrapper{
+    width: unset;
   }
 
   .eko {

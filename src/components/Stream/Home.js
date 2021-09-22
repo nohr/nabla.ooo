@@ -1,13 +1,15 @@
 import React from "react";
 import '../../App.css'
+import { Container } from "../UI/Theme";
 
 function Home() {
-    return (  
+    return (
         <div className="bigContainer hom">
-        <div className="head">
+            <div className="head">
+            </div>
+            <Container className="hom container">
+            </Container>
         </div>
-        <div className="container hom">
-        </div>
-        </div>
-    )}
+    )
+}
 export default Home;

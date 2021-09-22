@@ -11,7 +11,7 @@ import About from '../Stream/About'
 import Store from '../Stream/Store'
 import Contact from "../Stream/Contact"
 import NotFound from "../Stream/NotFound"
-import { Geese, Swami, Tidal } from '../Stream/Projects'
+import { Page } from '../Stream/Projects.jsx'
 import sound1 from '../Sounds/select.mp3'
 import sound2 from '../Sounds/open.mp3'
 import sound3 from '../Sounds/close.mp3'
@@ -33,24 +33,7 @@ function Projects() {
     state.isPort = false;
     state.isSett = false;
   }
-  useEffect(() => {
-    state.loading = true;
-    const ref = db.collection("portfolio").orderBy("projectYear", "desc");
-    const getWorks = () => {
 
-      ref.onSnapshot((querySnapshot) => {
-        const items = [];
-        querySnapshot.forEach((doc) => {
-          if (doc.data().name) {
-            items.push(doc.data());
-          }
-        });
-        state.works = items;
-        state.loading = false;
-      });
-    }
-    getWorks();
-  }, []);
 
   var x = window.matchMedia("(max-width: 768px)");
   let offset = {};
@@ -76,6 +59,7 @@ function Projects() {
     return null
   }
 }
+
 //Settings -- Child of Panel
 function Settings() {
   const snap = useSnapshot(state);
@@ -110,6 +94,18 @@ function Settings() {
     offset = { x: '0px', y: '170px' };
   }
 
+  function togglePause() {
+    console.log(state.paused);
+    if (!state.paused) {
+      state.paused = true;
+      select()
+
+    } else if (state.paused) {
+      state.paused = false;
+      select()
+    }
+  }
+
   return (
     <Draggable position={snap.navPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
       <Setter data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel set">
@@ -117,7 +113,8 @@ function Settings() {
         <Folder onClick={() => volume()} className="li w">{!snap.muted ? "Mute Sound" : "Unmute Sound"}</Folder><br />
         <br />
         Display <br />
-        <Folder onClick={() => themeToggeler()} className="li w">{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder><br />
+        <Folder onClick={() => themeToggeler()} className="li w">{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>
+        <Folder onClick={() => togglePause()} className="li w">{snap.paused ? "Play Animation" : "Pause Animation"}</Folder><br />
       </Setter>
     </Draggable>
   );
@@ -206,17 +203,24 @@ function Panel() {
 //UI -- Parent Component
 function UI() {
   const snap = useSnapshot(state);
-
-  //Set theme automatically
-  // const localTheme = window.localStorage.getItem('theme');
-  // window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !localTheme ?
-  //   (state.theme = 'dark') :
-  //   localTheme ?
-  //      (state.theme = localTheme) :
-  //     (state.theme = 'light')
-  // function capitalizeFirstLetter(string) {
-  //   return string.charAt(0).toUpperCase() + string.slice(1);
-  // }
+  //Get Project list and Data
+  useEffect(() => {
+    state.loading = true;
+    const ref = db.collection("portfolio").orderBy("date", "desc");
+    const getWorks = () => {
+      ref.onSnapshot((querySnapshot) => {
+        const items = [];
+        querySnapshot.forEach((doc) => {
+          if (doc.data().name) {
+            items.push(doc.data());
+          }
+        });
+        state.works = items;
+        state.loading = false;
+      });
+    }
+    getWorks();
+  }, []);
 
   return (
     <Router>
@@ -230,12 +234,10 @@ function UI() {
           <Route path="/store" component={Store} />
           <Route path="/about" component={About} />
           <Route path="/contact" component={Contact} />
-          <Route path="/geese" component={Geese} />
-          <Route path="/swami" component={Swami} />
-          <Route path="/tidal" component={Tidal} />
-          {/* {snap.works.map((work) => (
-            <Route path={`/${work.id}`} component={capitalizeFirstLetter(`${work.id}`)} />
-          ))} */}
+          {/* <Route path="/geese" component={Page} /> */}
+          {snap.works.map((work) => (
+            <Route key={`/${work.name}`} path={`/${work.id}`} component={() => <Page title={`${work.id}`} />} />
+          ))}
           <Route component={NotFound} />
         </Switch>
       </ThemeProvider>

@@ -2,7 +2,9 @@ import { proxy } from 'valtio'
 
 export const state = proxy({
     works: [],
+    sectors: [],
     loading: false,
+    paused: false,
     isPort: false,
     isSett: false,
     wasClicked: false,
@@ -32,7 +34,7 @@ export const state = proxy({
         sky: "#1E1E1E",
         fog: "#030303",
         LiHover: "#968fcc67",
-        LiActiveBackground: "#0f0f0f67",
+        LiActiveBackground: "#ebebeb67",
         CD: "#0a0a0a",
         Surface: '#968fcc',
         spotlight: '#646464',
