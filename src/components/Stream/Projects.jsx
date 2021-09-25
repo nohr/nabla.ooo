@@ -6,7 +6,7 @@ import Draggable from "react-draggable";
 import LocomotiveScroll from 'locomotive-scroll'
 import '../../App.css'
 import "./Stream.css"
-import { Container, Sector, TextWrapper } from "../UI/Theme";
+import { Container, ImgWrapper, Sector, TextWrapper } from "../UI/Theme";
 import Slider from "@farbenmeer/react-spring-slider";
 
 function SVG(title) {
@@ -72,8 +72,8 @@ function Page(title) {
         <div className="bigContainer">
             <div className="head">
             <Draggable position={snap.prtPosition} onStart={() => false}>
-        <SVG/>
-      </Draggable>
+            <br/>
+            </Draggable>
             </div>
             <Container className="container" has-scroll-dragging="true" data-scroll-container ref={ref}>
                 {snap.sectors.map((work) => (
@@ -87,18 +87,12 @@ function Page(title) {
                             <h5 key={`/${work.at}`}>{`${work.projectClient}`}</h5>
                             </div>
                         </TextWrapper>
-                        <Slider 
-                        hasArrows={true} 
-                        hasBullets={true} 
-                        arrowStyle={{ borderColor: snap.theme === 'light' ? snap.light.panelColor : snap.dark.panelColor }}
-                        bulletStyle={{ backgroundColor: snap.theme === 'light' ? snap.light.panelColor : snap.dark.panelColor }}
-                        >
-                            {work.images.map((url) => (
-                            <div>
-                                <img src={`${url}`} alt={`/${work.at}`} key={`/${work.at}`} />
-                            </div>
-                            ))}
-                        </Slider>
+                        
+                        <ImgWrapper>
+                        {work.images.map((url) => (
+                            <img src={`${url}`} alt={`/${work.at}`} key={`/${work.at}`} />
+                        ))}
+                        </ImgWrapper>
                     </Sector>
                 ))}
             </Container>

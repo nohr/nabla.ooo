@@ -234,9 +234,8 @@ function UI() {
           <Route path="/store" component={Store} />
           <Route path="/about" component={About} />
           <Route path="/contact" component={Contact} />
-          {/* <Route path="/geese" component={Page} /> */}
           {snap.works.map((work) => (
-            <Route key={`/${work.name}`} path={`/${work.id}`} component={() => <Page title={`${work.id}`} />} />
+            <Route key={`${work.name}`} path={`/${work.id}`} component={() => <Page title={`${work.id}`} />} />
           ))}
           <Route component={NotFound} />
         </Switch>

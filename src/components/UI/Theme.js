@@ -122,7 +122,7 @@ export const TextWrapper = styled.div`
 flex-wrap: wrap;
 color: ${props => props.theme.panelColor};
 font-size: 14px;
-width:50%;
+width:40%;
 text-align: justify;
 height: 100%;
 align-self: center;
@@ -140,6 +140,14 @@ text-indent: 2em;
 line-height: 2;
 overflow-y: scroll;
 }
+`
+export const ImgWrapper = styled.div`
+    /* display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    grid-gap: 15px; */
+    width: 60%;
+    overflow-x: scroll;
 `
 
 export const GlobalStyle = createGlobalStyle`

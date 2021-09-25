@@ -10,7 +10,7 @@ export default function CD(props) {
   useFrame(() => {
     group.current.rotation.y += 0.002;
     group.current.rotation.z += 0.0001;
-   });
+  });
 
   //  const material = new THREE.MeshPhysicalMaterial({
   //   color: "#E3B5A4",
@@ -26,9 +26,9 @@ export default function CD(props) {
   // })
 
   const material = new THREE.MeshPhysicalMaterial({
-    color: "#2C2754",
+    color: state.theme === 'light' ? state.light.CD : state.dark.CD,
     reflectivity: 1,
-    roughness: 0.016,
+    roughness: 0,
     metalness: 0.16,
     opacity: 1,
   })
@@ -40,16 +40,16 @@ export default function CD(props) {
     metalness: 0.16,
     opacity: 1,
   })
-  
+
   return (
     <group  {...props} dispose={null} >
       <group ref={group} position={[0, 2, 0]} receiveShadow castShadow >
         <group position={[0, 0, 1]} scale={.01}>
-        <mesh
+          <mesh
             castShadow
             receiveShadow
             position={[5.28, 0, -265.23]}
-            material={state.theme === 'light' ? material1 : material}
+            material={material}
           >
             <sphereGeometry args={[100, 100, 100]} />
           </mesh>
@@ -57,15 +57,15 @@ export default function CD(props) {
             castShadow
             receiveShadow
             position={[306.5, 0, 134.46]}
-            material={state.theme === 'light' ? material1 : material}
+            material={material}
           >
-           <sphereGeometry args={[100, 100, 100]} />
+            <sphereGeometry args={[100, 100, 100]} />
           </mesh>
           <mesh
             castShadow
             receiveShadow
             position={[-296.7, 0, 134.46]}
-            material={state.theme === 'light' ? material1 : material}
+            material={material}
           >
             <sphereGeometry args={[100, 100, 100]} />
           </mesh>
