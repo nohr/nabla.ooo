@@ -62,7 +62,7 @@ function CanvasComp() {
       <PerspectiveCamera makeDefault position={snap.cameraPosition} rotation={[0, Math.PI, Math.PI]} near={.1} fov={20} aspect={width / height} far={1000} />
       <fog attach="fog" args={[state.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, 40]} />
       <Suspense fallback={null}>
-        <spotLight castShadow intensity={6}
+        <spotLight castShadow intensity={state.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}
           decay={1}
           color={state.theme === 'light' ? snap.light.fog : snap.dark.spotlight}
           position={[90, 60, -50]}
@@ -70,12 +70,12 @@ function CanvasComp() {
           shadow-mapSize-height={1024}
           shadow-focus={0.4} />
         <rectAreaLight
-          intensity={5}
-          args={[snap.theme === 'light' ? snap.light.Surface : snap.dark.fog, 8, 8, 8]}
+          intensity={snap.theme === 'light' ? snap.light.rectIntensity : snap.dark.rectIntensity}
+          args={[snap.theme === 'light' ? snap.light.Surface : snap.dark.Surface, 8, 8, 8]}
           position={[0, -0.99, 0]}
           rotation-x={Math.PI / 2}
         />
-        <ambientLight intensity={0.1} />
+        <ambientLight intensity={snap.theme === 'light' ? snap.light.ambIntensity : snap.dark.ambIntensity} />
         <group position-y={-1}>
           <CD />
           <Floor />

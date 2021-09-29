@@ -1,17 +1,16 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
 import { GlobalStyle, Navagator, Porter, Setter, Linker, Folder } from "./Theme"
 import { ThemeProvider } from "styled-components"
-import "./UI.css"
 import { SvgNabla, Spinner, Arrow, SideArrow } from './svg'
 import Home from '../Stream/Home'
 import About from '../Stream/About'
 import Store from '../Stream/Store'
 import Contact from "../Stream/Contact"
 import NotFound from "../Stream/NotFound"
-import { Page } from '../Stream/Projects.jsx'
+import { Page } from '../Stream/Page.jsx'
 import sound1 from '../Sounds/select.mp3'
 import sound2 from '../Sounds/open.mp3'
 import sound3 from '../Sounds/close.mp3'
@@ -26,7 +25,9 @@ import db from '../../firebase'
 
 //Projects -- Child of Panel
 function Projects() {
+  const port = useRef(null);
   const snap = useSnapshot(state);
+  state.selectedImg = null;
   const [dong] = useSound(sound1, { volume: state.sfxVolume });
   function select() {
     dong()
@@ -34,23 +35,24 @@ function Projects() {
     state.isSett = false;
   }
 
-
   var x = window.matchMedia("(max-width: 768px)");
   let offset = {};
   if (x.matches) { // If media query matches
     offset = { x: '130px', y: '80px' };
   } else {
-    offset = { x: '150px', y: '50px' };
+    if (state.isSett) {
+      offset = { x: state.navWidth + state.settWidth - 40, y: '0px' };
+    } else {
+      offset = { x: state.navWidth - 20, y: '0px' };
+    }
   }
 
   if (!state.loading) {
     return (
       <Draggable position={snap.prtPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
-        <Porter data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel prt">
-          {snap.works.map((work) => (
-            <>
-              <Linker exact className="li w" activeClassName="any" onClick={() => select()} to={`/${work.id}`} key={work.id}>{work.name}</Linker>
-            </>
+        <Porter ref={port} data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel prt">
+          {snap.works && snap.works.map((work) => (
+            <Linker exact className="li w" activeClassName="any" onClick={() => select()} to={`/${work.id}`} key={Math.random()}>{work.name}</Linker>
           ))}
         </Porter>
       </Draggable>
@@ -62,8 +64,13 @@ function Projects() {
 
 //Settings -- Child of Panel
 function Settings() {
+  const sett = useRef(null);
   const snap = useSnapshot(state);
+  state.selectedImg = null;
   const [select] = useSound(sound1, { volume: state.sfxVolume });
+  useEffect(() => {
+    state.settWidth = sett.current.getBoundingClientRect().width;
+  }, [])
 
   const themeToggeler = () => {
     select()
@@ -72,30 +79,20 @@ function Settings() {
 
   }
 
+  // Volume
   const volume = () => {
     if (state.muted === false) {
       state.sfxVolume = 0.0;
       select()
       state.muted = true
-      console.log(state.sfxVolume)
     } else if (state.muted === true) {
       state.sfxVolume = 1;
       select()
       state.muted = false
-      console.log(state.sfxVolume)
     }
   }
 
-  var x = window.matchMedia("(max-width: 768px)");
-  let offset = {};
-  if (x.matches) { // If media query matches
-    offset = { x: '0px', y: '250px' };
-  } else {
-    offset = { x: '0px', y: '170px' };
-  }
-
   function togglePause() {
-    console.log(state.paused);
     if (!state.paused) {
       state.paused = true;
       select()
@@ -106,9 +103,17 @@ function Settings() {
     }
   }
 
+  var x = window.matchMedia("(max-width: 768px)");
+  let offset = {};
+  if (x.matches) { // If media query matches
+    offset = { x: '0px', y: '250px' };
+  } else {
+    offset = { x: state.navWidth - 20, y: 0 };
+  }
+
   return (
     <Draggable position={snap.navPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
-      <Setter data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel set">
+      <Setter ref={sett} data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel set">
         Audio <br />
         <Folder onClick={() => volume()} className="li w">{!snap.muted ? "Mute Sound" : "Unmute Sound"}</Folder><br />
         <br />
@@ -120,30 +125,26 @@ function Settings() {
   );
 }
 
-//Panel -- Child of Parent: UI
-function Panel() {
-
-  //Folder
+//Nav -- Child of Parent: UI
+function Nav() {
   const [open] = useSound(sound2, { volume: state.sfxVolume });
   const [close] = useSound(sound3, { volume: state.sfxVolume });
   const snap = useSnapshot(state);
+  const portLink = useRef(null);
+  const settLink = useRef(null);
+  const nav = useRef(null);
 
   useEffect(() => {
-    const port = document.getElementById("port");
-    if (state.isPort) {
-      port.classList.add("folderBorder")
+    state.isPort ? portLink.current.classList.add("folderActive") : portLink.current.classList.remove("folderActive");
+    state.isSett ? settLink.current.classList.add("folderActive") : settLink.current.classList.remove("folderActive");
+  }, [])
 
-    } else {
-      port.classList.remove("folderBorder");
-    }
-    const sett = document.getElementById("sett");
-    state.isSett ? sett.classList.add("folderBorder") : sett.classList.remove("folderBorder");
-  }, []);
-
+  //Folder
   function Toggle(n) {
     if (n === 1) {
       state.isPort ? (state.isPort = false) : (state.isPort = true);
       state.isPort ? open() : close();
+
     } else if (n === 2) {
       state.isSett ? (state.isSett = false) : (state.isSett = true);
       state.isSett ? open() : close();
@@ -170,10 +171,25 @@ function Panel() {
     offset = { x: '0px', y: '0px' };
   }
 
+  useEffect(() => {
+    state.navWidth = nav.current.getBoundingClientRect().width;
+
+
+    // console.log(state.prtPosition.x);
+
+    // if (state.prtPosition.x + state.portWidth >= state.containerWidth) {
+    //   state.navWidth = 60 + -state.navWidth;
+    //   state.settWidth = -40 + -state.settWidth;
+    // } else {
+    //   state.navWidth = 1 * state.navWidth;
+    //   state.settWidth = 1 * state.settWidth;
+    // }
+  }, [nav])
+
   return (
     //NAV
     <Draggable cancel={".li, .nablaWrapper"} bounds=".container" positionOffset={offset} position={snap.navPosition} onDrag={onControlledDrag} >
-      <Navagator data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel nav">
+      <Navagator data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" ref={nav} className="Panel nav">
         <div className='header' >
           <SvgNabla title="nabla" />
           {snap.loading && <Spinner />}
@@ -187,11 +203,11 @@ function Panel() {
         <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/contact">
           Contact
         </Linker >
-        <Folder onClick={() => Toggle(1)} id="port" className="li folder">
+        <Folder onClick={() => Toggle(1)} ref={portLink} className="li folder">
           Projects
           {snap.isPort ? <SideArrow /> : <Arrow />}
         </Folder>
-        <Folder onClick={() => Toggle(2)} id="sett" className="li folder">
+        <Folder onClick={() => Toggle(2)} ref={settLink} className="li folder">
           Settings
           {snap.isSett ? <SideArrow /> : <Arrow />}
         </Folder>
@@ -226,7 +242,7 @@ function UI() {
     <Router>
       <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
         <GlobalStyle />
-        <Panel />
+        <Nav />
         {snap.isPort && <Projects />}
         {snap.isSett && <Settings />}
         <Switch>

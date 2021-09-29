@@ -1,12 +1,46 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import * as THREE from "three";
 import { useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import { state } from '../UI/state';
 
+
+
+function Ball(props) {
+  const material = new THREE.MeshPhysicalMaterial({
+    color: state.theme === 'light' ? state.light.CD : state.dark.CD,
+    reflectivity: 1,
+    roughness: state.theme === 'light' ? state.light.CDRough : state.dark.CDRough,
+    metalness: 0.2,
+    opacity: 1,
+  })
+
+  const material1 = new THREE.MeshPhysicalMaterial({
+    color: state.theme === 'light' ? state.light.CDHover : state.dark.CDHover,
+    reflectivity: 1,
+    roughness: state.theme === 'light' ? state.light.CDRough : state.dark.CDRough,
+    metalness: 0.2,
+    opacity: 1,
+  })
+
+  const [hovered, setHover] = useState(false)
+
+  return (
+    <mesh
+      {...props}
+      castShadow
+      receiveShadow
+      // position={[5.28, 0, -265.23]}
+      material={!hovered ? material : material1}
+      onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}
+    >
+      <sphereGeometry args={[190, 190, 190]} />
+    </mesh>
+  )
+}
+
 export default function CD(props) {
   const group = useRef()
-
   useFrame(() => {
     group.current.rotation.y += 0.002;
     group.current.rotation.z += 0.0001;
@@ -25,50 +59,15 @@ export default function CD(props) {
   //   transparent: true
   // })
 
-  const material = new THREE.MeshPhysicalMaterial({
-    color: state.theme === 'light' ? state.light.CD : state.dark.CD,
-    reflectivity: 1,
-    roughness: 0,
-    metalness: 0.16,
-    opacity: 1,
-  })
 
-  const material1 = new THREE.MeshPhysicalMaterial({
-    color: "#4F646F",
-    reflectivity: 0,
-    roughness: 0,
-    metalness: 0.16,
-    opacity: 1,
-  })
 
   return (
     <group  {...props} dispose={null} >
       <group ref={group} position={[0, 2, 0]} receiveShadow castShadow >
         <group position={[0, 0, 1]} scale={.01}>
-          <mesh
-            castShadow
-            receiveShadow
-            position={[5.28, 0, -265.23]}
-            material={material}
-          >
-            <sphereGeometry args={[100, 100, 100]} />
-          </mesh>
-          <mesh
-            castShadow
-            receiveShadow
-            position={[306.5, 0, 134.46]}
-            material={material}
-          >
-            <sphereGeometry args={[100, 100, 100]} />
-          </mesh>
-          <mesh
-            castShadow
-            receiveShadow
-            position={[-296.7, 0, 134.46]}
-            material={material}
-          >
-            <sphereGeometry args={[100, 100, 100]} />
-          </mesh>
+          <Ball position={[5.28, 0, -265.23]} />
+          <Ball position={[306.5, 0, 134.46]} />
+          <Ball position={[-296.7, 0, 134.46]} />
         </group>
       </group>
     </group>
