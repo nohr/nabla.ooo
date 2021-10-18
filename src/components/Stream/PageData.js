@@ -7,7 +7,7 @@ import { motion } from 'framer-motion'
 
 
 
-function Setup(title) {
+function Setup(id) {
 
     // Get Works and Information
     state.loading = true;
@@ -16,7 +16,7 @@ function Setup(title) {
         ref1.onSnapshot((querySnapshot) => {
             const items = [];
             querySnapshot.forEach((doc) => {
-                if (doc.data().at === title.title.title) {
+                if (doc.data().at === id.id.id) {
                     items.push(doc.data());
                 }
             });
@@ -46,9 +46,10 @@ const ImgGrid = ({ work }) => {
             state.isSett = false;
         }
     }
+
     return (
         <>
-            <ImgWrapper key={`${Math.random()}`}>
+            <ImgWrapper key={`${Math.random()}`} className="imgWrapper">
                 <>
                     {work.images && work.images.map((url) => (
                         <motion.div className="img-thumb"
@@ -56,7 +57,7 @@ const ImgGrid = ({ work }) => {
                             layout
                             whileHover={{ opacity: 1 }}
                             onClick={() => setSelectedImg(url)}
-                        ><img key={`${Math.random()}`} src={`${url}`} alt={`/${work.at}`} />
+                        ><object key={`${Math.random()}`} autoplay={false} controls={false} data={`${url}`}>{`${work.at}`}</object>
                         </motion.div>
                     ))}
                 </>
@@ -67,15 +68,12 @@ const ImgGrid = ({ work }) => {
 
 
 
-function PageData(title, setSelectedImg) {
+function PageData(id, setSelectedImg) {
     const snap = useSnapshot(state);
     useEffect(() => {
-        Setup(title);
+        Setup(id);
 
-    }, [title])
-
-
-
+    }, [id])
     return (
         <>
             {snap.sectors.map((work) => (

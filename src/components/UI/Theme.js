@@ -10,8 +10,6 @@ height: min-content;
   left: var(--edge);
   z-index: 5000;
   top: var(--edge);
-  /* height: fit-content; */
-  /* padding: 15px 0; */
   text-indent: 5px;
 `
 export const Porter = styled.div`
@@ -21,8 +19,6 @@ padding: 2.5em;
   z-index: 500;
   left: var(--edge);
   margin: 20px 0;
-  /* top: 230px; */
-  /* top: calc(var(--panelWidth) + 15px); */
 
   .w {
     text-indent: 20px;
@@ -46,6 +42,7 @@ export const Linker = styled(NavLink)`
   width: 100%;
   margin: 2px 0;
   padding-bottom: 1px;
+  padding-top: 1px;
   display: block;
 
     &.${props => props.activeClassName}{
@@ -92,11 +89,11 @@ export const Container = styled.div`
   text-align: center;
   position: relative;
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
   height: 100%;
   padding: 20px 20px;
   font-size: 14px;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  scroll-snap-type: y mandatory;
 
   & .backdrop{
     position: fixed;
@@ -109,13 +106,15 @@ export const Container = styled.div`
     justify-content: center;
   }
 
-  & .backdrop img{
+  & .backdrop object{
     display: block;
     max-width: 60%;
     max-height: 80%;
+    width: auto;
+    height: auto;
     align-self: center;
     box-shadow: 3px 5px 7px rgba(0,0,0,0.5);
-    /* border: 1px solid ${props => props.theme.panelColor}; */
+    border: 1px solid ${props => props.theme.panelColor};
     -webkit-user-drag: none;
     user-select: none;
     -moz-user-select: none;
@@ -123,7 +122,14 @@ export const Container = styled.div`
     -ms-user-select: none;
   
   }
-  
+
+  & .backdrop object:hover{
+    cursor: all-scroll;
+  }
+
+  &:last-child(){
+    margin-bottom: 60%;
+  }
 `
 export const Sector = styled.div`
       border-left: solid 1px ${props => props.theme.panelColor};
@@ -136,12 +142,12 @@ export const Sector = styled.div`
       justify-content: space-between;
       gap: 40px;
       position: relative;
+      scroll-snap-align: start;
 
 & .lot{
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 50;
   padding-left: 35px; 
 }
 `
@@ -150,7 +156,7 @@ flex-wrap: wrap;
 color: ${props => props.theme.panelColor};
 font-size: 14px;
 width:40%;
-text-align: justify;
+text-align: left;
 height: 100%;
 align-self: center;
 padding: 20px;
@@ -158,45 +164,60 @@ display: grid;
 grid-template-rows: 40% 50% 10%;
 /* align-items: flex-end; */
 
-& h3, & h4{
+& h3{
   clear:both;
   align-self: flex-end;
 }
 
+& h4, & h5{
+  align-self: center;
+}
 & p {
 text-indent: 2em;
 line-height: 2;
 overflow-y: scroll;
 }
 
+& a{
+  color: ${props => props.theme.link};
+  text-decoration: underline;
+}
+
 `
 export const ImgWrapper = styled.div`
-    /* display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-    grid-gap: 15px; */
     width: 60%;
-    /* overflow-x: scroll; */
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 40px;
+    grid-template-columns: 1fr 1fr ;
     height: auto;
     text-align: left;
+    overflow-y: scroll;
 
     .img-thumb{
       overflow: hidden;
       height: 0;
-      padding: 40% 0;
+      padding: 14vw 0;
       position: relative;
       opacity: 0.8;
+      pointer-events: all;
     }
 
-    img{
+    .img-thumb:hover{
+      cursor: zoom-in;
+      cursor: -webkit-zoom-in;
+    }
+
+    .img-thumb > svg#layer_1{
+      fill: ${props => props.theme.panelColor};
+      stroke: rosybrown;
+    }
+
+    object{
     min-height: 100%;
     min-width: 100%;
     /* max-height: 150%; */
-    max-width: 120%;
+    max-width: 150%;
     position: absolute;
+    pointer-events:  none;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -205,7 +226,6 @@ export const ImgWrapper = styled.div`
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-
     }
 `
 
@@ -290,6 +310,9 @@ export const GlobalStyle = createGlobalStyle`
     .folderActive:hover{
       outline: 1px solid ${props => props.theme.textHover};
     }
+    .folderActive:after{
+      border-radius: 5px;
+    }
     .li:hover {
         color: ${props => props.theme.textHover};
         background-color: ${props => props.theme.LiHover};
@@ -347,6 +370,12 @@ export const GlobalStyle = createGlobalStyle`
         pointer-events: none;
         width: 100vw;
     }
+
+    .HomeCD {
+  overflow: visible;
+  height: 70%;
+  position: absolute;
+}
     .carousel-root{
       grid-column-start: 2;
       grid-column-end: 2;

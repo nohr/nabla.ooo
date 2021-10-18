@@ -134,20 +134,20 @@ function Nav() {
   const settLink = useRef(null);
   const nav = useRef(null);
 
-  useEffect(() => {
-    state.isPort ? portLink.current.classList.add("folderActive") : portLink.current.classList.remove("folderActive");
-    state.isSett ? settLink.current.classList.add("folderActive") : settLink.current.classList.remove("folderActive");
-  }, [])
+
+
 
   //Folder
   function Toggle(n) {
     if (n === 1) {
       state.isPort ? (state.isPort = false) : (state.isPort = true);
       state.isPort ? open() : close();
+      state.isPort ? portLink.current.classList.add("folderActive") : portLink.current.classList.remove("folderActive");
 
     } else if (n === 2) {
       state.isSett ? (state.isSett = false) : (state.isSett = true);
       state.isSett ? open() : close();
+      state.isSett ? settLink.current.classList.add("folderActive") : settLink.current.classList.remove("folderActive");
     }
   }
   const [select] = useSound(sound1, { volume: state.sfxVolume });
@@ -155,6 +155,8 @@ function Nav() {
     select()
     state.isPort = false;
     state.isSett = false;
+    state.isPort ? portLink.current.classList.add("folderActive") : portLink.current.classList.remove("folderActive");
+    state.isSett ? settLink.current.classList.add("folderActive") : settLink.current.classList.remove("folderActive");
   };
 
   const onControlledDrag = (e, position) => {
@@ -173,8 +175,6 @@ function Nav() {
 
   useEffect(() => {
     state.navWidth = nav.current.getBoundingClientRect().width;
-
-
     // console.log(state.prtPosition.x);
 
     // if (state.prtPosition.x + state.portWidth >= state.containerWidth) {
@@ -189,7 +189,7 @@ function Nav() {
   return (
     //NAV
     <Draggable cancel={".li, .nablaWrapper"} bounds=".container" positionOffset={offset} position={snap.navPosition} onDrag={onControlledDrag} >
-      <Navagator data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" ref={nav} className="Panel nav">
+      <Navagator data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" ref={nav} className="Panel nav" portLink={portLink} settLink={settLink}>
         <div className='header' >
           <SvgNabla title="nabla" />
           {snap.loading && <Spinner />}
@@ -251,7 +251,7 @@ function UI() {
           <Route path="/about" component={About} />
           <Route path="/contact" component={Contact} />
           {snap.works.map((work) => (
-            <Route key={`${work.name}`} path={`/${work.id}`} component={() => <Page title={`${work.id}`} />} />
+            <Route key={`${work.name}`} path={`/${work.id}`} component={() => <Page title={`Nabla | ${work.name}`} id={`${work.id}`} />} />
           ))}
           <Route component={NotFound} />
         </Switch>

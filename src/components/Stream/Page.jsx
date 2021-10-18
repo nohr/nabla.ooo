@@ -22,7 +22,7 @@ import Modal from "../UI/Modal";
 
 
 
-function Page(title) {
+function Page(id) {
     const container = useRef(null);
     const snap = useSnapshot(state);
     useEffect(() => {
@@ -37,7 +37,7 @@ function Page(title) {
             </Draggable>
             </div>
             <Container className="container">
-                <PageData title={title} />
+                <PageData id={id} />
                 {snap.selectedImg && <Modal/>}
             </Container>
         </div>

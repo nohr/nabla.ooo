@@ -24,10 +24,9 @@ const Modal = () => {
                 animate={{ opacity: 1 }}
             >
                 <Draggable bounds=".container" position={snap.modalPosition} onDrag={onControlledDrag} >
-                    <motion.img src={snap.selectedImg} alt="full pic"
+                 <motion.object data={snap.selectedImg} alt="full content"
                         initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                    />
+                        animate={{ opacity: 1 }}/>
                 </Draggable>
             </motion.div>
         </>
