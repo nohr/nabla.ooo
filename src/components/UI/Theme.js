@@ -2,6 +2,169 @@ import styled, { createGlobalStyle } from "styled-components"
 import { NavLink } from "react-router-dom"
 // import "../UI/UI.css"
 
+export const Container = styled.div`
+  display: flex;
+  gap: 60px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  text-align: center;
+  position: relative;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  height: 100%;
+  padding: 20px 20px;
+  font-size: 14px;
+
+  & .backdrop{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.25);
+    display: flex;
+    justify-content: center;
+  }
+
+  & .backdrop object{
+    display: block;
+    max-width: 60%;
+    max-height: 80%;
+    width: auto;
+    height: auto;
+    align-self: center;
+    box-shadow: 3px 5px 7px rgba(0,0,0,0.5);
+    border: 1px solid ${props => props.theme.panelColor};
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+  
+  }
+
+  & .backdrop object:hover{
+    cursor: all-scroll;
+  }
+
+  &:last-child(){
+    margin-bottom: 60%;
+  }
+`
+export const Sector = styled.div`
+      border-left: solid 1px ${props => props.theme.panelColor};
+      border-bottom: solid 1px ${props => props.theme.panelColor};
+      display: flex;
+      width: 100%;
+      flex-direction:row;
+      padding: 80px 20px;
+      height: 80%;
+      justify-content: space-between;
+      gap: 40px;
+      position: relative;
+
+& .lot{
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-left: 35px; 
+}
+`
+export const TextWrapper = styled.div`
+flex-wrap: wrap;
+color: ${props => props.theme.panelColor};
+font-size: 14px;
+width:40%;
+text-align: left;
+height: 100%;
+align-self: center;
+padding: 20px;
+display: grid;
+grid-template-rows: 40% 50% 10%;
+/* align-items: flex-end; */
+
+& h3{
+  clear:both;
+  align-self: flex-end;
+}
+
+& h4, & h5{
+  align-self: center;
+}
+& p {
+text-indent: 2em;
+line-height: 2;
+overflow-y: scroll;
+}
+
+& a{
+  color: ${props => props.theme.link};
+  text-decoration: underline;
+}
+
+`
+export const ImgWrapper = styled.div`
+    width: 60%;
+    display: grid;
+    grid-template-columns: 1fr 1fr ;
+    height: auto;
+    text-align: left;
+    overflow-y: scroll;
+
+    .img-thumb{
+      overflow: hidden;
+      height: 0;
+      padding: 14vw 0;
+      position: relative;
+      opacity: 0.8;
+      pointer-events: all;
+    }
+
+
+    .img-thumb:hover{
+      cursor: zoom-in;
+      cursor: -webkit-zoom-in;
+    }
+
+    .img-thumb > svg#layer_1{
+      fill: ${props => props.theme.panelColor};
+      stroke: rosybrown;
+    }
+
+    object{
+    min-height: 100%;
+    min-width: 100%;
+    /* max-height: 150%; */
+    max-width: 150%;
+    position: absolute;
+    pointer-events:  none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    }
+
+    video{
+    width: 200%;
+    height: auto;
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    opacity: 0.8;
+    }
+
+    video:hover{
+      opacity: 100%;
+    }
+`
+
 export const Navagator = styled.div`
 //nav
 height: min-content;
@@ -79,154 +242,6 @@ export const Folder = styled.div`
   margin: 2px 0;
   padding-bottom: 1px;
   display: block;
-`
-export const Container = styled.div`
-  display: flex;
-  gap: 60px;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
-  text-align: center;
-  position: relative;
-  overflow-y: scroll;
-  -webkit-overflow-scrolling: touch;
-  height: 100%;
-  padding: 20px 20px;
-  font-size: 14px;
-  scroll-snap-type: y mandatory;
-
-  & .backdrop{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.25);
-    display: flex;
-    justify-content: center;
-  }
-
-  & .backdrop object{
-    display: block;
-    max-width: 60%;
-    max-height: 80%;
-    width: auto;
-    height: auto;
-    align-self: center;
-    box-shadow: 3px 5px 7px rgba(0,0,0,0.5);
-    border: 1px solid ${props => props.theme.panelColor};
-    -webkit-user-drag: none;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-  
-  }
-
-  & .backdrop object:hover{
-    cursor: all-scroll;
-  }
-
-  &:last-child(){
-    margin-bottom: 60%;
-  }
-`
-export const Sector = styled.div`
-      border-left: solid 1px ${props => props.theme.panelColor};
-      border-bottom: solid 1px ${props => props.theme.panelColor};
-      display: flex;
-      width: 100%;
-      flex-direction:row;
-      padding: 80px 20px;
-      height: 80%;
-      justify-content: space-between;
-      gap: 40px;
-      position: relative;
-      scroll-snap-align: start;
-
-& .lot{
-  position: absolute;
-  top: 0;
-  left: 0;
-  padding-left: 35px; 
-}
-`
-export const TextWrapper = styled.div`
-flex-wrap: wrap;
-color: ${props => props.theme.panelColor};
-font-size: 14px;
-width:40%;
-text-align: left;
-height: 100%;
-align-self: center;
-padding: 20px;
-display: grid;
-grid-template-rows: 40% 50% 10%;
-/* align-items: flex-end; */
-
-& h3{
-  clear:both;
-  align-self: flex-end;
-}
-
-& h4, & h5{
-  align-self: center;
-}
-& p {
-text-indent: 2em;
-line-height: 2;
-overflow-y: scroll;
-}
-
-& a{
-  color: ${props => props.theme.link};
-  text-decoration: underline;
-}
-
-`
-export const ImgWrapper = styled.div`
-    width: 60%;
-    display: grid;
-    grid-template-columns: 1fr 1fr ;
-    height: auto;
-    text-align: left;
-    overflow-y: scroll;
-
-    .img-thumb{
-      overflow: hidden;
-      height: 0;
-      padding: 14vw 0;
-      position: relative;
-      opacity: 0.8;
-      pointer-events: all;
-    }
-
-    .img-thumb:hover{
-      cursor: zoom-in;
-      cursor: -webkit-zoom-in;
-    }
-
-    .img-thumb > svg#layer_1{
-      fill: ${props => props.theme.panelColor};
-      stroke: rosybrown;
-    }
-
-    object{
-    min-height: 100%;
-    min-width: 100%;
-    /* max-height: 150%; */
-    max-width: 150%;
-    position: absolute;
-    pointer-events:  none;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -webkit-user-drag: none;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    }
 `
 
 export const GlobalStyle = createGlobalStyle`

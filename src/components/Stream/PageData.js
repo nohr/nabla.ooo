@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import db from '../../firebase'
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
@@ -8,37 +8,40 @@ import { motion } from 'framer-motion'
 
 
 function Setup(id) {
-
     // Get Works and Information
-    state.loading = true;
-    const ref1 = db.collection("portfolio").orderBy("projectYear", "desc");
-    const getWorks = () => {
-        ref1.onSnapshot((querySnapshot) => {
-            const items = [];
-            querySnapshot.forEach((doc) => {
-                if (doc.data().at === id.id.id) {
-                    items.push(doc.data());
-                }
-            });
-            state.sectors = items;
-            state.loading = false;
-        });
-    }
+    useEffect(() => {
+        state.loading = true;
+        const ref1 = db.collection("portfolio").orderBy("projectYear", "desc");
+        const getWorks = () => {
 
-    const unsub = () => {
-        ref1.onSnapshot(() => {
-            const items = [];
-            state.sectors = items;
-            state.loading = false;
-        });
-    }
-    getWorks();
-    return () => unsub();
+            ref1.onSnapshot((querySnapshot) => {
+                const items = [];
+                querySnapshot.forEach((doc) => {
+                    if (doc.data().at === id.id) {
+                        items.push(doc.data());
+                    }
+                });
+                state.sectors = items;
+                state.loading = false;
+            });
+        }
+        const unsub = () => {
+            ref1.onSnapshot(() => {
+                const items = [];
+                state.sectors = items;
+                state.loading = false;
+            });
+        }
+        getWorks();
+        return () => unsub();
+    }, [id.id]);
 }
 
 
 
+
 const ImgGrid = ({ work }) => {
+    const refWrapper = useRef(null);
     function setSelectedImg(selected) {
         state.selectedImg = selected;
         if (state.isPort || state.isSett) {
@@ -47,18 +50,40 @@ const ImgGrid = ({ work }) => {
         }
     }
 
+
+    // Each individual image or video
+    function Block(url) {
+        // Get enxtentions of files
+        const types = new Map([["jpg", "img"], ["jpeg", "img"], ["png", "img"], ["gif", "img"], ["mp4", "video"], ["svg", "svg"]])
+        const link = new URL(`${url.url}`)
+        const extension = link.pathname.split(".")
+        const element = types.get(extension[extension.length - 1].toLowerCase())
+        // console.log(element)
+
+        if (element === "video") {
+            return (
+                <video key={`${Math.random()}`} autoPlay={true} muted={true} controls={true} loop={true} src={`${url.url}`}>{`${work.at}`}</video>
+            )
+        } else {
+            return (
+                <motion.div className="img-thumb"
+                    key={Math.random()}
+                    layout
+                    whileHover={{ opacity: 1 }}
+                    onClick={() => setSelectedImg(url.url)}
+                ><object key={`${Math.random()}`} data={`${url.url}`}>{`${work.at}`}</object>
+                </motion.div>
+            )
+        }
+
+    }
+
     return (
         <>
-            <ImgWrapper key={`${Math.random()}`} className="imgWrapper">
+            <ImgWrapper key={`${Math.random()}`} className="imgWrapper" ref={refWrapper}>
                 <>
                     {work.images && work.images.map((url) => (
-                        <motion.div className="img-thumb"
-                            key={Math.random()}
-                            layout
-                            whileHover={{ opacity: 1 }}
-                            onClick={() => setSelectedImg(url)}
-                        ><object key={`${Math.random()}`} autoplay={false} controls={false} data={`${url}`}>{`${work.at}`}</object>
-                        </motion.div>
+                        <Block url={url} />
                     ))}
                 </>
             </ImgWrapper>
@@ -70,10 +95,7 @@ const ImgGrid = ({ work }) => {
 
 function PageData(id, setSelectedImg) {
     const snap = useSnapshot(state);
-    useEffect(() => {
-        Setup(id);
-
-    }, [id])
+    Setup(id);
     return (
         <>
             {snap.sectors.map((work) => (

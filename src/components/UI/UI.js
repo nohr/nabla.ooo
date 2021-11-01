@@ -2,7 +2,9 @@ import React, { useEffect, useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
-import { GlobalStyle, Navagator, Porter, Setter, Linker, Folder } from "./Theme"
+import { GlobalStyle, Navagator, Linker, Folder } from "./Theme"
+import Projects from "./projects"
+import Settings from "./settings"
 import { ThemeProvider } from "styled-components"
 import { SvgNabla, Spinner, Arrow, SideArrow } from './svg'
 import Home from '../Stream/Home'
@@ -23,107 +25,7 @@ import useSound from 'use-sound'
 import db from '../../firebase'
 
 
-//Projects -- Child of Panel
-function Projects() {
-  const port = useRef(null);
-  const snap = useSnapshot(state);
-  state.selectedImg = null;
-  const [dong] = useSound(sound1, { volume: state.sfxVolume });
-  function select() {
-    dong()
-    state.isPort = false;
-    state.isSett = false;
-  }
 
-  var x = window.matchMedia("(max-width: 768px)");
-  let offset = {};
-  if (x.matches) { // If media query matches
-    offset = { x: '130px', y: '80px' };
-  } else {
-    if (state.isSett) {
-      offset = { x: state.navWidth + state.settWidth - 40, y: '0px' };
-    } else {
-      offset = { x: state.navWidth - 20, y: '0px' };
-    }
-  }
-
-  if (!state.loading) {
-    return (
-      <Draggable position={snap.prtPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
-        <Porter ref={port} data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel prt">
-          {snap.works && snap.works.map((work) => (
-            <Linker exact className="li w" activeClassName="any" onClick={() => select()} to={`/${work.id}`} key={Math.random()}>{work.name}</Linker>
-          ))}
-        </Porter>
-      </Draggable>
-    )
-  } else {
-    return null
-  }
-}
-
-//Settings -- Child of Panel
-function Settings() {
-  const sett = useRef(null);
-  const snap = useSnapshot(state);
-  state.selectedImg = null;
-  const [select] = useSound(sound1, { volume: state.sfxVolume });
-  useEffect(() => {
-    state.settWidth = sett.current.getBoundingClientRect().width;
-  }, [])
-
-  const themeToggeler = () => {
-    select()
-    state.wasClicked = true;
-    state.theme === 'light' ? state.theme = 'dark' : state.theme = 'light';
-
-  }
-
-  // Volume
-  const volume = () => {
-    if (state.muted === false) {
-      state.sfxVolume = 0.0;
-      select()
-      state.muted = true
-    } else if (state.muted === true) {
-      state.sfxVolume = 1;
-      select()
-      state.muted = false
-    }
-  }
-
-  function togglePause() {
-    if (!state.paused) {
-      state.paused = true;
-      select()
-
-    } else if (state.paused) {
-      state.paused = false;
-      select()
-    }
-  }
-
-  var x = window.matchMedia("(max-width: 768px)");
-  let offset = {};
-  if (x.matches) { // If media query matches
-    offset = { x: '0px', y: '250px' };
-  } else {
-    offset = { x: state.navWidth - 20, y: 0 };
-  }
-
-  return (
-    <Draggable position={snap.navPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
-      <Setter ref={sett} data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel set">
-        Audio <br />
-        <Folder onClick={() => volume()} className="li w">{!snap.muted ? "Mute Sound" : "Unmute Sound"}</Folder><br />
-        <br />
-        Display <br />
-        <Folder onClick={() => themeToggeler()} className="li w">{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>
-        <Folder onClick={() => togglePause()} className="li w">{snap.paused ? "Play Animation" : "Pause Animation"}</Folder><br />
-      </Setter>
-    </Draggable>
-  );
-}
 
 //Nav -- Child of Parent: UI
 function Nav() {
@@ -133,9 +35,6 @@ function Nav() {
   const portLink = useRef(null);
   const settLink = useRef(null);
   const nav = useRef(null);
-
-
-
 
   //Folder
   function Toggle(n) {
@@ -223,6 +122,7 @@ function UI() {
   useEffect(() => {
     state.loading = true;
     const ref = db.collection("portfolio").orderBy("date", "desc");
+
     const getWorks = () => {
       ref.onSnapshot((querySnapshot) => {
         const items = [];
@@ -251,7 +151,9 @@ function UI() {
           <Route path="/about" component={About} />
           <Route path="/contact" component={Contact} />
           {snap.works.map((work) => (
-            <Route key={`${work.name}`} path={`/${work.id}`} component={() => <Page title={`Nabla | ${work.name}`} id={`${work.id}`} />} />
+            <Route key={`${work.name}`} path={`/${work.id}`}>
+              <Page title={`Nabla ✪ ${work.name}`} id={`${work.id}`} />
+            </Route>
           ))}
           <Route component={NotFound} />
         </Switch>

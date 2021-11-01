@@ -7,6 +7,7 @@ import "./Stream.css"
 import { Container } from "../UI/Theme"
 import PageData from "./PageData";
 import Modal from "../UI/Modal";
+import useDocumentTitle from '../UI/documentTitle'
 
 // function SVG(title) {
 //     const snap = useSnapshot(state);
@@ -21,8 +22,8 @@ import Modal from "../UI/Modal";
 //   }
 
 
-
-function Page(id) {
+function Page( id) {
+    useDocumentTitle(id.title)
     const container = useRef(null);
     const snap = useSnapshot(state);
     useEffect(() => {
@@ -37,7 +38,7 @@ function Page(id) {
             </Draggable>
             </div>
             <Container className="container">
-                <PageData id={id} />
+                <PageData id={id.id} />
                 {snap.selectedImg && <Modal/>}
             </Container>
         </div>
