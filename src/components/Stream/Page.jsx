@@ -22,7 +22,7 @@ import useDocumentTitle from '../UI/documentTitle'
 //   }
 
 
-function Page( id) {
+const Page = React.memo(function Page(id) {
     useDocumentTitle(id.title)
     const container = useRef(null);
     const snap = useSnapshot(state);
@@ -43,6 +43,6 @@ function Page( id) {
             </Container>
         </div>
     )
-}
+})
 
 export { Page }

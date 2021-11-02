@@ -9,8 +9,7 @@ import { SvgNabla, Spinner, Arrow, SideArrow } from './svg'
 import sound1 from '../Sounds/select.mp3'
 import useSound from 'use-sound'
 
-
-export default function Settings() {
+const Settings = React.memo(function Settings() {
     const sett = useRef(null);
     const snap = useSnapshot(state);
     state.selectedImg = null;
@@ -70,4 +69,6 @@ export default function Settings() {
             </Setter>
         </Draggable>
     );
-}
+})
+
+export default Settings

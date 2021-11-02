@@ -24,9 +24,6 @@ import {
 import useSound from 'use-sound'
 import db from '../../firebase'
 
-
-
-
 //Nav -- Child of Parent: UI
 function Nav() {
   const [open] = useSound(sound2, { volume: state.sfxVolume });

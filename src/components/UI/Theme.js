@@ -158,10 +158,15 @@ export const ImgWrapper = styled.div`
     -webkit-user-select: none;
     -ms-user-select: none;
     opacity: 0.8;
+    object-fit: contain;
     }
 
     video:hover{
       opacity: 100%;
+    }
+
+    video[poster]{
+      object-fit: fill;
     }
 `
 

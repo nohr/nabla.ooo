@@ -7,7 +7,7 @@ import { Porter, Linker } from "./Theme"
 import sound1 from '../Sounds/select.mp3'
 import useSound from 'use-sound'
 
-export default function Projects() {
+const Projects = React.memo(function Projects() {
     const port = useRef(null);
     const snap = useSnapshot(state);
     state.selectedImg = null;
@@ -43,4 +43,6 @@ export default function Projects() {
     } else {
         return null
     }
-}
+})
+
+export default Projects

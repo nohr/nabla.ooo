@@ -4,7 +4,7 @@ import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import { ImgWrapper, Sector, TextWrapper } from "../UI/Theme"
 import { motion } from 'framer-motion'
-
+// require('@iconfu/svg-inject.min.js')
 
 
 function Setup(id) {
@@ -62,9 +62,21 @@ const ImgGrid = ({ work }) => {
 
         if (element === "video") {
             return (
-                <video key={`${Math.random()}`} autoPlay={true} muted={true} controls={true} loop={true} src={`${url.url}`}>{`${work.at}`}</video>
+                <video key={`${Math.random()}`} autoPlay={false} muted={true} controls preload={"none"} poster={`${work.poster}`} loop={true} src={`${url.url}`}>{`${work.at}`}</video>
             )
-        } else {
+        }
+        // else if (element === "svg") {
+        //     return (
+        //         <motion.div className="img-thumb"
+        //             key={Math.random()}
+        //             layout
+        //             whileHover={{ opacity: 1 }}
+        //             onClick={() => setSelectedImg(url.url)}
+        //         ><img key={`${Math.random()}`} src={`${url.url}`} alt={`${work.at}`} onload={SVGInject(this)} />
+        //         </motion.div>
+        //     )
+        // }
+        else {
             return (
                 <motion.div className="img-thumb"
                     key={Math.random()}
@@ -93,7 +105,7 @@ const ImgGrid = ({ work }) => {
 
 
 
-function PageData(id, setSelectedImg) {
+const PageData = React.memo(function PageData(id, setSelectedImg) {
     const snap = useSnapshot(state);
     Setup(id);
     return (
@@ -115,6 +127,6 @@ function PageData(id, setSelectedImg) {
             ))}
         </>
     )
-}
+})
 
 export default PageData
