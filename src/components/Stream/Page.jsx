@@ -3,21 +3,25 @@ import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import Draggable from "react-draggable"
 import '../../App.css'
-import "./Stream.css"
 import { Container } from "../UI/Theme"
 import PageData from "./PageData";
 import Modal from "../UI/Modal";
 import useDocumentTitle from '../UI/documentTitle'
+import '../UI/svg'
 
-// function SVG(title) {
+// function SVG(id) {
 //     const snap = useSnapshot(state);
-//     if (snap.sectors.at === title) {
-//         return(
-//         snap.sectors.map((work) => (
-//         work.svg
-//          ))
-//         )} else {
-//             return null
+//     if (snap.sectors.at === id) {
+//         // return(
+//         // snap.sectors.map((work) => (
+//         // work.svg
+//         //  ))
+//         // )
+//         const Name = id.charAt(0).toUpperCase() + id.slice(1);
+//         return < {Name} />
+//         console.log(id);
+//     } else {
+//             return <br/>
 //         }
 //   }
 

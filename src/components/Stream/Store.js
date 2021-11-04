@@ -1,35 +1,11 @@
-import React, { useEffect, useRef } from "react"
-import LocomotiveScroll from 'locomotive-scroll'
+import React from "react"
 import '../../App.css'
-import "./Stream.css"
 import Draggable from "react-draggable";
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 
 
 function Store() {
-  const ref = useRef(null);
-  useEffect(() => {
-    if (ref) {
-      new LocomotiveScroll({
-        el: ref.current,
-        smooth: true,
-        direction: "vertical",
-        multiplier: 0.65,
-        touchMultiplier: 10,
-        smartphone: {
-          smooth: true,
-          direction: "vertical",
-          horizontalGesture: true
-        },
-        tablet: {
-          smooth: true,
-          direction: "vertical",
-          horizontalGesture: true
-        }
-      })
-    }
-  }, [])
 
   const snap = useSnapshot(state);
 
@@ -40,8 +16,7 @@ function Store() {
           <h1>store</h1>
         </Draggable>
       </div>
-      <div className="container str" has-scroll-dragging="true" data-scroll-container ref={ref}>
-
+      <div className="container str">
         <div className="eko">
           <div className="eko-thumb">
             Aa

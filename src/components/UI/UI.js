@@ -33,6 +33,19 @@ function Nav() {
   const settLink = useRef(null);
   const nav = useRef(null);
 
+  useEffect(() => {
+    state.navWidth = nav.current.getBoundingClientRect().width;
+    // console.log(state.prtPosition.x);
+
+    // if (state.prtPosition.x + state.portWidth >= state.containerWidth) {
+    //   state.navWidth = 60 + -state.navWidth;
+    //   state.settWidth = -40 + -state.settWidth;
+    // } else {
+    //   state.navWidth = 1 * state.navWidth;
+    //   state.settWidth = 1 * state.settWidth;
+    // }
+  }, [nav])
+
   //Folder
   function Toggle(n) {
     if (n === 1) {
@@ -68,19 +81,6 @@ function Nav() {
   } else {
     offset = { x: '0px', y: '0px' };
   }
-
-  useEffect(() => {
-    state.navWidth = nav.current.getBoundingClientRect().width;
-    // console.log(state.prtPosition.x);
-
-    // if (state.prtPosition.x + state.portWidth >= state.containerWidth) {
-    //   state.navWidth = 60 + -state.navWidth;
-    //   state.settWidth = -40 + -state.settWidth;
-    // } else {
-    //   state.navWidth = 1 * state.navWidth;
-    //   state.settWidth = 1 * state.settWidth;
-    // }
-  }, [nav])
 
   return (
     //NAV

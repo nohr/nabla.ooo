@@ -4,7 +4,7 @@ import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import { ImgWrapper, Sector, TextWrapper } from "../UI/Theme"
 import { motion } from 'framer-motion'
-// require('@iconfu/svg-inject.min.js')
+// import '@iconfu/svg-inject.min.js'
 
 
 function Setup(id) {
@@ -58,12 +58,23 @@ const ImgGrid = ({ work }) => {
         const link = new URL(`${url.url}`)
         const extension = link.pathname.split(".")
         const element = types.get(extension[extension.length - 1].toLowerCase())
-        // console.log(element)
+        // console.log(url.url)
 
         if (element === "video") {
-            return (
-                <video key={`${Math.random()}`} autoPlay={false} muted={true} controls preload={"none"} poster={`${work.poster}`} loop={true} src={`${url.url}`}>{`${work.at}`}</video>
-            )
+            if (work.orientation === "portrait") {
+                return (
+                    <video style={{
+                        height: "100%"
+                    }} key={`${Math.random()}`} autoPlay={work.autoplay} playsinline preload={"none"} poster={`${work.poster}`} loop={work.loop} muted={work.muted} src={`${url.url}`}>{`${work.at}`}</video>
+
+                )
+            } else if (work.orientation === "landscape") {
+                return (
+                    <div>
+                        <video className={"landscape"} key={`${Math.random()}`} autoPlay={work.autoplay} playsinline controls preload={"none"} poster={`${work.poster}`} loop={work.loop} muted={work.muted} src={`${url.url}`}>{`${work.at}`}</video>
+                    </div>
+                )
+            }
         }
         // else if (element === "svg") {
         //     return (
@@ -87,8 +98,9 @@ const ImgGrid = ({ work }) => {
                 </motion.div>
             )
         }
-
     }
+
+
 
     return (
         <>

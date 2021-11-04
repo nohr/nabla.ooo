@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap");
+@import "./components/UI/font/stylesheet.css";
 
 * {
   box-sizing: border-box;

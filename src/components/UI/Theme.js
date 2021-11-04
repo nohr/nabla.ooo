@@ -13,7 +13,7 @@ export const Container = styled.div`
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
   height: 100%;
-  padding: 20px 20px;
+  padding: 20px;
   font-size: 14px;
 
   & .backdrop{
@@ -58,7 +58,7 @@ export const Sector = styled.div`
       display: flex;
       width: 100%;
       flex-direction:row;
-      padding: 80px 20px;
+      padding: 20px 0 20px 20px;
       height: 80%;
       justify-content: space-between;
       gap: 40px;
@@ -79,7 +79,7 @@ width:40%;
 text-align: left;
 height: 100%;
 align-self: center;
-padding: 20px;
+padding-left: 20px;
 display: grid;
 grid-template-rows: 40% 50% 10%;
 /* align-items: flex-end; */
@@ -106,16 +106,21 @@ overflow-y: scroll;
 `
 export const ImgWrapper = styled.div`
     width: 60%;
-    display: grid;
-    grid-template-columns: 1fr 1fr ;
+    display: flex;
     height: auto;
     text-align: left;
-    overflow-y: scroll;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 20
+px
+;
 
     .img-thumb{
       overflow: hidden;
-      height: 0;
-      padding: 14vw 0;
+      width: 0;
+      padding: 0 18vw;
       position: relative;
       opacity: 0.8;
       pointer-events: all;
@@ -150,8 +155,6 @@ export const ImgWrapper = styled.div`
     }
 
     video{
-    width: 200%;
-    height: auto;
     -webkit-user-drag: none;
     user-select: none;
     -moz-user-select: none;
@@ -159,6 +162,13 @@ export const ImgWrapper = styled.div`
     -ms-user-select: none;
     opacity: 0.8;
     object-fit: contain;
+    margin: 0;
+    padding: 0;
+    }
+
+    .landscape{
+    width: 100% !important;
+    height: auto !important;
     }
 
     video:hover{
@@ -209,7 +219,7 @@ export const Linker = styled(NavLink)`
   text-decoration: none;
   width: 100%;
   margin: 2px 0;
-  padding-bottom: 1px;
+  padding-bottom: 0px;
   padding-top: 1px;
   display: block;
 
@@ -245,11 +255,19 @@ export const Folder = styled.div`
   font-size:  10px;
   width: 100%;
   margin: 2px 0;
-  padding-bottom: 1px;
+  padding-bottom: 0px;
   display: block;
 `
 
 export const GlobalStyle = createGlobalStyle`
+    .bigContainer {
+        position: fixed;
+        z-index: 470;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100vw;
+    }
     //Panel
     .SvgNabla {
         fill: ${props => props.theme.panelColor};
@@ -319,16 +337,16 @@ export const GlobalStyle = createGlobalStyle`
     }
     .folderActive {
       /* background-color: ${props => props.theme.LiActiveBackground}; */
-      outline: 1px solid ${props => props.theme.panelColor};
+      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
       color:  ${props => props.theme.panelColor};
       /* -webkit-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground}; */
       /* -moz-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground}; */
       /* box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground}; */
       /* text-shadow: 1px 1px 3px #ebebeb; */
-      /* font-style: italic; */
+      font-style: italic;
 }
     .folderActive:hover{
-      outline: 1px solid ${props => props.theme.textHover};
+      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
     }
     .folderActive:after{
       border-radius: 5px;
@@ -369,7 +387,26 @@ export const GlobalStyle = createGlobalStyle`
 
     //Stream
     h1{
+        justify-self: flex-start;
+        position: absolute;
+        /* top: calc(var(--edge)); */
+        /* left: calc(var(--edge) + var(--panelWidth) +       20px); */
+        font-size: 7vw;
+        letter-spacing: -0.3vw;
+        color: transparent;
+        -webkit-text-stroke-width: 1px;
+        margin: 0;
+        font-family: "ekodigital";
+        font-weight: 400;
+        font-style: normal;
+        -webkit-user-select: none; /* Safari */
+        -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* IE10+/Edge */
+        user-select: none; /* Standard */
         -webkit-text-stroke-color: ${props => props.theme.panelColor};
+    }
+    .head{
+      pointer-events: none;
     }
     .head svg {
       fill: none !important;
@@ -383,7 +420,8 @@ export const GlobalStyle = createGlobalStyle`
       overflow: visible;
     } 
     .container{
-        color: ${props => props.theme.panelColor};
+      padding: 20px;
+      color: ${props => props.theme.panelColor};
     }
 
     .hom {
@@ -392,17 +430,27 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .HomeCD {
-  overflow: visible;
-  height: 70%;
-  position: absolute;
-}
-    .carousel-root{
-      grid-column-start: 2;
-      grid-column-end: 2;
-      grid-row-start: 2;
-      grid-row-end: 3;
+      overflow: visible;
+      height: 70%;
+      position: absolute;
     }
-
+    .cnt {
+      width: 100vw;
+      height: 100%;
+      display: flex !important;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .notfound {
+      width: 100vw;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
     @media only screen and (max-width: 768px) {
     .section{
         flex-direction: 'column-reverse';
@@ -410,16 +458,18 @@ export const GlobalStyle = createGlobalStyle`
       }
     }
     //store
+    .str {
+      width: 100vw;
+      height: 100%;
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+    }
     .eko{
-      /* background-color: ${props => props.theme.panelBg}; */
       height: min-content;
       display: flex;
       align-self: center;
       align-items: center;
-      grid-column-start: 2;
-      grid-column-end: 2;
-      grid-row-start: 2;
-      grid-row-end: 2;
       padding: 30px;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
       backdrop-filter: blur(8px);
@@ -509,8 +559,8 @@ export const GlobalStyle = createGlobalStyle`
 
 
 
-@media only screen and (min-width: 1441px) {
-  .li{
+@media only screen and (min-width: 1366px) {
+  .li, .desc, .title p{
     font-size: 12px;
   }
   h1 {

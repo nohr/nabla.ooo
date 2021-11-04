@@ -5,7 +5,6 @@ import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
 import { Setter, Folder } from "./Theme"
-import { SvgNabla, Spinner, Arrow, SideArrow } from './svg'
 import sound1 from '../Sounds/select.mp3'
 import useSound from 'use-sound'
 
