@@ -140,8 +140,8 @@ px
     object{
     min-height: 100%;
     min-width: 100%;
-    /* max-height: 150%; */
-    max-width: 150%;
+    max-height: 120%;
+    /* max-width: 150%; */
     position: absolute;
     pointer-events:  none;
     top: 50%;
@@ -413,13 +413,13 @@ export const GlobalStyle = createGlobalStyle`
       stroke:  ${props => props.theme.panelColor} !important;
       stroke-width: 1px;
       position: absolute;
-      /* top: calc(var(--edge)); */
-      /* left: calc(var(--edge) + var(--panelWidth) + 20px); */
-      height: 14vw;
-      width: auto;
+      width: 25vmax;
+      height: auto;
       overflow: visible;
-    } 
-    .container{
+      margin: 20px 20px;
+    }
+    
+    .container {
       padding: 20px;
       color: ${props => props.theme.panelColor};
     }
@@ -429,10 +429,10 @@ export const GlobalStyle = createGlobalStyle`
         width: 100vw;
     }
 
-    .HomeCD {
-      overflow: visible;
-      height: 70%;
-      position: absolute;
+    .HomeCD g{
+      padding: 0;
+      stroke: ${props => props.theme.panelColor} !important;
+      fill: none;
     }
     .cnt {
       width: 100vw;

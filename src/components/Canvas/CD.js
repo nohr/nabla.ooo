@@ -30,7 +30,6 @@ function Ball(props) {
       {...props}
       castShadow
       receiveShadow
-      // position={[5.28, 0, -265.23]}
       material={!hovered ? material : material1}
       onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}
     >
@@ -42,8 +41,8 @@ function Ball(props) {
 export default function CD(props) {
   const group = useRef()
   useFrame(() => {
-    group.current.rotation.y += 0.002;
-    group.current.rotation.z += 0.0001;
+    group.current.rotation.y += state.CDRotationY;
+    group.current.rotation.z += state.CDRotationZ;
   });
 
   //  const material = new THREE.MeshPhysicalMaterial({
@@ -58,8 +57,6 @@ export default function CD(props) {
   //   opacity: 1,
   //   transparent: true
   // })
-
-
 
   return (
     <group  {...props} dispose={null} >

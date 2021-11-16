@@ -10,7 +10,6 @@ import { EffectComposer, Noise } from '@react-three/postprocessing'
 // Canvas
 softShadows();
 
-
 function Floor() {
   const textures = useTexture([
     "../Ice_OCC.jpg",
@@ -88,7 +87,7 @@ function CanvasComp() {
         enabled={snap.userControlled}
         enablePan={false}
         autoRotate={true}
-        autoRotateSpeed={0.09}
+        autoRotateSpeed={state.autoRotateSpeed}
         minPolarAngle={Math.PI / 2.5}
         maxPolarAngle={Math.PI / 2}
         minDistance={20}

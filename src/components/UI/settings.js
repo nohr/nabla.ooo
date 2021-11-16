@@ -40,10 +40,18 @@ const Settings = React.memo(function Settings() {
     function togglePause() {
         if (!state.paused) {
             state.paused = true;
+            state.CDRotationY = 0;
+            state.CDRotationZ = 0;
+            state.autoRotateSpeed = 0;
+            state.userControlled = false;
             select()
 
         } else if (state.paused) {
             state.paused = false;
+            state.CDRotationY = 0.002;
+            state.CDRotationZ = 0.0001;
+            state.autoRotateSpeed = 0.09;
+            state.userControlled = true;
             select()
         }
     }

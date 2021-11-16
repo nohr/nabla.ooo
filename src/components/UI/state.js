@@ -20,8 +20,6 @@ export const state = proxy({
     muted: false,
     navPosition: { x: 0, y: 0 },
     prtPosition: { x: 0, y: 0 },
-    cameraPosition: [-30, 3, 0],
-    modalPosition: { x: 0, y: 0 },
     theme: "light",
     light: {
         panelColor: "#444",
@@ -61,6 +59,11 @@ export const state = proxy({
     },
     transparent: "#00000000",
     white: "#ebebeb",
+    CDRotationY: 0.002,
+    CDRotationZ: 0.0001,
+    cameraPosition: [-30, 3, 0],
+    modalPosition: { x: 0, y: 0 },
+    autoRotateSpeed: 0.09,
 });
 
 

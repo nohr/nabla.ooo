@@ -7,24 +7,17 @@ import { Container } from "../UI/Theme"
 import PageData from "./PageData";
 import Modal from "../UI/Modal";
 import useDocumentTitle from '../UI/documentTitle'
-import '../UI/svg'
+import { HeadSVG } from '../UI/svg'
 
-// function SVG(id) {
-//     const snap = useSnapshot(state);
-//     if (snap.sectors.at === id) {
-//         // return(
-//         // snap.sectors.map((work) => (
-//         // work.svg
-//         //  ))
-//         // )
-//         const Name = id.charAt(0).toUpperCase() + id.slice(1);
-//         return < {Name} />
-//         console.log(id);
-//     } else {
-//             return <br/>
-//         }
-//   }
-
+function SVG(id) {
+    const snap = useSnapshot(state);
+    // console.log(id.id);
+        return (
+            <Draggable position={snap.prtPosition} onStart={() => false}>
+                    <HeadSVG id={id.id} />
+            </Draggable>
+        )
+    }
 
 const Page = React.memo(function Page(id) {
     useDocumentTitle(id.title)
@@ -38,7 +31,7 @@ const Page = React.memo(function Page(id) {
         <div className="bigContainer" ref={container}>
             <div className="head">
             <Draggable position={snap.prtPosition} onStart={() => false}>
-                <br/>
+                    <SVG id={id.id}/>
             </Draggable>
             </div>
             <Container className="container">

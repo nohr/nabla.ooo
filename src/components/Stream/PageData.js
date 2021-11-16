@@ -50,7 +50,6 @@ const ImgGrid = ({ work }) => {
         }
     }
 
-
     // Each individual image or video
     function Block(url) {
         // Get enxtentions of files
@@ -65,13 +64,14 @@ const ImgGrid = ({ work }) => {
                 return (
                     <video style={{
                         height: "100%"
-                    }} key={`${Math.random()}`} autoPlay={work.autoplay} playsinline preload={"none"} poster={`${work.poster}`} loop={work.loop} muted={work.muted} src={`${url.url}`}>{`${work.at}`}</video>
+                    }} key={`${Math.random()}`} autoPlay={work.autoplay} playsInLine preload={"none"} poster={`${work.poster}`} loop={work.loop} muted={work.muted} src={`${url.url}`}>{`${work.at}`}</video>
 
                 )
             } else if (work.orientation === "landscape") {
                 return (
-                    <div>
-                        <video className={"landscape"} key={`${Math.random()}`} autoPlay={work.autoplay} playsinline controls preload={"none"} poster={`${work.poster}`} loop={work.loop} muted={work.muted} src={`${url.url}`}>{`${work.at}`}</video>
+                    <div
+                        key={Math.random()}>
+                        <video className={"landscape"} key={`${Math.random()}`} autoPlay={work.autoplay} playsInline controls preload={"none"} poster={`${work.poster}`} loop={work.loop} muted={work.muted} src={`${url.url}`}>{`${work.at}`}</video>
                     </div>
                 )
             }
@@ -90,7 +90,6 @@ const ImgGrid = ({ work }) => {
         else {
             return (
                 <motion.div className="img-thumb"
-                    key={Math.random()}
                     layout
                     whileHover={{ opacity: 1 }}
                     onClick={() => setSelectedImg(url.url)}
@@ -100,22 +99,18 @@ const ImgGrid = ({ work }) => {
         }
     }
 
-
-
     return (
         <>
             <ImgWrapper key={`${Math.random()}`} className="imgWrapper" ref={refWrapper}>
                 <>
                     {work.images && work.images.map((url) => (
-                        <Block url={url} />
+                        <Block url={url} key={`${Math.random()}`} />
                     ))}
                 </>
             </ImgWrapper>
         </>
     )
 }
-
-
 
 const PageData = React.memo(function PageData(id, setSelectedImg) {
     const snap = useSnapshot(state);
