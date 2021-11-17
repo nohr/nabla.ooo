@@ -84,7 +84,7 @@ function Nav() {
 
   return (
     //NAV
-    <Draggable cancel={".li, .nablaWrapper"} bounds=".container" positionOffset={offset} position={snap.navPosition} onDrag={onControlledDrag} >
+    <Draggable cancel={".li, .nablaWrapper"} bounds=".container" positionOffset={offset} position={nav.position} onDrag={onControlledDrag} >
       <Navagator data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" ref={nav} className="Panel nav" portLink={portLink} settLink={settLink}>
         <div className='header' >
           <SvgNabla title="nabla" />
@@ -149,7 +149,7 @@ function UI() {
           <Route path="/contact" component={Contact} />
           {snap.works.map((work) => (
             <Route key={`${work.name}`} path={`/${work.id}`}>
-              <Page title={`Nabla ✪ ${work.name}`} id={`${work.id}`} />
+              <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />
             </Route>
           ))}
           <Route component={NotFound} />

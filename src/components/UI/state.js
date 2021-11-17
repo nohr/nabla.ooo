@@ -22,13 +22,13 @@ export const state = proxy({
     prtPosition: { x: 0, y: 0 },
     theme: "light",
     light: {
-        panelColor: "#444",
+        panelColor: "#006ebc",
         panelBg: "#ebebeb80",
         textHover: "#ebebeb",
         sky: "#c3c3c3",
         fog: "#848484",
-        link: "#d1495b",
-        LiHover: "#62b9ff67",
+        link: "#006ebc",
+        LiHover: "#006ebc67",
         LiActiveBackground: "#5e5e5e67",
         CD: '#E3B5A4',
         CDHover: '#942433',
@@ -40,7 +40,7 @@ export const state = proxy({
 
     },
     dark: {
-        panelColor: "#ebebeb",
+        panelColor: "#d1495b",
         panelBg: "#64646460",
         textHover: "#ebebeb",
         sky: "#1F1F1F",
@@ -61,7 +61,7 @@ export const state = proxy({
     white: "#ebebeb",
     CDRotationY: 0.002,
     CDRotationZ: 0.0001,
-    cameraPosition: [-30, 3, 0],
+    cameraPosition: [36, 15, 0],
     modalPosition: { x: 0, y: 0 },
     autoRotateSpeed: 0.09,
 });

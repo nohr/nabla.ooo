@@ -7,7 +7,7 @@ import useDocumentTitle from "../UI/documentTitle";
 
 const NotFound = () => {
     const snap = useSnapshot(state);
-    useDocumentTitle("Nabla ✚ 404");
+    useDocumentTitle("404 @ Nabla");
     return (
         <div className="bigContainer">
             <div className="head">

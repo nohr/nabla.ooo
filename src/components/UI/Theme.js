@@ -185,9 +185,11 @@ export const Navagator = styled.div`
 height: min-content;
   padding: 0em 2.5em 2.5em 2.5em;
   position: fixed;
+  /* left: 50%;
+  top: 50%; */
   left: var(--edge);
-  z-index: 5000;
   top: var(--edge);
+  z-index: 5000;
   text-indent: 5px;
 `
 export const Porter = styled.div`
@@ -407,13 +409,15 @@ export const GlobalStyle = createGlobalStyle`
     }
     .head{
       pointer-events: none;
+      position: absolute;
+      z-index: 50;
     }
     .head svg {
       fill: none !important;
       stroke:  ${props => props.theme.panelColor} !important;
       stroke-width: 1px;
       position: absolute;
-      width: 25vmax;
+      width: 50vmax;
       height: auto;
       overflow: visible;
       margin: 20px 20px;
