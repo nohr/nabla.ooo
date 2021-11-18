@@ -8,9 +8,8 @@ import Settings from "./settings"
 import { ThemeProvider } from "styled-components"
 import { SvgNabla, Spinner, Arrow, SideArrow } from './svg'
 import Home from '../Stream/Home'
-import About from '../Stream/About'
+import Info from '../Stream/Info'
 import Store from '../Stream/Store'
-import Contact from "../Stream/Contact"
 import NotFound from "../Stream/NotFound"
 import { Page } from '../Stream/Page.jsx'
 import sound1 from '../Sounds/select.mp3'
@@ -93,12 +92,9 @@ function Nav() {
         <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/store">
           Store
         </Linker >
-        <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/about">
-          About
+        <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/Info">
+          Info
         </Linker>
-        <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/contact">
-          Contact
-        </Linker >
         <Folder onClick={() => Toggle(1)} ref={portLink} className="li folder">
           Projects
           {snap.isPort ? <SideArrow /> : <Arrow />}
@@ -114,6 +110,8 @@ function Nav() {
 
 //UI -- Parent Component
 function UI() {
+  console.log(state.navPosition);
+  console.log(state.prtPosition);
   const snap = useSnapshot(state);
   //Get Project list and Data
   useEffect(() => {
@@ -145,8 +143,7 @@ function UI() {
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/store" component={Store} />
-          <Route path="/about" component={About} />
-          <Route path="/contact" component={Contact} />
+          <Route path="/info" component={Info} />
           {snap.works.map((work) => (
             <Route key={`${work.name}`} path={`/${work.id}`}>
               <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />

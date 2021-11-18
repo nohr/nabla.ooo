@@ -49,7 +49,7 @@ export const state = proxy({
         LiHover: "#d1495b67",
         LiActiveBackground: "#ebebeb67",
         CD: "#0A0A0A",
-        CDHover: '#ff6622',
+        CDHover: '#35A7FF',
         CDRough: 0,
         Surface: '#ff8a98',
         spotlight: '#646464',
