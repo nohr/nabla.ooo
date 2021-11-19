@@ -182,8 +182,8 @@ px
 
 export const Navagator = styled.div`
 //nav
-height: min-content;
-  padding: 0em 2.5em 2.5em 2.5em;
+height: auto;
+  padding: 0em 25px 25px 25px;
   position: fixed;
   /* left: 50%;
   top: 50%; */
@@ -216,13 +216,24 @@ padding: 2.5em;
     text-indent: 5px;
   }
 `
+export const Homer = styled(NavLink)`
+  clear: left;
+  height: min-content;
+  width: 100%;
+  margin: 7px 0 2px 0;
+  padding-top: 3px;
+  padding-bottom: 1px;
+  display: block;
+  border-radius: 5px;
+  margin: 0;
+  background: rgba(255, 255, 255, 0);
+  overflow: visible;
+`
 export const Linker = styled(NavLink)`
-  font-size: 10px;
   text-decoration: none;
   width: 100%;
-  margin: 2px 0;
-  padding-bottom: 0px;
-  padding-top: 1px;
+  margin: 3px 0;
+  padding: 2px 0;
   display: block;
 
     &.${props => props.activeClassName}{
@@ -235,29 +246,10 @@ export const Linker = styled(NavLink)`
   font-style: italic;
 }
 `
-export const Homer = styled(NavLink)`
-
-  clear: left;
-  height: min-content;
-  width: 100%;
-  margin: 2px 0;
-  padding-top: 3px;
-  padding-bottom: 1px;
-  display: block;
-  border-radius: 5px;
-  margin: 0;
-  background: rgba(255, 255, 255, 0);
-  overflow: visible;
-    & text{
-        font-size: 95px;
-        font-family: Arial, sans-serif;
-    }
-`
 export const Folder = styled.div`
-  font-size:  10px;
   width: 100%;
-  margin: 2px 0;
-  padding-bottom: 0px;
+  margin: 3px 0;
+  padding: 2px 0;
   display: block;
 `
 
@@ -322,13 +314,11 @@ export const GlobalStyle = createGlobalStyle`
     }
     .header {
         border-bottom: 1px solid ${props => props.theme.panelColor};
-        margin: 0 0 10px 0;
-        padding: 2em 0px 0.5em;
+        margin: 0 0 5px 0;
+        padding: 22px 0px 5px;
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        height: 61px;
-        text-indent: 5px;
     }
 
     .li{
@@ -354,36 +344,36 @@ export const GlobalStyle = createGlobalStyle`
       border-radius: 5px;
     }
     .li:hover {
-        color: ${props => props.theme.textHover};
-        background-color: ${props => props.theme.LiHover};
-        -webkit-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
-        -moz-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
-        box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
+      color: ${props => props.theme.textHover};
+      background-color: ${props => props.theme.LiHover};
+      -webkit-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
+      -moz-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
+      box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
     }
     .arrow {
-        fill: ${props => props.theme.panelColor};
-        height: clamp(8px, 12px, 12px);
-        float: right;
-        justify-self: end;
-        align-self: center;
-        margin: auto 0;
+      fill: ${props => props.theme.panelColor};
+      height: clamp(8px, 12px, 12px);
+      float: right;
+      justify-self: end;
+      align-self: center;
+      margin: auto 5px auto 0;
     }
     .li:hover > svg {
-        fill: ${props => props.theme.textHover};
-        -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
-        filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
+      fill: ${props => props.theme.textHover};
+      -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
+      filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
     }
 
     .spinner {
-        width: 35px;
-        height: 35px;
-        background: none;
-        /* position: absolute; */
-        z-index: 500;
-        top: calc(var(--edge) + 15px);
-        left: calc(var(--edge) + 100px);
+      width: 50px;
+      height: 50px;
+      background: none;
+      position: absolute;
+      z-index: 500;
+      top: calc(var(--edge) - 0px);
+      left: calc(var(--edge) + 90px);
     }
-    .spinner rect{
+    .spinner path{
         fill: ${props => props.theme.panelColor};
     }
 
@@ -391,8 +381,6 @@ export const GlobalStyle = createGlobalStyle`
     h1{
         justify-self: flex-start;
         position: absolute;
-        /* top: calc(var(--edge)); */
-        /* left: calc(var(--edge) + var(--panelWidth) +       20px); */
         font-size: 7vw;
         letter-spacing: -0.3vw;
         color: transparent;
@@ -687,4 +675,5 @@ export const GlobalStyle = createGlobalStyle`
     border-top: 1px solid ${props => props.theme.panelColor};
   }
 }
+
 `

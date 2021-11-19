@@ -110,8 +110,6 @@ function Nav() {
 
 //UI -- Parent Component
 function UI() {
-  console.log(state.navPosition);
-  console.log(state.prtPosition);
   const snap = useSnapshot(state);
   //Get Project list and Data
   useEffect(() => {

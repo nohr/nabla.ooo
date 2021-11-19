@@ -64,7 +64,7 @@ const ImgGrid = ({ work }) => {
                 return (
                     <video style={{
                         height: "100%"
-                    }} key={`${Math.random()}`} autoPlay={work.autoplay} playsInLine preload={"none"} poster={`${work.poster}`} loop={work.loop} muted={work.muted} src={`${url.url}`}>{`${work.at}`}</video>
+                    }} key={`${Math.random()}`} autoPlay={work.autoplay} playsInline preload={"none"} poster={`${work.poster}`} loop={work.loop} muted={work.muted} src={`${url.url}`}>{`${work.at}`}</video>
 
                 )
             } else if (work.orientation === "landscape") {

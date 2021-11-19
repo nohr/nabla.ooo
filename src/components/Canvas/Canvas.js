@@ -4,8 +4,9 @@ import CD from './CD'
 import useWindowDimensions from '../UI/window'
 import React, { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { softShadows, PerspectiveCamera, OrbitControls, Reflector, useTexture } from '@react-three/drei'
+import { softShadows, PerspectiveCamera, OrbitControls, Reflector, useTexture, CameraShake } from '@react-three/drei'
 import { EffectComposer, Noise } from '@react-three/postprocessing'
+
 
 // Canvas
 softShadows();
@@ -83,6 +84,7 @@ function CanvasComp() {
           <Noise opacity={.059} />
         </EffectComposer>
       </Suspense>
+      <CameraShake yawFrequency={20} pitchFrequency={20} rollFrequency={0.2} />
       <OrbitControls
         enabled={snap.userControlled}
         enablePan={false}
