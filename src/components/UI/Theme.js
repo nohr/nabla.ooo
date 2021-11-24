@@ -54,7 +54,7 @@ export const Container = styled.div`
 `
 export const Sector = styled.div`
       border-left: solid 1px ${props => props.theme.panelColor};
-      border-bottom: solid 1px ${props => props.theme.panelColor};
+      border-right: solid 1px ${props => props.theme.panelColor};
       display: flex;
       width: 100%;
       flex-direction:row;
@@ -113,8 +113,7 @@ export const ImgWrapper = styled.div`
     overflow-y: hidden;
     flex-direction: row;
     flex-wrap: nowrap;
-    gap: 20
-px
+    gap: 20px
 ;
 
     .img-thumb{
@@ -226,7 +225,6 @@ export const Homer = styled(NavLink)`
   display: block;
   border-radius: 5px;
   margin: 0;
-  background: rgba(255, 255, 255, 0);
   overflow: visible;
 `
 export const Linker = styled(NavLink)`
@@ -236,13 +234,13 @@ export const Linker = styled(NavLink)`
   padding: 2px 0;
   display: block;
 
-    &.${props => props.activeClassName}{
+  &.${props => props.activeClassName}{
   background-color: ${props => props.theme.LiActiveBackground};
-  color: #ebebeb;
+  color:  ${props => props.theme.textHover};
   -webkit-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
   -moz-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
   box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
-  text-shadow: 1px 1px 3px #ebebeb;
+  text-shadow: 1px 1px 3px  ${props => props.theme.textHover};
   font-style: italic;
 }
 `
@@ -281,10 +279,6 @@ export const GlobalStyle = createGlobalStyle`
         fill: ${props => props.theme.textHover};
         -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
         filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
-    }
-
-    .nablaWrapper:hover > text{
-        color: ${props => props.theme.textHover};
     }
 
     .Panel {
