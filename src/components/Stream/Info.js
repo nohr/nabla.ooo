@@ -4,6 +4,7 @@ import Draggable from "react-draggable";
 import { Container } from "../UI/Theme";
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
+import useDocumentTitle from "../UI/documentTitle";
 
 const ContactForm = () => {
   const [status, setStatus] = useState("Send");
@@ -47,6 +48,7 @@ const ContactForm = () => {
 };
 
 function Info() {
+  useDocumentTitle("Info @ Nabla");
   const snap = useSnapshot(state);
   const text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ante augue, iaculis sit amet sem nec, semper volutpat tellus. In egestas molestie diam, vel posuere eros consequat ut. Proin id ex dolor. Nullam enim est, accumsan sit amet leo vitae, vulputate blandit ligula. Integer scelerisque ex ut orci bibendum luctus. Nulla urna mauris, tincidunt non sem vel, posuere efficitur mauris. Etiam vel magna eget orci hendrerit convallis. Cras accumsan, odio sollicitudin condimentum bibendum, ipsum massa vehicula ligula, quis placerat nisl ipsum venenatis odio.";
   return (

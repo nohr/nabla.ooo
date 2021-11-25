@@ -14,7 +14,7 @@ export const state = proxy({
     containerWidth: 0,
     isPort: false,
     isSett: false,
-    wasClicked: false,
+    themeChanged: false,
     userControlled: true,
     sfxVolume: 1,
     muted: false,
@@ -59,6 +59,8 @@ export const state = proxy({
     },
     transparent: "#00000000",
     white: "#009977",
+    //Canvas
+    canvasVisible: true,
     CDRotationY: 0.002,
     CDRotationZ: 0.0001,
     cameraPosition: [36, 15, 0],

@@ -6,7 +6,7 @@ import { state } from './components/UI/state'
 
 //App
 function App() {
-  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !state.wasClicked ?
+  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !state.themeChanged ?
     (state.theme = 'dark') : (state.theme = 'light')
 
   return (

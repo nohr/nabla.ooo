@@ -17,26 +17,27 @@ const Settings = React.memo(function Settings() {
         state.settWidth = sett.current.getBoundingClientRect().width;
     }, [])
 
-    const themeToggeler = () => {
-        select()
-        state.wasClicked = true;
-        state.theme === 'light' ? state.theme = 'dark' : state.theme = 'light';
-
-    }
-
-    // Volume
-    const volume = () => {
+    // AUDIO
+    // Toggle Mute Switch
+    const toggleMute = () => {
         if (state.muted === false) {
             state.sfxVolume = 0.0;
-            select()
             state.muted = true
         } else if (state.muted === true) {
             state.sfxVolume = 1;
-            select()
             state.muted = false
         }
+        select()
     }
 
+    //DISPLAY
+    //Toggle Theme
+    const toggleTheme = () => {
+        state.themeChanged = true;
+        state.theme === 'light' ? state.theme = 'dark' : state.theme = 'light';
+        select()
+    }
+    //Pause Canvas Animation
     function togglePause() {
         if (!state.paused) {
             state.paused = true;
@@ -44,7 +45,6 @@ const Settings = React.memo(function Settings() {
             state.CDRotationZ = 0;
             state.autoRotateSpeed = 0;
             state.userControlled = false;
-            select()
 
         } else if (state.paused) {
             state.paused = false;
@@ -52,10 +52,26 @@ const Settings = React.memo(function Settings() {
             state.CDRotationZ = 0.0001;
             state.autoRotateSpeed = 0.09;
             state.userControlled = true;
-            select()
         }
+        select()
+    }
+    // Toggle Canvas Visibility
+    const canvas = document.getElementsByTagName('canvas')[0];
+    function toggleCanvas() {
+        if (!state.canvasVisible) {
+            state.canvasVisible = true;
+            canvas.style.display = "block";
+        } else if (state.canvasVisible) {
+            state.canvasVisible = false;
+            canvas.style.display = "none";
+        }
+        select()
     }
 
+
+
+
+    //mobile repositioning [broken]
     var x = window.matchMedia("(max-width: 768px)");
     let offset = {};
     if (x.matches) { // If media query matches
@@ -68,11 +84,13 @@ const Settings = React.memo(function Settings() {
         <Draggable position={snap.navPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
             <Setter ref={sett} data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel set">
                 Audio <br />
-                <Folder onClick={() => volume()} className="li w">{!snap.muted ? "Mute Sound" : "Unmute Sound"}</Folder><br />
+                <Folder onClick={() => toggleMute()} className="li w">{!snap.muted ? "Mute Sound" : "Unmute Sound"}</Folder><br />
                 <br />
                 Display <br />
-                <Folder onClick={() => themeToggeler()} className="li w">{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>
-                <Folder onClick={() => togglePause()} className="li w">{snap.paused ? "Play Animation" : "Pause Animation"}</Folder><br />
+                <Folder onClick={() => toggleTheme()} className="li w">{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>
+                <Folder onClick={() => toggleCanvas()} className="li w">{snap.canvasVisible ? "Hide Canvas" : "Show Canvas"}</Folder>
+                {state.canvasVisible && <Folder onClick={() => togglePause()} className="li w">{snap.paused ? "Play Canvas" : "Pause Canvas"}</Folder>}
+                <br />
             </Setter>
         </Draggable>
     );

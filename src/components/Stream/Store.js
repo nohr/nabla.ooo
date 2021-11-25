@@ -3,10 +3,10 @@ import '../../App.css'
 import Draggable from "react-draggable";
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
-
+import useDocumentTitle from "../UI/documentTitle";
 
 function Store() {
-
+  useDocumentTitle("Store @ Nabla");
   const snap = useSnapshot(state);
 
   return (
