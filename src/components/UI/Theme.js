@@ -308,7 +308,7 @@ export const GlobalStyle = createGlobalStyle`
     }
     .header {
         border-bottom: 1px solid ${props => props.theme.panelColor};
-        margin: 0 0 5px 0;
+        margin: 0 0 7px 0;
         padding: 22px 0px 5px;
         display: flex;
         align-items: center;
