@@ -89,7 +89,7 @@ function Nav() {
           <SvgNabla title="nabla" />
           {snap.loading && <Spinner />}
         </div>
-        <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/Info">
+        <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/info">
           Info
         </Linker>
         <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/store">
