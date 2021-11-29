@@ -359,12 +359,12 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .spinner {
-      width: 50px;
-      height: 50px;
+      width: 30px;
+      height: 30px;
       background: none;
       position: absolute;
       z-index: 500;
-      top: calc(var(--edge) - 0px);
+      top: calc(var(--edge) + 10px);
       left: calc(var(--edge) + 90px);
     }
     .spinner path{
