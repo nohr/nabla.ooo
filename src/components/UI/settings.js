@@ -77,7 +77,7 @@ const Settings = React.memo(function Settings() {
     if (x.matches) { // If media query matches
         offset = { x: '0px', y: '250px' };
     } else {
-        offset = { x: state.navWidth - 20, y: 0 };
+        offset = { x: state.navWidth - 30, y: 0 };
     }
 
     return (

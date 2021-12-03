@@ -7,8 +7,8 @@ export const state = proxy({
     selectedImg: null,
     loading: false,
     paused: false,
-    navWidth: 0,
-    settWidth: 0,
+    navWidth: 180,
+    settWidth: 180,
     portWidth: 0,
     portX: 0,
     containerWidth: 0,
@@ -40,7 +40,7 @@ export const state = proxy({
 
     },
     dark: {
-        panelColor: "#C6182A",
+        panelColor: "#f3e8ee",
         panelBg: "#64646460",
         textHover: "#F3E8EE",
         sky: "#1F1F1F",

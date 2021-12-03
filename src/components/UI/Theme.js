@@ -200,7 +200,7 @@ padding: 2.5em;
   margin: 20px 0;
 
   .w {
-    text-indent: 20px;
+    text-indent: 10px;
   }
 `
 export const Setter = styled.div`
@@ -578,17 +578,18 @@ export const GlobalStyle = createGlobalStyle`
     --aug-tl: 12px;
     --aug-br: 25px;
     --aug-tr: 10px;
+    display: none;
   }
   .nav{
     grid-column-start: 1;
-  grid-column-end: 4;
-  grid-row-start:1;
-  grid-row-end: 2;
-  width: 90vw;
-  height: min-content;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 33% 33% 33%;
+    grid-column-end: 4;
+    grid-row-start:1;
+    grid-row-end: 2;
+    width: 90vw;
+    height: min-content;
+    /* display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 33% 33% 33%; */
   /* FIX THIS  */
   }
 
