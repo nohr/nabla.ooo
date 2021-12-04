@@ -40,7 +40,7 @@ export const state = proxy({
 
     },
     dark: {
-        panelColor: "#f3e8ee",
+        panelColor: "#fff",
         panelBg: "#64646460",
         textHover: "#F3E8EE",
         sky: "#1F1F1F",
