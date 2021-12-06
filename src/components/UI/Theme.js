@@ -75,7 +75,7 @@ export const TextWrapper = styled.div`
 flex-wrap: wrap;
 color: ${props => props.theme.panelColor};
 font-size: 14px;
-width:40%;
+width:50%;
 text-align: left;
 height: 100%;
 align-self: center;
@@ -105,7 +105,7 @@ overflow-y: scroll;
 
 `
 export const ImgWrapper = styled.div`
-    width: 60%;
+    width: 50%;
     display: flex;
     height: auto;
     text-align: left;
@@ -300,10 +300,6 @@ export const GlobalStyle = createGlobalStyle`
       --aug-br: 35px;
       --aug-tr: 18px;
       --aug-border-all: 1px;
-      /*Inlay*/
-      //background: ${props => props.theme.panelBg};
-      //--aug-inlay-bg: ${props => props.theme.panelBg};
-      //--aug-inlay-all: 0px ;
       color: ${props => props.theme.panelColor};
       --aug-border-bg: ${props => props.theme.panelColor};
     }
@@ -400,7 +396,7 @@ export const GlobalStyle = createGlobalStyle`
       stroke:  ${props => props.theme.panelColor} !important;
       stroke-width: 1px;
       position: absolute;
-      width: 50vmax;
+      width: 50vw;
       height: auto;
       overflow: visible;
       margin: 20px 20px;
