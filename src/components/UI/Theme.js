@@ -472,7 +472,6 @@ export const GlobalStyle = createGlobalStyle`
       font-style: normal;
       font-size: 270px;
       vertical-align: middle;
-      /* justify-self: center; */
       letter-spacing: -15px;
       padding-right: 15px;
       -webkit-user-select: none; /* Safari */
