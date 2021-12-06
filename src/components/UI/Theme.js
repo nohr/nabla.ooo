@@ -485,7 +485,6 @@ export const GlobalStyle = createGlobalStyle`
       padding: 0 20px;
       line-height: 25px;
       align-self: center;
-      font-style: italic;
       display: flex;
     justify-content: center;
     flex-direction: column;
