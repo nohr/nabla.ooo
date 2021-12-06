@@ -77,7 +77,7 @@ const Settings = React.memo(function Settings() {
     if (x.matches) { // If media query matches
         offset = { x: '0px', y: '250px' };
     } else {
-        offset = { x: state.navWidth - 30, y: 0 };
+        offset = { x: state.navWidth - 20, y: 0 };
     }
 
     return (
@@ -90,7 +90,6 @@ const Settings = React.memo(function Settings() {
                 <Folder onClick={() => toggleTheme()} className="li w">{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>
                 <Folder onClick={() => toggleCanvas()} className="li w">{snap.canvasVisible ? "Hide Canvas" : "Show Canvas"}</Folder>
                 {state.canvasVisible && <Folder onClick={() => togglePause()} className="li w">{snap.paused ? "Play Canvas" : "Pause Canvas"}</Folder>}
-                <br />
             </Setter>
         </Draggable>
     );

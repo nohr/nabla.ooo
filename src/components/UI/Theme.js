@@ -35,7 +35,7 @@ export const Container = styled.div`
     height: auto;
     align-self: center;
     box-shadow: 3px 5px 7px rgba(0,0,0,0.5);
-    border: 1px solid ${props => props.theme.panelColor};
+    /* border: 1px solid ${props => props.theme.panelColor}; */
     -webkit-user-drag: none;
     user-select: none;
     -moz-user-select: none;
@@ -249,6 +249,7 @@ export const Folder = styled.div`
   margin: 3px 0;
   padding: 2px 0;
   display: block;
+  cursor: pointer;
 `
 
 export const GlobalStyle = createGlobalStyle`

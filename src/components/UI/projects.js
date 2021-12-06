@@ -24,9 +24,9 @@ function Projects() {
         offset = { x: '130px', y: '80px' };
     } else {
         if (state.isSett) {
-            offset = { x: state.navWidth + state.settWidth - 60, y: '0px' };
+            offset = { x: state.navWidth + state.settWidth - 40, y: '0px' };
         } else {
-            offset = { x: state.navWidth - 30, y: '0px' };
+            offset = { x: state.navWidth - 20, y: '0px' };
         }
     }
 
