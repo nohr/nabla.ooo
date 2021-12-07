@@ -1,13 +1,12 @@
 import styled, { createGlobalStyle } from "styled-components"
 import { NavLink } from "react-router-dom"
-// import "../UI/UI.css"
 
 export const Container = styled.div`
   display: flex;
   gap: 60px;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: flex-start;
+  align-items: center;
   text-align: center;
   position: relative;
   overflow: scroll;

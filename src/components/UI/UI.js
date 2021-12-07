@@ -136,8 +136,8 @@ function UI() {
       <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
         <GlobalStyle />
         <Nav />
-        {snap.isPort && <Projects />}
         {snap.isSett && <Settings />}
+        {snap.isPort && <Projects />}
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/store" component={Store} />

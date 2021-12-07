@@ -11,7 +11,6 @@ import { HeadSVG } from '../UI/svg'
 
 function SVG(id) {
     const snap = useSnapshot(state);
-    // console.log(id.id);
         return (
             <Draggable position={snap.prtPosition} onStart={() => false}>
                     <HeadSVG id={id.id} />
