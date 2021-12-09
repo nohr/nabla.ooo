@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
-import { GlobalStyle, Navagator, Linker, Folder, Setter } from "./Theme"
+import { GlobalStyle, Navagator, Linker, Folder } from "./Theme"
 import Projects from "./projects"
 import Settings from "./settings"
 import { ThemeProvider } from "styled-components"
