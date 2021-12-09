@@ -37,6 +37,27 @@ const Settings = React.memo(function Settings() {
         state.theme === 'light' ? state.theme = 'dark' : state.theme = 'light';
         select()
     }
+    // Toggle Canvas Visibility
+    const canvas = document.getElementsByTagName('canvas')[0];
+    function toggleCanvas() {
+        if (!state.canvasVisible) {
+            state.canvasVisible = true;
+            canvas.style.display = "block";
+            state.CDRotationY = 0.002;
+            state.CDRotationZ = 0.0001;
+            state.autoRotateSpeed = 0.09;
+            state.userControlled = true;
+        } else if (state.canvasVisible) {
+            state.canvasVisible = false;
+            canvas.style.display = "none";
+            state.paused = true;
+            state.CDRotationY = 0;
+            state.CDRotationZ = 0;
+            state.autoRotateSpeed = 0;
+            state.userControlled = false;
+        }
+        select()
+    }
     //Pause Canvas Animation
     function togglePause() {
         if (!state.paused) {
@@ -55,23 +76,11 @@ const Settings = React.memo(function Settings() {
         }
         select()
     }
-    // Toggle Canvas Visibility
-    const canvas = document.getElementsByTagName('canvas')[0];
-    function toggleCanvas() {
-        if (!state.canvasVisible) {
-            state.canvasVisible = true;
-            canvas.style.display = "block";
-        } else if (state.canvasVisible) {
-            state.canvasVisible = false;
-            canvas.style.display = "none";
-        }
-        select()
-    }
 
 
 
 
-    //mobile repositioning [broken]
+    //mobile repositioning - BROKEN
     var x = window.matchMedia("(max-width: 768px)");
     let offset = {};
     if (x.matches) { // If media query matches

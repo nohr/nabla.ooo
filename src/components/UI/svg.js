@@ -8,11 +8,11 @@ import { useSnapshot } from 'valtio'
 
 
 
-export function SvgNabla() {
+export function SvgNabla(props) {
   const [play] = useSound(home, { volume: state.sfxVolume });
 
   return (
-    <Homer className="nablaWrapper" to="/" onClick={() => play()}>
+    <Homer className="nablaWrapper" to="/" onClick={() => play()} homerWidth={"k" - props}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         height="38px"

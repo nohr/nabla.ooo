@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
-import { GlobalStyle, Navagator, Linker, Folder } from "./Theme"
+import { GlobalStyle, Navagator, Linker, Folder, Setter } from "./Theme"
 import Projects from "./projects"
 import Settings from "./settings"
 import { ThemeProvider } from "styled-components"
@@ -32,18 +32,19 @@ function Nav() {
   const settLink = useRef(null);
   const nav = useRef(null);
 
-  useEffect(() => {
-    state.navWidth = nav.current.getBoundingClientRect().width;
-    // console.log(state.prtPosition.x);
+  //Move Nav if offscreen - BROKEN
+  // useEffect(() => {
+  //   state.navWidth = nav.current.getBoundingClientRect().width;
+  //   // console.log(state.prtPosition.x);
 
-    // if (state.prtPosition.x + state.portWidth >= state.containerWidth) {
-    //   state.navWidth = 60 + -state.navWidth;
-    //   state.settWidth = -40 + -state.settWidth;
-    // } else {
-    //   state.navWidth = 1 * state.navWidth;
-    //   state.settWidth = 1 * state.settWidth;
-    // }
-  }, [nav])
+  //   if (state.prtPosition.x + state.portWidth >= state.containerWidth) {
+  //     state.navWidth = 60 + -state.navWidth;
+  //     state.settWidth = -40 + -state.settWidth;
+  //   } else {
+  //     state.navWidth = 1 * state.navWidth;
+  //     state.settWidth = 1 * state.settWidth;
+  //   }
+  // }, [nav])
 
   //Folder
   function Toggle(n) {
@@ -73,20 +74,12 @@ function Nav() {
     state.prtPosition = { x, y };
   };
 
-  var x = window.matchMedia("(max-width: 768px)");
-  let offset = {};
-  if (x.matches) { // If media query matches
-    offset = { x: '0', y: '40px' };
-  } else {
-    offset = { x: '0px', y: '0px' };
-  }
-
   return (
     //NAV
-    <Draggable cancel={".li, .nablaWrapper"} bounds=".container" positionOffset={offset} position={nav.position} onDrag={onControlledDrag} >
+    <Draggable cancel={".li, .nablaWrapper"} bounds=".container" position={nav.position} onDrag={onControlledDrag} >
       <Navagator data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" ref={nav} className="Panel nav" portLink={portLink} settLink={settLink}>
         <div className='header' >
-          <SvgNabla title="nabla" />
+          <SvgNabla />
           {snap.loading && <Spinner />}
         </div>
         <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/info">
@@ -131,27 +124,42 @@ function UI() {
     getWorks();
   }, []);
 
-  return (
-    <Router>
-      <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
-        <GlobalStyle />
-        <Nav />
-        {snap.isSett && <Settings />}
-        {snap.isPort && <Projects />}
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/store" component={Store} />
-          <Route path="/info" component={Info} />
-          {snap.works.map((work) => (
-            <Route key={`${work.name}`} path={`/${work.id}`}>
-              <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />
-            </Route>
-          ))}
-          <Route component={NotFound} />
-        </Switch>
-      </ThemeProvider>
-    </Router>
-  );
+  var x = window.matchMedia("(max-width: 768px)");
+  if (x.matches) {
+    // Mobile
+    return (
+      <Router>
+        <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
+          <GlobalStyle />
+          <SvgNabla />
+          <Settings />
+        </ThemeProvider>
+      </Router>
+    )
+  } else {
+    // Desktop
+    return (
+      <Router>
+        <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
+          <GlobalStyle />
+          <Nav />
+          {snap.isSett && <Settings />}
+          {snap.isPort && <Projects />}
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/store" component={Store} />
+            <Route path="/info" component={Info} />
+            {snap.works.map((work) => (
+              <Route key={`${work.name}`} path={`/${work.id}`}>
+                <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />
+              </Route>
+            ))}
+            <Route component={NotFound} />
+          </Switch>
+        </ThemeProvider>
+      </Router>
+    );
+  }
 }
 
 export default UI;

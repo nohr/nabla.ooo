@@ -1,6 +1,5 @@
 import firebase from 'firebase/app';
 require('firebase/firestore')
-require('firebase/auth')
 require('firebase/performance')
 
 const firebaseConfig = {

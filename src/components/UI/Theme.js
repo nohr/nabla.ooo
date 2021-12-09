@@ -215,9 +215,9 @@ padding: 2.5em;
   }
 `
 export const Homer = styled(NavLink)`
-  clear: left;
+  /* clear: left; */
   height: min-content;
-  width: 100%;
+  width: ${props => props.homerWidth || "100%"};
   margin: 7px 0 2px 0;
   padding-top: 3px;
   padding-bottom: 1px;
@@ -565,6 +565,9 @@ export const GlobalStyle = createGlobalStyle`
 
 //Mobile
 @media only screen and (max-width: 768px) {
+  .nablaWrapper{
+    background-color: transparent;
+  }
   .Panel{
     padding-bottom: 10px;
     /*Border*/
@@ -572,7 +575,6 @@ export const GlobalStyle = createGlobalStyle`
     --aug-tl: 12px;
     --aug-br: 25px;
     --aug-tr: 10px;
-    display: none;
   }
   .nav{
     grid-column-start: 1;

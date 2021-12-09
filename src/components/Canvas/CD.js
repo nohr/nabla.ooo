@@ -8,11 +8,13 @@ import { state } from '../UI/state';
 
 function Ball(props) {
   const material = new THREE.MeshPhysicalMaterial({
+    // wireframe: true,
     color: state.theme === 'light' ? state.light.CD : state.dark.CD,
     reflectivity: 1,
     roughness: state.theme === 'light' ? state.light.CDRough : state.dark.CDRough,
     metalness: 0.2,
     opacity: 1,
+    clearcoat: 0.8,
   })
 
   const material1 = new THREE.MeshPhysicalMaterial({
@@ -23,19 +25,37 @@ function Ball(props) {
     opacity: 1,
   })
 
-  const [hovered, setHover] = useState(false)
+  const [hovered, setHover] = useState(false);
+  const [clicked, setClick] = useState(false);
 
-  return (
-    <mesh
-      {...props}
-      castShadow
-      receiveShadow
-      material={!hovered ? material : material1}
-      onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}
-    >
-      <sphereGeometry args={[190, 190, 190]} />
-    </mesh>
-  )
+  var x = window.matchMedia("(max-width: 768px)");
+  if (x.matches) {
+    // Mobile
+    return (
+      <mesh
+        {...props}
+        castShadow
+        receiveShadow
+        material={!clicked ? material1 : material}
+        onClick={(e) => setClick(true)} onTouchEnd={(e) => setClick(false)}
+      >
+        <sphereGeometry args={[190, 190, 190]} />
+      </mesh>
+    )
+  } else {
+    // Desktop
+    return (
+      <mesh
+        {...props}
+        castShadow
+        receiveShadow
+        material={!hovered ? material : material1}
+        onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}
+      >
+        <sphereGeometry args={[190, 190, 190]} />
+      </mesh>
+    )
+  }
 }
 
 export default function CD(props) {
