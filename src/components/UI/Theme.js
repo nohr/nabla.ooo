@@ -542,9 +542,6 @@ export const GlobalStyle = createGlobalStyle`
 
 
 @media only screen and (min-width: 1366px) {
-  .li, .desc, .title p{
-    font-size: 12px;
-  }
   h1 {
     font-size: 12vw;
   }
