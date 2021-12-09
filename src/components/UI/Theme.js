@@ -104,7 +104,7 @@ overflow-y: scroll;
 
 `
 export const ImgWrapper = styled.div`
-    width: 50%;
+    /* width: 50%; */
     display: flex;
     height: auto;
     text-align: left;
@@ -114,6 +114,9 @@ export const ImgWrapper = styled.div`
     flex-wrap: nowrap;
     gap: 20px
 ;
+@media only screen and (min-width: 768px) {
+  width: 50%;
+}
 
     .img-thumb{
       overflow: hidden;
@@ -433,12 +436,7 @@ export const GlobalStyle = createGlobalStyle`
       justify-content: center;
       flex-direction: column;
     }
-    @media only screen and (max-width: 768px) {
-    .section{
-        flex-direction: 'column-reverse';
-        border-top: none;
-      }
-    }
+    
     //store
     .str {
       width: 100vw;
@@ -631,6 +629,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   .head svg {
     stroke-width: 0.5px;
+    width: 92vw;
   }
 
   .head{
@@ -639,9 +638,18 @@ export const GlobalStyle = createGlobalStyle`
   
   .sector{
     flex-direction: column-reverse;
+    padding: 0;
+  }
+
+  .textWrapper,.imgWrapper{
+    width: 100% !important;
+    height: 50%;
   }
   .textWrapper{
-    width: unset;
+    padding-right: 20px;
+  }
+  .img-thumb{
+        padding:18vw 0;
   }
 
   .eko {

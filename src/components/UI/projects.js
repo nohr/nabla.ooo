@@ -18,10 +18,11 @@ function Projects() {
         state.isSett = false;
     }
 
+    //mobile repositioning - BROKEN
     var x = window.matchMedia("(max-width: 768px)");
     let offset = {};
     if (x.matches) { // If media query matches
-        offset = { x: '130px', y: '80px' };
+        offset = { x: '200px', y: '260px' };
     } else {
         if (state.isSett) {
             offset = { x: state.navWidth + state.settWidth - 40, y: '0px' };

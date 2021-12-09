@@ -131,8 +131,20 @@ function UI() {
       <Router>
         <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
           <GlobalStyle />
-          <SvgNabla />
-          <Settings />
+          <Nav />
+          {snap.isSett && <Settings />}
+          {snap.isPort && <Projects />}
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/store" component={Store} />
+            <Route path="/info" component={Info} />
+            {snap.works.map((work) => (
+              <Route key={`${work.name}`} path={`/${work.id}`}>
+                <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />
+              </Route>
+            ))}
+            <Route component={NotFound} />
+          </Switch>
         </ThemeProvider>
       </Router>
     )
