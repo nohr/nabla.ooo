@@ -41,6 +41,10 @@ export const Container = styled.div`
     -webkit-user-select: none;
     -ms-user-select: none;
   
+    @media only screen and (max-width: 768px) {
+      max-width: 80%;
+      max-height: 100%;
+    }
   }
 
   & .backdrop object:hover{
@@ -581,14 +585,9 @@ export const GlobalStyle = createGlobalStyle`
     grid-row-end: 2;
     width: 90vw;
     height: min-content;
-    /* display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 33% 33% 33%; */
-  /* FIX THIS  */
   }
 
   .prt{
-    padding: 5px 10px 5px 10px;
     width: max-content;
      /*Border*/
      --aug-bl: 9px;
@@ -600,8 +599,15 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
+  .prt .li{
+    padding-right: 10px;
+  }
+
   .set{
     width: max-content;
+  }
+  .set .li{
+    padding-right: 5px;
   }
 
   .header{
@@ -644,6 +650,10 @@ export const GlobalStyle = createGlobalStyle`
   .textWrapper,.imgWrapper{
     width: 100% !important;
     height: 50%;
+  }
+  .imgWrapper{
+    padding: 20px 20px 0 20px;
+    justify-content: center !important;
   }
   .textWrapper{
     padding-right: 20px;

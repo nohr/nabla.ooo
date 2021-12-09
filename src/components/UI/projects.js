@@ -22,7 +22,7 @@ function Projects() {
     var x = window.matchMedia("(max-width: 768px)");
     let offset = {};
     if (x.matches) { // If media query matches
-        offset = { x: '200px', y: '260px' };
+        offset = { x: '200px', y: '250px' };
     } else {
         if (state.isSett) {
             offset = { x: state.navWidth + state.settWidth - 40, y: '0px' };
