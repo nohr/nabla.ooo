@@ -6,16 +6,25 @@ import Draggable from 'react-draggable'
 import { Porter, Linker } from "./Theme"
 import sound1 from '../Sounds/select.mp3'
 import useSound from 'use-sound'
+// import { useFrame } from '@react-three/fiber'
+
+// function MoveCamera() {
+//     useFrame((state) => {
+//         state.cameraPosition = [60, 15, 0]
+//     })
+// }
 
 function Projects() {
     const port = useRef(null);
     const snap = useSnapshot(state);
     state.selectedImg = null;
     const [dong] = useSound(sound1, { volume: state.sfxVolume });
+
     function select() {
         dong()
         state.isPort = false;
         state.isSett = false;
+        // MoveCamera()
     }
 
     //mobile repositioning - BROKEN

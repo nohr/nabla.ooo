@@ -257,6 +257,27 @@ export const Folder = styled.div`
   display: block;
   cursor: pointer;
 `
+export const SearchWrapper = styled.div`
+  position: relative;
+    display: flex;
+`
+export const SearchBar = styled.input`
+  border: none !important;
+  width: 100%;
+  margin: 3px 0;
+  display: flex;
+  border-radius: 5px;
+  background-color: transparent;
+  box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+  color:  ${props => props.theme.panelColor};
+  padding: 2px 23px 2px 20px;
+
+  &:focus{
+    border: 1px solid ${props => props.theme.panelColor};
+    outline: none;
+    box-shadow: 0 0 15px 1px  ${props => props.theme.panelColor};
+  }
+`
 
 export const GlobalStyle = createGlobalStyle`
     .bigContainer {
@@ -663,7 +684,7 @@ export const GlobalStyle = createGlobalStyle`
     flex-direction: column;
     width: fit-content;
     padding: 20px;
-    align-self: flex-end;
+    align-self: center;
     margin-bottom: 70px;
   }
   .buyBtn{

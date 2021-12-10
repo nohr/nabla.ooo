@@ -2,11 +2,11 @@ import React, { useEffect, useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
-import { GlobalStyle, Navagator, Linker, Folder } from "./Theme"
+import { GlobalStyle, Navagator, Linker, Folder, SearchBar, SearchWrapper } from "./Theme"
 import Projects from "./projects"
 import Settings from "./settings"
 import { ThemeProvider } from "styled-components"
-import { SvgNabla, Spinner, Arrow, SideArrow } from './svg'
+import { SvgNabla, Spinner, Arrow, SideArrow, SearchIcon, ClearIcon } from './svg'
 import Home from '../Stream/Home'
 import Info from '../Stream/Info'
 import Store from '../Stream/Store'
@@ -22,6 +22,21 @@ import {
 } from "react-router-dom"
 import useSound from 'use-sound'
 import db from '../../firebase'
+
+// Search
+function Search() {
+  const Bar = useRef(null);
+  const jar = Bar.current;
+  console.log();
+  return (
+    <SearchWrapper>
+      <SearchIcon />
+      {jar.value && <ClearIcon />}
+      <SearchBar placeholder="Search" type="text" ref={Bar}>
+      </SearchBar>
+    </SearchWrapper>
+  )
+}
 
 //Nav -- Child of Parent: UI
 function Nav() {
@@ -82,6 +97,7 @@ function Nav() {
           <SvgNabla />
           {snap.loading && <Spinner />}
         </div>
+        <Search />
         <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/info">
           Info
         </Linker>
