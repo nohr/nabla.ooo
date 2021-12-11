@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { state } from "./state";
 // import db from "../../firebase";
 // import { useSnapshot } from "valtio";
