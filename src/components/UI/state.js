@@ -38,7 +38,7 @@ export const state = proxy({
         spotIntensity: 6,
         ambIntensity: 0.1,
         rectIntensity: 5,
-        blend: "normal",
+        blend: "color-burn",
         sectorColor: "#006ebc",
     },
     dark: {
