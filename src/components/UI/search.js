@@ -34,7 +34,10 @@ function Search() {
             <SearchIcon />
             {query &&
                 <div
-                    onClick={() => { setQuery('') }}
+                    onClick={() => {
+                        setQuery('')
+                        Bar.current.focus()
+                    }}
                 >
                     <ClearIcon />
                 </div>}
