@@ -203,7 +203,7 @@ padding: 2.5em;
   margin: 20px 0;
 
   .w {
-    text-indent: 10px;
+    text-indent: 5px;
   }
 `
 export const Setter = styled.div`
