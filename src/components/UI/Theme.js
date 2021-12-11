@@ -9,11 +9,12 @@ export const Container = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  text-align: center;
-  position: relative;
+  position: fixed;
+  z-index: 470;
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
   height: 100%;
+  width: 100vw;
   padding: 20px;
   font-size: 14px;
 
@@ -36,7 +37,7 @@ export const Container = styled.div`
     height: auto;
     align-self: center;
     box-shadow: 3px 5px 7px rgba(0,0,0,0.5);
-    /* border: 1px solid ${props => props.theme.panelColor}; */
+    /* border: 1px solid ${props => props.theme.sectorColor}; */
     -webkit-user-drag: none;
     user-select: none;
     -moz-user-select: none;
@@ -58,27 +59,28 @@ export const Container = styled.div`
   }
 `
 export const Sector = styled.div`
-      border-left: solid 1px ${props => props.theme.panelColor};
-      border-right: solid 1px ${props => props.theme.panelColor};
-      display: flex;
-      width: 100%;
-      flex-direction:row;
-      padding: 20px 0 20px 20px;
-      height: 80%;
-      justify-content: space-between;
-      gap: 40px;
-      position: relative;
+border-left: solid 1px ${props => props.theme.sectorColor};
+border-right: solid 1px ${props => props.theme.sectorColor};
+display: flex;
+width: 100%;
+flex-direction:row;
+padding: 20px 0 20px 20px;
+height: 80%;
+justify-content: space-between;
+gap: 40px;
+position: relative;
 
 & .lot{
   position: absolute;
   top: 0;
   left: 0;
   padding-left: 35px; 
+  color: ${props => props.theme.sectorColor};
 }
 `
 export const TextWrapper = styled.div`
 flex-wrap: wrap;
-color: ${props => props.theme.panelColor};
+color: ${props => props.theme.sectorColor};
 font-size: 14px;
 width:50%;
 text-align: left;
@@ -290,16 +292,7 @@ export const SearchBar = styled.input`
   }
 `
 
-export const GlobalStyle = createGlobalStyle`
-    .bigContainer {
-        position: fixed;
-        z-index: 470;
-        top: 0;
-        left: 0;
-        height: 100%;
-        width: 100vw;
-    }
-    
+export const GlobalStyle = createGlobalStyle`    
     //Panel
     .SvgNabla {
         fill: ${props => props.theme.panelColor};

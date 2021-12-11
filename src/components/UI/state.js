@@ -18,6 +18,9 @@ export const state = proxy({
     muted: false,
     navPosition: { x: 0, y: 0 },
     prtPosition: { x: 0, y: 0 },
+    //Search
+    query: null,
+    //Theme
     theme: "light",
     light: {
         panelColor: "#006ebc",
@@ -36,6 +39,7 @@ export const state = proxy({
         ambIntensity: 0.1,
         rectIntensity: 5,
         blend: "normal",
+        sectorColor: "#006ebc",
     },
     dark: {
         panelColor: "#006ebc",
@@ -49,20 +53,21 @@ export const state = proxy({
         CD: "#070707",
         CDHover: '#E3B5A4',
         CDRough: 9,
-        Surface: '#47b3ff',
+        Surface: '#99D5FF',
         spotlight: '#646464',
         spotIntensity: 8,
         ambIntensity: 1,
         rectIntensity: 5,
         blend: "screen",
+        sectorColor: "#006ebc",
     },
     //Canvas
     paused: false,
     userControlled: true,
-    canvasVisible: false,
+    canvasVisible: true,
     CDRotationY: 0.002,
     CDRotationZ: 0.0001,
-    cameraPosition: [20, 15, 0],
+    cameraPosition: [20, 0, 0],
     modalPosition: { x: 0, y: 0 },
     autoRotateSpeed: 0.09,
 });

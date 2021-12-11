@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import Draggable from "react-draggable"
@@ -20,14 +20,14 @@ function SVG(id) {
 
 const Page = React.memo(function Page(id) {
     useDocumentTitle(id.title)
-    const container = useRef(null);
+    // const container = useRef(null);
     const snap = useSnapshot(state);
-    useEffect(() => {
-        state.containerWidth = container.current.getBoundingClientRect().width;
-        // console.log(container.current.getBoundingClientRect());
-    }, [container])
+    // useEffect(() => {
+    //     state.containerWidth = container.current.getBoundingClientRect().width;
+    //     console.log(container.current.getBoundingClientRect());
+    // }, [container])
     return (
-        <div className="bigContainer" ref={container}>
+        <>
             <div className="head">
             <Draggable position={snap.prtPosition} onStart={() => false}>
                     <SVG id={id.id}/>
@@ -37,8 +37,27 @@ const Page = React.memo(function Page(id) {
                 <PageData id={id.id} />
                 {snap.selectedImg && <Modal/>}
             </Container>
-        </div>
+        </>
     )
 })
 
-export { Page }
+const Results = React.memo(function Results() {
+    useDocumentTitle("Results")
+    const snap = useSnapshot(state);
+    return (
+        <>
+        <div className="head">
+            <Draggable position={snap.prtPosition} onStart={() => false}>
+                    <SVG id={snap.query}/>
+            </Draggable>
+            </div>
+            <Container className="container">
+                <div>
+                    {snap.query}
+                </div>
+            </Container>
+        </>
+    )
+})
+
+export { Page, Results }

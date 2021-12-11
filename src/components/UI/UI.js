@@ -1,45 +1,30 @@
-import React, { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
-import { GlobalStyle, Navagator, Linker, Folder, SearchBar, SearchWrapper } from "./Theme"
+import { GlobalStyle, Navagator, Linker, Folder } from "./Theme"
 import Projects from "./projects"
 import Settings from "./settings"
 import { ThemeProvider } from "styled-components"
-import { SvgNabla, Spinner, Arrow, SideArrow, SearchIcon, ClearIcon } from './svg'
+import Search from "./search"
+import { SvgNabla, Spinner, Arrow, SideArrow } from './svg'
 import Home from '../Stream/Home'
 import Info from '../Stream/Info'
 import Store from '../Stream/Store'
 import NotFound from "../Stream/NotFound"
-import { Page } from '../Stream/Page.jsx'
+import { Page, Results } from '../Stream/Page.jsx'
 import sound1 from '../Sounds/select.mp3'
 import sound2 from '../Sounds/open.mp3'
 import sound3 from '../Sounds/close.mp3'
 import {
   BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Redirect
 } from "react-router-dom"
 import useSound from 'use-sound'
 import db from '../../firebase'
 
-// Search
-function Search() {
-  const [query, setQuery] = useState("");
-  return (
-    <SearchWrapper id="search">
-      <SearchIcon />
-      {query && <div onClick={() => { setQuery('') }}><ClearIcon /></div>}
-      <SearchBar
-        placeholder="Search"
-        type="text"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      >
-      </SearchBar>
-    </SearchWrapper>
-  )
-}
 
 //Nav -- Child of Parent: UI
 function Nav() {
@@ -151,51 +136,33 @@ function UI() {
     } else if (state.isSett) {
       state.isPort = false;
     }
-    return (
-      <Router>
-        <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
-          <GlobalStyle />
-          <Nav />
-          {snap.isSett && <Settings />}
-          {snap.isPort && <Projects />}
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/store" component={Store} />
-            <Route path="/info" component={Info} />
-            {snap.works.map((work) => (
-              <Route key={`${work.name}`} path={`/${work.id}`}>
-                <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />
-              </Route>
-            ))}
-            <Route component={NotFound} />
-          </Switch>
-        </ThemeProvider>
-      </Router>
-    )
-  } else {
-    // Desktop
-    return (
-      <Router>
-        <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
-          <GlobalStyle />
-          <Nav />
-          {snap.isSett && <Settings />}
-          {snap.isPort && <Projects />}
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/store" component={Store} />
-            <Route path="/info" component={Info} />
-            {snap.works.map((work) => (
-              <Route key={`${work.name}`} path={`/${work.id}`}>
-                <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />
-              </Route>
-            ))}
-            <Route component={NotFound} />
-          </Switch>
-        </ThemeProvider>
-      </Router>
-    );
   }
+  return (
+    <Router>
+      <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
+        <GlobalStyle />
+        <Nav />
+        {snap.isSett && <Settings />}
+        {snap.isPort && <Projects />}
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/store" component={Store} />
+          <Route path="/info" component={Info} />
+          {snap.works.map((work) => (
+            <Route key={`${work.name}`} path={`/${work.id}`}>
+              <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />
+            </Route>
+          ))}
+          {/* broken - needs UI to rerender */}
+          <Route path={`/${snap.query}-results`}>
+            <Results title={`${snap.query} Results`} />
+          </Route>
+          <Route path="/404" component={NotFound} />
+          <Redirect to="/404" />
+        </Switch>
+      </ThemeProvider>
+    </Router>
+  )
 }
 
 export default UI;

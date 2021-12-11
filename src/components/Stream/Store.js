@@ -3,6 +3,7 @@ import '../../App.css'
 import Draggable from "react-draggable";
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
+import { Container } from "../UI/Theme";
 import useDocumentTitle from "../UI/documentTitle";
 
 function Store() {
@@ -10,13 +11,13 @@ function Store() {
   const snap = useSnapshot(state);
 
   return (
-    <div className="bigContainer">
+    <>
       <div className="head">
         <Draggable position={snap.prtPosition} onStart={() => false}>
           <h1>store</h1>
         </Draggable>
       </div>
-      <div className="container str">
+      <Container className="container">
         <div className="eko">
           <div className="eko-thumb">
             Aa
@@ -31,8 +32,8 @@ function Store() {
             </a>
           </div>
         </div>
-      </div>
-    </div>
+      </Container>
+    </>
   )
 }
 export default Store;
