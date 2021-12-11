@@ -87,7 +87,7 @@ const Settings = function Settings() {
     var x = window.matchMedia("(max-width: 768px)");
     let offset = {};
     if (x.matches) { // If media query matches
-        offset = { x: '0px', y: '250px' };
+        offset = { x: '0px', y: '280px' };
     } else {
         offset = { x: state.navWidth - 20, y: 0 };
     }

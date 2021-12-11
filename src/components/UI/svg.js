@@ -321,6 +321,7 @@ const Search = styled.svg`
     transform: translate(30%, -50%);
     height: 14px;
     fill: ${props => props.theme.panelColor};
+    cursor: default;
   `
 export function SearchIcon() {
 
@@ -338,15 +339,12 @@ const Clear = styled.svg`
     transform: translate(76%, -50%);
     height: 14px;
     fill: ${props => props.theme.panelColor};
+    cursor: pointer;
   `
 export function ClearIcon() {
 
   return (
-    <Clear
-      xmlns="http://www.w3.org/2000/svg"
-      data-name="Layer 1"
-      viewBox="0 0 51.98 51.98"
-    >
+    <Clear viewBox="0 0 51.98 51.98">
       <path d="M44.37 7.6a26 26 0 100 36.77 26 26 0 000-36.77zm-8.13 28.64a2 2 0 01-2.83 0L26 28.82l-7.78 7.77a2 2 0 11-2.83-2.82L23.16 26l-7.42-7.43a2 2 0 112.82-2.82L26 23.16l7.07-7.07a2 2 0 012.83 2.83L28.82 26l7.42 7.42a2 2 0 010 2.82z"></path>
     </Clear>
   )

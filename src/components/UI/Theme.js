@@ -87,7 +87,6 @@ align-self: center;
 padding-left: 20px;
 display: grid;
 grid-template-rows: 40% 50% 10%;
-/* align-items: flex-end; */
 
 & h3{
   clear:both;
@@ -135,11 +134,6 @@ export const ImgWrapper = styled.div`
 
     .img-thumb:hover{
       cursor: pointer;
-    }
-
-    .img-thumb > svg#layer_1{
-      fill: ${props => props.theme.panelColor};
-      stroke: rosybrown;
     }
 
     object{
@@ -190,13 +184,13 @@ export const Navagator = styled.div`
 height: auto;
   padding: 0em 25px 25px 25px;
   position: fixed;
-  /* left: 50%;
-  top: 50%; */
   left: var(--edge);
   top: var(--edge);
   z-index: 5000;
   text-indent: 5px;
+  &:not(#search){
   cursor: all-scroll;
+  }
 `
 export const Porter = styled.div`
 //prt
@@ -223,7 +217,6 @@ padding: 2.5em;
   }
 `
 export const Homer = styled(NavLink)`
-  /* clear: left; */
   height: min-content;
   width: 100%;
   margin: 7px 0 2px 0;
@@ -263,7 +256,7 @@ export const Folder = styled.div`
 `
 export const SearchWrapper = styled.div`
   position: relative;
-    display: flex;
+  display: flex;
 `
 export const SearchBar = styled.input`
   border: none !important;
@@ -278,15 +271,22 @@ export const SearchBar = styled.input`
   user-select: text;
   -moz-user-select: text;
   -webkit-user-select: text;
+  font-size: 13px;
+
+  @media only screen and (max-width: 768px) {
+  padding: 6px 19px 6px 20px;
+  outline: 1px solid ${props => props.theme.panelColor};
+  font-size: 18px;
+  }
 
   &:hover{
-    box-shadow: 0 0 3px 3px  ${props => props.theme.panelColor};
+    box-shadow: 0 0 3px 3px  ${props => props.theme.LiHover};
   }
 
   &:focus{
-    border: 1px solid ${props => props.theme.panelColor};
+    border: 1px solid ${props => props.theme.LiHover};
     outline: none;
-    box-shadow: 0 0 50px 50px  ${props => props.theme.panelColor};
+    box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
   }
 `
 
@@ -299,6 +299,7 @@ export const GlobalStyle = createGlobalStyle`
         height: 100%;
         width: 100vw;
     }
+    
     //Panel
     .SvgNabla {
         fill: ${props => props.theme.panelColor};
@@ -331,6 +332,7 @@ export const GlobalStyle = createGlobalStyle`
       user-select: none;
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
+      mix-blend-mode: ${props => props.theme.blend};
       /*Border*/
       --aug-bl: 12px;
       --aug-tl: 12px;
@@ -424,6 +426,7 @@ export const GlobalStyle = createGlobalStyle`
       pointer-events: none;
       position: absolute;
       z-index: 50;
+      mix-blend-mode: ${props => props.theme.blend} !important;
     }
     .head svg {
       fill: none !important;
@@ -450,14 +453,6 @@ export const GlobalStyle = createGlobalStyle`
       padding: 0;
       stroke: ${props => props.theme.panelColor} !important;
       fill: none;
-    }
-    .cnt {
-      width: 100vw;
-      height: 100%;
-      display: flex !important;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
     }
     .notfound {
       width: 100vw;
@@ -597,6 +592,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   .Panel{
     padding-bottom: 10px;
+    mix-blend-mode: normal;
     /*Border*/
     --aug-bl: 12px;
     --aug-tl: 12px;
@@ -604,11 +600,7 @@ export const GlobalStyle = createGlobalStyle`
     --aug-tr: 10px;
   }
   .nav{
-    grid-column-start: 1;
-    grid-column-end: 4;
-    grid-row-start:1;
-    grid-row-end: 2;
-    width: 90vw;
+    width: 50vw;
     height: min-content;
   }
 
@@ -622,6 +614,8 @@ export const GlobalStyle = createGlobalStyle`
     .w{
       text-indent: 10px;
     }
+    height: 80vw;
+    overflow-x: scroll;
   }
 
   .prt .li{
@@ -641,7 +635,6 @@ export const GlobalStyle = createGlobalStyle`
     grid-row-start: 1;
     grid-row-end: 1;
   }
-
 
   .li{
     font-size: 18px;
@@ -670,6 +663,7 @@ export const GlobalStyle = createGlobalStyle`
   .sector{
     flex-direction: column-reverse;
     padding: 0;
+    height: 95%;
   }
 
   .textWrapper,.imgWrapper{
@@ -677,8 +671,9 @@ export const GlobalStyle = createGlobalStyle`
     height: 50%;
   }
   .imgWrapper{
-    padding: 20px 20px 0 20px;
-    justify-content: center !important;
+    padding-top: 20px;
+    /* This cuts off starting images in carousel no clue why */
+    /* justify-content: center; */
   }
   .textWrapper{
     padding-right: 20px;
@@ -687,6 +682,9 @@ export const GlobalStyle = createGlobalStyle`
         padding:18vw 0;
   }
 
+  .str{
+    align-items: flex-end;
+  }
   .eko {
     flex-direction: column;
     width: fit-content;

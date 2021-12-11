@@ -36,7 +36,7 @@ function Ball(props) {
         {...props}
         castShadow
         receiveShadow
-        material={!clicked ? material1 : material}
+        material={!clicked ? material : material1}
         onClick={(e) => setClick(true)} onTouchEnd={(e) => setClick(false)}
       >
         <sphereGeometry args={[190, 190, 190]} />

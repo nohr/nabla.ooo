@@ -35,7 +35,7 @@ export const state = proxy({
         spotIntensity: 6,
         ambIntensity: 0.1,
         rectIntensity: 5,
-
+        blend: "normal",
     },
     dark: {
         panelColor: "#006ebc",
@@ -46,7 +46,7 @@ export const state = proxy({
         link: "#C6182A",
         LiHover: "#006ebc67",
         LiActiveBackground: "#ebebeb67",
-        CD: "#0A0A0A",
+        CD: "#070707",
         CDHover: '#E3B5A4',
         CDRough: 9,
         Surface: '#47b3ff',
@@ -54,11 +54,12 @@ export const state = proxy({
         spotIntensity: 8,
         ambIntensity: 1,
         rectIntensity: 5,
+        blend: "screen",
     },
     //Canvas
     paused: false,
     userControlled: true,
-    canvasVisible: true,
+    canvasVisible: false,
     CDRotationY: 0.002,
     CDRotationZ: 0.0001,
     cameraPosition: [20, 15, 0],

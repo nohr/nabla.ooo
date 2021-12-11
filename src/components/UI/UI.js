@@ -146,6 +146,11 @@ function UI() {
   var x = window.matchMedia("(max-width: 768px)");
   if (x.matches) {
     // Mobile
+    if (state.isPort) {
+      state.isSett = false;
+    } else if (state.isSett) {
+      state.isPort = false;
+    }
     return (
       <Router>
         <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
