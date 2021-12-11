@@ -1,6 +1,8 @@
 import styled, { createGlobalStyle } from "styled-components"
 import { NavLink } from "react-router-dom"
 
+//Styling for the UI - proceed with caution
+
 export const Container = styled.div`
   display: flex;
   gap: 60px;
@@ -28,8 +30,8 @@ export const Container = styled.div`
 
   & .backdrop object{
     display: block;
-    max-width: 60%;
-    max-height: 80%;
+    max-width: 80%;
+    max-height: 90%;
     width: auto;
     height: auto;
     align-self: center;
@@ -131,10 +133,8 @@ export const ImgWrapper = styled.div`
       pointer-events: all;
     }
 
-
     .img-thumb:hover{
-      cursor: zoom-in;
-      cursor: -webkit-zoom-in;
+      cursor: pointer;
     }
 
     .img-thumb > svg#layer_1{
@@ -196,6 +196,7 @@ height: auto;
   top: var(--edge);
   z-index: 5000;
   text-indent: 5px;
+  cursor: all-scroll;
 `
 export const Porter = styled.div`
 //prt
@@ -224,7 +225,7 @@ padding: 2.5em;
 export const Homer = styled(NavLink)`
   /* clear: left; */
   height: min-content;
-  width: ${props => props.homerWidth || "100%"};
+  width: 100%;
   margin: 7px 0 2px 0;
   padding-top: 3px;
   padding-bottom: 1px;
@@ -256,6 +257,9 @@ export const Folder = styled.div`
   padding: 2px 0;
   display: block;
   cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `
 export const SearchWrapper = styled.div`
   position: relative;
@@ -270,12 +274,19 @@ export const SearchBar = styled.input`
   background-color: transparent;
   box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
   color:  ${props => props.theme.panelColor};
-  padding: 2px 23px 2px 20px;
+  padding: 2px 19px 2px 20px;
+  user-select: text;
+  -moz-user-select: text;
+  -webkit-user-select: text;
+
+  &:hover{
+    box-shadow: 0 0 3px 3px  ${props => props.theme.panelColor};
+  }
 
   &:focus{
     border: 1px solid ${props => props.theme.panelColor};
     outline: none;
-    box-shadow: 0 0 15px 1px  ${props => props.theme.panelColor};
+    box-shadow: 0 0 50px 50px  ${props => props.theme.panelColor};
   }
 `
 
@@ -312,7 +323,6 @@ export const GlobalStyle = createGlobalStyle`
     .Panel {
       display: inline-block;
       width: var(--panelWidth);
-      -webkit-overflow-scrolling: touch;
       overflow: visible;
       scroll-snap-type: none;
       -webkit-user-select: none;
@@ -372,9 +382,6 @@ export const GlobalStyle = createGlobalStyle`
       fill: ${props => props.theme.panelColor};
       height: clamp(8px, 12px, 12px);
       float: right;
-      justify-self: end;
-      align-self: center;
-      margin: auto 5px auto 0;
     }
     .li:hover > svg {
       fill: ${props => props.theme.textHover};
@@ -702,5 +709,4 @@ export const GlobalStyle = createGlobalStyle`
     border-top: 1px solid ${props => props.theme.panelColor};
   }
 }
-
 `

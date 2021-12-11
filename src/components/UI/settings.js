@@ -1,5 +1,4 @@
 //Settings -- Child of Panel
-
 import React, { useEffect, useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
@@ -8,7 +7,7 @@ import { Setter, Folder } from "./Theme"
 import sound1 from '../Sounds/select.mp3'
 import useSound from 'use-sound'
 
-const Settings = React.memo(function Settings() {
+const Settings = function Settings() {
     const sett = useRef(null);
     const snap = useSnapshot(state);
     state.selectedImg = null;
@@ -41,26 +40,32 @@ const Settings = React.memo(function Settings() {
     const canvas = document.getElementsByTagName('canvas')[0];
     function toggleCanvas() {
         if (!state.canvasVisible) {
+            //Show Canvas
             state.canvasVisible = true;
             canvas.style.display = "block";
-            state.CDRotationY = 0.002;
-            state.CDRotationZ = 0.0001;
-            state.autoRotateSpeed = 0.09;
-            state.userControlled = true;
+            if (!state.paused) {
+                state.paused = true
+            } else if (state.paused) {
+                state.paused = true
+            }
         } else if (state.canvasVisible) {
+            //Hide Canvas
             state.canvasVisible = false;
             canvas.style.display = "none";
-            state.paused = true;
-            state.CDRotationY = 0;
-            state.CDRotationZ = 0;
-            state.autoRotateSpeed = 0;
-            state.userControlled = false;
+            if (!state.paused) {
+                state.paused = true;
+                state.CDRotationY = 0;
+                state.CDRotationZ = 0;
+                state.autoRotateSpeed = 0;
+                state.userControlled = false;
+            }
         }
         select()
     }
     //Pause Canvas Animation
     function togglePause() {
         if (!state.paused) {
+            //Pause Canvas
             state.paused = true;
             state.CDRotationY = 0;
             state.CDRotationZ = 0;
@@ -68,6 +73,7 @@ const Settings = React.memo(function Settings() {
             state.userControlled = false;
 
         } else if (state.paused) {
+            //Play Canvas
             state.paused = false;
             state.CDRotationY = 0.002;
             state.CDRotationZ = 0.0001;
@@ -90,7 +96,7 @@ const Settings = React.memo(function Settings() {
         <Draggable position={snap.navPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
             <Setter ref={sett} data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel set">
                 Audio <br />
-                <Folder onClick={() => toggleMute()} className="li w">{!snap.muted ? "Mute Sound" : "Unmute Sound"}</Folder><br />
+                <Folder onClick={() => toggleMute()} className="li w">{!snap.muted ? "Mute Sound FX" : "Unmute Sound FX"}</Folder><br />
                 <br />
                 Display <br />
                 <Folder onClick={() => toggleTheme()} className="li w">{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>
@@ -99,6 +105,6 @@ const Settings = React.memo(function Settings() {
             </Setter>
         </Draggable>
     );
-})
+}
 
 export default Settings

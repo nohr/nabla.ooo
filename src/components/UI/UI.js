@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
@@ -25,14 +25,17 @@ import db from '../../firebase'
 
 // Search
 function Search() {
-  const Bar = useRef(null);
-  const jar = Bar.current;
-  console.log();
+  const [query, setQuery] = useState("");
   return (
-    <SearchWrapper>
+    <SearchWrapper id="search">
       <SearchIcon />
-      {jar.value && <ClearIcon />}
-      <SearchBar placeholder="Search" type="text" ref={Bar}>
+      {query && <div onClick={() => { setQuery('') }}><ClearIcon /></div>}
+      <SearchBar
+        placeholder="Search"
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      >
       </SearchBar>
     </SearchWrapper>
   )
@@ -91,7 +94,7 @@ function Nav() {
 
   return (
     //NAV
-    <Draggable cancel={".li, .nablaWrapper"} bounds=".container" position={nav.position} onDrag={onControlledDrag} >
+    <Draggable cancel={".li, .nablaWrapper, #search"} bounds=".container" position={nav.position} onDrag={onControlledDrag} >
       <Navagator data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" ref={nav} className="Panel nav" portLink={portLink} settLink={settLink}>
         <div className='header' >
           <SvgNabla />

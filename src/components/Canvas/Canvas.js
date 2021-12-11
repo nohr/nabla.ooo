@@ -7,7 +7,6 @@ import { Canvas } from '@react-three/fiber'
 import { softShadows, PerspectiveCamera, OrbitControls, Reflector, useTexture } from '@react-three/drei'
 import { EffectComposer, Noise } from '@react-three/postprocessing'
 
-
 // Canvas
 softShadows();
 
