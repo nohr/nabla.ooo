@@ -37,6 +37,8 @@ export const Container = styled.div`
     height: auto;
     align-self: center;
     box-shadow: 3px 5px 7px rgba(0,0,0,0.5);
+    -webkit-box-shadow:  3px 5px 7px rgba(0,0,0,0.5);
+    -moz-box-shadow:  3px 5px 7px rgba(0,0,0,0.5);
     /* border: 1px solid ${props => props.theme.sectorColor}; */
     -webkit-user-drag: none;
     user-select: none;
@@ -51,7 +53,7 @@ export const Container = styled.div`
   }
 
   & .backdrop object:hover{
-    cursor: all-scroll;
+    cursor: grab;
   }
 
   &:last-child(){
@@ -59,8 +61,9 @@ export const Container = styled.div`
   }
 `
 export const Sector = styled.div`
-border-left: solid 1px ${props => props.theme.sectorColor};
-border-right: solid 1px ${props => props.theme.sectorColor};
+border: solid 1px ;
+border-color: transparent ${props => props.theme.sectorColor} transparent ${props => props.theme.sectorColor};
+border-radius: 75px;
 display: flex;
 width: 100%;
 flex-direction:row;
@@ -72,7 +75,7 @@ position: relative;
 
 & .lot{
   position: absolute;
-  top: 0;
+  /* top: 0; */
   left: 0;
   padding-left: 35px; 
   color: ${props => props.theme.sectorColor};
@@ -113,6 +116,7 @@ overflow-y: scroll;
 export const ImgWrapper = styled.div`
     /* width: 50%; */
     display: flex;
+    align-items: center;
     height: auto;
     text-align: left;
     overflow-x: scroll;
@@ -183,34 +187,41 @@ export const ImgWrapper = styled.div`
 
 export const Navagator = styled.div`
 //nav
-height: auto;
-  padding: 0em 25px 25px 25px;
+  height: auto;
+  padding: 0em 25px 30px 25px;
   position: fixed;
   left: var(--edge);
   top: var(--edge);
   z-index: 5000;
   text-indent: 5px;
   &:not(#search){
-  cursor: all-scroll;
+  cursor: grab;
   }
 `
 export const Porter = styled.div`
 //prt
-padding: 2.5em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 32.5px;
   position: absolute;
-  z-index: 500;
+  z-index: 5000;
   left: var(--edge);
   margin: 20px 0;
+  overflow: auto;
+  text-align: center;
 
-  .w {
+  /* .w {
     text-indent: 5px;
-  }
+  } */
 `
 export const Setter = styled.div`
 //set
-padding: 2.5em;
+  display: flex;
+  flex-direction: column;
+  padding: 32.5px;
   position: absolute;
-  z-index: 500;
+  z-index: 4900;
   left: var(--edge);
   margin: 20px 0;
 
@@ -221,12 +232,15 @@ padding: 2.5em;
 export const Homer = styled(NavLink)`
   height: min-content;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  & svg{
+    align-self:center;
+  }
   margin: 7px 0 2px 0;
   padding-top: 3px;
   padding-bottom: 1px;
-  display: block;
   border-radius: 5px;
-  margin: 0;
   overflow: visible;
 `
 export const Linker = styled(NavLink)`
@@ -265,10 +279,12 @@ export const SearchBar = styled.input`
   width: 100%;
   margin: 3px 0;
   display: flex;
-  border-radius: 5px;
+  border-radius: 8px;
   background-color: transparent;
   box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-  color:  ${props => props.theme.panelColor};
+  -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
+  -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
+  color:  ${props => props.theme.textHover};
   padding: 2px 19px 2px 20px;
   user-select: text;
   -moz-user-select: text;
@@ -281,14 +297,23 @@ export const SearchBar = styled.input`
   font-size: 18px;
   }
 
-  &:hover{
-    box-shadow: 0 0 3px 3px  ${props => props.theme.LiHover};
+  &:hover::placeholder{
+    color: ${props => props.theme.textHover};
   }
-
+  &:hover{
+    background-color:${props => props.theme.LiHover};
+    box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+    -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
+    -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
+  }
+  &:focus::placeholder{
+    color: ${props => props.theme.textHover};
+  }
   &:focus{
-    border: 1px solid ${props => props.theme.LiHover};
-    outline: none;
+    outline: 1px solid ${props => props.theme.panelColor};
     box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
+    -webkit-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
+    -moz-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
   }
 `
 
@@ -315,9 +340,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .Panel {
-      display: inline-block;
       width: var(--panelWidth);
-      overflow: visible;
       scroll-snap-type: none;
       -webkit-user-select: none;
       -moz-user-select: none;
@@ -326,14 +349,19 @@ export const GlobalStyle = createGlobalStyle`
       backdrop-filter: blur(4px);
       -webkit-backdrop-filter: blur(4px);
       mix-blend-mode: ${props => props.theme.blend};
+      border: 1px solid ${props => props.theme.panelColor};
+      color: ${props => props.theme.panelColor};
+      border-radius: 75px;
+      overflow: hidden;
+      height: var(--panelHeight);
       /*Border*/
-      --aug-bl: 12px;
+      /* --aug-bl: 12px;
       --aug-tl: 12px;
       --aug-br: 35px;
       --aug-tr: 18px;
       --aug-border-all: 1px;
       color: ${props => props.theme.panelColor};
-      --aug-border-bg: ${props => props.theme.panelColor};
+      --aug-border-bg: ${props => props.theme.panelColor}; */
     }
     .header {
         border-bottom: 1px solid ${props => props.theme.panelColor};
@@ -341,11 +369,11 @@ export const GlobalStyle = createGlobalStyle`
         padding: 22px 0px 5px;
         display: flex;
         align-items: center;
-        justify-content: flex-start;
+        justify-content: center;
     }
 
     .li{
-      border-radius: 5px;
+      border-radius: 8px;
     }
     .li, .folder {
         color: ${props => props.theme.panelColor};
@@ -353,6 +381,8 @@ export const GlobalStyle = createGlobalStyle`
     .folderActive {
       /* background-color: ${props => props.theme.LiActiveBackground}; */
       box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
       color:  ${props => props.theme.panelColor};
       /* -webkit-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground}; */
       /* -moz-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground}; */
@@ -362,6 +392,8 @@ export const GlobalStyle = createGlobalStyle`
 }
     .folderActive:hover{
       box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
     }
     .folderActive:after{
       border-radius: 5px;
@@ -385,27 +417,53 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .spinner {
-      width: 30px;
-      height: 30px;
+      width: 25px;
+      height: 25px;
       background: none;
       position: absolute;
       z-index: 500;
-      top: calc(var(--edge) + 10px);
-      left: calc(var(--edge) + 90px);
+      pointer-events: none;
+      left: 50%;
+      transform: translate(-50%, 0);
     }
     .spinner path{
         fill: ${props => props.theme.panelColor};
     }
 
+    .grabber{
+      width: 50px;
+      position: absolute;
+      z-index: 500;
+      pointer-events: none;
+      left: 50%;
+      transform: translate(-50%, 0);
+    }
+    .grabber g{
+      fill: ${props => props.theme.panelColor};
+    }
+
     //Stream
+    //container for h1 or svg
+    .head{
+      pointer-events: none;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      z-index: 550;
+      height: var(--panelHeight);
+      width: fit-content;
+      margin-top: 20px;
+      margin-left: calc(var(--panelWidth) + var(--headOffset));
+      mix-blend-mode: ${props => props.theme.blend} !important;
+    }
     h1{
         justify-self: flex-start;
         position: absolute;
-        font-size: 7vw;
+        font-size: 5vw;
         letter-spacing: -0.3vw;
         color: transparent;
         -webkit-text-stroke-width: 1px;
-        margin: 0;
+        margin: var(--headOffset);
         font-family: "ekodigital";
         font-weight: 400;
         font-style: normal;
@@ -415,18 +473,12 @@ export const GlobalStyle = createGlobalStyle`
         user-select: none; /* Standard */
         -webkit-text-stroke-color: ${props => props.theme.panelColor};
     }
-    .head{
-      pointer-events: none;
-      position: absolute;
-      z-index: 50;
-      mix-blend-mode: ${props => props.theme.blend} !important;
-    }
     .head svg {
       fill: none !important;
       stroke:  ${props => props.theme.panelColor} !important;
       stroke-width: 1px;
       position: absolute;
-      width: 50vw;
+      width: 35vw;
       height: auto;
       overflow: visible;
       margin: 20px 20px;
@@ -442,10 +494,13 @@ export const GlobalStyle = createGlobalStyle`
         width: 100vw;
     }
 
-    .HomeCD g{
+    .HomeCD{
       padding: 0;
+      width: 491.75px !important;
       stroke: ${props => props.theme.panelColor} !important;
       fill: none;
+      margin-top: 154px !important; 
+      margin-left: calc(-1 * var(--panelWidth)) !important;
     }
     .notfound {
       width: 100vw;
@@ -472,6 +527,8 @@ export const GlobalStyle = createGlobalStyle`
       align-items: center;
       padding: 30px;
       box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      -webkit-box-shadow:  0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      -moz-box-shadow:  0 8px 32px 0 rgba(0, 0, 0, 0.37);
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       border: 1px solid ${props => props.theme.panelColor};
@@ -546,6 +603,8 @@ export const GlobalStyle = createGlobalStyle`
     :root{
         --theme: ${props => props.theme.sky};
         --panelWidth: 180px;
+        --headOffset: 10px;
+        --panelHeight: 238px;
         --edge: 20px;
       }
     html, body, #root {
@@ -555,8 +614,6 @@ export const GlobalStyle = createGlobalStyle`
   display: none;
 }
 
-
-
 @media only screen and (min-width: 1366px) {
   h1 {
     font-size: 12vw;
@@ -564,6 +621,15 @@ export const GlobalStyle = createGlobalStyle`
 }
 //Not Mobile
 @media only screen and (min-width: 768px) {
+  .info{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+  .info .text{
+    width: 790px;
+    /* margin: 0 30px; */
+  }
   h1 {
     font-size: 14vw;
   }
@@ -584,39 +650,41 @@ export const GlobalStyle = createGlobalStyle`
     background-color: transparent;
   }
   .Panel{
-    padding-bottom: 10px;
     mix-blend-mode: normal;
+    width: 50vw;
+    padding: 0 10px 30px 10px;
     /*Border*/
-    --aug-bl: 12px;
+    /* --aug-bl: 12px;
     --aug-tl: 12px;
     --aug-br: 25px;
-    --aug-tr: 10px;
+    --aug-tr: 10px; */
   }
   .nav{
-    width: 50vw;
     height: min-content;
   }
 
   .prt{
-    width: max-content;
+    /* width: max-content; */
      /*Border*/
-     --aug-bl: 9px;
+     /* --aug-bl: 9px;
     --aug-tl: 9px;
     --aug-br: 25px;
-    --aug-tr: 13px;
+    --aug-tr: 13px; */
     .w{
-      text-indent: 10px;
+    text-indent: 0 !important;
     }
-    height: 80vw;
+    /* height: 80vw; */
     overflow-x: scroll;
   }
 
   .prt .li{
     padding-right: 10px;
+    text-align: center;
   }
 
   .set{
-    width: max-content;
+    /* width: max-content; */
+    padding: 20px;
   }
   .set .li{
     padding-right: 5px;
@@ -651,6 +719,8 @@ export const GlobalStyle = createGlobalStyle`
 
   .head{
     justify-content: center;
+    margin-left: 0;
+
   }
   
   .sector{
@@ -670,6 +740,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   .textWrapper{
     padding-right: 20px;
+    padding-bottom: 30px;
   }
   .img-thumb{
         padding:18vw 0;

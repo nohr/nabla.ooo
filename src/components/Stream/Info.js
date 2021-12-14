@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import '../../App.css'
 import Draggable from "react-draggable";
-import { Container } from "../UI/Theme";
+import { Container } from "../UI/style";
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import useDocumentTitle from "../UI/documentTitle";
@@ -58,13 +58,13 @@ function Info() {
           <h1>info</h1>
         </Draggable>
       </div>
-      <Container className="container">
+      <Container className="container info">
         <p>aite@nabla.ooo</p>
         <ContactForm />
         <img src="https://global.yamaha-motor.com/design_technology/design/concept/motoroid/img/sec03_img05.jpg" alt="bike" />
-        <div>{text}</div>
+        <div className="text">{text}</div>
         <img src="https://global.yamaha-motor.com/design_technology/design/concept/motoroid/img/sec03_img05.jpg" alt="bike" />
-        <div>{text}</div>
+        <div className="text">{text}</div>
       </Container>
     </>
   )

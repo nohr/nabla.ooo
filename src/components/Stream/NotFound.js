@@ -4,7 +4,7 @@ import Draggable from "react-draggable";
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import useDocumentTitle from "../UI/documentTitle";
-import { Container } from "../UI/Theme";
+import { Container } from "../UI/style";
 
 const NotFound = () => {
     const snap = useSnapshot(state);

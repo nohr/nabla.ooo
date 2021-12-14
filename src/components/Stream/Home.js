@@ -1,10 +1,10 @@
 import React from "react";
 import '../../App.css'
-import { Container } from "../UI/Theme";
+import { Container } from "../UI/style";
 import useDocumentTitle from "../UI/documentTitle";
 
 function Home() {
-    useDocumentTitle("Nabla");
+    useDocumentTitle("Nabla - Pre-Alpha Build");
     return (
         <>
             <div className="head">

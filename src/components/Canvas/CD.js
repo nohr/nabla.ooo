@@ -25,37 +25,19 @@ function Ball(props) {
     opacity: 1,
   })
 
-  const [hovered, setHover] = useState(false);
   const [clicked, setClick] = useState(false);
 
-  var x = window.matchMedia("(max-width: 768px)");
-  if (x.matches) {
-    // Mobile
-    return (
-      <mesh
-        {...props}
-        castShadow
-        receiveShadow
-        material={!clicked ? material : material1}
-        onClick={(e) => setClick(true)} onTouchEnd={(e) => setClick(false)}
-      >
-        <sphereGeometry args={[190, 190, 190]} />
-      </mesh>
-    )
-  } else {
-    // Desktop
-    return (
-      <mesh
-        {...props}
-        castShadow
-        receiveShadow
-        material={!hovered ? material : material1}
-        onPointerOver={(e) => setHover(true)} onPointerOut={(e) => setHover(false)}
-      >
-        <sphereGeometry args={[190, 190, 190]} />
-      </mesh>
-    )
-  }
+  return (
+    <mesh
+      {...props}
+      castShadow
+      receiveShadow
+      material={!clicked ? material : material1}
+      onClick={(e) => { !clicked ? setClick(true) : setClick(false) }}
+    >
+      <sphereGeometry args={[190, 190, 190]} />
+    </mesh>
+  )
 }
 
 export default function CD(props) {

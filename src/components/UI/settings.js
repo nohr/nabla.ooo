@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
-import { Setter, Folder } from "./Theme"
+import { Setter, Folder } from "./style"
 import sound1 from '../Sounds/select.mp3'
 import useSound from 'use-sound'
 
@@ -87,14 +87,14 @@ const Settings = function Settings() {
     var x = window.matchMedia("(max-width: 768px)");
     let offset = {};
     if (x.matches) { // If media query matches
-        offset = { x: '0px', y: '280px' };
+        offset = { x: '0px', y: '340px' };
     } else {
-        offset = { x: state.navWidth - 20, y: 0 };
+        offset = { x: state.navWidth + 10, y: 0 };
     }
 
     return (
         <Draggable position={snap.navPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
-            <Setter ref={sett} data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" className="Panel set">
+            <Setter ref={sett} className="Panel set">
                 Audio <br />
                 <Folder onClick={() => toggleMute()} className="li w">{!snap.muted ? "Mute Sound FX" : "Unmute Sound FX"}</Folder><br />
                 <br />

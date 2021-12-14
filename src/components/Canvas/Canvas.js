@@ -38,7 +38,7 @@ function Floor() {
         <Material
           color={state.theme === 'light' ? snap.light.Surface : snap.dark.Surface}
           metalness={0}
-          roughness={0}
+          roughness={state.theme === 'light' ? snap.light.SurfaceRough : snap.dark.SurfaceRough}
           roughnessMap={roughness}
           aoMap={ao}
           normalMap={normal}
@@ -57,8 +57,8 @@ function CanvasComp() {
   const { height, width } = useWindowDimensions();
   const snap = useSnapshot(state);
   return (
-    <Canvas shadowMap colorManagement pixelRatio={[1, 1.5]} frameloop="demand" performance={{ min: 0.1 }}>
-      <PerspectiveCamera makeDefault position={snap.cameraPosition} rotation={[0, Math.PI, Math.PI]} near={.1} fov={20} aspect={width / height} far={40} />
+    <Canvas shadowMap colorManagement pixelRatio={[1, 1.5]} frameloop="demand" performance={{ min: 0.1 }} onCreated={!snap.loading}>
+      <PerspectiveCamera makeDefault position={snap.cameraPosition} rotation={[0, Math.PI, Math.PI]} near={.1} fov={20} aspect={width / height} far={70} />
       <fog attach="fog" args={[state.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, 40]} />
       <Suspense fallback={null}>
         <spotLight castShadow intensity={state.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}

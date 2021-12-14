@@ -2,12 +2,12 @@ import React, { useEffect, useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
-import { GlobalStyle, Navagator, Linker, Folder } from "./Theme"
+import { GlobalStyle, Navagator, Linker, Folder } from "./style"
 import Projects from "./projects"
 import Settings from "./settings"
 import { ThemeProvider } from "styled-components"
 import Search from "./search"
-import { SvgNabla, Spinner, Arrow, SideArrow } from './svg'
+import { SvgNabla, Spinner, Arrow, SideArrow, Grabber } from './svg'
 import Home from '../Stream/Home'
 import Info from '../Stream/Info'
 import Store from '../Stream/Store'
@@ -19,8 +19,7 @@ import sound3 from '../Sounds/close.mp3'
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Redirect
+  Route
 } from "react-router-dom"
 import useSound from 'use-sound'
 import db from '../../firebase'
@@ -80,10 +79,9 @@ function Nav() {
   return (
     //NAV
     <Draggable cancel={".li, .nablaWrapper, #search"} bounds=".container" position={nav.position} onDrag={onControlledDrag} >
-      <Navagator data-augmented-ui="tl-2-clip-y tr-2-clip-x br-clip bl-2-clip-y border" ref={nav} className="Panel nav" portLink={portLink} settLink={settLink}>
+      <Navagator ref={nav} className="Panel nav" portLink={portLink} settLink={settLink}>
         <div className='header' >
           <SvgNabla />
-          {snap.loading && <Spinner />}
         </div>
         <Search />
         <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/info">
@@ -100,6 +98,7 @@ function Nav() {
           Settings
           {snap.isSett ? <SideArrow /> : <Arrow />}
         </Folder>
+        {snap.loading ? <Spinner /> : <Grabber />}
       </Navagator>
     </Draggable>
   )
@@ -158,7 +157,7 @@ function UI() {
             <Results title={`${snap.query} Results`} />
           </Route>
           <Route path="/404" component={NotFound} />
-          <Redirect to="/404" />
+          {/* <Redirect from="*" to="/404" /> */}
         </Switch>
       </ThemeProvider>
     </Router>

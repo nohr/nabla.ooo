@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import db from '../../firebase'
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
-import { ImgWrapper, Sector, TextWrapper } from "../UI/Theme"
+import { ImgWrapper, Sector, TextWrapper } from "../UI/style"
 import { motion } from 'framer-motion'
 // import '@iconfu/svg-inject.min.js'
 
@@ -119,8 +119,8 @@ const PageData = React.memo(function PageData(id, setSelectedImg) {
         <>
             {snap.sectors.map((work) => (
                 <Sector key={`${Math.random()}`} className="sector">
-                    <span key={`${Math.random()}`} className="lot">LOT#: {Math.random()}</span>
                     <TextWrapper key={`${Math.random()}`} className="textWrapper">
+                        <span key={`${Math.random()}`} className="lot">LOT#: {Math.random()}</span>
                         <h3 key={`${work.projectName}`}>{work.projectName}</h3>
                         <p key={`${work.statement}`}>{work.statement}</p>
                         <div style={{ display: "flex", justifyContent: "space-between" }}>

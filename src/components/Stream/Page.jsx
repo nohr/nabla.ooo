@@ -3,7 +3,7 @@ import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import Draggable from "react-draggable"
 import '../../App.css'
-import { Container } from "../UI/Theme"
+import { Container } from "../UI/style"
 import PageData from "./PageData";
 import Modal from "../UI/Modal";
 import useDocumentTitle from '../UI/documentTitle'
