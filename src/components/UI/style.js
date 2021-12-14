@@ -346,6 +346,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .Panel {
+      background-color: #00000000;
       width: var(--panelWidth);
       scroll-snap-type: none;
       -webkit-user-select: none;

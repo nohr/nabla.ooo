@@ -24,7 +24,6 @@ export const state = proxy({
     theme: "light",
     light: {
         panelColor: "#006ebc",
-        panelBg: "#ebebeb80",
         textHover: "#F3E8EE",
         placeholder: "#006ebc",
         sky: "#c3c3c3",
@@ -47,7 +46,6 @@ export const state = proxy({
     },
     dark: {
         panelColor: "#00DCFF",
-        panelBg: "#64646460",
         textHover: "#F3E8EE",
         placeholder: "unset",
         sky: "#1F1F1F",
