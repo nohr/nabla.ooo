@@ -540,7 +540,7 @@ export const GlobalStyle = createGlobalStyle`
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
       border: 1px solid ${props => props.theme.panelColor};
-      border-radius: 10px;
+      border-radius: 75px;
       overflow: visible;
     }
     .eko-thumb{

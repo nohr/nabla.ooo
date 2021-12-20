@@ -25,7 +25,7 @@ function Store() {
           <div className="desc">
             <div className="title"> <p>Eko Digital</p></div>
             Our first display font offers a stencil with a distinct futuristic style. <br />
-            <span style={{ opacity: ".5" }}>Just what your acid graphics were missing!</span>
+            <i style={{ opacity: ".5" }}>Just what your acid graphics were missing!</i>
             <br />
             <a className="buyBtn" href="https://nablaooo.gumroad.com/l/ekodigi" target="_blank" rel="noopener noreferrer">
               $30
