@@ -43,8 +43,8 @@ function Ball(props) {
 export default function CD(props) {
   const group = useRef()
   useFrame(() => {
+    group.current.rotation.x += state.CDRotationX;
     group.current.rotation.y += state.CDRotationY;
-    group.current.rotation.z += state.CDRotationZ;
   });
 
   //  const material = new THREE.MeshPhysicalMaterial({
@@ -62,7 +62,8 @@ export default function CD(props) {
 
   return (
     <group  {...props} dispose={null} >
-      <group ref={group} position={[0, 2, 0]} receiveShadow castShadow >
+      <group ref={group} position={[0, 2, 0]}
+        rotation={[-Math.PI / 2, 0, Math.PI / 2]} receiveShadow castShadow >
         <group position={[0, 0, 1]} scale={.01}>
           <Ball position={[5.28, 0, -265.23]} />
           <Ball position={[306.5, 0, 134.46]} />

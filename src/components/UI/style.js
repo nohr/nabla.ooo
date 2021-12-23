@@ -300,7 +300,7 @@ export const SearchBar = styled.input`
   }
 
   &::placeholder{
-    color: ;
+    color: ${props => props.theme.panelColor};
   }
 
   &:hover::placeholder{
@@ -316,6 +316,7 @@ export const SearchBar = styled.input`
     color: ${props => props.theme.textHover};
   }
   &:focus{
+    background-color:${props => props.theme.LiHover};
     outline: 1px solid ${props => props.theme.panelColor};
     box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
     -webkit-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
@@ -631,6 +632,7 @@ export const GlobalStyle = createGlobalStyle`
     flex-direction: column;
     flex-wrap: nowrap;
     justify-content: space-between;
+    padding-bottom: 60px;
   }
   .info .text{
     width: 590px;

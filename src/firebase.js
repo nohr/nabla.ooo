@@ -3,7 +3,7 @@ require('firebase/firestore')
 require('firebase/performance')
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBAYRsOfA7o9h6HPzGjTwlszb5zab0dgLQ",
+  apiKey: '${{ secrets.FIREBASE_NABLA_7_APIKEY }}',
   authDomain: "nabla7.firebaseapp.com",
   projectId: "nabla7",
   storageBucket: "nabla7.appspot.com",

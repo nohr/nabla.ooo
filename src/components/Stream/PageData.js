@@ -115,6 +115,7 @@ const ImgGrid = ({ work }) => {
 const PageData = React.memo(function PageData(id, setSelectedImg) {
     const snap = useSnapshot(state);
     Setup(id);
+    console.log(state.sectors);
     return (
         <>
             {snap.sectors.map((work) => (
