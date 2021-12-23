@@ -73,6 +73,8 @@ justify-content: space-between;
 gap: 40px;
 position: relative;
 overflow: hidden;
+backdrop-filter: blur(8px);
+-webkit-backdrop-filter: blur(8px);
 
 & .lot{
   position: absolute;
@@ -200,7 +202,7 @@ export const Navagator = styled.div`
   }
 `
 export const Porter = styled.div`
-//prt
+//projects
   /* display: flex; */
   flex-direction: column;
   justify-content: center;
@@ -218,14 +220,21 @@ export const Porter = styled.div`
 
 `
 export const Setter = styled.div`
-//set
+//setings
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 32.5px;
   position: absolute;
   z-index: 4900;
   left: var(--edge);
   margin: 20px 0;
+
+  p{
+    margin: 0 auto;
+    text-decoration: underline;
+  }
 
   .w {
     text-indent: 5px;
@@ -535,12 +544,13 @@ export const GlobalStyle = createGlobalStyle`
       align-self: center;
       align-items: center;
       padding: 30px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
       -webkit-box-shadow:  0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      -moz-box-shadow:  0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      -moz-box-shadow:  0 8px 32px 0 rgba(0, 0, 0, 0.37); */
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
-      border: 1px solid ${props => props.theme.panelColor};
+      border: 1px solid;
+      border-color: transparent ${props => props.theme.sectorColor} transparent ${props => props.theme.sectorColor};
       border-radius: 75px;
       overflow: visible;
     }

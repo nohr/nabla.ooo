@@ -1,4 +1,4 @@
-import * as React from "react"
+import React, { useRef } from "react"
 import useSound from 'use-sound'
 import home from '../Sounds/home.mp3'
 import { Homer } from './style'
@@ -102,12 +102,13 @@ export function Spinner() {
 }
 
 export function Grabber() {
-  const handle = document.getElementsByClassName('grabber')[0];
+  const handle = useRef();
+  // const handle = document.getElementsByClassName('grabber')[0];
   function handleEvent(e) {
     if (e.type === "mousedown") {
-      handle.setAttribute("style", "fill-opacity: 0% !important; stroke-width: 1px !important;");
+      handle.current.setAttribute("style", "fill-opacity: 0% !important; stroke-width: 1px !important;");
     } else {
-      handle.setAttribute("style", "fill-opacity: 100% !important; stroke-width: 0px !important;");
+      handle.current.setAttribute("style", "fill-opacity: 100% !important; stroke-width: 0px !important;");
     }
   }
   return (
@@ -117,6 +118,7 @@ export function Grabber() {
       data-name="Layer 1"
       viewBox="0 0 50 25"
       onMouseDown={handleEvent} onMouseUp={handleEvent}
+      ref={handle}
     >
       <g>
         <circle vectorEffect="non-scaling-stroke" cx="10.5" cy="12.5" r="3.18"></circle>
