@@ -231,13 +231,17 @@ export const Setter = styled.div`
   left: var(--edge);
   margin: 20px 0;
 
+  *{
+    width: min-content;
+  }
+
+  .li{
+    justify-content: center;
+  }
+
   p{
     margin: 0 auto;
     text-decoration: underline;
-  }
-
-  .w {
-    text-indent: 5px;
   }
 `
 export const Homer = styled(NavLink)`
