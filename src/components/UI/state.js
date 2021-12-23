@@ -74,7 +74,7 @@ export const state = proxy({
     CDRotationX: 0.002,
     CDRotationY: 0.002,
     CDRotationZ: 0.0001,
-    cameraPosition: [20, 0, 0],
+    cameraPosition: [20, 10, 0],
     modalPosition: { x: 0, y: 0 },
     autoRotateSpeed: 0.09,
 });

@@ -88,7 +88,7 @@ function CanvasComp() {
         enablePan={false}
         autoRotate={true}
         autoRotateSpeed={state.autoRotateSpeed}
-        minPolarAngle={Math.PI / 2.5}
+        minPolarAngle={Math.PI / 4}
         maxPolarAngle={Math.PI / 2}
         minDistance={20}
         maxDistance={36}
