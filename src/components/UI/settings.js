@@ -96,7 +96,7 @@ const Settings = function Settings() {
         <Draggable position={snap.navPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
             <Setter ref={sett} className="Panel set">
                 <p>Audio</p>
-                <Folder onClick={() => toggleMute()} className="li w">{!snap.muted ? "Mute Sound FX" : "Unmute Sound FX"}</Folder><br />
+                <Folder onClick={() => toggleMute()} className="li w">{!snap.muted ? "Mute SFX" : "Unmute SFX"}</Folder><br />
                 <br />
                 <p>Display</p>
                 <Folder onClick={() => toggleTheme()} className="li w">{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>
