@@ -35,7 +35,7 @@ function Ball(props) {
       material={!clicked ? material : material1}
       onClick={(e) => { !clicked ? setClick(true) : setClick(false) }}
     >
-      <sphereGeometry args={[190, 190, 190]} />
+      <sphereGeometry args={[220, 220, 220]} />
     </mesh>
   )
 }

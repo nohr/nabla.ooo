@@ -34,8 +34,8 @@ const Page = React.memo(function Page(id) {
             </Draggable>
             </div>
             <Container className="container">
-                <PageData id={id.id} />
-                {snap.selectedImg && <Modal/>}
+                <PageData id={id.id}/>
+                    {snap.selectedImg && <Modal />}
             </Container>
         </>
     )

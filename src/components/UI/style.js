@@ -63,38 +63,38 @@ export const Container = styled.div`
 export const Sector = styled.div`
 border: solid 1px ;
 border-color: transparent ${props => props.theme.sectorColor} transparent ${props => props.theme.sectorColor};
-border-radius: 75px;
+/* border-radius: 75px; */
 display: flex;
 width: 100%;
-flex-direction:row;
-padding: 20px 0 20px 20px;
-height: 80%;
+flex-direction:row-reverse;
+padding: 0px 20px 0px 0px;
+height: 90%;
 justify-content: space-between;
-gap: 40px;
+gap: 20px;
 position: relative;
 overflow: hidden;
-backdrop-filter: blur(8px);
--webkit-backdrop-filter: blur(8px);
+backdrop-filter: blur(var(--blur));
+-webkit-backdrop-filter: blur(var(--blur));
 
 & .lot{
-  position: absolute;
-  /* top: 0; */
-  left: 0;
-  padding-left: 35px; 
   color: ${props => props.theme.sectorColor};
 }
 `
 export const TextWrapper = styled.div`
-flex-wrap: wrap;
-color: ${props => props.theme.sectorColor};
-font-size: 14px;
-width:50%;
-text-align: left;
-height: 100%;
-align-self: center;
-padding-left: 20px;
-display: grid;
-grid-template-rows: 40% 50% 10%;
+  width:40%;
+  flex-wrap: wrap;
+  color: ${props => props.theme.sectorColor};
+  font-size: 14px;
+  text-align: left;
+  height: 100%;
+  align-self: center;
+  padding-left: 20px;
+  display: grid;
+  grid-template-rows: 2% 38% 50% 10%;
+  
+  @media only screen and (max-width: 768px) {
+  width: 50%;
+  }
 
 & h3{
   clear:both;
@@ -102,7 +102,7 @@ grid-template-rows: 40% 50% 10%;
 }
 
 & h4, & h5{
-  align-self: center;
+  align-self: flex-end;
 }
 & p {
 text-indent: 2em;
@@ -117,25 +117,27 @@ overflow-y: scroll;
 
 `
 export const ImgWrapper = styled.div`
-    /* width: 50%; */
+    width: 60%;
     display: flex;
-    padding: 20px 0;
     height: auto;
-    text-align: left;
     overflow-x: scroll;
     overflow-y: hidden;
     flex-direction: row;
     flex-wrap: nowrap;
-    gap: 20px
-;
-@media only screen and (min-width: 768px) {
-  width: 50%;
-}
+    gap: 20px;
+    
+    @media only screen and (max-width: 768px) {
+      width: 50%;
+    }
+
+    .img-thumb:only-child{
+      margin: 0 auto;
+    }
 
     .img-thumb{
       overflow: hidden;
       width: 0;
-      padding: 0 18vw;
+      padding: 0 25vw;
       position: relative;
       opacity: 0.8;
       pointer-events: all;
@@ -206,7 +208,7 @@ export const Porter = styled.div`
   /* display: flex; */
   flex-direction: column;
   justify-content: center;
-  padding: 32.5px;
+  padding: 16.25px 32.5px;
   position: absolute;
   z-index: 5000;
   left: var(--edge);
@@ -240,7 +242,7 @@ export const Setter = styled.div`
   }
 
   p{
-    margin: 0 auto;
+    margin: 0 auto 5px auto;
     text-decoration: underline;
   }
 `
@@ -249,14 +251,33 @@ export const Homer = styled(NavLink)`
   width: 100%;
   display: flex;
   justify-content: center;
-  & svg{
-    align-self:center;
-  }
   margin: 7px 0 2px 0;
   padding-top: 3px;
   padding-bottom: 1px;
-  border-radius: 5px;
+  border-radius: 12px;
   overflow: visible;
+
+  & svg{
+    align-self:center;
+    fill: ${props => props.theme.panelColor};
+    color: ${props => props.theme.panelColor};
+    /* -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.panelColor});
+    filter: drop-shadow(1px 1px 3px ${props => props.theme.panelColor}); */
+  }
+
+  &:hover {
+    background-color: ${props => props.theme.LiHover};
+    -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
+    -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
+    box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
+  }
+
+  &:hover > svg{
+    fill: ${props => props.theme.textHover};
+    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
+    filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
+  }
+
 `
 export const Linker = styled(NavLink)`
   text-decoration: none;
@@ -294,7 +315,7 @@ export const SearchBar = styled.input`
   width: 100%;
   margin: 3px 0;
   display: flex;
-  border-radius: 8px;
+  border-radius: 12px;
   background-color: transparent;
   box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
   -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
@@ -338,27 +359,19 @@ export const SearchBar = styled.input`
 `
 
 export const GlobalStyle = createGlobalStyle`    
+    //App
+    :root{
+        --theme: ${props => props.theme.sky};
+        --panelWidth: 180px;
+        --headOffset: 10px;
+        --panelHeight: 238px;
+        --edge: 20px;
+        --blur: 10px;
+    }
+    html, body, #root {
+        background-color: ${props => props.theme.sky};
+    }
     //Panel
-    .SvgNabla {
-        fill: ${props => props.theme.panelColor};
-        color: ${props => props.theme.panelColor};
-        -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.panelColor});
-        filter: drop-shadow(1px 1px 3px ${props => props.theme.panelColor});
-    }
-
-    .nablaWrapper:hover {
-        background-color: ${props => props.theme.LiHover};
-        -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
-        -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
-        box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
-    }
-
-    .nablaWrapper:hover > svg{
-        fill: ${props => props.theme.textHover};
-        -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
-        filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
-    }
-
     .Panel {
       background-color: #00000000;
       width: var(--panelWidth);
@@ -367,12 +380,12 @@ export const GlobalStyle = createGlobalStyle`
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
       mix-blend-mode: ${props => props.theme.blend};
       border: 1px solid ${props => props.theme.panelColor};
       color: ${props => props.theme.panelColor};
-      border-radius: 75px;
+      border-radius: 175px;
       overflow: hidden;
       height: var(--panelHeight);
       /*Border*/
@@ -394,7 +407,7 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .li{
-      border-radius: 8px;
+      border-radius: 12px;
     }
     .li, .folder {
         color: ${props => props.theme.panelColor};
@@ -405,15 +418,10 @@ export const GlobalStyle = createGlobalStyle`
       -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
       -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
       color:  ${props => props.theme.panelColor};
-      /* -webkit-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground}; */
-      /* -moz-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground}; */
-      /* box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground}; */
-      /* text-shadow: 1px 1px 3px #ebebeb; */
       font-style: italic;
-}
+    }
     .folderActive:hover{
       box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
       -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
     }
     .folderActive:after{
@@ -425,6 +433,7 @@ export const GlobalStyle = createGlobalStyle`
       -webkit-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
       -moz-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
       box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
+      text-shadow: 1px 1px 3px #ebebeb;
     }
     .arrow {
       fill: ${props => props.theme.panelColor};
@@ -455,7 +464,6 @@ export const GlobalStyle = createGlobalStyle`
       width: 50px;
       position: absolute;
       z-index: 500;
-      /* pointer-events: none; */
       left: 50%;
       transform: translate(-50%, 0);
       stroke: ${props => props.theme.panelColor};
@@ -547,15 +555,15 @@ export const GlobalStyle = createGlobalStyle`
       display: flex;
       align-self: center;
       align-items: center;
-      padding: 30px;
-      /* box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      padding: 10px 30px;
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
       -webkit-box-shadow:  0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      -moz-box-shadow:  0 8px 32px 0 rgba(0, 0, 0, 0.37); */
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      -moz-box-shadow:  0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
       border: 1px solid;
-      border-color: transparent ${props => props.theme.sectorColor} transparent ${props => props.theme.sectorColor};
-      border-radius: 75px;
+      border-color:  ${props => props.theme.sectorColor};
+      border-radius: 200px;
       overflow: visible;
     }
     .eko-thumb{
@@ -622,17 +630,6 @@ export const GlobalStyle = createGlobalStyle`
       -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
       box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
     }
-    //App
-    :root{
-        --theme: ${props => props.theme.sky};
-        --panelWidth: 180px;
-        --headOffset: 10px;
-        --panelHeight: 238px;
-        --edge: 20px;
-      }
-    html, body, #root {
-        background-color: ${props => props.theme.sky};
-}
 
 @media only screen and (min-width: 1366px) {
   h1 {
@@ -662,7 +659,7 @@ export const GlobalStyle = createGlobalStyle`
   }
   .eko-thumb {
     border-right: 1px solid ${props => props.theme.panelColor};
-    padding-top: 70px;
+    padding-top: 30px;
   }
 }
 

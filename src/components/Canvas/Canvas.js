@@ -80,14 +80,14 @@ function CanvasComp() {
           <Floor />
         </group>
         <EffectComposer>
-          <Noise opacity={.059} />
+          <Noise opacity={snap.theme === 'light' ? snap.light.noise : snap.dark.noise} />
         </EffectComposer>
       </Suspense>
       <OrbitControls
         enabled={snap.userControlled}
         enablePan={false}
         autoRotate={true}
-        autoRotateSpeed={state.autoRotateSpeed}
+        autoRotateSpeed={snap.autoRotateSpeed}
         minPolarAngle={Math.PI / 4}
         maxPolarAngle={Math.PI / 2}
         minDistance={20}
