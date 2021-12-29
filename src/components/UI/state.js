@@ -19,7 +19,7 @@ export const state = proxy({
     navPosition: { x: 0, y: 0 },
     prtPosition: { x: 0, y: 0 },
     //Search
-    query: null,
+    query: '',
     //Theme
     theme: "light",
     light: {
@@ -40,7 +40,6 @@ export const state = proxy({
         ambIntensity: 0.1,
         rectIntensity: 5,
         blend: "unset",
-        sectorColor: "#0074B0",
         searchFocus: "0 0 50px 50px",
         backdrop: "rgba(255, 255, 255, 0.50)",
         noise: .059,
@@ -64,7 +63,6 @@ export const state = proxy({
         ambIntensity: 0.8,
         rectIntensity: 5,
         blend: "unset",
-        sectorColor: "#5CBBFF",
         searchFocus: "0 0 0px 0px",
         backdrop: "rgba(0, 0, 0, 0.50)",
         noise: .035,

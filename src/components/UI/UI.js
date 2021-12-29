@@ -78,13 +78,13 @@ function Nav() {
 
   return (
     //NAV
-    <Draggable cancel={".li, .nablaWrapper, #search"} bounds=".container" position={nav.position} onDrag={onControlledDrag} >
+    <Draggable cancel={".li, .nablaWrapper, #search"} handle=".grabber" bounds=".container" position={nav.position} onDrag={onControlledDrag} >
       <Navagator ref={nav} className="Panel nav" portLink={portLink} settLink={settLink}>
         <div className='header' >
           <SvgNabla />
         </div>
         <Search />
-        <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/info">
+        <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/info" style={{ textDecoration: "line-through" }}>
           Info
         </Linker>
         <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/store">

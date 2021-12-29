@@ -39,7 +39,7 @@ export const Container = styled.div`
     box-shadow: 3px 5px 7px rgba(0,0,0,0.5);
     -webkit-box-shadow:  3px 5px 7px rgba(0,0,0,0.5);
     -moz-box-shadow:  3px 5px 7px rgba(0,0,0,0.5);
-    /* border: 1px solid ${props => props.theme.sectorColor}; */
+    /* border: 1px solid ${props => props.theme.panelColor}; */
     -webkit-user-drag: none;
     user-select: none;
     -moz-user-select: none;
@@ -62,7 +62,7 @@ export const Container = styled.div`
 `
 export const Sector = styled.div`
 border: solid 1px ;
-border-color: transparent ${props => props.theme.sectorColor} transparent ${props => props.theme.sectorColor};
+border-color: transparent ${props => props.theme.panelColor} transparent ${props => props.theme.panelColor};
 /* border-radius: 75px; */
 display: flex;
 width: 100%;
@@ -77,13 +77,13 @@ backdrop-filter: blur(var(--blur));
 -webkit-backdrop-filter: blur(var(--blur));
 
 & .lot{
-  color: ${props => props.theme.sectorColor};
+  color: ${props => props.theme.panelColor};
 }
 `
 export const TextWrapper = styled.div`
   width:40%;
   flex-wrap: wrap;
-  color: ${props => props.theme.sectorColor};
+  color: ${props => props.theme.panelColor};
   font-size: 14px;
   text-align: left;
   height: 100%;
@@ -132,6 +132,7 @@ export const ImgWrapper = styled.div`
 
     .img-thumb:only-child{
       margin: 0 auto;
+      padding: 0 28vw;
     }
 
     .img-thumb{
@@ -198,9 +199,10 @@ export const Navagator = styled.div`
   left: var(--edge);
   top: var(--edge);
   z-index: 5000;
-  text-indent: 5px;
-  &:not(#search){
-  cursor: grab;
+  text-indent: 20px;
+
+  & .grabber{  
+    cursor: grab;
   }
 `
 export const Porter = styled.div`
@@ -214,10 +216,14 @@ export const Porter = styled.div`
   left: var(--edge);
   margin: 20px 0;
   overflow: scroll !important;
-  text-align: center;
+  text-align: end;
 
   &::-webkit-scrollbar{
     display: none;
+  }
+
+  & .li{
+    padding-right: 20px;
   }
 
 `
@@ -254,7 +260,7 @@ export const Homer = styled(NavLink)`
   margin: 7px 0 2px 0;
   padding-top: 3px;
   padding-bottom: 1px;
-  border-radius: 12px;
+  border-radius: 120px;
   overflow: visible;
 
   & svg{
@@ -270,12 +276,14 @@ export const Homer = styled(NavLink)`
     -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
     -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
     box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
+    transition: 0.3s;
   }
 
   &:hover > svg{
     fill: ${props => props.theme.textHover};
     -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
     filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
+    transition: 0.3s;
   }
 
 `
@@ -300,6 +308,7 @@ export const Folder = styled.div`
   width: 100%;
   margin: 3px 0;
   padding: 2px 0;
+  padding-right: 5px;
   display: block;
   cursor: pointer;
   display: flex;
@@ -345,9 +354,11 @@ export const SearchBar = styled.input`
     box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
     -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
     -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
+    transition: 0.3s;
   }
   &:focus::placeholder{
     color: ${props => props.theme.textHover};
+    transition: 0.3s;
   }
   &:focus{
     background-color:${props => props.theme.LiHover};
@@ -355,6 +366,7 @@ export const SearchBar = styled.input`
     box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
     -webkit-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
     -moz-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
+    transition: 0.3s;
   }
 `
 
@@ -434,6 +446,7 @@ export const GlobalStyle = createGlobalStyle`
       -moz-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
       box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
       text-shadow: 1px 1px 3px #ebebeb;
+      transition: 0.3s;
     }
     .arrow {
       fill: ${props => props.theme.panelColor};
@@ -562,7 +575,7 @@ export const GlobalStyle = createGlobalStyle`
       backdrop-filter: blur(var(--blur));
       -webkit-backdrop-filter: blur(var(--blur));
       border: 1px solid;
-      border-color:  ${props => props.theme.sectorColor};
+      border-color:  ${props => props.theme.panelColor};
       border-radius: 200px;
       overflow: visible;
     }

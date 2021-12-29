@@ -44,6 +44,7 @@ const Page = React.memo(function Page(id) {
 const Results = React.memo(function Results() {
     useDocumentTitle("Results")
     const snap = useSnapshot(state);
+    console.log(state.query);
     return (
         <>
         <div className="head">

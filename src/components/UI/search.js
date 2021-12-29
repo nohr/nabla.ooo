@@ -1,7 +1,5 @@
 import { useRef, useState, useEffect } from "react";
 import { state } from "./state";
-// import db from "../../firebase";
-// import { useSnapshot } from "valtio";
 import { SearchWrapper, SearchBar } from "./style";
 import { SearchIcon, ClearIcon } from "./svg";
 import { useHistory } from "react-router-dom";
@@ -17,9 +15,9 @@ function Search() {
     const Bar = useRef(null);
     const history = useHistory();
     useEffect(() => {
-        Bar.current && Bar.current.focus();
+        // Bar.current && Bar.current.focus();
         let keys = {};
-        state.query = '';
+        // state.query = '';
 
         function handleKeyPress(e) {
 
@@ -29,19 +27,21 @@ function Search() {
             keys[keyCode] = isKeyDown;
 
             if (e.key === "Escape") {
-                Bar.current.focus();
-            } else if (e.key === "Enter" && !query) {
+                Bar.current.blur();
+            } else if (isKeyDown && e.key === "Enter" && query) {
+                console.log(Bar.current.value);
                 state.query = query;
                 Bar.current.blur()
-                console.log(keys);
-                setQuery('')
                 history.push(`/${state.query}-results`);
                 enter()
+                setQuery('')
             } else if (isKeyDown && keys[18] && keys[70]) {
                 keys = {};
                 Bar.current.focus();
-                setQuery(query - 'ƒ')
+                setQuery(Bar.current.value);
                 console.log(keys[18], keys[70]);
+            } else {
+                return null
             }
         }
         window.addEventListener("keyup", handleKeyPress);
@@ -50,6 +50,7 @@ function Search() {
 
     return (
         <SearchWrapper id="search">
+            {/* allow search onClick of icon */}
             <SearchIcon />
             {query &&
                 <div
@@ -62,11 +63,10 @@ function Search() {
                 </div>}
             <SearchBar
                 placeholder="Search (alt + f)"
+                style={{ textDecoration: "line-through", color: `${state.theme === 'light' ? state.light.panelColor : state.dark.panelColor}` }}
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                // onKeyUp={handleKeyPress.bind(this)}
-                // onKeyDown={handleKeyPress.bind(this)}
                 ref={Bar}
             >
             </SearchBar>

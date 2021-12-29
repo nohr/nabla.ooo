@@ -1,18 +1,11 @@
 //Projects -- Child of Panel
-import React, { useRef } from "react"
+import { useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
 import { Porter, Linker } from "./style"
 import sound1 from '../Sounds/select.mp3'
 import useSound from 'use-sound'
-// import { useFrame } from '@react-three/fiber'
-
-// function MoveCamera() {
-//     useFrame((state) => {
-//         state.cameraPosition = [60, 15, 0]
-//     })
-// }
 
 function Projects() {
     const port = useRef(null);
@@ -24,7 +17,6 @@ function Projects() {
         ding()
         state.isPort = false;
         state.isSett = false;
-        // MoveCamera()
     }
 
     //mobile repositioning - BROKEN

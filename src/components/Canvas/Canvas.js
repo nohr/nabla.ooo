@@ -84,6 +84,7 @@ function CanvasComp() {
         </EffectComposer>
       </Suspense>
       <OrbitControls
+        target={[0, 2, 0]}
         enabled={snap.userControlled}
         enablePan={false}
         autoRotate={true}
