@@ -144,7 +144,7 @@ function UI() {
         <GlobalStyle />
         <Container className="container hom" >
           <p style={{ textAlign: "center" }}>
-            <b>nabla.ooo works a lot better on tablet and desktop, for now.</b><br /><br /> Please comeback on one of those devices while I work on making this experience something special. <br /><br /> <b>Thank you!</b>
+            <b>nabla.ooo works a lot better on tablet and desktop, for now.</b><br /><br /> Please come back on one of those devices while I work on making this experience something special. <br /><br /> <b>Thank you!</b>
           </p>
         </Container>
       </ThemeProvider>
