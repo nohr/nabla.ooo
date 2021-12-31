@@ -11,7 +11,7 @@ function Projects() {
     const port = useRef(null);
     const snap = useSnapshot(state);
     state.selectedImg = null;
-    const [ding] = useSound(sound1, { volume: state.sfxVolume });
+    const [ding] = useSound(sound1, { volume: state.sfxVolume, soundEnabled: !state.muted });
 
     function select() {
         ding()

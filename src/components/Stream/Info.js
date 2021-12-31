@@ -59,12 +59,12 @@ function Info() {
         </Draggable>
       </div>
       <Container className="container info">
-        <p>aite@nabla.ooo</p>
+        {/* <p>aite@nabla.ooo</p>
         <ContactForm />
         <img src="https://global.yamaha-motor.com/design_technology/design/concept/motoroid/img/sec03_img05.jpg" alt="bike" />
         <div className="text">{text}</div>
         <img src="https://global.yamaha-motor.com/design_technology/design/concept/motoroid/img/sec03_img05.jpg" alt="bike" />
-        <div className="text">{text}</div>
+        <div className="text">{text}</div> */}
       </Container>
     </>
   )

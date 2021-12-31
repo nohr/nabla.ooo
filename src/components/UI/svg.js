@@ -10,7 +10,7 @@ import styled from "styled-components"
 
 
 export function SvgNabla() {
-  const [play] = useSound(home, { volume: state.sfxVolume });
+  const [play] = useSound(home, { volume: state.sfxVolume, soundEnabled: !state.muted });
   function dong() {
     play()
     // Move camera
@@ -131,6 +131,21 @@ export function Grabber() {
     </svg>
   );
 }
+
+export function Speaker() {
+
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="speaker"
+      data-name="Layer 1"
+      viewBox="0 0 353.41 356.2"
+    >
+      <path d="M193.42 356.2c-38.28-38.27-77.08-77.07-112.2-112.2H0V126.31l73-5L193.42 0zM353.41 281.67h-33V85.37h33zM240.2 125.28h33.21v116.48H240.2z"></path>
+    </svg>
+  );
+}
+
 
 export function HeadSVG(id) {
   const snap = useSnapshot(state);

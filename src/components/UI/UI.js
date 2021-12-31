@@ -2,12 +2,12 @@ import React, { useEffect, useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
-import { GlobalStyle, Navagator, Linker, Folder } from "./style"
+import { GlobalStyle, Navagator, Linker, Folder, Container } from "./style"
 import Projects from "./projects"
 import Settings from "./settings"
 import { ThemeProvider } from "styled-components"
 import Search from "./search"
-import { SvgNabla, Spinner, Arrow, SideArrow, Grabber } from './svg'
+import { SvgNabla, Spinner, Arrow, SideArrow, Grabber, Speaker } from './svg'
 import Home from '../Stream/Home'
 import Info from '../Stream/Info'
 import Store from '../Stream/Store'
@@ -27,8 +27,8 @@ import db from '../../firebase'
 
 //Nav -- Child of Parent: UI
 function Nav() {
-  const [open] = useSound(sound2, { volume: state.sfxVolume });
-  const [close] = useSound(sound3, { volume: state.sfxVolume });
+  const [open] = useSound(sound2, { volume: state.sfxVolume, soundEnabled: !state.muted });
+  const [close] = useSound(sound3, { volume: state.sfxVolume, soundEnabled: !state.muted });
   const snap = useSnapshot(state);
   const portLink = useRef(null);
   const settLink = useRef(null);
@@ -61,7 +61,7 @@ function Nav() {
       state.isSett ? settLink.current.classList.add("folderActive") : settLink.current.classList.remove("folderActive");
     }
   }
-  const [select] = useSound(sound1, { volume: state.sfxVolume });
+  let [select] = useSound(sound1, { volume: state.sfxVolume, soundEnabled: !state.muted });
   const toggleLi = () => {
     select()
     state.isPort = false;
@@ -99,6 +99,7 @@ function Nav() {
           {snap.isSett ? <SideArrow /> : <Arrow />}
         </Folder>
         {snap.loading ? <Spinner /> : <Grabber />}
+        {snap.playMusic ? <Speaker /> : null}
       </Navagator>
     </Draggable>
   )
@@ -128,40 +129,55 @@ function UI() {
   }, []);
 
   var x = window.matchMedia("(max-width: 768px)");
+  // if (x.matches) {
+  //   // Mobile
+  //   if (state.isPort) {
+  //     state.isSett = false;
+  //   } else if (state.isSett) {
+  //     state.isPort = false;
+  //   }
+  // }
+
   if (x.matches) {
-    // Mobile
-    if (state.isPort) {
-      state.isSett = false;
-    } else if (state.isSett) {
-      state.isPort = false;
-    }
-  }
-  return (
-    <Router>
+    return (
       <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
         <GlobalStyle />
-        <Nav />
-        {snap.isSett && <Settings />}
-        {snap.isPort && <Projects />}
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/store" component={Store} />
-          <Route path="/info" component={Info} />
-          {snap.works.map((work) => (
-            <Route key={`${work.name}`} path={`/${work.id}`}>
-              <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />
-            </Route>
-          ))}
-          {/* broken - needs UI to rerender */}
-          <Route path={`/${snap.query}-results`}>
-            <Results title={`${snap.query} Results`} />
-          </Route>
-          <Route path="/404" component={NotFound} />
-          {/* <Redirect from="*" to="/404" /> */}
-        </Switch>
+        <Container className="container hom" >
+          <p style={{ textAlign: "center" }}>
+            <b>nabla.ooo works a lot better on tablet and desktop, for now.</b><br /><br /> Please comeback on one of those devices while I work on making this experience something special. <br /><br /> <b>Thank you!</b>
+          </p>
+        </Container>
       </ThemeProvider>
-    </Router>
-  )
+    )
+
+  } else {
+    return (
+      <Router>
+        <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
+          <GlobalStyle />
+          <Nav />
+          {snap.isSett && <Settings />}
+          {snap.isPort && <Projects />}
+          <Switch>
+            <Route path="/" exact component={Home} />
+            <Route path="/store" component={Store} />
+            <Route path="/info" component={Info} />
+            {snap.works.map((work) => (
+              <Route key={`${work.name}`} path={`/${work.id}`}>
+                <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />
+              </Route>
+            ))}
+            {/* broken - needs UI to rerender */}
+            <Route path={`/${snap.query}-results`}>
+              <Results title={`${snap.query} Results`} />
+            </Route>
+            <Route path="/404" component={NotFound} />
+            {/* <Redirect from="*" to="/404" /> */}
+          </Switch>
+        </ThemeProvider>
+      </Router>
+    )
+  }
 }
 
 export default UI;

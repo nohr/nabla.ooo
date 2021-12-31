@@ -16,6 +16,7 @@ export const state = proxy({
     themeChanged: false,
     sfxVolume: 1,
     muted: false,
+    playMusic: false,
     navPosition: { x: 0, y: 0 },
     prtPosition: { x: 0, y: 0 },
     //Search

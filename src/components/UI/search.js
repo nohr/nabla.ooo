@@ -10,7 +10,7 @@ import sound1 from '../Sounds/select.mp3'
 
 // Search
 function Search() {
-    const [enter] = useSound(sound1, { volume: state.sfxVolume });
+    const [enter] = useSound(sound1, { volume: state.sfxVolume, soundEnabled: !state.muted });
     const [query, setQuery] = useState("");
     const Bar = useRef(null);
     const history = useHistory();

@@ -5,13 +5,17 @@ import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
 import { Setter, Folder } from "./style"
 import sound1 from '../Sounds/select.mp3'
+// import cemeterydfile from '../Sounds/cemetery d.wav'
+import tardigradefile from '../Sounds/tardigrade.wav'
 import useSound from 'use-sound'
 
-const Settings = function Settings() {
+const Settings = React.memo(function Settings() {
     const sett = useRef(null);
     const snap = useSnapshot(state);
     state.selectedImg = null;
-    const [select] = useSound(sound1, { volume: state.sfxVolume });
+    const [select] = useSound(sound1, { volume: state.sfxVolume, soundEnabled: !state.muted });
+    const [play, { stop }] = useSound(tardigradefile, { interrupt: true, loop: true });
+
     useEffect(() => {
         state.settWidth = sett.current.getBoundingClientRect().width;
     }, [])
@@ -20,11 +24,21 @@ const Settings = function Settings() {
     // Toggle Mute Switch
     const toggleMute = () => {
         if (state.muted === false) {
-            state.sfxVolume = 0.0;
             state.muted = true
         } else if (state.muted === true) {
-            state.sfxVolume = 1;
             state.muted = false
+        }
+        select()
+    }
+
+    // Toggle Music
+    const toggleMusic = () => {
+        if (state.playMusic === false) {
+            state.playMusic = true
+            play();
+        } else if (state.playMusic === true) {
+            state.playMusic = false
+            stop();
         }
         select()
     }
@@ -96,7 +110,8 @@ const Settings = function Settings() {
         <Draggable position={snap.navPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
             <Setter ref={sett} className="Panel set">
                 <p>Audio</p>
-                <Folder onClick={() => toggleMute()} className="li w">{!snap.muted ? "Mute SFX" : "Unmute SFX"}</Folder><br />
+                <Folder onClick={() => toggleMute()} className="li w">{!snap.muted ? "Mute SFX" : "Unmute SFX"}</Folder>
+                <Folder onClick={() => toggleMusic()} className="li w">{!snap.playMusic ? "Play Music" : "Pause Music"}</Folder>
                 <br />
                 <p>Display</p>
                 <Folder onClick={() => toggleTheme()} className="li w">{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>
@@ -105,6 +120,6 @@ const Settings = function Settings() {
             </Setter>
         </Draggable>
     );
-}
+})
 
 export default Settings

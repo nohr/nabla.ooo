@@ -201,8 +201,34 @@ export const Navagator = styled.div`
   z-index: 5000;
   text-indent: 20px;
 
+  & .speaker{
+    position: absolute;
+    z-index: 500;
+    width: 10px;
+    top: 5%;
+    left: 50%;
+    transform: translate(-50%, 0);
+  }
+
   & .grabber{  
     cursor: grab;
+    width: 50px;
+    position: absolute;
+    z-index: 500;
+    left: 50%;
+    transform: translate(-50%, 0);
+    stroke: ${props => props.theme.panelColor};
+  }
+
+  & .grabber g, & .speaker{
+      fill: ${props => props.theme.panelColor};
+  }
+
+    & .grabber:hover > g {
+    fill: ${props => props.theme.LiHover};
+    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.LiHover});
+    filter: drop-shadow(1px 1px 3px ${props => props.theme.LiHover});
+    transition: 0.3s;
   }
 `
 export const Porter = styled.div`
@@ -216,14 +242,14 @@ export const Porter = styled.div`
   left: var(--edge);
   margin: 20px 0;
   overflow: scroll !important;
-  text-align: end;
+  text-align: start;
 
   &::-webkit-scrollbar{
     display: none;
   }
 
   & .li{
-    padding-right: 20px;
+    padding-left: 20px;
   }
 
 `
@@ -400,14 +426,6 @@ export const GlobalStyle = createGlobalStyle`
       border-radius: 175px;
       overflow: hidden;
       height: var(--panelHeight);
-      /*Border*/
-      /* --aug-bl: 12px;
-      --aug-tl: 12px;
-      --aug-br: 35px;
-      --aug-tr: 18px;
-      --aug-border-all: 1px;
-      color: ${props => props.theme.panelColor};
-      --aug-border-bg: ${props => props.theme.panelColor}; */
     }
     .header {
         border-bottom: 1px solid ${props => props.theme.panelColor};
@@ -473,18 +491,6 @@ export const GlobalStyle = createGlobalStyle`
         fill: ${props => props.theme.panelColor};
     }
 
-    .grabber{
-      width: 50px;
-      position: absolute;
-      z-index: 500;
-      left: 50%;
-      transform: translate(-50%, 0);
-      stroke: ${props => props.theme.panelColor};
-    }
-    .grabber g{
-      fill: ${props => props.theme.panelColor};
-    }
-
     //Stream
     //container for h1 or svg
     .head{
@@ -507,7 +513,7 @@ export const GlobalStyle = createGlobalStyle`
         color: transparent;
         -webkit-text-stroke-width: 1px;
         margin: var(--headOffset);
-        font-family: "ekodigital";
+        font-family: "helvetica";
         font-weight: 400;
         font-style: normal;
         -webkit-user-select: none; /* Safari */

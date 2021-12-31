@@ -4,7 +4,7 @@ import { Container } from "../UI/style";
 import useDocumentTitle from "../UI/documentTitle";
 
 function Home() {
-    useDocumentTitle("Nabla - Pre-Alpha Build");
+    useDocumentTitle("Nabla - Alpha Build");
     return (
         <>
             <div className="head">
