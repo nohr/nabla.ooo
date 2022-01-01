@@ -15,8 +15,8 @@ function Projects() {
 
     function select() {
         ding()
-        state.isPort = false;
-        state.isSett = false;
+        // state.isPort = false;
+        // state.isSett = false;
     }
 
     //mobile repositioning - BROKEN

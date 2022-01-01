@@ -14,7 +14,7 @@ const Settings = React.memo(function Settings() {
     const snap = useSnapshot(state);
     state.selectedImg = null;
     const [select] = useSound(sound1, { volume: state.sfxVolume, soundEnabled: !state.muted });
-    const [play, { stop }] = useSound(tardigradefile, { interrupt: true, loop: true });
+    const [play, { pause }] = useSound(tardigradefile, { interrupt: true, loop: true });
 
     useEffect(() => {
         state.settWidth = sett.current.getBoundingClientRect().width;
@@ -38,9 +38,9 @@ const Settings = React.memo(function Settings() {
             play();
         } else if (state.playMusic === true) {
             state.playMusic = false
-            stop();
+            pause();
+            select()
         }
-        select()
     }
 
     //DISPLAY
@@ -111,7 +111,7 @@ const Settings = React.memo(function Settings() {
             <Setter ref={sett} className="Panel set">
                 <p>Audio</p>
                 <Folder onClick={() => toggleMute()} className="li w">{!snap.muted ? "Mute SFX" : "Unmute SFX"}</Folder>
-                <Folder onClick={() => toggleMusic()} className="li w">{!snap.playMusic ? "Play Music" : "Pause Music"}</Folder>
+                <Folder onClick={() => toggleMusic()} className="li w">{!snap.playMusic ? "Play Music" : "Stop Music"}</Folder>
                 <br />
                 <p>Display</p>
                 <Folder onClick={() => toggleTheme()} className="li w">{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>

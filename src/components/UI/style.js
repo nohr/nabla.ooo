@@ -193,13 +193,12 @@ export const ImgWrapper = styled.div`
 
 export const Navagator = styled.div`
 //nav
-  height: auto;
   padding: 0em 25px 30px 25px;
   position: fixed;
   left: var(--edge);
   top: var(--edge);
   z-index: 5000;
-  text-indent: 20px;
+  text-indent: 10px;
 
   & .speaker{
     position: absolute;
@@ -216,6 +215,7 @@ export const Navagator = styled.div`
     position: absolute;
     z-index: 500;
     left: 50%;
+    bottom: 3%;
     transform: translate(-50%, 0);
     stroke: ${props => props.theme.panelColor};
   }
@@ -235,27 +235,27 @@ export const Porter = styled.div`
 //projects
   /* display: flex; */
   flex-direction: column;
-  justify-content: center;
-  padding: 16.25px 32.5px;
+  /* justify-content: center; */
+  padding: 20px 32.5px;
   position: absolute;
-  z-index: 5000;
+  z-index: 3500;
   left: var(--edge);
   margin: 20px 0;
   overflow: scroll !important;
-  text-align: start;
+  text-align: center;
 
   &::-webkit-scrollbar{
     display: none;
   }
 
   & .li{
-    padding-left: 20px;
+  margin: 6px 0;
   }
 
 `
 export const Setter = styled.div`
 //setings
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -270,7 +270,8 @@ export const Setter = styled.div`
   }
 
   .li{
-    justify-content: center;
+    justify-content: flex-start;
+    padding-left: 10px;
   }
 
   p{
@@ -361,6 +362,7 @@ export const SearchBar = styled.input`
   -moz-user-select: text;
   -webkit-user-select: text;
   font-size: 13px;
+  cursor: not-allowed;
 
   @media only screen and (max-width: 768px) {
   padding: 6px 19px 6px 20px;
@@ -413,6 +415,7 @@ export const GlobalStyle = createGlobalStyle`
     .Panel {
       background-color: #00000000;
       width: var(--panelWidth);
+      height: var(--panelHeight);
       scroll-snap-type: none;
       -webkit-user-select: none;
       -moz-user-select: none;
@@ -425,7 +428,6 @@ export const GlobalStyle = createGlobalStyle`
       color: ${props => props.theme.panelColor};
       border-radius: 175px;
       overflow: hidden;
-      height: var(--panelHeight);
     }
     .header {
         border-bottom: 1px solid ${props => props.theme.panelColor};
@@ -443,7 +445,6 @@ export const GlobalStyle = createGlobalStyle`
         color: ${props => props.theme.panelColor};
     }
     .folderActive {
-      /* background-color: ${props => props.theme.LiActiveBackground}; */
       box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
       -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
       -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};

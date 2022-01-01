@@ -63,7 +63,6 @@ function Search() {
                 </div>}
             <SearchBar
                 placeholder="Search (alt + f)"
-                style={{ textDecoration: "line-through", color: `${state.theme === 'light' ? state.light.panelColor : state.dark.panelColor}` }}
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}

@@ -64,8 +64,8 @@ function Nav() {
   let [select] = useSound(sound1, { volume: state.sfxVolume, soundEnabled: !state.muted });
   const toggleLi = () => {
     select()
-    state.isPort = false;
-    state.isSett = false;
+    // state.isPort = false;
+    // state.isSett = false;
     state.isPort ? portLink.current.classList.add("folderActive") : portLink.current.classList.remove("folderActive");
     state.isSett ? settLink.current.classList.add("folderActive") : settLink.current.classList.remove("folderActive");
   };
@@ -84,7 +84,7 @@ function Nav() {
           <SvgNabla />
         </div>
         <Search />
-        <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/info" style={{ textDecoration: "line-through" }}>
+        <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/info" style={{ cursor: "not-allowed" }}>
           Info
         </Linker>
         <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/store">
@@ -144,7 +144,7 @@ function UI() {
         <GlobalStyle />
         <Container className="container hom" >
           <p style={{ textAlign: "center" }}>
-            <b>nabla.ooo works a lot better on tablet and desktop, for now.</b><br /><br /> Please come back on one of those devices while I work on making this experience something special. <br /><br /> <b>Thank you!</b>
+            <b>nabla.ooo works a lot better on tablet and desktop, for now.</b><br /><br /> Come back on one of those devices while I work on making this experience something special. <br /><br /> <b>Thank you!</b>
           </p>
         </Container>
       </ThemeProvider>
