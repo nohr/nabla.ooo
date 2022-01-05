@@ -11,6 +11,7 @@ import { SvgNabla, Spinner, Arrow, SideArrow, Grabber, Speaker } from './svg'
 import Home from '../Stream/Home'
 import Info from '../Stream/Info'
 import Store from '../Stream/Store'
+import Blog from "../Stream/Blog"
 import NotFound from "../Stream/NotFound"
 import { Page, Results } from '../Stream/Page.jsx'
 import sound1 from '../Sounds/select.mp3'
@@ -34,19 +35,7 @@ function Nav() {
   const settLink = useRef(null);
   const nav = useRef(null);
 
-  //Move Nav if offscreen - BROKEN
-  // useEffect(() => {
-  //   state.navWidth = nav.current.getBoundingClientRect().width;
-  //   // console.log(state.prtPosition.x);
-
-  //   if (state.prtPosition.x + state.portWidth >= state.containerWidth) {
-  //     state.navWidth = 60 + -state.navWidth;
-  //     state.settWidth = -40 + -state.settWidth;
-  //   } else {
-  //     state.navWidth = 1 * state.navWidth;
-  //     state.settWidth = 1 * state.settWidth;
-  //   }
-  // }, [nav])
+  //intersection observer
 
   //Folder
   function Toggle(n) {
@@ -70,7 +59,12 @@ function Nav() {
     state.isSett ? settLink.current.classList.add("folderActive") : settLink.current.classList.remove("folderActive");
   };
 
+  const panel = document.querySelectorAll('.panel');
   const onControlledDrag = (e, position) => {
+    panel.forEach((one) => {
+      one.style.setAttribute("style", "color: red; transition: 0.3s; cursor:grab !important;");
+      console.log('hi');
+    })
     let { x, y } = position;
     state.navPosition = { x, y };
     state.prtPosition = { x, y };
@@ -84,12 +78,15 @@ function Nav() {
           <SvgNabla />
         </div>
         <Search />
-        <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/info" style={{ cursor: "not-allowed" }}>
-          Info
-        </Linker>
         <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/store">
           Store
         </Linker >
+        <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/blog" style={{ cursor: "not-allowed" }}>
+          Blog
+        </Linker >
+        <Linker className="li" activeClassName="any" onClick={() => toggleLi()} to="/info" style={{ cursor: "not-allowed" }}>
+          Info
+        </Linker>
         <Folder onClick={() => Toggle(1)} ref={portLink} className="li folder">
           Projects
           {snap.isPort ? <SideArrow /> : <Arrow />}
@@ -129,15 +126,6 @@ function UI() {
   }, []);
 
   var x = window.matchMedia("(max-width: 768px)");
-  // if (x.matches) {
-  //   // Mobile
-  //   if (state.isPort) {
-  //     state.isSett = false;
-  //   } else if (state.isSett) {
-  //     state.isPort = false;
-  //   }
-  // }
-
   if (x.matches) {
     return (
       <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
@@ -161,6 +149,7 @@ function UI() {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/store" component={Store} />
+            <Route path="/blog" component={Blog} />
             <Route path="/info" component={Info} />
             {snap.works.map((work) => (
               <Route key={`${work.name}`} path={`/${work.id}`}>

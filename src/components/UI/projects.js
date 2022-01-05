@@ -19,23 +19,19 @@ function Projects() {
         // state.isSett = false;
     }
 
-    //mobile repositioning - BROKEN
-    var x = window.matchMedia("(max-width: 768px)");
+    //intersection observer
     let offset = {};
-    if (x.matches) { // If media query matches
-        offset = { x: '0', y: '340px' };
+    if (state.isSett) {
+        offset = { x: state.navWidth + state.settWidth - (state.dist * 3), y: '0px' };
     } else {
-        if (state.isSett) {
-            offset = { x: state.navWidth + state.settWidth + 20, y: '0px' };
-        } else {
-            offset = { x: state.navWidth + 10, y: '0px' };
-        }
+        offset = { x: state.navWidth - state.dist, y: '0px' };
     }
 
     if (!state.loading) {
         return (
             <Draggable position={snap.prtPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
                 <Porter ref={port} className="Panel prt">
+                    <p>Clients</p>
                     {snap.works && snap.works.map((work) => (
                         <Linker exact className="li w" activeClassName="any" onClick={() => select()} to={`/${work.id}`} key={Math.random()}>{work.name}</Linker>
                     ))}

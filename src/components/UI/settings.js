@@ -8,6 +8,7 @@ import sound1 from '../Sounds/select.mp3'
 // import cemeterydfile from '../Sounds/cemetery d.wav'
 import tardigradefile from '../Sounds/tardigrade.wav'
 import useSound from 'use-sound'
+import { ModeIcon } from "./svg"
 
 const Settings = React.memo(function Settings() {
     const sett = useRef(null);
@@ -71,7 +72,6 @@ const Settings = React.memo(function Settings() {
                 state.CDRotationY = 0;
                 state.CDRotationZ = 0;
                 state.autoRotateSpeed = 0;
-                state.userControlled = false;
             }
         }
         select()
@@ -81,30 +81,18 @@ const Settings = React.memo(function Settings() {
         if (!state.paused) {
             //Pause Canvas
             state.paused = true;
-            state.CDRotationY = 0;
-            state.CDRotationZ = 0;
             state.autoRotateSpeed = 0;
-            state.userControlled = false;
 
         } else if (state.paused) {
             //Play Canvas
             state.paused = false;
-            state.CDRotationY = 0.002;
-            state.CDRotationZ = 0.0001;
             state.autoRotateSpeed = 0.09;
-            state.userControlled = true;
         }
         select()
     }
 
-    //mobile repositioning - BROKEN
-    var x = window.matchMedia("(max-width: 768px)");
-    let offset = {};
-    if (x.matches) { // If media query matches
-        offset = { x: '0px', y: '340px' };
-    } else {
-        offset = { x: state.navWidth + 10, y: 0 };
-    }
+    //intersection observer
+    let offset = { x: state.navWidth - 25, y: 0 };
 
     return (
         <Draggable position={snap.navPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
@@ -114,7 +102,7 @@ const Settings = React.memo(function Settings() {
                 <Folder onClick={() => toggleMusic()} className="li w">{!snap.playMusic ? "Play Music" : "Stop Music"}</Folder>
                 <br />
                 <p>Display</p>
-                <Folder onClick={() => toggleTheme()} className="li w">{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>
+                <Folder onClick={() => toggleTheme()} className="li w"> <ModeIcon />{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>
                 <Folder onClick={() => toggleCanvas()} className="li w">{snap.canvasVisible ? "Hide Canvas" : "Show Canvas"}</Folder>
                 {state.canvasVisible && <Folder onClick={() => togglePause()} className="li w">{snap.paused ? "Play Canvas" : "Pause Canvas"}</Folder>}
             </Setter>

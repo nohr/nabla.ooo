@@ -1,9 +1,10 @@
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import CD from './CD'
+import { CubeTextureLoader } from 'three';
 import useWindowDimensions from '../UI/window'
 import React, { Suspense } from 'react'
-import { Canvas } from '@react-three/fiber'
+import { Canvas, useThree } from '@react-three/fiber'
 import { softShadows, PerspectiveCamera, OrbitControls, Reflector, useTexture } from '@react-three/drei'
 import { EffectComposer, Noise } from '@react-three/postprocessing'
 
@@ -52,6 +53,43 @@ function Floor() {
   );
 }
 
+function Lightbox() {
+  const scene = useThree();
+  const loader = new CubeTextureLoader();
+  const light = loader.load([
+    '/light.jpg',
+    '/light.jpg',
+    '/light.jpg',
+    '/light.jpg',
+    '/light.jpg',
+    '/light.jpg'
+  ]);
+  scene.background = light;
+  return null;
+}
+
+function Darkbox() {
+  const scene = useThree();
+  const loader = new CubeTextureLoader();
+  const dark = loader.load([
+    '../dark.jpg',
+    '../dark.jpg',
+    '../dark.jpg',
+    '../dark.jpg',
+    '../dark.jpg',
+    '../dark.jpg'
+  ]);
+  scene.background = dark;
+  return (
+    <mesh
+
+
+    >
+      <boxGeometry args={[1000, 1000, 100]} />
+    </mesh>
+  );
+}
+
 //App
 function CanvasComp() {
   const { height, width } = useWindowDimensions();
@@ -78,6 +116,7 @@ function CanvasComp() {
         <group position-y={-1}>
           <CD />
           <Floor />
+          {snap.theme === 'light' ? <Lightbox /> : <Darkbox />}
         </group>
         <EffectComposer>
           <Noise opacity={snap.theme === 'light' ? snap.light.noise : snap.dark.noise} />
@@ -85,10 +124,10 @@ function CanvasComp() {
       </Suspense>
       <OrbitControls
         target={[0, 2, 0]}
-        enabled={snap.userControlled}
+        enabled={snap.paused ? false : true}
         enablePan={false}
         autoRotate={true}
-        autoRotateSpeed={snap.autoRotateSpeed}
+        autoRotateSpeed={snap.paused ? 0 : 0.5}
         minPolarAngle={Math.PI / 4}
         maxPolarAngle={Math.PI / 2}
         minDistance={20}

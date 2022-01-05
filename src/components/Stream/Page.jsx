@@ -27,12 +27,12 @@ const Page = React.memo(function Page(id) {
     //     console.log(container.current.getBoundingClientRect());
     // }, [container])
     return (
-        <>
+        <>  {snap.selectedImg === null && 
             <div className="head">
-            <Draggable position={snap.prtPosition} onStart={() => false}>
-                    <SVG id={id.id}/>
+                <Draggable position={snap.prtPosition} onStart={() => false}>
+                    <SVG id={id.id} />
             </Draggable>
-            </div>
+            </div>}
             <Container className="container">
                 <PageData id={id.id}/>
                     {snap.selectedImg && <Modal />}

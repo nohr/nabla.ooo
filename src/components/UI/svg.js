@@ -106,14 +106,19 @@ export function Spinner() {
 
 export function Grabber() {
   const handle = useRef();
-  // const handle = document.getElementsByClassName('grabber')[0];
   function handleEvent(e) {
     if (e.type === "mousedown") {
-      handle.current.setAttribute("style", "fill-opacity: 0% !important; stroke-width: 1px !important;");
-    } else {
-      handle.current.setAttribute("style", "fill-opacity: 100% !important; stroke-width: 0px !important;");
+      handle.current.setAttribute("style", "fill-opacity: 70% !important; stroke-width: 0px !important; transition: 0.3s; cursor:grab !important;");
     }
+
+    function release() {
+      if (handle.current !== undefined && handle.current !== null) {
+        handle.current.setAttribute("style", "fill-opacity: 0% !important; stroke-width: 1px !important;transition: 0.3s; cursor:grab;");
+      }
+    }
+    window.addEventListener("mouseup", release);
   }
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -133,7 +138,6 @@ export function Grabber() {
 }
 
 export function Speaker() {
-
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -146,6 +150,72 @@ export function Speaker() {
   );
 }
 
+export function ModeIcon() {
+  if (state.theme === "light") {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        data-name="Layer 1"
+        className="modeIcon"
+        viewBox="0 0 126.13 144.27"
+      >
+        <path d="M67.67.11c2.39-.15 9-.34 14 .91 0 0 3.56.54 4 2.72S85 7.4 83.25 8.52a54.24 54.24 0 00-16.51 15.4c-6 8.89-9.59 18.48-10.11 29.28C55.84 69.64 60.82 84 72 95.85a51.69 51.69 0 0038 16.77c3.65 0 7.3-.59 11-.58 1.39 0 3.35.4 4.08 1.53 1 1.53.63 2.88-.37 4.54-3.56 3.73-6.94 7.73-10.95 10.92a68.63 68.63 0 01-36 14.81 68.56 68.56 0 01-35.62-5.43 70.22 70.22 0 01-30.35-25.59A69.31 69.31 0 01.2 82.27c-2.2-18 1-35 11.16-50.1C23.15 14.6 39.53 3.66 60.78.69 63 .39 65.22.26 67.67.11z"></path>
+      </svg>
+    );
+  } else if (state.theme === "dark") {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        data-name="Layer 1"
+        className="modeIcon"
+        viewBox="0 0 144.55 144.61"
+      >
+        <path d="M72.26 108.49a36.18 36.18 0 1136.21-36.12c-.03 19.86-16.35 36.28-36.21 36.12zM18.47 28.31c0-5.17 3.36-9 7.74-9.64a9 9 0 017.95 2.67q3.11 3.07 6.18 6.18A8.89 8.89 0 0142 38.39a8.62 8.62 0 01-7.06 4.67 9 9 0 01-7.48-2.72l-6.3-6.24a8.85 8.85 0 01-2.69-5.79zM116.39 18.53c5.1 0 8.93 3.34 9.55 7.79a8.93 8.93 0 01-2.64 7.87c-2.08 2.1-4.15 4.18-6.25 6.25a8.93 8.93 0 01-11 1.45 8.65 8.65 0 01-4.45-6.9 9.06 9.06 0 012.76-7.57c2.08-2.08 4.15-4.17 6.25-6.24a8.77 8.77 0 015.78-2.65zM18.46 116.68a9 9 0 012.5-5.89c2.25-2.3 4.51-4.6 6.84-6.84a9.11 9.11 0 0112.5 13.25c-2.09 2-4.11 4.13-6.19 6.17A9 9 0 0123.23 125c-3.16-1.73-4.64-4.54-4.77-8.32zM126.09 117c-.19 3.82-1.89 6.77-5.5 8.32a8.6 8.6 0 01-9.78-1.65c-2.42-2.22-4.73-4.58-7-7a9.11 9.11 0 0113.31-12.43c2.07 2.13 4.2 4.21 6.3 6.32a9.31 9.31 0 012.67 6.44zM63.2 13.65V9.04A8.6 8.6 0 0168 1.12a8.68 8.68 0 019.28.47 8.55 8.55 0 014 7.43v9.31a9.09 9.09 0 01-18.07 1.24 27.2 27.2 0 01-.08-4c.06-.67.07-1.29.07-1.92zM13.61 81.41h-4.7a9.09 9.09 0 01-1.27-18.07 7 7 0 011.21-.08h9.5a9.09 9.09 0 011.27 18.06 5.91 5.91 0 01-1.12.08zM130.94 81.41h-4.6a9 9 0 01-8.34-5.67 9.16 9.16 0 012.32-10.16 8.69 8.69 0 015.9-2.32h9.49A9.09 9.09 0 01137 81.32a5.91 5.91 0 01-1.12.08zM63.2 130.91v-4.61a9.09 9.09 0 0118.07-1.3 7.08 7.08 0 01.08 1.22v9.49A9.09 9.09 0 0163.29 137a6 6 0 01-.08-1.12v-5z"></path>
+      </svg>
+    );
+  }
+}
+
+const Search = styled.svg`
+    position: absolute;
+    top: 50%;
+    left: 8px;
+    transform: translate(30%, -50%);
+    height: 14px;
+    fill: ${props => props.theme.panelColor};
+    cursor: default;
+  `
+export function SearchIcon() {
+
+  return (
+    <Search x="0px" y="0px" viewBox="0 0 56.966 56.966">
+      <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+    </Search>
+  )
+}
+
+const Clear = styled.svg`
+    position: absolute;
+    top: 50%;
+    left: 78%;
+    transform: translate(78%, -50%);
+    height: 14px;
+    fill: ${props => props.theme.panelColor};
+    cursor: pointer;
+
+    &:hover{
+      opacity: 50%;
+      pointer-events: painted;
+    }
+  `
+export function ClearIcon() {
+
+  return (
+    <Clear viewBox="0 0 51.98 51.98">
+      <path d="M44.37 7.6a26 26 0 100 36.77 26 26 0 000-36.77zm-8.13 28.64a2 2 0 01-2.83 0L26 28.82l-7.78 7.77a2 2 0 11-2.83-2.82L23.16 26l-7.42-7.43a2 2 0 112.82-2.82L26 23.16l7.07-7.07a2 2 0 012.83 2.83L28.82 26l7.42 7.42a2 2 0 010 2.82z"></path>
+    </Clear>
+  )
+}
 
 export function HeadSVG(id) {
   const snap = useSnapshot(state);
@@ -348,40 +418,3 @@ export function HeadSVG(id) {
     );
   }
 }
-
-const Search = styled.svg`
-    position: absolute;
-    top: 50%;
-    left: 0;
-    transform: translate(30%, -50%);
-    height: 14px;
-    fill: ${props => props.theme.panelColor};
-    cursor: default;
-  `
-export function SearchIcon() {
-
-  return (
-    <Search x="0px" y="0px" viewBox="0 0 56.966 56.966" id="search">
-      <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
-    </Search>
-  )
-}
-
-const Clear = styled.svg`
-    position: absolute;
-    top: 50%;
-    left: 79%;
-    transform: translate(76%, -50%);
-    height: 14px;
-    fill: ${props => props.theme.panelColor};
-    cursor: pointer;
-  `
-export function ClearIcon() {
-
-  return (
-    <Clear viewBox="0 0 51.98 51.98">
-      <path d="M44.37 7.6a26 26 0 100 36.77 26 26 0 000-36.77zm-8.13 28.64a2 2 0 01-2.83 0L26 28.82l-7.78 7.77a2 2 0 11-2.83-2.82L23.16 26l-7.42-7.43a2 2 0 112.82-2.82L26 23.16l7.07-7.07a2 2 0 012.83 2.83L28.82 26l7.42 7.42a2 2 0 010 2.82z"></path>
-    </Clear>
-  )
-}
-

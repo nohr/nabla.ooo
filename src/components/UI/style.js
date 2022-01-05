@@ -17,6 +17,7 @@ export const Container = styled.div`
   width: 100vw;
   padding: 20px;
   font-size: 14px;
+  color: ${props => props.theme.panelColor};
 
   & .backdrop{
     position: fixed;
@@ -190,20 +191,32 @@ export const ImgWrapper = styled.div`
       object-fit: fill;
     }
 `
-
 export const Navagator = styled.div`
 //nav
-  padding: 0em 25px 30px 25px;
+  padding: 0em 42.5px 30px 42.5px;
   position: fixed;
   left: var(--edge);
   top: var(--edge);
   z-index: 5000;
   text-indent: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+    & .li{
+    width: 90%;
+    align-self: center;
+    }
+
+    .folder{
+      padding-right: 5px;
+    }
 
   & .speaker{
+    cursor: pointer;
     position: absolute;
     z-index: 500;
-    width: 10px;
+    width: 12px;
     top: 5%;
     left: 50%;
     transform: translate(-50%, 0);
@@ -215,51 +228,48 @@ export const Navagator = styled.div`
     position: absolute;
     z-index: 500;
     left: 50%;
-    bottom: 3%;
+    bottom: 1%;
     transform: translate(-50%, 0);
     stroke: ${props => props.theme.panelColor};
+    fill: ${props => props.theme.panelColor};
+    fill-opacity: 0% !important; 
+    stroke-width: 1px !important;
   }
 
-  & .grabber g, & .speaker{
+  & .speaker{
       fill: ${props => props.theme.panelColor};
   }
 
-    & .grabber:hover > g {
+  & .speaker:hover {
     fill: ${props => props.theme.LiHover};
     -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.LiHover});
     filter: drop-shadow(1px 1px 3px ${props => props.theme.LiHover});
     transition: 0.3s;
   }
-`
-export const Porter = styled.div`
-//projects
-  /* display: flex; */
-  flex-direction: column;
-  /* justify-content: center; */
-  padding: 20px 32.5px;
-  position: absolute;
-  z-index: 3500;
-  left: var(--edge);
-  margin: 20px 0;
-  overflow: scroll !important;
-  text-align: center;
 
-  &::-webkit-scrollbar{
-    display: none;
+  & .grabber:not(:hover){
+    fill-opacity: 0% !important; 
+    stroke-width: 1px !important;
   }
 
-  & .li{
-  margin: 6px 0;
+  .spinner {
+    width: 25px;
+    height: 25px;
+    background: none;
+    position: absolute;
+    z-index: 500;
+    pointer-events: none;
+    left: 50%;
+    bottom: 1%;
+    transform: translate(-50%, 0);
   }
-
+  .spinner path{
+    fill: ${props => props.theme.panelColor};
+  }
 `
 export const Setter = styled.div`
 //setings
-  /* display: flex; */
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 32.5px;
+  padding: var(--panelPadding);
   position: absolute;
   z-index: 4900;
   left: var(--edge);
@@ -267,16 +277,53 @@ export const Setter = styled.div`
 
   *{
     width: min-content;
+    scroll-behavior: smooth;
   }
 
   .li{
-    justify-content: flex-start;
-    padding-left: 10px;
+    justify-content: center;
+    width: 90%;
+    margin: 0 auto 6px auto;
   }
 
   p{
-    margin: 0 auto 5px auto;
-    text-decoration: underline;
+    margin: 3px auto 5px auto;
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px solid ${props => props.theme.panelColor};
+  }
+  .modeIcon{
+    position: absolute;
+    left: 50px;
+    width: 12px;
+    fill: ${props => props.theme.panelColor};
+    align-self: left;
+    margin-right: auto;
+    margin-left: 5px;
+  }
+`
+export const Porter = styled.div`
+//projects
+  padding: var(--panelPadding);
+  position: absolute;
+  z-index: 3500;
+  left: var(--edge);
+  margin: 20px 0;
+  text-align: center;
+    overflow: scroll !important;
+
+  &::-webkit-scrollbar{
+    display: none;
+  }
+  & .li{
+    width: 90%;
+    margin: 0 auto 6px auto;
+  }
+  p{
+    margin: 3px auto 5px auto;
+    text-align: center;
+    width: 100%;
+    border-bottom: 1px solid ${props => props.theme.panelColor};
   }
 `
 export const Homer = styled(NavLink)`
@@ -335,7 +382,6 @@ export const Folder = styled.div`
   width: 100%;
   margin: 3px 0;
   padding: 2px 0;
-  padding-right: 5px;
   display: block;
   cursor: pointer;
   display: flex;
@@ -345,10 +391,11 @@ export const Folder = styled.div`
 export const SearchWrapper = styled.div`
   position: relative;
   display: flex;
+  justify-content: center;
 `
 export const SearchBar = styled.input`
   border: none !important;
-  width: 100%;
+  width: 90%;
   margin: 3px 0;
   display: flex;
   border-radius: 12px;
@@ -402,13 +449,15 @@ export const GlobalStyle = createGlobalStyle`
     //App
     :root{
         --theme: ${props => props.theme.sky};
-        --panelWidth: 180px;
+        --panelWidth: 255px;
+        --panelHeight: 255px;
+        --panelPadding: 26px 42.5px;
         --headOffset: 10px;
-        --panelHeight: 238px;
         --edge: 20px;
-        --blur: 10px;
+        --blur: 5px;
     }
     html, body, #root {
+          isolation: isolate;
         background-color: ${props => props.theme.sky};
     }
     //Panel
@@ -426,12 +475,12 @@ export const GlobalStyle = createGlobalStyle`
       mix-blend-mode: ${props => props.theme.blend};
       border: 1px solid ${props => props.theme.panelColor};
       color: ${props => props.theme.panelColor};
-      border-radius: 175px;
+      border-radius: 185px;
       overflow: hidden;
     }
     .header {
         border-bottom: 1px solid ${props => props.theme.panelColor};
-        margin: 0 0 7px 0;
+        margin: 0 0 2px 0;
         padding: 22px 0px 5px;
         display: flex;
         align-items: center;
@@ -478,20 +527,6 @@ export const GlobalStyle = createGlobalStyle`
       filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
     }
 
-    .spinner {
-      width: 25px;
-      height: 25px;
-      background: none;
-      position: absolute;
-      z-index: 500;
-      pointer-events: none;
-      left: 50%;
-      transform: translate(-50%, 0);
-    }
-    .spinner path{
-        fill: ${props => props.theme.panelColor};
-    }
-
     //Stream
     //container for h1 or svg
     .head{
@@ -532,11 +567,6 @@ export const GlobalStyle = createGlobalStyle`
       height: auto;
       overflow: visible;
       margin: 20px 20px;
-    }
-    
-    .container {
-      padding: 20px;
-      color: ${props => props.theme.panelColor};
     }
 
     .hom {
@@ -595,6 +625,7 @@ export const GlobalStyle = createGlobalStyle`
       vertical-align: middle;
       letter-spacing: -15px;
       padding-right: 15px;
+      padding-left: 20px;
       -webkit-user-select: none; /* Safari */
       -moz-user-select: none; /* Firefox */
       -ms-user-select: none; /* IE10+/Edge */
@@ -651,12 +682,12 @@ export const GlobalStyle = createGlobalStyle`
       box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
     }
 
+//Not Mobile
 @media only screen and (min-width: 1366px) {
   h1 {
     font-size: 12vw;
   }
 }
-//Not Mobile
 @media only screen and (min-width: 768px) {
   .info{
     display: flex;
@@ -671,6 +702,8 @@ export const GlobalStyle = createGlobalStyle`
   }
   h1 {
     font-size: 14vw;
+    height: 30px;
+    line-height: 20px;
   }
   .eko {
     flex-direction: row;
@@ -717,16 +750,12 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   .prt .li{
-    padding-right: 10px;
+    padding-right: 0px;
     text-align: center;
   }
 
   .set{
-    /* width: max-content; */
     padding: 20px;
-  }
-  .set .li{
-    padding-right: 5px;
   }
 
   .header{
