@@ -284,6 +284,7 @@ export const Setter = styled.div`
     justify-content: center;
     width: 90%;
     margin: 0 auto 6px auto;
+    position: relative;
   }
 
   p{
@@ -292,11 +293,13 @@ export const Setter = styled.div`
     width: 100%;
     border-bottom: 1px solid ${props => props.theme.panelColor};
   }
+  
   .modeIcon{
     position: absolute;
-    left: 50px;
+    right: 5px;
     width: 12px;
     fill: ${props => props.theme.panelColor};
+    overflow: visible;
     align-self: left;
     margin-right: auto;
     margin-left: 5px;
@@ -328,10 +331,10 @@ export const Porter = styled.div`
 `
 export const Homer = styled(NavLink)`
   height: min-content;
-  width: 100%;
+  width: 90%;
   display: flex;
   justify-content: center;
-  margin: 7px 0 2px 0;
+  margin: 9px 0 0 0;
   padding-top: 3px;
   padding-bottom: 1px;
   border-radius: 120px;
@@ -392,10 +395,12 @@ export const SearchWrapper = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
+  width: 89%;
+  margin: 0 auto;
 `
 export const SearchBar = styled.input`
   border: none !important;
-  width: 90%;
+  width: 100%;
   margin: 3px 0;
   display: flex;
   border-radius: 12px;
@@ -404,7 +409,7 @@ export const SearchBar = styled.input`
   -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
   -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
   color:  ${props => props.theme.textHover};
-  padding: 2px 19px 2px 20px;
+  padding: 2px 19px 2px 19px;
   user-select: text;
   -moz-user-select: text;
   -webkit-user-select: text;
@@ -437,11 +442,18 @@ export const SearchBar = styled.input`
   }
   &:focus{
     background-color:${props => props.theme.LiHover};
-    outline: 1px solid ${props => props.theme.panelColor};
+    outline: 1px solid ${props => props.theme.textHover};
     box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
     -webkit-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
     -moz-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
     transition: 0.3s;
+  }
+
+  &:focus ~ #searchIcon{
+    fill: ${props => props.theme.textHover} !important;
+  }
+  &:focus ~ #clearIcon svg{
+    fill: ${props => props.theme.textHover} !important;
   }
 `
 
@@ -545,17 +557,12 @@ export const GlobalStyle = createGlobalStyle`
         justify-self: flex-start;
         position: absolute;
         font-size: 5vw;
-        letter-spacing: -0.3vw;
         color: transparent;
         -webkit-text-stroke-width: 1px;
         margin: var(--headOffset);
         font-family: "helvetica";
         font-weight: 400;
         font-style: normal;
-        -webkit-user-select: none; /* Safari */
-        -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* IE10+/Edge */
-        user-select: none; /* Standard */
         -webkit-text-stroke-color: ${props => props.theme.panelColor};
     }
     .head svg {

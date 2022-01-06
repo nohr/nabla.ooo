@@ -50,17 +50,6 @@ function Search() {
 
     return (
         <SearchWrapper id="search">
-            {/* allow search onClick of icon */}
-            <SearchIcon />
-            {query &&
-                <div
-                    onClick={() => {
-                        setQuery("")
-                        Bar.current.focus()
-                    }}
-                >
-                    <ClearIcon />
-                </div>}
             <SearchBar
                 placeholder="Search (alt + f)"
                 type="text"
@@ -69,6 +58,18 @@ function Search() {
                 ref={Bar}
             >
             </SearchBar>
+            <SearchIcon />
+            {query &&
+                <div
+                    onClick={() => {
+                        setQuery("")
+                        Bar.current.focus()
+                    }
+                    }
+                    id="clearIcon"
+                >
+                    <ClearIcon />
+                </div>}
         </SearchWrapper>
     )
 }

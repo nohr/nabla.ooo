@@ -52,7 +52,6 @@ const Caret = styled.svg`
   height: clamp(8px, 12px, 12px);
   float: right;
 `
-
 export function Arrow() {
   return (
     <Caret
@@ -136,7 +135,6 @@ export function Grabber() {
     </svg>
   );
 }
-
 export function Speaker() {
   return (
     <svg
@@ -149,7 +147,6 @@ export function Speaker() {
     </svg>
   );
 }
-
 export function ModeIcon() {
   if (state.theme === "light") {
     return (
@@ -175,30 +172,28 @@ export function ModeIcon() {
     );
   }
 }
-
 const Search = styled.svg`
     position: absolute;
     top: 50%;
-    left: 8px;
+    left: 0px;
     transform: translate(30%, -50%);
     height: 14px;
     fill: ${props => props.theme.panelColor};
     cursor: default;
-  `
+`
 export function SearchIcon() {
 
   return (
-    <Search x="0px" y="0px" viewBox="0 0 56.966 56.966">
+    <Search x="0px" y="0px" viewBox="0 0 56.966 56.966" id="searchIcon">
       <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
     </Search>
   )
 }
-
 const Clear = styled.svg`
     position: absolute;
     top: 50%;
-    left: 78%;
-    transform: translate(78%, -50%);
+    right: 10px;
+    transform: translate(50%, -50%);
     height: 14px;
     fill: ${props => props.theme.panelColor};
     cursor: pointer;
@@ -211,7 +206,7 @@ const Clear = styled.svg`
 export function ClearIcon() {
 
   return (
-    <Clear viewBox="0 0 51.98 51.98">
+    <Clear viewBox="0 0 52.98 52.98">
       <path d="M44.37 7.6a26 26 0 100 36.77 26 26 0 000-36.77zm-8.13 28.64a2 2 0 01-2.83 0L26 28.82l-7.78 7.77a2 2 0 11-2.83-2.82L23.16 26l-7.42-7.43a2 2 0 112.82-2.82L26 23.16l7.07-7.07a2 2 0 012.83 2.83L28.82 26l7.42 7.42a2 2 0 010 2.82z"></path>
     </Clear>
   )
