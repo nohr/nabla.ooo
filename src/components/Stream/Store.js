@@ -5,6 +5,7 @@ import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import { Container } from "../UI/style";
 import useDocumentTitle from "../UI/documentTitle";
+import { Contrast } from "../UI/svg";
 
 function Store() {
   useDocumentTitle("Store @ Nabla");
@@ -17,7 +18,11 @@ function Store() {
           <h1>store</h1>
         </Draggable>
       </div>
-      <Container className="container">
+      <Container className="container str">
+        <div className="contrastWrap">
+          <Contrast />
+          <p>Chill, I'm working on it!</p>
+        </div>
         <div className="eko">
           <div className="eko-thumb">
             Aa

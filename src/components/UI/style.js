@@ -67,7 +67,7 @@ border-color: transparent ${props => props.theme.panelColor} transparent ${props
 /* border-radius: 75px; */
 display: flex;
 width: 100%;
-flex-direction:row-reverse;
+flex-direction:row;
 padding: 0px 20px 0px 0px;
 height: 90%;
 justify-content: space-between;
@@ -204,7 +204,7 @@ export const Navagator = styled.div`
   justify-content: center;
 
     & .li{
-    width: 90%;
+    width: 80%;
     align-self: center;
     }
 
@@ -228,7 +228,7 @@ export const Navagator = styled.div`
     position: absolute;
     z-index: 500;
     left: 50%;
-    bottom: 1%;
+    bottom: 2%;
     transform: translate(-50%, 0);
     stroke: ${props => props.theme.panelColor};
     fill: ${props => props.theme.panelColor};
@@ -237,8 +237,23 @@ export const Navagator = styled.div`
   }
 
   & .speaker{
-      fill: ${props => props.theme.panelColor};
-  }
+    fill: ${props => props.theme.panelColor};
+  	animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+	0% {
+		transform: scale(0.8);
+	}
+
+	70% {
+		transform: scale(1);
+	}
+
+	100% {
+		transform: scale(0.8);
+	}
+}
 
   & .speaker:hover {
     fill: ${props => props.theme.LiHover};
@@ -260,7 +275,7 @@ export const Navagator = styled.div`
     z-index: 500;
     pointer-events: none;
     left: 50%;
-    bottom: 1%;
+    bottom: 3%;
     transform: translate(-50%, 0);
   }
   .spinner path{
@@ -273,7 +288,10 @@ export const Setter = styled.div`
   position: absolute;
   z-index: 4900;
   left: var(--edge);
-  margin: 20px 0;
+    display: flex;
+    margin: 20px 0;
+    flex-direction: column;
+    justify-content: flex-start;
 
   *{
     width: min-content;
@@ -282,7 +300,7 @@ export const Setter = styled.div`
 
   .li{
     justify-content: center;
-    width: 90%;
+    width: 70%;
     margin: 0 auto 6px auto;
     position: relative;
   }
@@ -290,14 +308,24 @@ export const Setter = styled.div`
   p{
     margin: 3px auto 5px auto;
     text-align: center;
-    width: 100%;
+    width: 90%;
     border-bottom: 1px solid ${props => props.theme.panelColor};
   }
   
-  .modeIcon{
+  .modeIcon, .muteIcon, .ShowHideIcon{
     position: absolute;
-    right: 5px;
-    width: 12px;
+    left: 5px;
+    width: 10px;
+    fill: ${props => props.theme.panelColor};
+    overflow: visible;
+    align-self: left;
+    margin-right: auto;
+    margin-left: 5px;
+  }
+  .PlayPauseIcon{
+    position: absolute;
+    left: 5px;
+    height: 10px;
     fill: ${props => props.theme.panelColor};
     overflow: visible;
     align-self: left;
@@ -319,22 +347,22 @@ export const Porter = styled.div`
     display: none;
   }
   & .li{
-    width: 90%;
+    width: 70%;
     margin: 0 auto 6px auto;
   }
   p{
     margin: 3px auto 5px auto;
     text-align: center;
-    width: 100%;
+    width: 90%;
     border-bottom: 1px solid ${props => props.theme.panelColor};
   }
 `
 export const Homer = styled(NavLink)`
-  height: min-content;
-  width: 90%;
+  height: 100%;
+  width: 70%;
   display: flex;
   justify-content: center;
-  margin: 9px 0 0 0;
+  margin: 9px 0 2px 0;
   padding-top: 3px;
   padding-bottom: 1px;
   border-radius: 120px;
@@ -424,6 +452,10 @@ export const SearchBar = styled.input`
 
   &::placeholder{
     color: ${props => props.theme.panelColor};
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
   }
 
   &:hover::placeholder{
@@ -457,12 +489,12 @@ export const SearchBar = styled.input`
   }
 `
 
-export const GlobalStyle = createGlobalStyle`    
+export const GlobalStyle = createGlobalStyle`
     //App
     :root{
         --theme: ${props => props.theme.sky};
-        --panelWidth: 255px;
-        --panelHeight: 255px;
+        --panelWidth: 270px;
+        --panelHeight: 270px;
         --panelPadding: 26px 42.5px;
         --headOffset: 10px;
         --edge: 20px;
@@ -490,10 +522,16 @@ export const GlobalStyle = createGlobalStyle`
       border-radius: 185px;
       overflow: hidden;
     }
+    .grabbing{
+      box-shadow: 0 8px 32px 0 ${props => props.theme.LiHover};
+      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
+      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
+      transition: 0.3s;
+    }
     .header {
         border-bottom: 1px solid ${props => props.theme.panelColor};
         margin: 0 0 2px 0;
-        padding: 22px 0px 5px;
+        padding: 22px 0px 8px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -606,6 +644,18 @@ export const GlobalStyle = createGlobalStyle`
       display: flex !important;
       align-items: center;
       justify-content: center;
+      align-content: flex-start;
+
+    }
+    .contrast{
+      fill: ${props => props.theme.panelColor};
+      stroke: none;
+      width: 60vw;
+    }
+    .contrastWrap{
+      text-align: center;
+      width: 70vw;
+      border-bottom: 1px solid ${props => props.theme.panelColor};
     }
     .eko{
       height: min-content;
@@ -613,9 +663,9 @@ export const GlobalStyle = createGlobalStyle`
       align-self: center;
       align-items: center;
       padding: 10px 30px;
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      -webkit-box-shadow:  0 8px 32px 0 rgba(0, 0, 0, 0.37);
-      -moz-box-shadow:  0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      box-shadow: 0 8px 32px 0 ${props => props.theme.LiHover};
+      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
+      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
       backdrop-filter: blur(var(--blur));
       -webkit-backdrop-filter: blur(var(--blur));
       border: 1px solid;
@@ -625,7 +675,7 @@ export const GlobalStyle = createGlobalStyle`
     }
     .eko-thumb{
       text-shadow: 1px 1px 10px ${props => props.theme.panelColor};
-      font-family: "ekodigital";
+      font-family: "ekodigital", Helvetica, sans-serif;
       font-weight: 400;
       font-style: normal;
       font-size: 270px;
@@ -709,8 +759,8 @@ export const GlobalStyle = createGlobalStyle`
   }
   h1 {
     font-size: 14vw;
-    height: 30px;
-    line-height: 20px;
+    height: 70px;
+    line-height: 60px;
   }
   .eko {
     flex-direction: row;

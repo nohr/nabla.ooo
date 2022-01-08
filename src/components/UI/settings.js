@@ -8,7 +8,7 @@ import sound1 from '../Sounds/select.mp3'
 // import cemeterydfile from '../Sounds/cemetery d.wav'
 import tardigradefile from '../Sounds/tardigrade.wav'
 import useSound from 'use-sound'
-import { ModeIcon } from "./svg"
+import { ModeIcon, MuteIcon, PlayPauseIcon, ShowHideIcon } from "./svg"
 
 const Settings = React.memo(function Settings() {
     const sett = useRef(null);
@@ -98,13 +98,13 @@ const Settings = React.memo(function Settings() {
         <Draggable position={snap.navPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
             <Setter ref={sett} className="Panel set">
                 <p>Audio</p>
-                <Folder onClick={() => toggleMute()} className="li w">{!snap.muted ? "Mute SFX" : "Unmute SFX"}</Folder>
-                <Folder onClick={() => toggleMusic()} className="li w">{!snap.playMusic ? "Play Music" : "Stop Music"}</Folder>
+                <Folder onClick={() => toggleMute()} className="li w"><MuteIcon />{!snap.muted ? "Mute SFX" : "Unmute SFX"}</Folder>
+                <Folder onClick={() => toggleMusic()} className="li w"><PlayPauseIcon arg={1} />{!snap.playMusic ? "Play Music" : "Stop Music"}</Folder>
                 <br />
                 <p>Display</p>
-                <Folder onClick={() => toggleTheme()} className="li w"> <ModeIcon />{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>
-                <Folder onClick={() => toggleCanvas()} className="li w">{snap.canvasVisible ? "Hide Canvas" : "Show Canvas"}</Folder>
-                {state.canvasVisible && <Folder onClick={() => togglePause()} className="li w">{snap.paused ? "Play Canvas" : "Pause Canvas"}</Folder>}
+                <Folder onClick={() => toggleTheme()} className="li w"><ModeIcon />{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>
+                <Folder onClick={() => toggleCanvas()} className="li w"><ShowHideIcon />{snap.canvasVisible ? "Hide Canvas" : "Show Canvas"}</Folder>
+                {state.canvasVisible && <Folder onClick={() => togglePause()} className="li w"><PlayPauseIcon arg={2} />{snap.paused ? "Play Canvas" : "Pause Canvas"}</Folder>}
             </Setter>
         </Draggable>
     );
