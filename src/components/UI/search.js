@@ -1,12 +1,80 @@
 import { useRef, useState, useEffect } from "react";
 import { state } from "./state";
-import { SearchWrapper, SearchBar } from "./style";
 import { SearchIcon, ClearIcon } from "./svg";
 import { useHistory } from "react-router-dom";
 import useSound from "use-sound";
 import sound1 from '../Sounds/select.mp3'
+import styled from "styled-components"
 
+export const SearchWrapper = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 87%;
+  margin: 0 auto 0 auto;
+`
+export const SearchBar = styled.input`
+  border: none !important;
+  width: 100%;
+  margin: 3px 0;
+  display: flex;
+  border-radius: 12px;
+  background-color: transparent;
+  box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+  -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
+  -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
+  color:  ${props => props.theme.textHover};
+  padding: 2px 19px 2px 19px;
+  user-select: text;
+  -moz-user-select: text;
+  -webkit-user-select: text;
+  font-size: 13px;
+  cursor: not-allowed;
 
+  @media only screen and (max-width: 768px) {
+  padding: 6px 19px 6px 20px;
+  outline: 1px solid ${props => props.theme.panelColor};
+  font-size: 18px;
+  }
+
+  &::placeholder{
+    color: ${props => props.theme.panelColor};
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+  }
+
+  &:hover::placeholder{
+    color: ${props => props.theme.textHover};
+  }
+  &:hover{
+    background-color:${props => props.theme.LiHover};
+    box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+    -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
+    -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
+    transition: 0.3s;
+  }
+  &:focus::placeholder{
+    color: ${props => props.theme.textHover};
+    transition: 0.3s;
+  }
+  &:focus{
+    background-color:${props => props.theme.LiHover};
+    outline: 1px solid ${props => props.theme.textHover};
+    box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
+    -webkit-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
+    -moz-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
+    transition: 0.3s;
+  }
+
+  &:focus ~ #searchIcon{
+    fill: ${props => props.theme.textHover} !important;
+  }
+  &:focus ~ #clearIcon svg{
+    fill: ${props => props.theme.textHover} !important;
+  }
+`
 
 // Search
 function Search() {

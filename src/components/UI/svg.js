@@ -106,7 +106,11 @@ export function Grabber() {
     if (e.type === "mousedown") {
       handle.current.setAttribute("style", "fill-opacity: 70% !important; stroke-width: 0px !important; transition: 0.3s; cursor:grab !important;");
       // document.getElementsByClassName('Panel').classList.add("grabbing")
-    };
+    } else if (e.type === "mouseenter") {
+      handle.current.setAttribute("style", "fill-opacity: 20% !important; stroke-width: 1px !important; transition: 0.3s; stroke-opacity: 50%; cursor:grab !important;");
+    } else if (e.type === "mouseleave") {
+      handle.current.setAttribute("style", "fill-opacity: 0% !important; stroke-width: 1px !important; transition: 0.3s; stroke-opacity: 100%; cursor:grab;");
+    }
   }
 
   function release() {
@@ -124,7 +128,7 @@ export function Grabber() {
       className="grabber"
       data-name="Layer 1"
       viewBox="0 0 50 25"
-      onMouseDown={handleEvent} onMouseUp={handleEvent}
+      onMouseDown={handleEvent} onMouseUp={handleEvent} onMouseEnter={handleEvent} onMouseLeave={handleEvent}
       ref={handle}
     >
       <g>

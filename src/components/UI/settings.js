@@ -3,12 +3,69 @@ import React, { useEffect, useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
-import { Setter, Folder } from "./style"
+import { Folder } from "./style"
 import sound1 from '../Sounds/select.mp3'
 // import cemeterydfile from '../Sounds/cemetery d.wav'
+import styled from "styled-components"
 import tardigradefile from '../Sounds/tardigrade.wav'
 import useSound from 'use-sound'
 import { ModeIcon, MuteIcon, PlayPauseIcon, ShowHideIcon } from "./svg"
+
+export const Setter = styled.div`
+//setings
+    padding: var(--panelPadding);
+    position: absolute;
+    z-index: 4900;
+    left: var(--edge);
+    display: flex;
+    margin: 20px 0;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    .audio, .display{
+        width: 100%;
+    }
+
+  *{
+    width: min-content;
+    scroll-behavior: smooth;
+  }
+
+  .li{
+    justify-content: center;
+    width: 70%;
+    margin: 0 auto 6px auto;
+    position: relative;
+  }
+
+  p{
+    margin: 3px auto 5px auto;
+    text-align: center;
+    width: 90%;
+    border-bottom: 1px solid ${props => props.theme.panelColor};
+  }
+  
+  .modeIcon, .muteIcon, .ShowHideIcon{
+    position: absolute;
+    left: 5px;
+    width: 10px;
+    fill: ${props => props.theme.panelColor};
+    overflow: visible;
+    align-self: left;
+    margin-right: auto;
+    margin-left: 5px;
+  }
+  .PlayPauseIcon{
+    position: absolute;
+    left: 5px;
+    height: 10px;
+    fill: ${props => props.theme.panelColor};
+    overflow: visible;
+    align-self: left;
+    margin-right: auto;
+    margin-left: 5px;
+  }
+`
 
 const Settings = React.memo(function Settings() {
     const sett = useRef(null);
@@ -97,14 +154,18 @@ const Settings = React.memo(function Settings() {
     return (
         <Draggable position={snap.navPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
             <Setter ref={sett} className="Panel set">
-                <p>Audio</p>
-                <Folder onClick={() => toggleMute()} className="li w"><MuteIcon />{!snap.muted ? "Mute SFX" : "Unmute SFX"}</Folder>
-                <Folder onClick={() => toggleMusic()} className="li w"><PlayPauseIcon arg={1} />{!snap.playMusic ? "Play Music" : "Stop Music"}</Folder>
+                <div className="audio">
+                    <p>Audio</p>
+                    <Folder onClick={() => toggleMute()} className="li w"><MuteIcon />{!snap.muted ? "Mute SFX" : "Unmute SFX"}</Folder>
+                    <Folder onClick={() => toggleMusic()} className="li w"><PlayPauseIcon arg={1} />{!snap.playMusic ? "Play Music" : "Stop Music"}</Folder>
+                </div>
                 <br />
-                <p>Display</p>
-                <Folder onClick={() => toggleTheme()} className="li w"><ModeIcon />{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>
-                <Folder onClick={() => toggleCanvas()} className="li w"><ShowHideIcon />{snap.canvasVisible ? "Hide Canvas" : "Show Canvas"}</Folder>
-                {state.canvasVisible && <Folder onClick={() => togglePause()} className="li w"><PlayPauseIcon arg={2} />{snap.paused ? "Play Canvas" : "Pause Canvas"}</Folder>}
+                <div className="display">
+                    <p>Display</p>
+                    <Folder onClick={() => toggleTheme()} className="li w"><ModeIcon />{snap.theme === "light" ? "Dark Theme" : "Light Theme"}</Folder>
+                    <Folder onClick={() => toggleCanvas()} className="li w"><ShowHideIcon />{snap.canvasVisible ? "Hide Canvas" : "Show Canvas"}</Folder>
+                    {state.canvasVisible && <Folder onClick={() => togglePause()} className="li w"><PlayPauseIcon arg={2} />{snap.paused ? "Play Canvas" : "Pause Canvas"}</Folder>}
+                </div>
             </Setter>
         </Draggable>
     );

@@ -91,7 +91,7 @@ export const TextWrapper = styled.div`
   align-self: center;
   padding-left: 20px;
   display: grid;
-  grid-template-rows: 2% 38% 50% 10%;
+  grid-template-rows: 2% 48% 40% 10%;
   
   @media only screen and (max-width: 768px) {
   width: 50%;
@@ -282,57 +282,6 @@ export const Navagator = styled.div`
     fill: ${props => props.theme.panelColor};
   }
 `
-export const Setter = styled.div`
-//setings
-  padding: var(--panelPadding);
-  position: absolute;
-  z-index: 4900;
-  left: var(--edge);
-    display: flex;
-    margin: 20px 0;
-    flex-direction: column;
-    justify-content: flex-start;
-
-  *{
-    width: min-content;
-    scroll-behavior: smooth;
-  }
-
-  .li{
-    justify-content: center;
-    width: 70%;
-    margin: 0 auto 6px auto;
-    position: relative;
-  }
-
-  p{
-    margin: 3px auto 5px auto;
-    text-align: center;
-    width: 90%;
-    border-bottom: 1px solid ${props => props.theme.panelColor};
-  }
-  
-  .modeIcon, .muteIcon, .ShowHideIcon{
-    position: absolute;
-    left: 5px;
-    width: 10px;
-    fill: ${props => props.theme.panelColor};
-    overflow: visible;
-    align-self: left;
-    margin-right: auto;
-    margin-left: 5px;
-  }
-  .PlayPauseIcon{
-    position: absolute;
-    left: 5px;
-    height: 10px;
-    fill: ${props => props.theme.panelColor};
-    overflow: visible;
-    align-self: left;
-    margin-right: auto;
-    margin-left: 5px;
-  }
-`
 export const Porter = styled.div`
 //projects
   padding: var(--panelPadding);
@@ -418,75 +367,6 @@ export const Folder = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-`
-export const SearchWrapper = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  width: 89%;
-  margin: 0 auto;
-`
-export const SearchBar = styled.input`
-  border: none !important;
-  width: 100%;
-  margin: 3px 0;
-  display: flex;
-  border-radius: 12px;
-  background-color: transparent;
-  box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-  -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
-  -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
-  color:  ${props => props.theme.textHover};
-  padding: 2px 19px 2px 19px;
-  user-select: text;
-  -moz-user-select: text;
-  -webkit-user-select: text;
-  font-size: 13px;
-  cursor: not-allowed;
-
-  @media only screen and (max-width: 768px) {
-  padding: 6px 19px 6px 20px;
-  outline: 1px solid ${props => props.theme.panelColor};
-  font-size: 18px;
-  }
-
-  &::placeholder{
-    color: ${props => props.theme.panelColor};
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    user-select: none; /* Standard */
-  }
-
-  &:hover::placeholder{
-    color: ${props => props.theme.textHover};
-  }
-  &:hover{
-    background-color:${props => props.theme.LiHover};
-    box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-    -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
-    -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
-    transition: 0.3s;
-  }
-  &:focus::placeholder{
-    color: ${props => props.theme.textHover};
-    transition: 0.3s;
-  }
-  &:focus{
-    background-color:${props => props.theme.LiHover};
-    outline: 1px solid ${props => props.theme.textHover};
-    box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
-    -webkit-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
-    -moz-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
-    transition: 0.3s;
-  }
-
-  &:focus ~ #searchIcon{
-    fill: ${props => props.theme.textHover} !important;
-  }
-  &:focus ~ #clearIcon svg{
-    fill: ${props => props.theme.textHover} !important;
-  }
 `
 
 export const GlobalStyle = createGlobalStyle`
@@ -640,22 +520,26 @@ export const GlobalStyle = createGlobalStyle`
     //store
     .str {
       width: 100vw;
-      height: 100%;
       display: flex !important;
       align-items: center;
-      justify-content: center;
-      align-content: flex-start;
-
+      justify-content: space-between;
+      align-content: center;
+      flex-direction: column-reverse;
+      flex-wrap: nowrap;
+      overflow: visible;
+      margin: 250px 0 100px 0;
+      gap: 60px;
     }
     .contrast{
       fill: ${props => props.theme.panelColor};
       stroke: none;
-      width: 60vw;
+      width: 90vw;
     }
     .contrastWrap{
       text-align: center;
-      width: 70vw;
-      border-bottom: 1px solid ${props => props.theme.panelColor};
+      width: 100%;
+      padding: 20px;
+      border-top: 1px solid ${props => props.theme.panelColor};
     }
     .eko{
       height: min-content;
@@ -681,8 +565,8 @@ export const GlobalStyle = createGlobalStyle`
       font-size: 270px;
       vertical-align: middle;
       letter-spacing: -15px;
-      padding-right: 15px;
-      padding-left: 20px;
+      padding-left: 15px;
+      padding-right: 20px;
       -webkit-user-select: none; /* Safari */
       -moz-user-select: none; /* Firefox */
       -ms-user-select: none; /* IE10+/Edge */
@@ -763,12 +647,12 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 60px;
   }
   .eko {
-    flex-direction: row;
+    flex-direction: row-reverse;
     width: auto;
-    padding-right: 0;
+    /* padding-left: 0; */
   }
   .eko-thumb {
-    border-right: 1px solid ${props => props.theme.panelColor};
+    /* border-left: 1px solid ${props => props.theme.panelColor}; */
     padding-top: 30px;
   }
 }

@@ -25,13 +25,13 @@ export const state = proxy({
     //Theme
     theme: "light",
     light: {
-        panelColor: "#006ebc",
+        panelColor: "#00538f",
         textHover: "#F3E8EE",
-        placeholder: "#006ebc",
+        placeholder: "#00538f",
         sky: "#c3c3c3",
         fog: "#848484",
-        link: "#006ebc",
-        LiHover: "#006ebc67",
+        link: "#00538f",
+        LiHover: "#00538f67",
         LiActiveBackground: "#5e5e5e67",
         CD: '#E3B5A4',
         CDHover: '#0A0A0A',
