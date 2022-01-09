@@ -20,7 +20,7 @@ export const Setter = styled.div`
     display: flex;
     margin: 20px 0;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: space-between;
 
     .audio, .display{
         width: 100%;
