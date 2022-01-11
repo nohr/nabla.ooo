@@ -10,7 +10,7 @@ export const SearchWrapper = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-  width: 87%;
+  width: 91%;
   margin: 0 auto 0 auto;
 `
 export const SearchBar = styled.input`
@@ -78,68 +78,68 @@ export const SearchBar = styled.input`
 
 // Search
 function Search() {
-    const [enter] = useSound(sound1, { volume: state.sfxVolume, soundEnabled: !state.muted });
-    const [query, setQuery] = useState("");
-    const Bar = useRef(null);
-    const history = useHistory();
-    useEffect(() => {
-        // Bar.current && Bar.current.focus();
-        let keys = {};
-        // state.query = '';
+  const [enter] = useSound(sound1, { volume: state.sfxVolume, soundEnabled: !state.muted });
+  const [query, setQuery] = useState("");
+  const Bar = useRef(null);
+  const history = useHistory();
+  useEffect(() => {
+    // Bar.current && Bar.current.focus();
+    let keys = {};
+    // state.query = '';
 
-        function handleKeyPress(e) {
+    function handleKeyPress(e) {
 
-            let { keyCode, type } = e || Event;
-            const isKeyDown = (type === 'keydown');
-            // const isKeyUp = (type === 'keyup');
-            keys[keyCode] = isKeyDown;
+      let { keyCode, type } = e || Event;
+      const isKeyDown = (type === 'keydown');
+      // const isKeyUp = (type === 'keyup');
+      keys[keyCode] = isKeyDown;
 
-            if (e.key === "Escape") {
-                Bar.current.blur();
-            } else if (isKeyDown && e.key === "Enter" && query) {
-                console.log(Bar.current.value);
-                state.query = query;
-                Bar.current.blur()
-                history.push(`/${state.query}-results`);
-                enter()
-                setQuery('')
-            } else if (isKeyDown && keys[18] && keys[70]) {
-                keys = {};
-                Bar.current.focus();
-                setQuery(Bar.current.value);
-                console.log(keys[18], keys[70]);
-            } else {
-                return null
-            }
-        }
-        window.addEventListener("keyup", handleKeyPress);
-        window.addEventListener("keydown", handleKeyPress);
-    }, [enter, history, query])
+      if (e.key === "Escape") {
+        Bar.current.blur();
+      } else if (isKeyDown && e.key === "Enter" && query) {
+        console.log(Bar.current.value);
+        state.query = query;
+        Bar.current.blur()
+        history.push(`/${state.query}-results`);
+        enter()
+        setQuery('')
+      } else if (isKeyDown && keys[18] && keys[70]) {
+        keys = {};
+        Bar.current.focus();
+        setQuery(Bar.current.value);
+        console.log(keys[18], keys[70]);
+      } else {
+        return null
+      }
+    }
+    window.addEventListener("keyup", handleKeyPress);
+    window.addEventListener("keydown", handleKeyPress);
+  }, [enter, history, query])
 
-    return (
-        <SearchWrapper id="search">
-            <SearchBar
-                placeholder="Search (alt + f)"
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                ref={Bar}
-            >
-            </SearchBar>
-            <SearchIcon />
-            {query &&
-                <div
-                    onClick={() => {
-                        setQuery("")
-                        Bar.current.focus()
-                    }
-                    }
-                    id="clearIcon"
-                >
-                    <ClearIcon />
-                </div>}
-        </SearchWrapper>
-    )
+  return (
+    <SearchWrapper id="search">
+      <SearchBar
+        placeholder="Search (alt + f)"
+        type="text"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        ref={Bar}
+      >
+      </SearchBar>
+      <SearchIcon />
+      {query &&
+        <div
+          onClick={() => {
+            setQuery("")
+            Bar.current.focus()
+          }
+          }
+          id="clearIcon"
+        >
+          <ClearIcon />
+        </div>}
+    </SearchWrapper>
+  )
 }
 
 export default Search;

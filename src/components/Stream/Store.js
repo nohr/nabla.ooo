@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useRef } from "react"
 import '../../App.css'
 import Draggable from "react-draggable";
 import { state } from '../UI/state'
@@ -6,16 +6,19 @@ import { useSnapshot } from 'valtio'
 import { Container } from "../UI/style";
 import useDocumentTitle from "../UI/documentTitle";
 import { Contrast } from "../UI/svg";
+// import { HeadSVG } from "../UI/svg";
+//TODO: Replace with HeadSVG
 
 function Store() {
   useDocumentTitle("Store @ Nabla");
   const snap = useSnapshot(state);
+  const nodeRef = useRef(null);
 
   return (
     <>
       <div className="head">
-        <Draggable position={snap.prtPosition} onStart={() => false}>
-          <h1>store</h1>
+        <Draggable nodeRef={nodeRef} position={snap.prtPosition} onStart={() => false}>
+          <h1 ref={nodeRef} >store</h1>
         </Draggable>
       </div>
       <Container className="container">

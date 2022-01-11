@@ -1,43 +1,10 @@
-import React, { useEffect, useRef } from 'react'
-import db from '../../firebase'
+import React, { useRef } from 'react'
+import { GetSectors, db } from '../../firebase'
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import { ImgWrapper, Sector, TextWrapper } from "../UI/style"
 import { motion } from 'framer-motion'
 // import '@iconfu/svg-inject.min.js'
-
-
-function Setup(id) {
-    // Get Works and Information
-    useEffect(() => {
-        state.loading = true;
-        const ref1 = db.collection("portfolio").orderBy("projectYear", "desc");
-        const getWorks = () => {
-
-            ref1.onSnapshot((querySnapshot) => {
-                const items = [];
-                querySnapshot.forEach((doc) => {
-                    if (doc.data().at === id.id) {
-                        items.push(doc.data());
-                    }
-                });
-                state.sectors = items;
-                state.loading = false;
-            });
-        }
-        const unsub = () => {
-            ref1.onSnapshot(() => {
-                const items = [];
-                state.sectors = items;
-                state.loading = false;
-            });
-        }
-        getWorks();
-        return () => unsub();
-    }, [id.id]);
-}
-
-
 
 
 const ImgGrid = ({ work }) => {
@@ -117,7 +84,7 @@ const ImgGrid = ({ work }) => {
 
 const PageData = React.memo(function PageData(id, setSelectedImg) {
     const snap = useSnapshot(state);
-    Setup(id);
+    GetSectors(db, id.id)
     return (
         <>
             {snap.sectors.map((work) => (

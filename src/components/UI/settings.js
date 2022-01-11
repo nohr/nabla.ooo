@@ -152,7 +152,7 @@ const Settings = React.memo(function Settings() {
     let offset = { x: state.navWidth - 25, y: 0 };
 
     return (
-        <Draggable position={snap.navPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
+        <Draggable nodeRef={sett} position={snap.navPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
             <Setter ref={sett} className="Panel set">
                 <div className="audio">
                     <p>Audio</p>

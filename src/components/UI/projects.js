@@ -29,7 +29,7 @@ function Projects() {
 
     if (!state.loading) {
         return (
-            <Draggable position={snap.prtPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
+            <Draggable nodeRef={port} position={snap.prtPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
                 <Porter ref={port} className="Panel prt">
                     <p>Clients</p>
                     {snap.works && snap.works.map((work) => (

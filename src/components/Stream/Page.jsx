@@ -1,22 +1,12 @@
 import React from "react";
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
-import Draggable from "react-draggable"
 import '../../App.css'
 import { Container } from "../UI/style"
 import PageData from "./PageData";
 import Modal from "../UI/Modal";
 import useDocumentTitle from '../UI/documentTitle'
 import { HeadSVG } from '../UI/svg'
-
-function SVG(id) {
-    const snap = useSnapshot(state);
-        return (
-            <Draggable position={snap.prtPosition} onStart={() => false}>
-                    <HeadSVG id={id.id} />
-            </Draggable>
-        )
-    }
 
 const Page = React.memo(function Page(id) {
     useDocumentTitle(id.title)
@@ -29,9 +19,7 @@ const Page = React.memo(function Page(id) {
     return (
         <>  {snap.selectedImg === null && 
             <div className="head">
-                <Draggable position={snap.prtPosition} onStart={() => false}>
-                    <SVG id={id.id} />
-            </Draggable>
+                    <HeadSVG id={id.id}/>
             </div>}
             <Container className="container">
                 <PageData id={id.id}/>
@@ -48,9 +36,7 @@ const Results = React.memo(function Results() {
     return (
         <>
         <div className="head">
-            <Draggable position={snap.prtPosition} onStart={() => false}>
-                    <SVG id={snap.query}/>
-            </Draggable>
+                    <HeadSVG id={snap.query}/>
             </div>
             <Container className="container">
                 <div>

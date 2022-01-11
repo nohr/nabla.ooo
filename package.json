@@ -15,7 +15,7 @@
     "@testing-library/user-event": "^12.8.3",
     "@use-gesture/react": "^10.0.0-beta.21",
     "augmented-ui": "^2.0.0",
-    "firebase": "^8.7.1",
+    "firebase": "^9.6.2",
     "framer-motion": "^4.1.17",
     "jquery": "^3.6.0",
     "locomotive-scroll": "^4.1.1",

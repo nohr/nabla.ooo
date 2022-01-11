@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react"
+import React, { useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
@@ -23,7 +23,6 @@ import {
   Route
 } from "react-router-dom"
 import useSound from 'use-sound'
-import db from '../../firebase'
 
 
 //Nav -- Child of Parent: UI
@@ -70,7 +69,7 @@ function Nav() {
 
   return (
     //NAV
-    <Draggable cancel={".li, .nablaWrapper, #search"} handle=".grabber" bounds=".container" position={nav.position} onDrag={onControlledDrag} >
+    <Draggable nodeRef={nav} cancel={".li, .nablaWrapper, #search"} handle=".grabber" bounds=".container" position={nav.position} onDrag={onControlledDrag} >
       <Navagator ref={nav} className="Panel nav" portLink={portLink} settLink={settLink}>
         <div className='header' >
           <SvgNabla />
@@ -103,25 +102,6 @@ function Nav() {
 //UI -- Parent Component
 function UI() {
   const snap = useSnapshot(state);
-  //Get Project list and Data
-  useEffect(() => {
-    state.loading = true;
-    const ref = db.collection("portfolio").orderBy("date", "desc");
-
-    const getWorks = () => {
-      ref.onSnapshot((querySnapshot) => {
-        const items = [];
-        querySnapshot.forEach((doc) => {
-          if (doc.data().name) {
-            items.push(doc.data());
-          }
-        });
-        state.works = items;
-        state.loading = false;
-      });
-    }
-    getWorks();
-  }, []);
 
   var x = window.matchMedia("(max-width: 768px)");
   if (x.matches) {
