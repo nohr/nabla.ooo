@@ -129,7 +129,12 @@ function UI() {
             <Route path="/store" component={Store} />
             <Route path="/blog" component={Blog} />
             <Route path="/info" component={Info} />
-            {snap.works.map((work) => (
+            {snap.selfs.map((work) => (
+              <Route key={`${work.name}`} path={`/${work.id}`}>
+                <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />
+              </Route>
+            ))}
+            {snap.clients.map((work) => (
               <Route key={`${work.name}`} path={`/${work.id}`}>
                 <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />
               </Route>
@@ -138,7 +143,7 @@ function UI() {
             <Route path={`/${snap.query}-results`}>
               <Results title={`${snap.query} Results`} />
             </Route>
-            <Route path="/404" component={NotFound} />
+            <Route component={NotFound} />
             {/* <Redirect from="*" to="/404" /> */}
           </Switch>
         </ThemeProvider>

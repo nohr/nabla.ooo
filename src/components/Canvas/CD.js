@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import * as THREE from "three";
 import { useFrame } from '@react-three/fiber'
 import { state } from '../UI/state';
@@ -14,23 +14,24 @@ function Ball(props) {
     clearcoat: 0.8,
   })
 
-  const material1 = new THREE.MeshPhysicalMaterial({
-    color: state.theme === 'light' ? state.light.CDHover : state.dark.CDHover,
-    reflectivity: 1,
-    roughness: state.theme === 'light' ? state.light.CDRough : state.dark.CDRough,
-    metalness: 0.2,
-    opacity: 1,
-  })
+  // const material1 = new THREE.MeshPhysicalMaterial({
+  //   color: state.theme === 'light' ? state.light.CDHover : state.dark.CDHover,
+  //   reflectivity: 1,
+  //   roughness: state.theme === 'light' ? state.light.CDRough : state.dark.CDRough,
+  //   metalness: 0.2,
+  //   opacity: 1,
+  // })
 
-  const [clicked, setClick] = useState(false);
+  // const [clicked, setClick] = useState(false);
 
   return (
     <mesh
       {...props}
       castShadow
       receiveShadow
-      material={!clicked ? material : material1}
-      onClick={(e) => { !clicked && !state.paused ? setClick(true) : setClick(false) }}
+      material={material}
+    // material={!clicked ? material : material1}
+    // onClick={(e) => { !clicked && !state.paused ? setClick(true) : setClick(false) }}
     >
       <sphereGeometry args={[220, 220, 220]} />
     </mesh>

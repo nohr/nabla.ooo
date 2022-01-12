@@ -2,16 +2,15 @@ import { proxy } from 'valtio'
 
 export const state = proxy({
     //UI
-    works: [],
+    selfs: [],
+    clients: [],
     sectors: [],
     selectedImg: null,
     loading: false,
     containerWidth: 0,
     themeChanged: false,
     // Panel
-    navWidth: 230,
-    settWidth: 230,
-    portWidth: 0,
+    navWidth: 270,
     isPort: false,
     isSett: false,
     sfxVolume: 1,
@@ -19,7 +18,7 @@ export const state = proxy({
     playMusic: false,
     navPosition: { x: 0, y: 0 },
     prtPosition: { x: 0, y: 0 },
-    dist: 25,
+    dist: 45,
     //Search
     query: '',
     //Theme
@@ -66,7 +65,7 @@ export const state = proxy({
         rectIntensity: 5,
         blend: "unset",
         searchFocus: "0 0 0px 0px",
-        backdrop: "rgba(0, 0, 0, 0.50)",
+        backdrop: "rgba(0, 0, 0, 0.60)",
         noise: .035,
     },
     //Canvas

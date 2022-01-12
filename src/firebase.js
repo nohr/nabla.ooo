@@ -22,9 +22,12 @@ export const db = getFirestore(app);
 export async function GetWorks(db) {
   state.loading = true;
   const colRef = collection(db, 'portfolio');
-  const projects = query(colRef, orderBy("date", "desc"));
-  const projectsSnapshot = await getDocs(projects);
-  state.works = projectsSnapshot.docs.map(doc => doc.data());
+  const selfs = query(colRef, orderBy("date", "desc"), where("type", "==", "self"));
+  const clients = query(colRef, orderBy("date", "desc"), where("type", "==", "client"));
+  const selfsSnapshot = await getDocs(selfs);
+  const clientsSnapshot = await getDocs(clients);
+  state.selfs = selfsSnapshot.docs.map(doc => doc.data());
+  state.clients = clientsSnapshot.docs.map(doc => doc.data());
   state.loading = false;
 }
 
@@ -35,5 +38,4 @@ export async function GetSectors(db, work) {
   const sectorSnapshot = await getDocs(sectors);
   state.sectors = sectorSnapshot.docs.map(doc => doc.data());
   state.loading = false;
-  console.log(state.sectors);
 }

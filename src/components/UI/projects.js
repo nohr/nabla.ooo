@@ -3,9 +3,35 @@ import { useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
-import { Porter, Linker } from "./style"
+import { Linker } from "./style"
+import styled from "styled-components"
 import sound1 from '../Sounds/select.mp3'
 import useSound from 'use-sound'
+
+export const Porter = styled.div`
+//projects
+  padding: var(--panelPadding);
+  position: absolute;
+  z-index: 3500;
+  left: var(--edge);
+  margin: 20px 0;
+  text-align: center;
+    overflow: scroll !important;
+
+  &::-webkit-scrollbar{
+    display: none;
+  }
+  & .li{
+    width: 70%;
+    margin: 0 auto 4px auto;
+  }
+  p{
+    margin: 3px auto 5px auto;
+    text-align: center;
+    width: 90%;
+    border-bottom: 1px solid ${props => props.theme.panelColor};
+  }
+`
 
 function Projects() {
     const port = useRef(null);
@@ -20,9 +46,10 @@ function Projects() {
     }
 
     //intersection observer
+    //offset panel if settings is open
     let offset = {};
     if (state.isSett) {
-        offset = { x: state.navWidth + state.settWidth - (state.dist * 3), y: '0px' };
+        offset = { x: (state.navWidth * 2) - (state.dist * 2), y: '0px' };
     } else {
         offset = { x: state.navWidth - state.dist, y: '0px' };
     }
@@ -31,8 +58,13 @@ function Projects() {
         return (
             <Draggable nodeRef={port} position={snap.prtPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>
                 <Porter ref={port} className="Panel prt">
-                    <p>Clients</p>
-                    {snap.works && snap.works.map((work) => (
+                    <p>Self-Initiate</p>
+                    {snap.selfs && snap.selfs.map((work) => (
+                        <Linker exact className="li w" activeClassName="any" onClick={() => select()} to={`/${work.id}`} key={Math.random()}>{work.name}</Linker>
+                    ))}
+                    <br />
+                    <p>Client</p>
+                    {snap.clients && snap.clients.map((work) => (
                         <Linker exact className="li w" activeClassName="any" onClick={() => select()} to={`/${work.id}`} key={Math.random()}>{work.name}</Linker>
                     ))}
                 </Porter>

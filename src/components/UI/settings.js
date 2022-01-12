@@ -1,5 +1,5 @@
 //Settings -- Child of Panel
-import React, { useEffect, useRef } from "react"
+import React, { useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
@@ -72,11 +72,7 @@ const Settings = React.memo(function Settings() {
     const snap = useSnapshot(state);
     state.selectedImg = null;
     const [select] = useSound(sound1, { volume: state.sfxVolume, soundEnabled: !state.muted });
-    const [play, { pause }] = useSound(tardigradefile, { interrupt: true, loop: true });
-
-    useEffect(() => {
-        state.settWidth = sett.current.getBoundingClientRect().width;
-    }, [])
+    const [play, { stop }] = useSound(tardigradefile, { interrupt: true, loop: true });
 
     // AUDIO
     // Toggle Mute Switch
@@ -96,7 +92,7 @@ const Settings = React.memo(function Settings() {
             play();
         } else if (state.playMusic === true) {
             state.playMusic = false
-            pause();
+            stop();
             select()
         }
     }
@@ -149,7 +145,7 @@ const Settings = React.memo(function Settings() {
     }
 
     //intersection observer
-    let offset = { x: state.navWidth - 25, y: 0 };
+    let offset = { x: state.navWidth - state.dist, y: 0 };
 
     return (
         <Draggable nodeRef={sett} position={snap.navPosition} positionOffset={offset} cancel={".li"} onStart={() => false}>

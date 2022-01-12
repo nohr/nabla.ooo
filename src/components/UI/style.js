@@ -282,30 +282,6 @@ export const Navagator = styled.div`
     fill: ${props => props.theme.panelColor};
   }
 `
-export const Porter = styled.div`
-//projects
-  padding: var(--panelPadding);
-  position: absolute;
-  z-index: 3500;
-  left: var(--edge);
-  margin: 20px 0;
-  text-align: center;
-    overflow: scroll !important;
-
-  &::-webkit-scrollbar{
-    display: none;
-  }
-  & .li{
-    width: 70%;
-    margin: 0 auto 6px auto;
-  }
-  p{
-    margin: 3px auto 5px auto;
-    text-align: center;
-    width: 90%;
-    border-bottom: 1px solid ${props => props.theme.panelColor};
-  }
-`
 export const Homer = styled(NavLink)`
   height: 100%;
   width: 70%;
@@ -504,8 +480,8 @@ export const GlobalStyle = createGlobalStyle`
       width: 491.75px !important;
       stroke: ${props => props.theme.panelColor} !important;
       fill: none;
-      margin-top: 154px !important; 
-      margin-left: calc(-1 * var(--panelWidth)) !important;
+      margin-top: 225px !important; 
+      margin-left: calc(-1 * var(--panelWidth) + 45px) !important;
     }
     .notfound {
       width: 100vw;
@@ -539,7 +515,6 @@ export const GlobalStyle = createGlobalStyle`
       text-align: center;
       width: 100%;
       padding: 20px;
-      border-top: 1px solid ${props => props.theme.panelColor};
     }
     .eko{
       height: min-content;
