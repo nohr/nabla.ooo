@@ -22,6 +22,10 @@ const Porter = styled.div`
   ${props => props.hide}
   ${props => props.top}
   transition: 0.2s;
+  -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
 
   &::-webkit-scrollbar{
     display: none;

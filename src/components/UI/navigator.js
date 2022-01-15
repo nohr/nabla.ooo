@@ -18,11 +18,21 @@ const Nav = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  .grid{
+    display: grid;
+    justify-items: center;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+  }
 
     & .li{
     width: 80%;
     align-self: center;
     transition: 0.3s;
+    -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
 
     .folder{
@@ -63,14 +73,17 @@ const Nav = styled.div`
 @keyframes pulse {
 	0% {
 		transform: scale(0.8);
+		fill: ${props => props.theme.panelColor};
 	}
 
 	70% {
 		transform: scale(1);
+		fill: ${props => props.theme.textHover};
 	}
 
 	100% {
 		transform: scale(0.8);
+		fill: ${props => props.theme.panelColor};
 	}
 }
 
@@ -100,6 +113,32 @@ const Nav = styled.div`
   .spinner path{
     fill: ${props => props.theme.panelColor};
   }
+
+  .title{
+    position: absolute;
+    bottom: 23px;
+     border: none;
+    /* font-size: 12px; */
+    white-space: nowrap;
+    pointer-events: all;
+    animation: flash 2s infinite;
+    transition: 1.3s;
+  }
+  @keyframes flash {
+	0% {
+		color: ${props => props.theme.panelColor};
+	}
+
+	70% {
+		color: ${props => props.theme.textHover};
+      -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
+      filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
+	}
+
+	100% {
+		color: ${props => props.theme.panelColor};
+	}
+}
 `
 
 function Navigator() {
@@ -151,23 +190,26 @@ function Navigator() {
           <SvgNabla />
         </div>
         <Search />
-        <Linker className="li w" activeClassName="any" to="/info" style={{ cursor: "not-allowed" }}>
-          Info
-        </Linker>
-        <Linker className="li w" activeClassName="any" to="/store">
-          Store
-        </Linker >
-        <Linker className="li w" activeClassName="any" to="/blog" style={{ cursor: "not-allowed" }}>
-          Blog
-        </Linker >
-        <Folder className="li folder portLink">
-          Projects
-          {snap.isPort ? <SideArrow /> : <Arrow />}
-        </Folder>
-        <Folder className="li folder settLink">
-          Settings
-          {snap.isSett ? <SideArrow /> : <Arrow />}
-        </Folder>
+        <div className="grid">
+          <Linker className="li w" activeClassName="any" to="/info" style={{ cursor: "not-allowed" }}>
+            Info
+          </Linker>
+          <Linker className="li w" activeClassName="any" to="/store">
+            Store
+          </Linker >
+          <Linker className="li w" activeClassName="any" to="/blog" style={{ cursor: "not-allowed" }}>
+            Blog
+          </Linker >
+          <Folder className="li folder portLink">
+            Projects
+            {snap.isPort ? <SideArrow /> : <Arrow />}
+          </Folder>
+          <Folder className="li folder settLink">
+            Settings
+            {snap.isSett ? <SideArrow /> : <Arrow />}
+          </Folder>
+          {snap.playMusic && <p className="title">nohri - tardigrade</p>}
+        </div>
         {snap.loading ? <Spinner /> : <Grabber />}
         {snap.playMusic ? <Speaker /> : null}
       </Nav>

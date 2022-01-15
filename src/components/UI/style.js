@@ -332,10 +332,6 @@ export const GlobalStyle = createGlobalStyle`
       width: var(--panelWidth);
       height: var(--panelHeight);
       scroll-snap-type: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
       backdrop-filter: blur(var(--blur));
       -webkit-backdrop-filter: blur(var(--blur));
       mix-blend-mode: ${props => props.theme.blend};

@@ -22,6 +22,10 @@ const Setter = styled.div`
     ${props => props.top}
     /* transition: 0.3s; */
       transition: 0.6s !important;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
 
     .audio, .display{
        width: 100%;
@@ -313,7 +317,7 @@ function Settings() {
                 >
                     <Folder id="muteunmute" className="li w"><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
                     <Folder id="playstop" className="li"><PlayPauseIcon arg={1} />Music</Folder>
-                    {snap.playMusic && <p style={{ border: "none", fontSize: "10px", whiteSpace: "nowrap" }}>nohri - tardigrade</p>}
+                    <Folder id="Next" className="li w">Next</Folder>
                 </div>
                 <p style={secondHeader}
                     id="displayhead"
