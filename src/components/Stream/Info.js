@@ -2,6 +2,7 @@ import React, { useRef } from "react";
 import '../../App.css'
 import Draggable from "react-draggable";
 import { Container } from "../UI/style";
+import { Head } from "./Page";
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import useDocumentTitle from "../UI/documentTitle";
@@ -56,11 +57,11 @@ function Info() {
 
   return (
     <>
-      <div className="head">
+      <Head className="head">
         <Draggable nodeRef={nodeRef} position={snap.prtPosition} onStart={() => false}>
           <h1 ref={nodeRef}>info</h1>
         </Draggable>
-      </div>
+      </Head>
       <Container className="container info">
         {/* <p>aite@nabla.ooo</p>
         <ContactForm />

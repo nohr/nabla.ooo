@@ -19,7 +19,6 @@ const Modal = () => {
     };
     return (
         <>
-
             <motion.div className="backdrop" onClick={handleClick}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

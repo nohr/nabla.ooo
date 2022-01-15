@@ -1,6 +1,7 @@
 import React, { useRef } from "react"
 import '../../App.css'
 import Draggable from "react-draggable";
+import { Head } from "./Page";
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import { Container } from "../UI/style";
@@ -16,11 +17,11 @@ function Store() {
 
   return (
     <>
-      <div className="head">
+      <Head className="head">
         <Draggable nodeRef={nodeRef} position={snap.prtPosition} onStart={() => false}>
           <h1 ref={nodeRef} >store</h1>
         </Draggable>
-      </div>
+      </Head>
       <Container className="container">
         <div className="str">
           <div className="contrastWrap">
@@ -34,7 +35,7 @@ function Store() {
             <div className="desc">
               <div className="title"> <p>Eko Digital</p></div>
               My first display font offers a stencil with a distinct futuristic style. <br />
-              <i style={{ opacity: ".5" }}>Just what your acid graphics were missing!</i>
+              <i style={{ opacity: ".5" }}>It's just what your acid graphics were missing!</i>
               <br />
               <a className="buyBtn" href="https://nablaooo.gumroad.com/l/ekodigi" target="_blank" rel="noopener noreferrer">
                 $30

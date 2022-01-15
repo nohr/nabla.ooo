@@ -23,7 +23,7 @@ export const SearchBar = styled.input`
   box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
   -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
   -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
-  color:  ${props => props.theme.textHover};
+  color:  ${props => props.theme.panelColor};
   padding: 2px 19px 2px 19px;
   user-select: text;
   -moz-user-select: text;
@@ -47,9 +47,12 @@ export const SearchBar = styled.input`
 
   &:hover::placeholder{
     color: ${props => props.theme.textHover};
+    transition: 0.3s;
   }
   &:hover{
+    color: ${props => props.theme.textHover};
     background-color:${props => props.theme.LiHover};
+    outline: 1px solid ${props => props.theme.textHover};
     box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
     -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
     -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
@@ -60,6 +63,7 @@ export const SearchBar = styled.input`
     transition: 0.3s;
   }
   &:focus{
+    color: ${props => props.theme.textHover};
     background-color:${props => props.theme.LiHover};
     outline: 1px solid ${props => props.theme.textHover};
     box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
@@ -68,12 +72,14 @@ export const SearchBar = styled.input`
     transition: 0.3s;
   }
 
-  &:focus ~ #searchIcon{
+  &:focus ~ #searchIcon, &:hover ~ #searchIcon{
     fill: ${props => props.theme.textHover} !important;
+    transition: 0.3s;
   }
-  &:focus ~ #clearIcon svg{
+  &:focus ~ #clearIcon svg, &:hover ~ #clearIcon svg{
     fill: ${props => props.theme.textHover} !important;
-  }
+    transition: 0.3s;
+  } 
 `
 
 // Search

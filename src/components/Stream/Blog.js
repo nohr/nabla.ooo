@@ -3,6 +3,7 @@ import { Container } from '../UI/style'
 import Draggable from 'react-draggable'
 import { useSnapshot } from 'valtio'
 import { state } from '../UI/state'
+import { Head } from './Page'
 // import { HeadSVG } from "../UI/svg";
 //TODO: Replace with HeadSVG
 
@@ -11,11 +12,11 @@ function Blog() {
     const nodeRef = useRef(null);
     return (
         <>
-            <div className="head">
+            <Head className="head">
                 <Draggable nodeRef={nodeRef} position={snap.prtPosition} onStart={() => false}>
                     <h1 ref={nodeRef}>blog</h1>
                 </Draggable>
-            </div>
+            </Head>
             <Container className="container">
                 <div>
                     HI!

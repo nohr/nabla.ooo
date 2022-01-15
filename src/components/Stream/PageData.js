@@ -11,10 +11,11 @@ const ImgGrid = ({ work }) => {
     const refWrapper = useRef(null);
     function setSelectedImg(selected) {
         state.selectedImg = selected;
-        if (state.isPort || state.isSett) {
+        setTimeout(() => {
             state.isPort = false;
             state.isSett = false;
-        }
+
+        }, 300);
     }
 
     // Each individual image or video

@@ -5,6 +5,7 @@ import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import useDocumentTitle from "../UI/documentTitle";
 import { Container } from "../UI/style";
+import { Head } from "./Page";
 // import { HeadSVG } from "../UI/svg";
 //TODO: Replace with HeadSVG
 
@@ -15,11 +16,11 @@ const NotFound = () => {
 
     return (
         <>
-            <div className="head">
+            <Head className="head">
                 <Draggable position={snap.prtPosition} onStart={() => false}>
                     <h1 ref={nodeRef} >404</h1>
                 </Draggable>
-            </div>
+            </Head>
             <Container className="container notfound">
                 <p>Can't find this page!</p>
             </Container>

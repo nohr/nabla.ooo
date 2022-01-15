@@ -1,7 +1,6 @@
+//Styling for the UI - proceed with caution
 import styled, { createGlobalStyle } from "styled-components"
 import { NavLink } from "react-router-dom"
-
-//Styling for the UI - proceed with caution
 
 export const Container = styled.div`
   display: flex;
@@ -14,8 +13,8 @@ export const Container = styled.div`
   overflow: scroll;
   -webkit-overflow-scrolling: touch;
   height: 100%;
-  width: 100vw;
-  padding: 20px;
+  width: 100%;
+  padding: 20px 15px 20px 20px;
   font-size: 14px;
   color: ${props => props.theme.panelColor};
 
@@ -60,6 +59,23 @@ export const Container = styled.div`
   &:last-child(){
     margin-bottom: 60%;
   }
+  ::-webkit-scrollbar {
+      -webkit-appearance: none;
+      width: 5px;
+    }
+    ::-webkit-scrollbar-thumb {
+      outline: 1px solid ${props => props.theme.panelColor};
+      border-radius: 4px;
+      background-color: transparent;
+      /* transition: 0.3s; */
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: ${props => props.theme.panelColor};
+          box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          /* transition: 0.3s; */
+    }
 `
 export const Sector = styled.div`
 border: solid 1px ;
@@ -68,7 +84,7 @@ border-color: transparent ${props => props.theme.panelColor} transparent ${props
 display: flex;
 width: 100%;
 flex-direction:row;
-padding: 0px 20px 0px 0px;
+padding: 0px 0px 0px 0px;
 height: 90%;
 justify-content: space-between;
 gap: 20px;
@@ -76,9 +92,11 @@ position: relative;
 overflow: hidden;
 backdrop-filter: blur(var(--blur));
 -webkit-backdrop-filter: blur(var(--blur));
+transition: 1.3s;
 
 & .lot{
   color: ${props => props.theme.panelColor};
+  transition: 1.3s;
 }
 `
 export const TextWrapper = styled.div`
@@ -92,6 +110,8 @@ export const TextWrapper = styled.div`
   padding-left: 20px;
   display: grid;
   grid-template-rows: 2% 48% 40% 10%;
+  transition: 1.3s;
+  
   
   @media only screen and (max-width: 768px) {
   width: 50%;
@@ -109,6 +129,24 @@ export const TextWrapper = styled.div`
 text-indent: 2em;
 line-height: 2;
 overflow-y: scroll;
+  ::-webkit-scrollbar {
+      -webkit-appearance: none;
+      width: 5px;
+      position: absolute;
+    }
+    ::-webkit-scrollbar-thumb {
+      outline: 1px solid ${props => props.theme.panelColor};
+      border-radius: 4px;
+      background-color: transparent;
+      transition: 0.3s;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: ${props => props.theme.panelColor};
+          box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          transition: 0.3s;
+    }
 }
 
 & a{
@@ -126,6 +164,8 @@ export const ImgWrapper = styled.div`
     flex-direction: row;
     flex-wrap: nowrap;
     gap: 20px;
+    padding-bottom: 7px;
+    margin-bottom: 1px;
     
     @media only screen and (max-width: 768px) {
       width: 50%;
@@ -133,7 +173,7 @@ export const ImgWrapper = styled.div`
 
     .img-thumb:only-child{
       margin: 0 auto;
-      padding: 0 28vw;
+      padding: 0 27vw;
     }
 
     .img-thumb{
@@ -190,97 +230,24 @@ export const ImgWrapper = styled.div`
     video[poster]{
       object-fit: fill;
     }
-`
-export const Navagator = styled.div`
-//nav
-  padding: 0em 42.5px 30px 42.5px;
-  position: fixed;
-  left: var(--edge);
-  top: var(--edge);
-  z-index: 5000;
-  text-indent: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-    & .li{
-    width: 80%;
-    align-self: center;
-    }
-
-    .folder{
-      padding-right: 5px;
-    }
-
-  & .speaker{
-    cursor: pointer;
-    position: absolute;
-    z-index: 500;
-    width: 12px;
-    top: 5%;
-    left: 50%;
-    transform: translate(-50%, 0);
-  }
-
-  & .grabber{  
-    cursor: grab;
-    width: 50px;
-    position: absolute;
-    z-index: 500;
-    left: 50%;
-    bottom: 2%;
-    transform: translate(-50%, 0);
-    stroke: ${props => props.theme.panelColor};
-    fill: ${props => props.theme.panelColor};
-    fill-opacity: 0% !important; 
-    stroke-width: 1px !important;
-  }
-
-  & .speaker{
-    fill: ${props => props.theme.panelColor};
-  	animation: pulse 2s infinite;
+    ::-webkit-scrollbar {
+  -webkit-appearance: none;
+  height: 9px;
 }
-
-@keyframes pulse {
-	0% {
-		transform: scale(0.8);
-	}
-
-	70% {
-		transform: scale(1);
-	}
-
-	100% {
-		transform: scale(0.8);
-	}
+::-webkit-scrollbar-thumb {
+  outline: 1px solid ${props => props.theme.panelColor};
+  border-radius: 4px;
+  background-color: transparent;
+  transition: 0.3s;
+  overflow: visible;
 }
-
-  & .speaker:hover {
-    fill: ${props => props.theme.LiHover};
-    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.LiHover});
-    filter: drop-shadow(1px 1px 3px ${props => props.theme.LiHover});
-    transition: 0.3s;
-  }
-
-  & .grabber:not(:hover){
-    fill-opacity: 0% !important; 
-    stroke-width: 1px !important;
-  }
-
-  .spinner {
-    width: 25px;
-    height: 25px;
-    background: none;
-    position: absolute;
-    z-index: 500;
-    pointer-events: none;
-    left: 50%;
-    bottom: 3%;
-    transform: translate(-50%, 0);
-  }
-  .spinner path{
-    fill: ${props => props.theme.panelColor};
-  }
+::-webkit-scrollbar-thumb:hover {
+  background-color: ${props => props.theme.panelColor};
+      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      transition: 0.3s;
+}
 `
 export const Homer = styled(NavLink)`
   height: 100%;
@@ -297,8 +264,7 @@ export const Homer = styled(NavLink)`
     align-self:center;
     fill: ${props => props.theme.panelColor};
     color: ${props => props.theme.panelColor};
-    /* -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.panelColor});
-    filter: drop-shadow(1px 1px 3px ${props => props.theme.panelColor}); */
+    transition: 2.3s;
   }
 
   &:hover {
@@ -306,14 +272,14 @@ export const Homer = styled(NavLink)`
     -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
     -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
     box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
-    transition: 0.3s;
+    transition: 0.6s;
   }
 
   &:hover > svg{
     fill: ${props => props.theme.textHover};
     -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
     filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
-    transition: 0.3s;
+    transition: 2.3s;
   }
 
 `
@@ -357,7 +323,7 @@ export const GlobalStyle = createGlobalStyle`
         --blur: 5px;
     }
     html, body, #root {
-          isolation: isolate;
+        /* isolation: isolate; */
         background-color: ${props => props.theme.sky};
     }
     //Panel
@@ -378,11 +344,11 @@ export const GlobalStyle = createGlobalStyle`
       border-radius: 185px;
       overflow: hidden;
     }
-    .grabbing{
-      box-shadow: 0 8px 32px 0 ${props => props.theme.LiHover};
-      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
-      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
-      transition: 0.3s;
+    .glow{
+      box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
+      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
+      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
+      transition: 2.3s;
     }
     .header {
         border-bottom: 1px solid ${props => props.theme.panelColor};
@@ -398,6 +364,7 @@ export const GlobalStyle = createGlobalStyle`
     }
     .li, .folder {
         color: ${props => props.theme.panelColor};
+        transition: 0.9s;
     }
     .folderActive {
       box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
@@ -409,66 +376,39 @@ export const GlobalStyle = createGlobalStyle`
     .folderActive:hover{
       box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
       -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      /* border: 1px solid ${props => props.theme.LiHover} ; */
     }
     .folderActive:after{
       border-radius: 5px;
     }
     .li:hover {
-      color: ${props => props.theme.textHover};
       background-color: ${props => props.theme.LiHover};
       -webkit-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
       -moz-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
       box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
+      color: ${props => props.theme.textHover};
       text-shadow: 1px 1px 3px #ebebeb;
-      transition: 0.3s;
+      /* transition: 0.3s !important; */
     }
     .arrow {
       fill: ${props => props.theme.panelColor};
       height: clamp(8px, 12px, 12px);
       float: right;
     }
+    .li svg{
+      transition: 0.9s;
+    }
     .li:hover > svg {
       fill: ${props => props.theme.textHover};
+      stroke: ${props => props.theme.textHover} !important;
       -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
       filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
+      /* transition: 0.3s !important; */
     }
 
     //Stream
     //container for h1 or svg
-    .head{
-      pointer-events: none;
-      position: absolute;
-      display: flex;
-      align-items: center;
-      z-index: 550;
-      height: var(--panelHeight);
-      width: fit-content;
-      margin-top: 20px;
-      margin-left: calc(var(--panelWidth) + var(--headOffset));
-      mix-blend-mode: ${props => props.theme.blend} !important;
-    }
-    h1{
-        justify-self: flex-start;
-        position: absolute;
-        font-size: 5vw;
-        color: transparent;
-        -webkit-text-stroke-width: 1px;
-        margin: var(--headOffset);
-        font-family: "helvetica";
-        font-weight: 400;
-        font-style: normal;
-        -webkit-text-stroke-color: ${props => props.theme.panelColor};
-    }
-    .head svg {
-      fill: none !important;
-      stroke:  ${props => props.theme.panelColor} !important;
-      stroke-width: 1px;
-      position: absolute;
-      width: 35vw;
-      height: auto;
-      overflow: visible;
-      margin: 20px 20px;
-    }
+    
 
     .hom {
         pointer-events: none;
@@ -477,11 +417,11 @@ export const GlobalStyle = createGlobalStyle`
 
     .HomeCD{
       padding: 0;
-      width: 491.75px !important;
+      width: 641.75px !important;
       stroke: ${props => props.theme.panelColor} !important;
       fill: none;
-      margin-top: 225px !important; 
-      margin-left: calc(-1 * var(--panelWidth) + 45px) !important;
+      margin-top: 288px !important;
+      margin-left: calc(-1 * var(--panelWidth) + 15px) !important;
     }
     .notfound {
       width: 100vw;
@@ -510,6 +450,7 @@ export const GlobalStyle = createGlobalStyle`
       fill: ${props => props.theme.panelColor};
       stroke: none;
       width: 90vw;
+      transition: 1.3s;
     }
     .contrastWrap{
       text-align: center;
@@ -522,15 +463,16 @@ export const GlobalStyle = createGlobalStyle`
       align-self: center;
       align-items: center;
       padding: 10px 30px;
-      box-shadow: 0 8px 32px 0 ${props => props.theme.LiHover};
-      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
-      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
+      box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
+      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
+      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
       backdrop-filter: blur(var(--blur));
       -webkit-backdrop-filter: blur(var(--blur));
       border: 1px solid;
       border-color:  ${props => props.theme.panelColor};
       border-radius: 200px;
       overflow: visible;
+      transition: 1.3s;
     }
     .eko-thumb{
       text-shadow: 1px 1px 10px ${props => props.theme.panelColor};
@@ -599,9 +541,10 @@ export const GlobalStyle = createGlobalStyle`
     }
 
 //Not Mobile
-@media only screen and (min-width: 1366px) {
-  h1 {
-    font-size: 12vw;
+
+@media only screen and (min-width: 1920px) {
+  .sector{
+    height: 70%;
   }
 }
 @media only screen and (min-width: 768px) {
@@ -615,11 +558,6 @@ export const GlobalStyle = createGlobalStyle`
   .info .text{
     width: 590px;
     /* margin: 0 30px; */
-  }
-  h1 {
-    font-size: 14vw;
-    height: 70px;
-    line-height: 60px;
   }
   .eko {
     flex-direction: row-reverse;
@@ -649,29 +587,6 @@ export const GlobalStyle = createGlobalStyle`
   }
   .nav{
     height: min-content;
-  }
-
-  .prt{
-    /* width: max-content; */
-     /*Border*/
-     /* --aug-bl: 9px;
-    --aug-tl: 9px;
-    --aug-br: 25px;
-    --aug-tr: 13px; */
-    .w{
-    text-indent: 0 !important;
-    }
-    /* height: 80vw; */
-    overflow-x: scroll;
-  }
-
-  .prt .li{
-    padding-right: 0px;
-    text-align: center;
-  }
-
-  .set{
-    padding: 20px;
   }
 
   .header{

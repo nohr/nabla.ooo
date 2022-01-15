@@ -27,8 +27,6 @@ function Ball(props) {
   return (
     <mesh
       {...props}
-      castShadow
-      receiveShadow
       material={material}
     // material={!clicked ? material : material1}
     // onClick={(e) => { !clicked && !state.paused ? setClick(true) : setClick(false) }}
@@ -38,7 +36,7 @@ function Ball(props) {
   )
 }
 
-export default function CD(props) {
+export default function CD() {
   const group = useRef()
   useFrame(() => {
     if (!state.paused) {
@@ -48,14 +46,12 @@ export default function CD(props) {
   });
 
   return (
-    <group {...props} dispose={null} >
-      <group ref={group} position={[0, 2, 0]}
-        rotation={[-Math.PI / 2, 0, Math.PI / 2]} receiveShadow castShadow >
-        <group position={[0, 0, 1]} scale={.01}>
-          <Ball position={[5.28, 0, -265.23]} />
-          <Ball position={[306.5, 0, 134.46]} />
-          <Ball position={[-296.7, 0, 134.46]} />
-        </group>
+    <group ref={group} position={[0, 2, 0]} dispose={null}
+      rotation={[-Math.PI / 2, 0, Math.PI / 2]} receiveShadow castShadow >
+      <group position={[0, 0, 1]} scale={.01}>
+        <Ball position={[5.28, 0, -265.23]} />
+        <Ball position={[306.5, 0, 134.46]} />
+        <Ball position={[-296.7, 0, 134.46]} />
       </group>
     </group>
   )
