@@ -121,6 +121,7 @@ function Settings() {
     const snap = useSnapshot(state);
     state.selectedImg = null;
     const settLink = document.querySelector(".settLink")
+    if (state.isSett) { settLink.classList.add("folderActive") }
     if (state.selectedImg) { settLink.classList.remove("folderActive") }
     function onControlledDrag(e, position) {
         let { x, y } = position;

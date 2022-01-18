@@ -85,6 +85,7 @@ function Projects() {
   const port = useRef(null);
   const snap = useSnapshot(state);
   const portLink = document.querySelector(".portLink")
+  if (state.isPort) { portLink.classList.add("folderActive") }
   if (state.selectedImg) { portLink.classList.remove("folderActive") }
 
   // offset and direction of panel from nav
