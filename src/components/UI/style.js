@@ -344,15 +344,7 @@ export const GlobalStyle = createGlobalStyle`
       box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
       -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
       -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
-      transition: 2.3s;
-    }
-    .header {
-        border-bottom: 1px solid ${props => props.theme.panelColor};
-        margin: 0 0 2px 0;
-        padding: 22px 0px 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      /* transition: 100ms; */
     }
 
     .li{
@@ -448,11 +440,27 @@ export const GlobalStyle = createGlobalStyle`
       width: 90vw;
       transition: 1.3s;
     }
+
     .contrastWrap{
       text-align: center;
       width: 100%;
       padding: 20px;
     }
+    .contrast:hover{
+      cursor: wait;
+    }
+    .contrast:hover{
+      fill: ${props => props.theme.textHover};
+      /* stroke: ${props => props.theme.textHover} !important; */
+      -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
+      filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
+      transition: 0.3s !important;
+    }
+     .contrast:hover ~ p{
+      color: ${props => props.theme.textHover};
+      text-shadow: 1px 1px 3px #ebebeb;
+      transition: 0.3s !important;
+     }
     .eko{
       height: min-content;
       display: flex;

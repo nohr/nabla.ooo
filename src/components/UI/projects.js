@@ -31,10 +31,10 @@ const Porter = styled.div`
     display: none;
   }
   
-  a{
+  * .li{
     margin: 0 0 4px auto;
     width: 85%;
-    transition: 0.9s;
+    transition: 0.9s !important;
   }
   p{
     /* position: fixed; */
@@ -49,6 +49,10 @@ const Porter = styled.div`
     overflow-y: scroll;
     padding: 2px 10px 0px 10px;
     width: 90%;
+
+  .li{
+    transition: 0.9s !important;
+  }
 
     ::-webkit-scrollbar {
       -webkit-appearance: none;
@@ -75,12 +79,6 @@ const Porter = styled.div`
   .client{
     padding-bottom: 32px;
   }
-    .grabbing{
-      box-shadow: 0 8px 32px 0 ${props => props.theme.LiHover};
-      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
-      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
-      transition: 0.3s;
-    }
 `
 
 function Projects() {
@@ -89,17 +87,14 @@ function Projects() {
   const portLink = document.querySelector(".portLink")
   if (state.selectedImg) { portLink.classList.remove("folderActive") }
 
-  //intersection observer
   // offset and direction of panel from nav
   let vWidth = useWindowDimensions().width;
   let vHeight = useWindowDimensions().height;
   function getPos() {
     const left1 = { x: -state.navWidth + state.dist, y: 0 };
-    const right1 = { x: state.navWidth - (state.dist), y: 0 };;
-    const up1 = { x: 0, y: (-state.navWidth) - (-state.dist) }
+    const right1 = { x: state.navWidth - (state.dist), y: 0 };
+    const up1 = { x: 0, y: (-state.navWidth) - (-state.dist) };
     const down1 = { x: 0, y: state.navWidth - state.dist };
-
-    console.log(state.prtSwitched);
 
     if ((((state.direction ? vWidth : vHeight) - state.navWidth) - (state.dist * 2)) < (state.direction ? state.prtPosition.x : state.prtPosition.y)) {
       //goes over the right side
@@ -148,7 +143,7 @@ function Projects() {
   const top = snap.direction ? "padding-top: 280x;" : snap.prtSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
   const firstHeader = snap.direction ? { width: "100%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
   const secondHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
-  const hide = snap.isPort ? "opacity: 1; pointer-events: all; transition: 0.3s;" : "opacity: 0; pointer-events: none; transition: 0.3s;";
+  const hide = snap.isPort ? "opacity: 1; pointer-events: all;" : "opacity: 0; pointer-events: none;";
   const headwidth = {
     first: {
       max: snap.direction ? "119%" : "100%",
@@ -164,7 +159,7 @@ function Projects() {
   }
 
   return (
-    <Draggable nodeRef={port} position={snap.isPort ? snap.prtPosition : snap.navPosition} positionOffset={offset} onStart={() => false} >
+    <Draggable nodeRef={port} position={snap.prtPosition} positionOffset={offset} onStart={() => false} >
       <Porter hide={hide} layout={layout} top={top} grabbed={state.grabbed ? "" : ""} ref={port} className=" Panel prt">
         <p style={firstHeader}
           id="selfhead"

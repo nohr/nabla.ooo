@@ -10,7 +10,7 @@ export const SearchWrapper = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
-  width: 91%;
+  width: 96%;
   margin: 0 auto 0 auto;
 `
 export const SearchBar = styled.input`
@@ -18,7 +18,7 @@ export const SearchBar = styled.input`
   width: 100%;
   margin: 3px 0;
   display: flex;
-  border-radius: 12px;
+  border-radius: 25px;
   background-color: transparent;
   box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
   -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 

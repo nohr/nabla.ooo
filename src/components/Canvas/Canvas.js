@@ -52,10 +52,10 @@ function Floor() {
           bumpMap={height}
         />
       </mesh>
-      <mesh rotation-x={-Math.PI / 2} position={[0, 1, 0]}>
+      {/* <mesh rotation-x={-Math.PI / 2} position={[0, 1, 0]}>
         <planeGeometry args={[10, 10]} />
         <shadowMaterial transparent color="black" opacity={0.4} />
-      </mesh>
+      </mesh> */}
     </>
   );
 }

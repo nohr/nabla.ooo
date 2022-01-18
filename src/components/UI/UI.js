@@ -39,7 +39,7 @@ function UI() {
     // const nav = document.querySelector(".nav")
     // let sectors = document.querySelectorAll(".sector")
     const links = document.querySelectorAll(".w");
-    let speaker = document.querySelector(".speaker")
+    // const title = document.querySelector(".title")
     const portLink = document.querySelector(".portLink")
     const settLink = document.querySelector(".settLink")
     const head = document.querySelector(".head");
@@ -88,9 +88,7 @@ function UI() {
 
     if (state.setSwitched && state.prtSwitched) { head.style.marginLeft = "-40vw !important" };
 
-    if (speaker) {
-      speaker.addEventListener("click", stop)
-    }
+
     portLink.addEventListener("click", togglePort)
     settLink.addEventListener("click", toggleSett)
     muteunmute.addEventListener("click", toggleMute)

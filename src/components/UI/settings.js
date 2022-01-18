@@ -20,8 +20,7 @@ const Setter = styled.div`
     ${props => props.layout}
     ${props => props.hide}
     ${props => props.top}
-    /* transition: 0.3s; */
-      transition: 0.6s !important;
+      transition: 0.4s !important;
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
@@ -203,7 +202,6 @@ function Settings() {
         const down1 = { x: 0, y: state.navWidth - state.dist };
         const down2 = { x: 0, y: (state.navWidth * 2) - (state.dist * 2) };
 
-        console.log(state.setSwitched);
 
         //Row
         if (((state.direction ? vWidth : vHeight) - (state.navWidth * 2) - state.dist + 30) < (state.direction ? state.setPosition.x : state.setPosition.y)) {
@@ -289,11 +287,11 @@ function Settings() {
     const offset = getPos();
     const firstheight = snap.direction ? { height: "75px" } : { height: "87px" };
     const secondheight = snap.direction ? { height: "113px" } : { height: "161px" };
-    const layout = snap.direction ? "grid-template-rows: 10% 1fr 10% 1fr; padding-left: 45px;padding-right: 40px; transition: 0.3s;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 15% 1fr; padding: 80px 12px 26px; transition: 0.3s;";
+    const layout = snap.direction ? "grid-template-rows: 10% 1fr 10% 1fr; padding-left: 45px;padding-right: 40px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 15% 1fr; padding: 80px 12px 26px;";
     const top = snap.direction ? "padding-top: 26px;" : snap.setSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
     const firstHeader = snap.direction ? { width: "100%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
     const secondHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
-    const hide = snap.isSett ? "opacity: 1; pointer-events: all; transition: 0.3s;" : "opacity: 0; pointer-events: none; transition: 0.3s;";
+    const hide = snap.isSett ? "opacity: 1; pointer-events: all; " : "opacity: 0; pointer-events: none;";
     const headwidth = {
         first: {
             max: snap.direction ? "119%" : "100%",

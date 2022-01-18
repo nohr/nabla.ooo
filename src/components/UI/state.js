@@ -41,6 +41,7 @@ export const state = proxy({
         backdrop: "rgba(255, 255, 255, 0.50)",
         //Canvas
         sky: "#c3c3c3",
+        invert: "#1E1E1E",
         fog: "#848484",
         CD: '#E3B5A4',
         CDHover: '#0A0A0A',
@@ -64,6 +65,7 @@ export const state = proxy({
         backdrop: "rgba(0, 0, 0, 0.60)",
         //Canvas
         sky: "#1E1E1E",
+        invert: "#c3c3c3",
         fog: "#030303",
         CD: "#070707",
         CDHover: '#E3B5A4',

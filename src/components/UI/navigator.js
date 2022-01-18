@@ -24,6 +24,14 @@ const Nav = styled.div`
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
   }
+    .header {
+        border-bottom: 1px solid ${props => props.theme.panelColor};
+        margin: 0 0 8px 0;
+        padding: 10px 0px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
     & .li{
     width: 80%;
@@ -55,7 +63,7 @@ const Nav = styled.div`
     position: absolute;
     z-index: 500;
     left: 50%;
-    bottom: 2%;
+    bottom: 4%;
     transform: translate(-50%, 0);
     stroke: ${props => props.theme.panelColor};
     fill: ${props => props.theme.panelColor};
@@ -107,7 +115,7 @@ const Nav = styled.div`
     z-index: 500;
     pointer-events: none;
     left: 50%;
-    bottom: 3%;
+    bottom: 5%;
     transform: translate(-50%, 0);
   }
   .spinner path{
@@ -123,6 +131,7 @@ const Nav = styled.div`
     pointer-events: all;
     animation: flash 2s infinite;
     transition: 1.3s;
+    cursor: pointer;
   }
   @keyframes flash {
 	0% {
@@ -130,9 +139,9 @@ const Nav = styled.div`
 	}
 
 	70% {
-		color: ${props => props.theme.textHover};
-      -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
-      filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
+		color: ${props => props.theme.invert};
+      -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.invert});
+      filter: drop-shadow(1px 1px 6px ${props => props.theme.invert});
 	}
 
 	100% {
@@ -146,38 +155,23 @@ function Navigator() {
   const nav = useRef(null);
 
   //intersection observer
-  // style while dragging
-  function glow(n) {
-    if (nav) {
-      if (n) {
-        state.grabbed = true;
-        console.log(state.grabbed);
-      } else if (!n) {
-        state.grabbed = false;
-      }
-    }
-  }
-  const grabber = document.querySelector(".grabber")
-
-
-
   const onControlledDrag = (e, position) => {
+    // const grabber = document.querySelector(".grabber")
     let { x, y } = position;
-    // console.log({ x, y });
     state.navPosition = { x, y };
     state.prtPosition = { x, y };
     state.setPosition = { x, y };
 
-
-
-    nav.current.classList.add(".grabbing")
-
+    nav.current.classList.add("glow")
+    // grabber.classList.add("glow")
   };
 
-  if (grabber) {
-    grabber.addEventListener("onmousedown", onControlledDrag)
-    grabber.addEventListener("onmouseup", onControlledDrag)
-  }
+
+
+  // if (grabber) {
+  //   grabber.addEventListener("onmousedown", onControlledDrag)
+  //   grabber.addEventListener("onmouseup", onControlledDrag)
+  // }
   // if (nav.current !== null) {
   //   state.grabbed ? console.log("hey") : 
   // }
@@ -208,10 +202,10 @@ function Navigator() {
             Settings
             {snap.isSett ? <SideArrow /> : <Arrow />}
           </Folder>
-          {snap.playMusic && <p className="title">nohri - tardigrade</p>}
+          {snap.playMusic && <p className="title" onClick={() => { state.isSett = true; }}>nohri - tardigrade</p>}
         </div>
         {snap.loading ? <Spinner /> : <Grabber />}
-        {snap.playMusic ? <Speaker /> : null}
+        {/* {snap.playMusic ? <Speaker /> : null} */}
       </Nav>
     </Draggable>
   )
