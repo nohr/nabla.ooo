@@ -6,7 +6,7 @@ import { Linker, Folder } from "./style"
 import styled from "styled-components"
 import Draggable from 'react-draggable'
 import Search from "./search"
-import { SvgNabla, Spinner, Arrow, SideArrow, Grabber, Speaker } from './svg'
+import { SvgNabla, Spinner, Arrow, SideArrow, Grabber } from './svg'
 
 const Nav = styled.div`
   padding: 0em 42.5px 30px 42.5px;
@@ -18,6 +18,7 @@ const Nav = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
   .grid{
     display: grid;
     justify-items: center;
@@ -27,7 +28,7 @@ const Nav = styled.div`
     .header {
         border-bottom: 1px solid ${props => props.theme.panelColor};
         margin: 0 0 8px 0;
-        padding: 10px 0px 16px;
+        padding: 5px 0px 21px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -126,7 +127,6 @@ const Nav = styled.div`
     position: absolute;
     bottom: 23px;
      border: none;
-    /* font-size: 12px; */
     white-space: nowrap;
     pointer-events: all;
     animation: flash 2s infinite;
@@ -185,24 +185,27 @@ function Navigator() {
         </div>
         <Search />
         <div className="grid">
-          <Linker className="li w" activeClassName="any" to="/info" style={{ cursor: "not-allowed" }}>
+          <Linker className="li w" activeClassName="any" to="/info" style={{ cursor: "wait" }}>
             Info
           </Linker>
           <Linker className="li w" activeClassName="any" to="/store">
             Store
           </Linker >
-          <Linker className="li w" activeClassName="any" to="/blog" style={{ cursor: "not-allowed" }}>
+          <Linker className="li w" activeClassName="any" to="/blog" style={{ cursor: "wait" }}>
             Blog
           </Linker >
-          <Folder className="li folder portLink">
+          <Linker className="li w" activeClassName="any" to="/contrast" style={{ cursor: "wait" }}>
+            Contrast
+          </Linker >
+          <Folder className="li folder portLink" tabindex="0">
             Projects
             {snap.isPort ? <SideArrow /> : <Arrow />}
           </Folder>
-          <Folder className="li folder settLink">
+          <Folder className="li folder settLink" tabindex="0">
             Settings
             {snap.isSett ? <SideArrow /> : <Arrow />}
           </Folder>
-          {snap.playMusic && <p className="title" onClick={() => { state.isSett = true; }}>nohri - tardigrade</p>}
+          {snap.playMusic && <p className="title" onClick={() => { state.isSett = true; }} tabindex="0">nohri - tardigrade</p>}
         </div>
         {snap.loading ? <Spinner /> : <Grabber />}
         {/* {snap.playMusic ? <Speaker /> : null} */}

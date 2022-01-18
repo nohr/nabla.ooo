@@ -9,6 +9,7 @@ export const state = proxy({
     loading: false,
     containerWidth: 0,
     themeChanged: false,
+    sfxVolume: 1,
     // Panel
     navWidth: 270,
     isPort: false,
@@ -16,7 +17,6 @@ export const state = proxy({
     setSwitched: false,
     isSett: false,
     grabbed: false,
-    sfxVolume: 1,
     muted: false,
     playMusic: false,
     navPosition: { x: 0, y: 0 },

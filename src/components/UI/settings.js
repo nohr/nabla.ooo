@@ -29,7 +29,7 @@ const Setter = styled.div`
     .audio, .display{
        width: 100%;
        overflow-y: scroll;
-       padding: 7px 2px 0px 7px;
+       padding: 2px 2px 0px 7px;
        /* padding-bottom: 20px; */
 
         ::-webkit-scrollbar {
@@ -316,7 +316,7 @@ function Settings() {
                 >
                     <Folder id="muteunmute" className="li w"><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
                     <Folder id="playstop" className="li"><PlayPauseIcon arg={1} />Music</Folder>
-                    <Folder id="Next" className="li w">Next</Folder>
+                    {/* <Folder id="Next" className="li w">Next</Folder> */}
                 </div>
                 <p style={secondHeader}
                     id="displayhead"

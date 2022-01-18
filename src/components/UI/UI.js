@@ -10,6 +10,7 @@ import Home from '../Stream/Home'
 import Info from '../Stream/Info'
 import Store from '../Stream/Store'
 import Blog from "../Stream/Blog"
+import Contrast from "../Stream/Contrast"
 import NotFound from "../Stream/NotFound"
 import { Page, Results } from '../Stream/Page.jsx'
 import {
@@ -33,7 +34,7 @@ function UI() {
   const [select] = useSound(sound1, { volume: state.sfxVolume, soundEnabled: !state.muted });
   const [open] = useSound(sound2, { volume: state.sfxVolume, soundEnabled: !state.muted });
   const [close] = useSound(sound3, { volume: state.sfxVolume, soundEnabled: !state.muted });
-  const [play, { stop }] = useSound(tardigradefile, { interrupt: true, loop: true });
+  const [play, { stop }] = useSound(tardigradefile, { volume: 3.5, interrupt: true, loop: true });
 
   useEffect(() => {
     // const nav = document.querySelector(".nav")
@@ -123,6 +124,7 @@ function UI() {
             <Route path="/store" component={Store} />
             <Route path="/blog" component={Blog} />
             <Route path="/info" component={Info} />
+            <Route path="/contrast" component={Contrast} />
             {snap.selfs.map((work) => (
               <Route key={`${work.name}`} path={`/${work.id}`}>
                 <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />

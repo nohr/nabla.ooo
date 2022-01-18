@@ -547,7 +547,7 @@ export function HeadSVG(id) {
     );
   }
 }
-export function Contrast() {
+export function ContrastLogo() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -450,15 +450,15 @@ export const GlobalStyle = createGlobalStyle`
       cursor: wait;
     }
     .contrast:hover{
-      fill: ${props => props.theme.textHover};
-      /* stroke: ${props => props.theme.textHover} !important; */
-      -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
-      filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
+      fill: ${props => props.theme.sky};
+      /* stroke: ${props => props.theme.sky} !important; */
+      -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
+      filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
       transition: 0.3s !important;
     }
      .contrast:hover ~ p{
-      color: ${props => props.theme.textHover};
-      text-shadow: 1px 1px 3px #ebebeb;
+      color: ${props => props.theme.sky};
+      text-shadow: 1px 1px 3px ${props => props.theme.sky};
       transition: 0.3s !important;
      }
     .eko{

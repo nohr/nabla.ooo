@@ -6,7 +6,6 @@ import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import { Container } from "../UI/style";
 import useDocumentTitle from "../UI/documentTitle";
-import { Contrast } from "../UI/svg";
 // import { HeadSVG } from "../UI/svg";
 //TODO: Replace with HeadSVG
 
@@ -24,10 +23,6 @@ function Store() {
       </Head>
       <Container className="container">
         <div className="str">
-          <div className="contrastWrap">
-            <Contrast />
-            <p>It's ready when it's ready!</p>
-          </div>
           <div className="eko">
             <div className="eko-thumb">
               Aa
