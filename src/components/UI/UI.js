@@ -83,17 +83,26 @@ function UI() {
 
     // sectors ? console.log(sectors.length) : () => console.log(document.querySelectorAll(".sector").length)
 
-    links.forEach(function (link) {
-      link.addEventListener("click", select)
-    })
+    if (links) {
+      links.forEach(function (link) {
+        link.addEventListener("click", select)
+      })
+    }
 
     if (state.setSwitched && state.prtSwitched) { head.style.marginLeft = "-40vw !important" };
 
-
-    portLink.addEventListener("click", togglePort)
-    settLink.addEventListener("click", toggleSett)
-    muteunmute.addEventListener("click", toggleMute)
-    playstop.addEventListener("click", toggleMusic)
+    if (portLink) {
+      portLink.addEventListener("click", togglePort)
+    }
+    if (settLink) {
+      settLink.addEventListener("click", toggleSett)
+    }
+    if (muteunmute) {
+      muteunmute.addEventListener("click", toggleMute)
+    }
+    if (playstop) {
+      playstop.addEventListener("click", toggleMusic)
+    }
 
   }, [play, select, stop, close, open])
 
