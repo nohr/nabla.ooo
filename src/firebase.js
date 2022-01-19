@@ -3,7 +3,6 @@ import { getFirestore, collection, getDocs, orderBy, where, query } from 'fireba
 // import { getAnalytics } from "firebase/analytics";
 import { state } from "./components/UI/state";
 
-// const API_KEY = 
 const firebaseConfig = {
   apiKey: process.env.FIREBASE_NABLA_7_APIKEY,
   authDomain: "nabla7.firebaseapp.com",

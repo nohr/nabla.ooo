@@ -29,7 +29,7 @@ export const SearchBar = styled.input`
   -moz-user-select: text;
   -webkit-user-select: text;
   font-size: 13px;
-  cursor: not-allowed;
+  cursor: wait;
 
   @media only screen and (max-width: 768px) {
   padding: 6px 19px 6px 20px;

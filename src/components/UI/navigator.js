@@ -154,27 +154,15 @@ function Navigator() {
   const snap = useSnapshot(state);
   const nav = useRef(null);
 
-  //intersection observer
   const onControlledDrag = (e, position) => {
-    // const grabber = document.querySelector(".grabber")
     let { x, y } = position;
     state.navPosition = { x, y };
     state.prtPosition = { x, y };
     state.setPosition = { x, y };
 
     nav.current.classList.add("glow")
-    // grabber.classList.add("glow")
   };
 
-
-
-  // if (grabber) {
-  //   grabber.addEventListener("onmousedown", onControlledDrag)
-  //   grabber.addEventListener("onmouseup", onControlledDrag)
-  // }
-  // if (nav.current !== null) {
-  //   state.grabbed ? console.log("hey") : 
-  // }
 
   return (
     //NAV
@@ -197,15 +185,15 @@ function Navigator() {
           <Linker className="li w" activeClassName="any" to="/contrast" style={{ cursor: "wait" }}>
             Contrast
           </Linker >
-          <Folder className="li folder portLink" tabindex="0">
+          <Folder className="li folder portLink" tabIndex="0">
             Projects
             {snap.isPort ? <SideArrow /> : <Arrow />}
           </Folder>
-          <Folder className="li folder settLink" tabindex="0">
+          <Folder className="li folder settLink" tabIndex="0">
             Settings
             {snap.isSett ? <SideArrow /> : <Arrow />}
           </Folder>
-          {snap.playMusic && <p className="title" onClick={() => { state.isSett = true; }} tabindex="0">nohri - tardigrade</p>}
+          {snap.playMusic && <p className="title" onClick={() => { state.isSett = true; }} tabIndex="0">nohri - tardigrade</p>}
         </div>
         {snap.loading ? <Spinner /> : <Grabber />}
         {/* {snap.playMusic ? <Speaker /> : null} */}

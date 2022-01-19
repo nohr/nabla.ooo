@@ -29,7 +29,6 @@ function Floor() {
       >
         <planeGeometry
           args={[70, 70]}
-          transparent
         />
         <MeshReflectorMaterial
           resolution={1024}

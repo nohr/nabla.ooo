@@ -36,76 +36,110 @@ function UI() {
   const [close] = useSound(sound3, { volume: state.sfxVolume, soundEnabled: !state.muted });
   const [play, { stop }] = useSound(tardigradefile, { volume: 3.5, interrupt: true, loop: true });
 
+  //Play the select sound for all links with .w
   useEffect(() => {
-    // const nav = document.querySelector(".nav")
-    // let sectors = document.querySelectorAll(".sector")
-    const links = document.querySelectorAll(".w");
-    // const title = document.querySelector(".title")
-    const portLink = document.querySelector(".portLink")
-    const settLink = document.querySelector(".settLink")
-    const head = document.querySelector(".head");
+    let links = document.querySelectorAll(".w");
+    if (links) {
+      links.forEach(function (link) {
+        link.addEventListener("click", select)
+      })
+    } else if (state.isPort) {
+      links = document.querySelectorAll(".w");
+      links.forEach(function (link) {
+        link.addEventListener("click", select)
+      })
+    }
+    return () => {
+      links = null;
+    }
+  }, [select])
 
-    //Folder
+  //Toggle projects panel
+  useEffect(() => {
+    let portLink = document.querySelector(".portLink")
     function togglePort() {
-      state.isPort ? (state.isPort = false) : (state.isPort = true);
-      state.isPort ? open() : close();
-      state.isPort ? portLink.classList.add("folderActive") : portLink.classList.remove("folderActive");
-
+      if (portLink) {
+        state.isPort ? (state.isPort = false) : (state.isPort = true);
+        state.isPort ? portLink.classList.add("folderActive") : portLink.classList.remove("folderActive");
+        state.isPort ? open() : close();
+      }
     }
+    if (portLink) {
+      portLink.addEventListener("click", togglePort)
+    }
+    return () => {
+      portLink = null;
+    }
+  }, [open, close])
+
+  //Toggle settings panel
+  useEffect(() => {
+    let settLink = document.querySelector(".settLink")
     function toggleSett() {
-      state.isSett ? open() : close();
-      state.isSett ? (state.isSett = false) : (state.isSett = true);
-      state.isSett ? settLink.classList.add("folderActive") : settLink.classList.remove("folderActive");
+      if (settLink) {
+        state.isSett ? (state.isSett = false) : (state.isSett = true);
+        state.isSett ? settLink.classList.add("folderActive") : settLink.classList.remove("folderActive");
+        state.isSett ? open() : close();
+      }
     }
+    if (settLink) {
+      settLink.addEventListener("click", toggleSett)
+    }
+    return () => {
+      settLink = null;
+    }
+  }, [open, close])
 
-    // AUDIO
-    // Toggle Mute Switch
-    const muteunmute = document.getElementById("muteunmute")
+  // AUDIO
+  //Toggle audio volume
+  useEffect(() => {
+    let muteunmute = document.querySelector("#muteunmute")
     const toggleMute = () => {
       if (state.muted === false) {
         state.muted = true
       } else if (state.muted === true) {
         state.muted = false
+        select()
       }
-    }
-    //Music
-    const playstop = document.getElementById("playstop")
-    // Toggle Music
-    const toggleMusic = () => {
-      if (state.playMusic === false) {
-        state.playMusic = true
-        play();
-      } else if (state.playMusic === true) {
-        state.playMusic = false
-        stop();
-      }
-    }
-
-    // sectors ? console.log(sectors.length) : () => console.log(document.querySelectorAll(".sector").length)
-
-    if (links) {
-      links.forEach(function (link) {
-        link.addEventListener("click", select)
-      })
-    }
-
-    if (state.setSwitched && state.prtSwitched) { head.style.marginLeft = "-40vw !important" };
-
-    if (portLink) {
-      portLink.addEventListener("click", togglePort)
-    }
-    if (settLink) {
-      settLink.addEventListener("click", toggleSett)
     }
     if (muteunmute) {
       muteunmute.addEventListener("click", toggleMute)
     }
+    return () => {
+      muteunmute = null;
+    }
+  }, [select])
+
+  useEffect(() => {
+    let playstop = document.getElementById("playstop")
+    const toggleMusic = () => {
+      if (state.playMusic === false) {
+        play();
+        state.playMusic = true
+      } else if (state.playMusic === true) {
+        stop();
+        state.playMusic = false
+      }
+      console.log(state.playMusic);
+    }
     if (playstop) {
       playstop.addEventListener("click", toggleMusic)
     }
+    return () => {
+      playstop = null;
+    }
+  }, [play, stop, select])
 
-  }, [play, select, stop, close, open])
+  useEffect(() => {
+    // let sectors = document.querySelectorAll(".sector")
+    // const title = document.querySelector(".title")
+    const head = document.querySelector(".head");
 
+    // sectors ? console.log(sectors.length) : () => console.log(document.querySelectorAll(".sector").length)
+
+    if (state.setSwitched && state.prtSwitched) { head.style.marginLeft = "-40vw !important" };
+
+  }, [])
 
   var x = window.matchMedia("(max-width: 768px)");
   if (x.matches) {
@@ -121,6 +155,7 @@ function UI() {
       </ThemeProvider>
     )
   } else {
+    //Not Mobile
     return (
       <Router>
         <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>

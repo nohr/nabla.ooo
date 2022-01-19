@@ -203,7 +203,6 @@ function Settings() {
         const down1 = { x: 0, y: state.navWidth - state.dist };
         const down2 = { x: 0, y: (state.navWidth * 2) - (state.dist * 2) };
 
-
         //Row
         if (((state.direction ? vWidth : vHeight) - (state.navWidth * 2) - state.dist + 30) < (state.direction ? state.setPosition.x : state.setPosition.y)) {
             //goes over the right side
@@ -244,6 +243,8 @@ function Settings() {
 
                 }
             }
+        } else if (!state.isSett) {
+            return { x: 0, y: 0 }
         } else {
             //is normal
             if (state.setSwitched) {
@@ -280,11 +281,6 @@ function Settings() {
         }
     }
 
-
-
-    //intersection observer
-
-
     const offset = getPos();
     const firstheight = snap.direction ? { height: "75px" } : { height: "87px" };
     const secondheight = snap.direction ? { height: "113px" } : { height: "161px" };
@@ -314,7 +310,7 @@ function Settings() {
                     onMouseEnter={() => { document.getElementById("audiohead").style.width = headwidth.first.max }}
                     onMouseLeave={() => { document.getElementById("audiohead").style.width = headwidth.first.min }}
                 >
-                    <Folder id="muteunmute" className="li w"><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
+                    <Folder id="muteunmute" className="li"><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
                     <Folder id="playstop" className="li"><PlayPauseIcon arg={1} />Music</Folder>
                     {/* <Folder id="Next" className="li w">Next</Folder> */}
                 </div>

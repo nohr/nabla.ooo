@@ -116,6 +116,8 @@ function Projects() {
           return snap.direction ? left1 : up1
         }
       }
+    } else if (!state.isPort) {
+      return { x: 0, y: 0 }
     } else {
       //is normal
       if (!state.prtSwitched) {
@@ -155,9 +157,8 @@ function Projects() {
       min: snap.direction ? "65%" : "65%",
     },
   }
-  if (port.current !== null) {
-    state.grabbed ? port.current.classList.remove(".grabbing") : port.current.classList.add(".grabbing");
-  }
+
+
 
   return (
     <Draggable nodeRef={port} position={snap.prtPosition} positionOffset={offset} onStart={() => false} >
@@ -170,7 +171,7 @@ function Projects() {
           onMouseLeave={() => { document.getElementById("selfhead").style.width = headwidth.first.min }}
         >
           {snap.selfs && snap.selfs.map((work) => (
-            <Linker exact className="li w" activeClassName="any" to={`/${work.id}`} key={Math.random()}>{work.name}</Linker>
+            <Linker exact className="li w" activeClassName="any" to={`/${work.id}`} tabIndex={state.isPort ? "0" : "-1"} key={Math.random()}>{work.name}</Linker>
           ))}
         </div>
         <p style={secondHeader}
@@ -181,7 +182,7 @@ function Projects() {
           onMouseLeave={() => { document.getElementById("clienthead").style.width = headwidth.second.min }}
         >
           {snap.clients && snap.clients.map((work) => (
-            <Linker exact className="li w" activeClassName="any" to={`/${work.id}`} key={Math.random()}>{work.name}</Linker>
+            <Linker exact className="li w" activeClassName="any" to={`/${work.id}`} tabIndex={state.isPort ? "0" : "-1"} key={Math.random()}>{work.name}</Linker>
           ))}
         </div>
         {snap.isSett}

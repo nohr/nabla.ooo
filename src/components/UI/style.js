@@ -109,7 +109,7 @@ export const TextWrapper = styled.div`
   align-self: center;
   padding-left: 20px;
   display: grid;
-  grid-template-rows: 2% 48% 40% 10%;
+  grid-template-rows: 2% 39% 49% 10%;
   transition: 1.3s;
   
   
