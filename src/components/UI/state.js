@@ -51,7 +51,7 @@ export const state = proxy({
         spotIntensity: 6,
         ambIntensity: 0.3,
         rectIntensity: 5,
-        noise: .059,
+        noise: 0.059,
     },
     dark: {
         //UI
@@ -76,7 +76,7 @@ export const state = proxy({
         spotIntensity: 0.5,
         ambIntensity: 0.8,
         rectIntensity: 5,
-        noise: .035,
+        noise: 0.035,
     },
     //Canvas
     paused: false,
