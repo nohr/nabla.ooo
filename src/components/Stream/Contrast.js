@@ -1,7 +1,7 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { Container } from '../UI/style'
-import { useSnapshot } from 'valtio'
-import { state } from '../UI/state'
+// import { useSnapshot } from 'valtio'
+// import { state } from '../UI/state'
 import { Head } from './Page'
 import { ContrastLogo } from "../UI/svg";
 // import Draggable from 'react-draggable'

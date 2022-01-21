@@ -1,10 +1,9 @@
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import CD from './CD'
-import { CubeTextureLoader } from 'three';
 import useWindowDimensions from '../UI/window'
 import React, { Suspense } from 'react'
-import { Canvas, useThree } from '@react-three/fiber'
+import { Canvas } from '@react-three/fiber'
 import { softShadows, PerspectiveCamera, OrbitControls, useTexture } from '@react-three/drei'
 import { MeshReflectorMaterial } from '@react-three/drei';
 // import { MeshReflectorMaterial } from '@react-three/drei/materials/MeshReflectorMaterial';
@@ -16,7 +15,7 @@ softShadows();
 function Floor() {
   const textures = useTexture([
     "../Ice_OCC (1).jpeg",
-    "../Ice_NORM.avif",
+    "../Ice_NORM (1).jpeg",
     "../Ice_DISP.jpeg",
     "../floor_rough (1).jpeg"
   ]);
