@@ -21,7 +21,6 @@ const Porter = styled.div`
   ${props => props.layout}
   ${props => props.hide}
   ${props => props.top}
-  transition: 0.2s;
   -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
@@ -146,7 +145,7 @@ function Projects() {
   const top = snap.direction ? "padding-top: 280x;" : snap.prtSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
   const firstHeader = snap.direction ? { width: "100%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
   const secondHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
-  const hide = snap.isPort ? "opacity: 1; pointer-events: all;" : "opacity: 0; pointer-events: none;";
+  const hide = snap.isPort ? "opacity: 1; pointer-events: all; transition: 0.2s; " : "opacity: 0; pointer-events: none; transition: 0s;";
   const headwidth = {
     first: {
       max: snap.direction ? "119%" : "100%",

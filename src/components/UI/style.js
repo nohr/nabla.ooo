@@ -59,6 +59,11 @@ export const Container = styled.div`
   &:last-child(){
     margin-bottom: 60%;
   }
+
+  &:last-child():not(.backdrop){
+    height: 90%;
+  }
+
   ::-webkit-scrollbar {
       -webkit-appearance: none;
       width: 5px;

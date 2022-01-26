@@ -20,7 +20,6 @@ const Setter = styled.div`
     ${props => props.layout}
     ${props => props.hide}
     ${props => props.top}
-      transition: 0.4s !important;
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
@@ -119,16 +118,9 @@ const Setter = styled.div`
 function Settings() {
     const sett = useRef(null);
     const snap = useSnapshot(state);
-    state.selectedImg = null;
     const settLink = document.querySelector(".settLink")
     if (state.isSett) { settLink.classList.add("folderActive") }
     if (state.selectedImg) { settLink.classList.remove("folderActive") }
-    function onControlledDrag(e, position) {
-        let { x, y } = position;
-        // let location = { x, y };
-        console.log({ x, y });
-
-    }
     //Audio configured in App.js
 
     //DISPLAY
@@ -240,7 +232,6 @@ function Settings() {
                         state.prtSwitched = true;
                         return state.direction ? left1 : up1;
                     }
-
                 }
             }
         } else if (!state.isSett) {
@@ -288,7 +279,7 @@ function Settings() {
     const top = snap.direction ? "padding-top: 26px;" : snap.setSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
     const firstHeader = snap.direction ? { width: "100%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
     const secondHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
-    const hide = snap.isSett ? "opacity: 1; pointer-events: all; " : "opacity: 0; pointer-events: none;";
+    const hide = snap.isSett ? "opacity: 1; pointer-events: all; transition: 0.4s; " : "opacity: 0; pointer-events: none; transition: 0s;";
     const headwidth = {
         first: {
             max: snap.direction ? "119%" : "100%",
@@ -301,7 +292,7 @@ function Settings() {
     }
 
     return (
-        <Draggable nodeRef={sett} onDrag={onControlledDrag} position={snap.setPosition} positionOffset={offset} onStart={() => false}>
+        <Draggable nodeRef={sett} position={snap.setPosition} positionOffset={offset} onStart={() => false}>
             <Setter hide={hide} layout={layout} top={top} ref={sett} className="Panel set">
                 <p style={firstHeader}
                     id="audiohead"
