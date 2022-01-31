@@ -92,7 +92,7 @@ const PageData = React.memo(function PageData(id, setSelectedImg) {
                 <Sector key={`${Math.random()}`} className="sector">
                     <TextWrapper key={`${Math.random()}`} className="textWrapper">
                         <span key={`${Math.random()}`} className="lot">LOT#: {Math.random()}</span>
-                        <h3 key={`${work.projectName}`}>{work.projectName}</h3>
+                        <h2 key={`${work.projectName}`}>{work.projectName}</h2>
                         <p key={`${work.statement}`}>{work.statement}</p>
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                             <h5 key={`${work.projectMedium}`}>{`${work.projectMedium}`}</h5>

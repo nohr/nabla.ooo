@@ -36,6 +36,10 @@ export const Head = styled.div`
         font-style: normal;
         -webkit-text-stroke-color: ${props => props.theme.panelColor};
         transition: 1.3s;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
     }
     @media only screen and (min-width: 1366px) {
   h1 {

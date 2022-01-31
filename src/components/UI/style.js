@@ -122,7 +122,7 @@ export const TextWrapper = styled.div`
   width: 50%;
   }
 
-& h3{
+& h2{
   clear:both;
   align-self: flex-end;
 }

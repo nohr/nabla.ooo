@@ -4,7 +4,7 @@ import { getFirestore, collection, getDocs, orderBy, where, query } from 'fireba
 import { state } from "./components/UI/state";
 
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_NABLA_7_APIKEY,
+  apiKey: process.env.REACT_APP_FIREBASE_NABLA_7_APIKEY,
   authDomain: "nabla7.firebaseapp.com",
   projectId: "nabla7",
   storageBucket: "nabla7.appspot.com",
@@ -21,12 +21,16 @@ export const db = getFirestore(app);
 export async function GetWorks(db) {
   state.loading = true;
   const colRef = collection(db, 'portfolio');
+  const blogRef = collection(db, 'blog');
   const selfs = query(colRef, orderBy("date", "desc"), where("type", "==", "self"));
   const clients = query(colRef, orderBy("date", "desc"), where("type", "==", "client"));
+  const blogs = query(blogRef, orderBy("created", "desc"), where('status', '==', 'LIVE'));
   const selfsSnapshot = await getDocs(selfs);
   const clientsSnapshot = await getDocs(clients);
+  const blogSnashot = await getDocs(blogs);
   state.selfs = selfsSnapshot.docs.map(doc => doc.data());
   state.clients = clientsSnapshot.docs.map(doc => doc.data());
+  state.blog = blogSnashot.docs.map(doc => doc.data());
   state.loading = false;
 }
 

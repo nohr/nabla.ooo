@@ -196,40 +196,48 @@ function Settings() {
         const down2 = { x: 0, y: (state.navWidth * 2) - (state.dist * 2) };
 
         //Row
-        if (((state.direction ? vWidth : vHeight) - (state.navWidth * 2) - state.dist + 30) < (state.direction ? state.setPosition.x : state.setPosition.y)) {
+        if (((state.direction ? vWidth : vHeight) - (state.navWidth * 2) - state.dist + 30) < (state.direction ? state.setPosition.x : state.setPosition.y) && state.isSett) {
             //goes over the right side
             if (state.setSwitched) {
                 state.setSwitched = true;
                 if (!state.prtSwitched) {
                     if (state.isPort) {
+                        console.log("1");
                         return state.direction ? left1 : up1;
                     } else {
-                        state.setSwitched = false;
+                        state.setSwitched = true;
+                        console.log("2");
                         return state.direction ? right1 : down1;
                     }
                 } else {
                     if (state.isPort) {
+                        console.log("3");
                         return state.direction ? left2 : up2;
                     } else {
-                        state.setSwitched = false;
-                        return state.direction ? right1 : down1;
+                        state.setSwitched = true;
+                        console.log("4");
+                        return state.direction ? left1 : up1;
                     }
                 }
             } else {
                 state.setSwitched = true;
                 if (!state.prtSwitched) {
                     if (state.isPort) {
-                        state.prtSwitched = false;
-                        return state.direction ? left2 : up2;
-                    } else {
-                        state.prtSwitched = true;
+                        state.setSwitched = true;
+                        console.log("5");
                         return state.direction ? left1 : up1;
+                    } else {
+                        state.setSwitched = true;
+                        console.log("6");
+                        return state.direction ? right1 : down1;
                     }
                 } else {
                     if (state.isPort) {
+                        console.log("7");
                         return state.direction ? left2 : up2;
                     } else {
-                        state.prtSwitched = true;
+                        state.setSwitched = true;
+                        console.log("8");
                         return state.direction ? left1 : up1;
                     }
                 }

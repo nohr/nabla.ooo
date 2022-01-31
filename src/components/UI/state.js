@@ -5,6 +5,7 @@ export const state = proxy({
     selfs: [],
     clients: [],
     sectors: [],
+    blog: [],
     selectedImg: null,
     loading: false,
     containerWidth: 0,

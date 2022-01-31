@@ -148,9 +148,9 @@ function UI() {
       <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
         <GlobalStyle />
         <Container className="container hom" >
-          <p style={{ textAlign: "center" }}>
-            <b>nabla.ooo works a lot better on tablet and desktop, for now.</b><br /><br /> Come back on one of those devices while I work on making this experience something special. <br /><br /> <b>Thank you!</b>
-          </p>
+          <div style={{ textAlign: "center" }}>
+            <h2>nabla.ooo works a lot better on tablet and desktop, for now.</h2><br /><br /> <p>Come back on one of those devices while I work on making this experience something special.</p> <br /><br /> <b>Thank you!</b>
+          </div>
         </Container>
       </ThemeProvider>
     )
