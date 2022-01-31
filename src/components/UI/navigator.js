@@ -123,7 +123,7 @@ const Nav = styled.div`
     fill: ${props => props.theme.panelColor};
   }
 
-  .title{
+  .song{
     position: absolute;
     bottom: 23px;
      border: none;
@@ -132,6 +132,10 @@ const Nav = styled.div`
     animation: flash 2s infinite;
     transition: 1.3s;
     cursor: pointer;
+    -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
   }
   @keyframes flash {
 	0% {
@@ -190,10 +194,10 @@ function Navigator() {
             {snap.isPort ? <SideArrow /> : <Arrow />}
           </Folder>
           <Folder className="li folder settLink" tabIndex="0">
-            Settings
+            Options
             {snap.isSett ? <SideArrow /> : <Arrow />}
           </Folder>
-          {snap.playMusic && <p className="title" onClick={() => { state.isSett = true; }} tabIndex="0">nohri - tardigrade</p>}
+          {snap.playMusic && <p className="song" onClick={() => { state.isSett = true; }} tabIndex="0">nohri - tardigrade</p>}
         </div>
         {snap.loading ? <Spinner /> : <Grabber />}
         {/* {snap.playMusic ? <Speaker /> : null} */}

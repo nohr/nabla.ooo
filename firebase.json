@@ -5,6 +5,7 @@
   },
   "hosting": {
     "public": "build",
+    "site": "nabla7",
     "ignore": [
       "firebase.json",
       "**/.*",
