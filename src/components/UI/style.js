@@ -56,9 +56,9 @@ export const Container = styled.div`
     cursor: grab;
   }
 
-  &:last-child(){
+  /* &:last-child(){
     margin-bottom: 60%;
-  }
+  } */
 
   &:last-child():not(.backdrop){
     height: 90%;
@@ -67,6 +67,7 @@ export const Container = styled.div`
   ::-webkit-scrollbar {
       -webkit-appearance: none;
       width: 5px;
+      display: flex;
     }
     ::-webkit-scrollbar-thumb {
       outline: 1px solid ${props => props.theme.panelColor};
@@ -295,7 +296,7 @@ export const Linker = styled(NavLink)`
   padding: 2px 0;
   display: block;
 
-  &.${props => props.activeClassName}{
+  &.${props => props.activeclassname}{
   background-color: ${props => props.theme.LiActiveBackground};
   color:  ${props => props.theme.textHover};
   -webkit-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};

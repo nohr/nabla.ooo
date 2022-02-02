@@ -177,16 +177,16 @@ function Navigator() {
         </div>
         <Search />
         <div className="grid">
-          <Linker className="li w" activeClassName="any" to="/info" style={{ cursor: "wait" }}>
+          <Linker className="li w" activeclassname="any" to="/info" style={{ cursor: "wait" }}>
             Info
           </Linker>
-          <Linker className="li w" activeClassName="any" to="/store">
+          <Linker className="li w" activeclassname="any" to="/store">
             Store
           </Linker >
-          <Linker className="li w" activeClassName="any" to="/blog" style={{ cursor: "wait" }}>
+          <Linker className="li w" activeclassname="any" to="/blog" style={{ cursor: "wait" }}>
             Blog
           </Linker >
-          <Linker className="li w" activeClassName="any" to="/contrast" style={{ cursor: "wait" }}>
+          <Linker className="li w" activeclassname="any" to="/contrast" style={{ cursor: "wait" }}>
             Contrast
           </Linker >
           <Folder className="li folder portLink" tabIndex="0">

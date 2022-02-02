@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from "react";
 import { state } from "./state";
 import { SearchIcon, ClearIcon } from "./svg";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useSound from "use-sound";
 import sound1 from '../Sounds/select.mp3'
 import styled from "styled-components"
@@ -87,7 +87,7 @@ function Search() {
   const [enter] = useSound(sound1, { volume: state.sfxVolume, soundEnabled: !state.muted });
   const [query, setQuery] = useState("");
   const Bar = useRef(null);
-  const history = useHistory();
+  const navigate = useNavigate();
   useEffect(() => {
     // Bar.current && Bar.current.focus();
     let keys = {};
@@ -106,7 +106,7 @@ function Search() {
         console.log(Bar.current.value);
         state.query = query;
         Bar.current.blur()
-        history.push(`/${state.query}-results`);
+        navigate(`/${state.query}-results`);
         enter()
         setQuery('')
       } else if (isKeyDown && keys[18] && keys[70]) {
@@ -120,7 +120,7 @@ function Search() {
     }
     window.addEventListener("keyup", handleKeyPress);
     window.addEventListener("keydown", handleKeyPress);
-  }, [enter, history, query])
+  }, [enter, navigate, query])
 
   return (
     <SearchWrapper id="search">

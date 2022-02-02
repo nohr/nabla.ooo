@@ -170,7 +170,7 @@ function Projects() {
           onMouseLeave={() => { document.getElementById("selfhead").style.width = headwidth.first.min }}
         >
           {snap.selfs && snap.selfs.map((work) => (
-            <Linker exact className="li w" activeClassName="any" to={`/${work.id}`} tabIndex={state.isPort ? "0" : "-1"} key={Math.random()}>{work.name}</Linker>
+            <Linker className="li w" activeclassname="any" to={`/${work.id}`} tabIndex={state.isPort ? "0" : "-1"} key={Math.random()}>{work.name}</Linker>
           ))}
         </div>
         <p style={secondHeader}
@@ -181,7 +181,7 @@ function Projects() {
           onMouseLeave={() => { document.getElementById("clienthead").style.width = headwidth.second.min }}
         >
           {snap.clients && snap.clients.map((work) => (
-            <Linker exact className="li w" activeClassName="any" to={`/${work.id}`} tabIndex={state.isPort ? "0" : "-1"} key={Math.random()}>{work.name}</Linker>
+            <Linker className="li w" activeclassname="any" to={`/${work.id}`} tabIndex={state.isPort ? "0" : "-1"} key={Math.random()}>{work.name}</Linker>
           ))}
         </div>
         {snap.isSett}
