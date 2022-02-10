@@ -4,8 +4,8 @@ import CD from './CD'
 import useWindowDimensions from '../UI/window'
 import React, { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { softShadows, PerspectiveCamera, OrbitControls, useTexture } from '@react-three/drei'
-import { MeshReflectorMaterial } from '@react-three/drei';
+import { useTexture, MeshReflectorMaterial, softShadows, PerspectiveCamera, OrbitControls } from '@react-three/drei'
+// import { MeshReflectorMaterial } from '@react-three/drei';
 // import { MeshReflectorMaterial } from '@react-three/drei/materials/MeshReflectorMaterial';
 import { EffectComposer, Noise } from '@react-three/postprocessing'
 
@@ -13,33 +13,33 @@ import { EffectComposer, Noise } from '@react-three/postprocessing'
 softShadows();
 
 function Floor() {
-  const textures = useTexture([
+  const [ao, normal, height, roughness] = useTexture([
     "../Ice_OCC (1).jpeg",
     "../Ice_NORM (1).jpeg",
     "../Ice_DISP.jpeg",
     "../floor_rough (1).jpeg"
   ]);
-  const [ao, normal, height, roughness] = textures;
   const snap = useSnapshot(state);
   return (
     <mesh
       rotation={[-Math.PI / 2, 0, 0]}
       position={[0, 0, 0]}
+      receiveShadow
     >
       <planeGeometry
         args={[70, 70]}
       />
       <MeshReflectorMaterial
         resolution={1024}
-        mirror={0.25}
-        blur={[50, 250]}
-        mixBlur={1}
-        distortion={1}
+        mirror={0.15}
+        blur={[250, 250]}
+        mixBlur={14}
+        distortion={0}
         mixStrength={1}
         minDepthThreshold={0.9}
         maxDepthThreshold={1.1}
-        depthScale={2}
-        depthToBlurRatioBias={0.2}
+        depthScale={0}
+        depthToBlurRatioBias={20}
         color={state.theme === 'light' ? snap.light.Surface : snap.dark.Surface}
         metalness={0}
         roughness={state.theme === 'light' ? snap.light.SurfaceRough : snap.dark.SurfaceRough}
@@ -51,6 +51,36 @@ function Floor() {
         bumpMap={height}
       />
     </mesh>
+    // <Reflector
+    //   resolution={1024}
+    //   receiveShadow
+    //   mirror={0.25}
+    //   blur={[250, 250]}
+    //   mixBlur={14}
+    //   mixStrength={1}
+    //   minDepthThreshold={0.9}
+    //   maxDepthThreshold={1.1}
+    //   depthScale={20}
+    //   depthToBlurRatioBias={0.2}
+    //   rotation={[-Math.PI / 2, 0, 0]}
+    //   args={[70, 70]}
+    // >
+    //   {(Material, props) => (
+    //     <Material
+    //       color={state.theme === 'light' ? snap.light.Surface : snap.dark.Surface}
+    //       metalness={0}
+    //       roughness={state.theme === 'light' ? snap.light.SurfaceRough : snap.dark.SurfaceRough}
+    //       roughnessMap={roughness}
+    //       aoMap={ao}
+    //       normalMap={normal}
+    //       normalScale={[1, 1]}
+    //       envMapIntensity={10}
+    //       bumpMap={height}
+    //       {...props}
+    //     />
+    //   )
+    //   }
+    // </Reflector >
   );
 }
 
@@ -59,7 +89,7 @@ function CanvasComp() {
   const { height, width } = useWindowDimensions();
   const snap = useSnapshot(state);
   return (
-    <Canvas shadowMap colorManagement pixelRatio={[1, 1.5]} frameloop="demand" performance={{ min: 1 }} onCreated={!snap.loading} >
+    <Canvas shadows colorManagement pixelRatio={[1, 1.5]} frameloop="demand" performance={{ min: 1 }} onCreated={!snap.loading} >
       <PerspectiveCamera makeDefault target={[0, 2, 0]} position={snap.cameraPosition} near={.1} fov={20} aspect={width / height} />
       <fog attach="fog" args={[state.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, 40]} />
       <Suspense fallback={null}>
@@ -67,15 +97,16 @@ function CanvasComp() {
           decay={1}
           color={state.theme === 'light' ? snap.light.fog : snap.dark.spotlight}
           position={[90, 60, -50]}
+          castShadow
         />
         <rectAreaLight
           intensity={snap.theme === 'light' ? snap.light.rectIntensity : snap.dark.rectIntensity}
-          args={[(snap.theme === 'light' ? snap.light.Surface : snap.dark.Surface), 8, 8, 8]}
+          args={[(snap.theme === 'light' ? snap.light.Surface : snap.dark.Surface), 8, 70, 70]}
           position={[0, -0.99, 0]}
           rotation-x={Math.PI / 2}
         />
         <ambientLight intensity={snap.theme === 'light' ? snap.light.ambIntensity : snap.dark.ambIntensity} />
-        <group position-y={-1}>
+        <group position-y={0}>
           <CD />
           <Floor />
         </group>

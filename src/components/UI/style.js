@@ -350,7 +350,7 @@ export const GlobalStyle = createGlobalStyle`
       box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
       -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
       -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
-      /* transition: 100ms; */
+      /* transition: 1s; */
     }
 
     .li{

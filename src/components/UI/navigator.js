@@ -143,9 +143,9 @@ const Nav = styled.div`
 	}
 
 	70% {
-		color: ${props => props.theme.invert};
-      -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.invert});
-      filter: drop-shadow(1px 1px 6px ${props => props.theme.invert});
+		color: ${props => props.theme.sky};
+    -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
+    filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
 	}
 
 	100% {

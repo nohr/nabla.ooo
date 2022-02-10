@@ -27,11 +27,13 @@ function Ball(props) {
   return (
     <mesh
       {...props}
+      castShadow
+      receiveShadow
       material={material}
     // material={!clicked ? material : material1}
     // onClick={(e) => { !clicked && !state.paused ? setClick(true) : setClick(false) }}
     >
-      <sphereGeometry args={[220, 50, 50]} />
+      <sphereGeometry args={[220, 75, 75]} />
     </mesh>
   )
 }
