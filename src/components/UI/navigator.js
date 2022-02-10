@@ -2,17 +2,21 @@
 import React, { useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
-import { Linker, Folder } from "./style"
+import { Folder } from "./style"
 import styled from "styled-components"
+import { NavLink } from "react-router-dom"
 import Draggable from 'react-draggable'
 import Search from "./search"
 import { SvgNabla, Spinner, Arrow, SideArrow, Grabber } from './svg'
 
 const Nav = styled.div`
   padding: 0em 42.5px 30px 42.5px;
-  position: fixed;
   left: var(--edge);
   top: var(--edge);
+  position: fixed;
+  /* top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); */
   z-index: 5000;
   text-indent: 10px;
   display: flex;
@@ -143,9 +147,9 @@ const Nav = styled.div`
 	}
 
 	70% {
-		color: ${props => props.theme.invert};
-      -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.invert});
-      filter: drop-shadow(1px 1px 6px ${props => props.theme.invert});
+		color: ${props => props.theme.sky};
+    -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
+    filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
 	}
 
 	100% {
@@ -157,6 +161,8 @@ const Nav = styled.div`
 function Navigator() {
   const snap = useSnapshot(state);
   const nav = useRef(null);
+
+  // console.log(state.navPosition);
 
   const onControlledDrag = (e, position) => {
     let { x, y } = position;
@@ -170,25 +176,25 @@ function Navigator() {
 
   return (
     //NAV
-    <Draggable nodeRef={nav} handle=".grabber" bounds=".container" position={nav.position} onDrag={onControlledDrag} >
+    <Draggable nodeRef={nav} handle=".grabber" bounds=".container" onDrag={onControlledDrag} >
       <Nav ref={nav} className="Panel nav">
         <div className='header' >
           <SvgNabla />
         </div>
         <Search />
         <div className="grid">
-          <Linker className="li w" activeClassName="any" to="/info" style={{ cursor: "wait" }}>
+          <NavLink className="li w" to="/info" style={{ cursor: "wait" }}>
             Info
-          </Linker>
-          <Linker className="li w" activeClassName="any" to="/store">
+          </NavLink>
+          <NavLink className="li w" to="/store">
             Store
-          </Linker >
-          <Linker className="li w" activeClassName="any" to="/blog" style={{ cursor: "wait" }}>
+          </NavLink >
+          <NavLink className="li w" to="/blog" style={{ cursor: "wait" }}>
             Blog
-          </Linker >
-          <Linker className="li w" activeClassName="any" to="/contrast" style={{ cursor: "wait" }}>
+          </NavLink >
+          <NavLink className={({ isActive }) => (isActive ? 'active li w' : 'li w')} to="/contrast" style={{ cursor: "wait" }}>
             Contrast
-          </Linker >
+          </NavLink >
           <Folder className="li folder portLink" tabIndex="0">
             Projects
             {snap.isPort ? <SideArrow /> : <Arrow />}
@@ -200,7 +206,6 @@ function Navigator() {
           {snap.playMusic && <p className="song" onClick={() => { state.isSett = true; }} tabIndex="0">nohri - tardigrade</p>}
         </div>
         {snap.loading ? <Spinner /> : <Grabber />}
-        {/* {snap.playMusic ? <Speaker /> : null} */}
       </Nav>
     </Draggable>
   )

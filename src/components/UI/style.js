@@ -56,9 +56,9 @@ export const Container = styled.div`
     cursor: grab;
   }
 
-  &:last-child(){
+  /* &:last-child(){
     margin-bottom: 60%;
-  }
+  } */
 
   &:last-child():not(.backdrop){
     height: 90%;
@@ -67,6 +67,7 @@ export const Container = styled.div`
   ::-webkit-scrollbar {
       -webkit-appearance: none;
       width: 5px;
+      display: flex;
     }
     ::-webkit-scrollbar-thumb {
       outline: 1px solid ${props => props.theme.panelColor};
@@ -114,9 +115,8 @@ export const TextWrapper = styled.div`
   align-self: center;
   padding-left: 20px;
   display: grid;
-  grid-template-rows: 2% 39% 49% 10%;
+  grid-template-rows: 2% 35% 53% 10%;
   transition: 1.3s;
-  
   
   @media only screen and (max-width: 768px) {
   width: 50%;
@@ -129,6 +129,7 @@ export const TextWrapper = styled.div`
 
 & h4, & h5{
   align-self: flex-end;
+  margin: 5px 0;
 }
 & p {
 text-indent: 2em;
@@ -288,23 +289,6 @@ export const Homer = styled(NavLink)`
   }
 
 `
-export const Linker = styled(NavLink)`
-  text-decoration: none;
-  width: 100%;
-  margin: 3px 0;
-  padding: 2px 0;
-  display: block;
-
-  &.${props => props.activeClassName}{
-  background-color: ${props => props.theme.LiActiveBackground};
-  color:  ${props => props.theme.textHover};
-  -webkit-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
-  -moz-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
-  box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
-  text-shadow: 1px 1px 3px  ${props => props.theme.textHover};
-  font-style: italic;
-}
-`
 export const Folder = styled.div`
   width: 100%;
   margin: 3px 0;
@@ -315,7 +299,6 @@ export const Folder = styled.div`
   justify-content: space-between;
   align-items: center;
 `
-
 export const GlobalStyle = createGlobalStyle`
     //App
     :root{
@@ -349,9 +332,26 @@ export const GlobalStyle = createGlobalStyle`
       box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
       -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
       -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
-      /* transition: 100ms; */
+      /* transition: 1s; */
     }
 
+    //Links
+    a{
+      text-decoration: none;
+      width: 100%;
+      margin: 3px 0;
+      padding: 2px 0;
+      display: block;
+}  
+a.active:not(.nablaWrapper){
+  background-color: ${props => props.theme.LiActiveBackground};
+  color:  ${props => props.theme.textHover};
+  -webkit-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
+  -moz-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
+  box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
+  text-shadow: 1px 1px 3px  ${props => props.theme.textHover};
+  font-style: italic;
+}
     .li{
       border-radius: 12px;
     }
@@ -428,7 +428,6 @@ export const GlobalStyle = createGlobalStyle`
     
     //store
     .str {
-      width: 100vw;
       display: flex !important;
       align-items: center;
       justify-content: space-between;
@@ -436,9 +435,18 @@ export const GlobalStyle = createGlobalStyle`
       flex-direction: column-reverse;
       flex-wrap: nowrap;
       overflow: visible;
-      margin: 250px 0 100px 0;
       gap: 60px;
     }
+
+    @font-face {
+  font-family: "ekodigital";
+  src: url("https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff2?alt=media&token=2ecf835d-a956-4f86-a8c3-11819f2a11ec")
+      format("woff2"),
+    url("https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff?alt=media&token=08ac051d-78bb-4c67-b26c-a3a184cba89d")
+      format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
     .contrast{
       fill: ${props => props.theme.panelColor};
       stroke: none;
@@ -467,11 +475,12 @@ export const GlobalStyle = createGlobalStyle`
       transition: 0.3s !important;
      }
     .eko{
-      height: min-content;
+      height: 525px;
       display: flex;
       align-self: center;
       align-items: center;
-      padding: 10px 30px;
+      flex-direction: column;
+      padding: 50px;
       box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
       -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
       -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
@@ -479,20 +488,20 @@ export const GlobalStyle = createGlobalStyle`
       -webkit-backdrop-filter: blur(var(--blur));
       border: 1px solid;
       border-color:  ${props => props.theme.panelColor};
-      border-radius: 200px;
+      border-radius: 500px;
       overflow: visible;
       transition: 1.3s;
     }
     .eko-thumb{
-      text-shadow: 1px 1px 10px ${props => props.theme.panelColor};
+      text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
+      color: ${props => props.theme.LiHover};
       font-family: "ekodigital", Helvetica, sans-serif;
       font-weight: 400;
       font-style: normal;
       font-size: 270px;
+      font-display: block;
       vertical-align: middle;
       letter-spacing: -15px;
-      padding-left: 15px;
-      padding-right: 20px;
       -webkit-user-select: none; /* Safari */
       -moz-user-select: none; /* Firefox */
       -ms-user-select: none; /* IE10+/Edge */
@@ -506,14 +515,19 @@ export const GlobalStyle = createGlobalStyle`
       display: flex;
     justify-content: center;
     flex-direction: column;
+    text-align: center;
     }
   .title {
       padding: 0.5% 0;
       font-style: normal !important;
       vertical-align: middle;
+      display: flex;
+      justify-content: center;
+      padding-bottom: 10px;
     }
     
-    .title p{
+    .title a{
+      width: fit-content;
       background-color:  ${props => props.theme.LiHover};
       -webkit-box-shadow: 0px 3px 10px 1px  ${props => props.theme.LiHover};
       -moz-box-shadow: 0px 3px 10px 1px  ${props => props.theme.LiHover};
@@ -523,7 +537,17 @@ export const GlobalStyle = createGlobalStyle`
       display: inline-block;
       vertical-align: baseline;
       padding: 0 10px;
-      text-shadow: 1px 1px 3px rgba(235, 235, 235, 0.5)
+      text-shadow: 1px 1px 3px rgba(235, 235, 235, 0.5);
+      border-radius: 30px;
+    }
+    .title a:hover{
+      text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
+      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      color:  ${props => props.theme.panelColor};
+      font-style: italic;
+      transition: 1.3s;
     }
     .buyBtn {
       text-align: center;
@@ -536,11 +560,12 @@ export const GlobalStyle = createGlobalStyle`
       color: #ebebeb !important;
       cursor: pointer;
       display: inline;
-      justify-self: flex-end;
+      align-self: center;
       -webkit-user-select: none; /* Safari */
       -moz-user-select: none; /* Firefox */
       -ms-user-select: none; /* IE10+/Edge */
       user-select: none; /* Standard */
+      border-radius: 30px;
     }
     .buyBtn:hover {
       background-color: ${props => props.theme.LiHover};
@@ -568,15 +593,7 @@ export const GlobalStyle = createGlobalStyle`
     width: 590px;
     /* margin: 0 30px; */
   }
-  .eko {
-    flex-direction: row-reverse;
-    width: auto;
-    /* padding-left: 0; */
-  }
-  .eko-thumb {
-    /* border-left: 1px solid ${props => props.theme.panelColor}; */
-    padding-top: 30px;
-  }
+
 }
 
 //Mobile

@@ -15,7 +15,7 @@ import NotFound from "../Stream/NotFound"
 import { Page, Results } from '../Stream/Page.jsx'
 import {
   BrowserRouter as Router,
-  Switch,
+  Routes,
   Route
 } from "react-router-dom"
 
@@ -24,7 +24,6 @@ import useSound from 'use-sound'
 import sound1 from "../Sounds/select.mp3"
 import sound2 from '../Sounds/open.mp3'
 import sound3 from '../Sounds/close.mp3'
-// import cemeterydfile from "../Sounds/cemetery d.wav"
 import tardigradefile from "../Sounds/tardigrade.wav"
 
 
@@ -163,29 +162,23 @@ function UI() {
           <Navigator />
           <Projects />
           <Settings />
-          <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/store" component={Store} />
-            <Route path="/blog" component={Blog} />
-            <Route path="/info" component={Info} />
-            <Route path="/contrast" component={Contrast} />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/store" element={<Store />} />
+            <Route path="/blog" element={<Blog />} />
+            <Route path="/info" element={<Info />} />
+            <Route path="/contrast" element={<Contrast />} />
             {snap.selfs.map((work) => (
-              <Route key={`${work.name}`} path={`/${work.id}`}>
-                <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />
-              </Route>
+              <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`${work.name} @ Nabla`} id={`${work.id}`} />} />
             ))}
             {snap.clients.map((work) => (
-              <Route key={`${work.name}`} path={`/${work.id}`}>
-                <Page title={`${work.name} @ Nabla`} id={`${work.id}`} />
-              </Route>
+              <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`${work.name} @ Nabla`} id={`${work.id}`} />} />
             ))}
             {/* broken - needs UI to rerender */}
-            <Route path={`/${snap.query}-results`}>
-              <Results title={`${snap.query} Results`} />
-            </Route>
-            <Route component={NotFound} />
+            <Route path={`/${snap.query}-results`} element={<Results title={`${snap.query} Results`} />} />
+            <Route element={NotFound} />
             {/* <Redirect from="*" to="/404" /> */}
-          </Switch>
+          </Routes>
         </ThemeProvider>
       </Router>
     )

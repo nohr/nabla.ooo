@@ -14,7 +14,7 @@ const Setter = styled.div`
     position: absolute;
     z-index: 3500;
     left: var(--edge);
-    margin: 20px 0;
+    margin: 20px 0 0 0;
     display: grid;
     align-items: start;
     ${props => props.layout}

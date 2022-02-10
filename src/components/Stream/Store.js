@@ -6,6 +6,7 @@ import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import { Container } from "../UI/style";
 import useDocumentTitle from "../UI/documentTitle";
+import { HashLink } from 'react-router-hash-link';
 // import { HeadSVG } from "../UI/svg";
 //TODO: Replace with HeadSVG
 
@@ -28,7 +29,7 @@ function Store() {
               Aa
             </div>
             <div className="desc">
-              <div className="title"> <p>Eko Digital</p></div>
+              <div className="title"> <HashLink to={"/nabla#EkoDigital"}> Eko Digital</HashLink></div>
               My first display font offers a stencil with a distinct futuristic style. <br />
               <i style={{ opacity: ".5" }}>It's just what your acid graphics were missing!</i>
               <br />

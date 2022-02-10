@@ -89,7 +89,7 @@ const PageData = React.memo(function PageData(id, setSelectedImg) {
     return (
         <>
             {snap.sectors.map((work) => (
-                <Sector key={`${Math.random()}`} className="sector">
+                <Sector key={`${Math.random()}`} id={work.projectName.replace(/\s+/g, '')} className="sector">
                     <TextWrapper key={`${Math.random()}`} className="textWrapper">
                         <span key={`${Math.random()}`} className="lot">LOT#: {Math.random()}</span>
                         <h2 key={`${work.projectName}`}>{work.projectName}</h2>
