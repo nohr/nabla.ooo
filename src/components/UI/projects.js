@@ -4,7 +4,7 @@ import { state } from './state'
 import useWindowDimensions from "./window"
 import { useSnapshot } from 'valtio'
 import Draggable from 'react-draggable'
-import { Linker } from "./style"
+import { NavLink } from "react-router-dom"
 import styled from "styled-components"
 
 const Porter = styled.div`
@@ -13,7 +13,7 @@ const Porter = styled.div`
   position: absolute;
   z-index: 4900;
   left: var(--edge);
-  margin: 20px 0;
+  margin: 20px 0 0 0;
   text-align: center;
   /* overflow: scroll !important; */
   display: grid;
@@ -95,12 +95,15 @@ function Projects() {
     const right1 = { x: state.navWidth - (state.dist), y: 0 };
     const up1 = { x: 0, y: (-state.navWidth) - (-state.dist) };
     const down1 = { x: 0, y: state.navWidth - state.dist };
+    // const 
 
     if ((((state.direction ? vWidth : vHeight) - state.navWidth) - (state.dist * 2)) < (state.direction ? state.prtPosition.x : state.prtPosition.y)) {
       //goes over the right side
+      //fix this
       if (!state.prtSwitched) {
         if (state.prtSwitched) {
           state.prtSwitched = true;
+          console.log("my left");
           return snap.direction ? left1 : up1
         } else {
           state.prtSwitched = true;
@@ -170,7 +173,7 @@ function Projects() {
           onMouseLeave={() => { document.getElementById("selfhead").style.width = headwidth.first.min }}
         >
           {snap.selfs && snap.selfs.map((work) => (
-            <Linker className="li w" activeclassname="any" to={`/${work.id}`} tabIndex={state.isPort ? "0" : "-1"} key={Math.random()}>{work.name}</Linker>
+            <NavLink className="li w" to={`/${work.id}`} tabIndex={state.isPort ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
           ))}
         </div>
         <p style={secondHeader}
@@ -181,7 +184,7 @@ function Projects() {
           onMouseLeave={() => { document.getElementById("clienthead").style.width = headwidth.second.min }}
         >
           {snap.clients && snap.clients.map((work) => (
-            <Linker className="li w" activeclassname="any" to={`/${work.id}`} tabIndex={state.isPort ? "0" : "-1"} key={Math.random()}>{work.name}</Linker>
+            <NavLink className="li w" to={`/${work.id}`} tabIndex={state.isPort ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
           ))}
         </div>
         {snap.isSett}

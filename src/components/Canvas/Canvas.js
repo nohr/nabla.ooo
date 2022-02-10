@@ -12,25 +12,63 @@ import { EffectComposer, Noise } from '@react-three/postprocessing'
 // Canvas
 softShadows();
 
+function Wall() {
+  return (
+    <>
+      <mesh
+        rotation={[0, -Math.PI / 2, 0]}
+        position={[30, 17, 0]}
+      >
+        <planeGeometry
+          args={[70, 35]}
+        />
+      </mesh>
+      <mesh
+        rotation={[0, Math.PI / 2, 0]}
+        position={[-30, 17, 0]}
+      >
+        <planeGeometry
+          args={[70, 35]}
+        />
+      </mesh>
+      <mesh
+        rotation={[0, -Math.PI, 0]}
+        position={[0, 17, 30]}
+      >
+        <planeGeometry
+          args={[70, 35]}
+        />
+      </mesh>
+      <mesh
+        rotation={[0, 0, 0]}
+        position={[0, 17, -30]}
+      >
+        <planeGeometry
+          args={[70, 35]}
+        />
+      </mesh>
+    </>
+  )
+}
+
 function Floor() {
-  const [ao, normal, height, roughness] = useTexture([
-    "../Ice_OCC (1).jpeg",
-    "../Ice_NORM (1).jpeg",
-    "../Ice_DISP.jpeg",
-    "../floor_rough (1).jpeg"
-  ]);
+  const textures = useTexture([
+    "../Ice_OCC.jpg",
+    "../Ice_NORM.jpg",
+    "../Ice_DISP.png",
+    "../floor_rough.jpg"]);
+  const [ao, normal, height, roughness] = textures;
   const snap = useSnapshot(state);
   return (
     <mesh
       rotation={[-Math.PI / 2, 0, 0]}
       position={[0, 0, 0]}
-      receiveShadow
     >
       <planeGeometry
         args={[70, 70]}
       />
       <MeshReflectorMaterial
-        resolution={1024}
+        resolution={2048}
         mirror={0.15}
         blur={[250, 250]}
         mixBlur={14}
@@ -38,7 +76,7 @@ function Floor() {
         mixStrength={1}
         minDepthThreshold={0.9}
         maxDepthThreshold={1.1}
-        depthScale={0}
+        depthScale={10}
         depthToBlurRatioBias={20}
         color={state.theme === 'light' ? snap.light.Surface : snap.dark.Surface}
         metalness={0}
@@ -89,7 +127,7 @@ function CanvasComp() {
   const { height, width } = useWindowDimensions();
   const snap = useSnapshot(state);
   return (
-    <Canvas shadows colorManagement pixelRatio={[1, 1.5]} frameloop="demand" performance={{ min: 1 }} onCreated={!snap.loading} >
+    <Canvas shadowMap colorManagement pixelRatio={[1, 1.5]} frameloop="demand" performance={{ min: 1 }} onLoad={state.loading} >
       <PerspectiveCamera makeDefault target={[0, 2, 0]} position={snap.cameraPosition} near={.1} fov={20} aspect={width / height} />
       <fog attach="fog" args={[state.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, 40]} />
       <Suspense fallback={null}>
@@ -97,17 +135,19 @@ function CanvasComp() {
           decay={1}
           color={state.theme === 'light' ? snap.light.fog : snap.dark.spotlight}
           position={[90, 60, -50]}
-          castShadow
+
         />
         <rectAreaLight
           intensity={snap.theme === 'light' ? snap.light.rectIntensity : snap.dark.rectIntensity}
-          args={[(snap.theme === 'light' ? snap.light.Surface : snap.dark.Surface), 8, 70, 70]}
+          args={[(snap.theme === 'light' ? snap.light.Surface : snap.dark.Surface), 20, 20, 20]}
           position={[0, -0.99, 0]}
           rotation-x={Math.PI / 2}
+          castShadow
         />
         <ambientLight intensity={snap.theme === 'light' ? snap.light.ambIntensity : snap.dark.ambIntensity} />
-        <group position-y={0}>
+        <group position-y={-1}>
           <CD />
+          <Wall />
           <Floor />
         </group>
         {/* this is causeing the white lines on light mode */}
@@ -116,11 +156,11 @@ function CanvasComp() {
         </EffectComposer>
       </Suspense>
       <OrbitControls
-        target={[0, 2, 0]}
+        target={[0, 1.5, 0]}
         enablePan={false}
         autoRotate={true}
         autoRotateSpeed={snap.paused ? 0 : 0.5}
-        minPolarAngle={Math.PI / 4}
+        minPolarAngle={Math.PI / 3}
         maxPolarAngle={Math.PI / 2}
         minDistance={20}
         maxDistance={36}
