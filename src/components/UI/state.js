@@ -73,7 +73,7 @@ export const state = proxy({
         spotlight: '#646464',
         spotIntensity: 0,
         ambIntensity: 0.8,
-        rectIntensity: 1,
+        rectIntensity: 0.21,
         noise: 0.045,
     },
     //Canvas
