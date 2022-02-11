@@ -119,7 +119,7 @@ function Settings() {
     const sett = useRef(null);
     const snap = useSnapshot(state);
     const settLink = document.querySelector(".settLink")
-    if (state.isSett) { settLink.classList.add("folderActive") }
+    if (state.isSett && settLink) { settLink.classList.add("folderActive") }
     if (state.selectedImg) { settLink.classList.remove("folderActive") }
     //Audio configured in App.js
 
@@ -309,7 +309,7 @@ function Settings() {
                     onMouseEnter={() => { document.getElementById("audiohead").style.width = headwidth.first.max }}
                     onMouseLeave={() => { document.getElementById("audiohead").style.width = headwidth.first.min }}
                 >
-                    <Folder id="muteunmute" className="li"><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
+                    <Folder style={{ cursor: "wait" }} id="muteunmute" className="li"><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
                     <Folder id="playstop" className="li"><PlayPauseIcon arg={1} />Music</Folder>
                     {/* <Folder id="Next" className="li w">Next</Folder> */}
                 </div>

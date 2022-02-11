@@ -29,7 +29,7 @@ function Store() {
               Aa
             </div>
             <div className="desc">
-              <div className="title"> <HashLink to={"/nabla#EkoDigital"}> Eko Digital</HashLink></div>
+              <div className="title"> <HashLink className="w" to={"/nabla#EkoDigital"}> Eko Digital</HashLink></div>
               My first display font offers a stencil with a distinct futuristic style. <br />
               <i style={{ opacity: ".5" }}>It's just what your acid graphics were missing!</i>
               <br />
