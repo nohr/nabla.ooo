@@ -33,6 +33,13 @@ const Caret = styled.svg`
   fill: ${props => props.theme.panelColor};
   height: clamp(8px, 12px, 12px);
   float: right;
+  -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.panelColor});
+  filter: drop-shadow(1px 1px 3px ${props => props.theme.panelColor});  
+
+  &:hover{
+  -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
+  filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});  
+  }
 `
 export function Arrow() {
   return (
@@ -56,6 +63,24 @@ export function SideArrow() {
     >
       <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
     </Caret>
+  );
+}
+const DiagArrow = styled.svg`
+  fill: ${props => props.theme.textHover};
+  height: clamp(8px, 12px, 12px);
+  -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
+    filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
+    
+`
+export function DiagonalArrow() {
+  return (
+    <DiagArrow
+      xmlns="http://www.w3.org/2000/svg"
+      data-name="Layer 1"
+      viewBox="0 0 354 356"
+    >
+      <path d="M269.86 106.67C205 173.13 151.58 228.35 97.47 282.86c-10.21 10.27-22.37 31-38.15 15.23-15.38-15.35 4.48-28.09 14.53-38.56C127 204.14 180.78 149.38 242.67 85.86c-42.58 0-76.74.24-110.89-.11-13.43-.14-32.78 1.75-31.93-16.58.74-15.58 19.22-17 33.47-17 43.4 0 86.8.21 130.19.09 24.1-.07 36.75 11.37 36.77 35.94 0 47.7.12 95.39-.22 143.09-.07 9.8-1.25 22.52-12.39 23.94-16.68 2.13-17.44-12.72-17.61-24.4-.53-35.55-.2-71.12-.2-124.16z"></path>
+    </DiagArrow>
   );
 }
 export function Spinner() {

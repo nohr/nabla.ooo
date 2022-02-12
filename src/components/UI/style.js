@@ -333,7 +333,31 @@ export const GlobalStyle = createGlobalStyle`
       -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
       -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
       /* transition: 1s; */
+      animation: pulseItem 2s infinite;
     }
+
+    @keyframes pulseItem {
+	0% {
+		text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
+      box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
+      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
+      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
+	}
+
+	50% {
+		text-shadow: 1px 1px 30px ${props => props.theme.LiHover};
+      box-shadow: 0 8px 12px 0 ${props => props.theme.panelColor};
+      -webkit-box-shadow:  0 8px 12px 0 ${props => props.theme.panelColor};
+      -moz-box-shadow:  0 8px 12px 0 ${props => props.theme.panelColor};
+	}
+
+	100% {
+		text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
+      box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
+      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
+      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
+	}
+}
 
     //Links
     a{
@@ -424,154 +448,6 @@ a.active:not(.nablaWrapper){
       justify-items: center;
       justify-content: center;
       flex-direction: column;
-    }
-    
-    //store
-    .str {
-      display: flex !important;
-      align-items: center;
-      justify-content: space-between;
-      align-content: center;
-      flex-direction: column-reverse;
-      flex-wrap: nowrap;
-      overflow: visible;
-      gap: 60px;
-    }
-
-    @font-face {
-  font-family: "ekodigital";
-  src: url("https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff2?alt=media&token=2ecf835d-a956-4f86-a8c3-11819f2a11ec")
-      format("woff2"),
-    url("https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff?alt=media&token=08ac051d-78bb-4c67-b26c-a3a184cba89d")
-      format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-    .contrast{
-      fill: ${props => props.theme.panelColor};
-      stroke: none;
-      width: 90vw;
-      transition: 1.3s;
-    }
-
-    .contrastWrap{
-      text-align: center;
-      width: 100%;
-      padding: 20px;
-    }
-    .contrast:hover{
-      cursor: wait;
-    }
-    .contrast:hover{
-      fill: ${props => props.theme.sky};
-      /* stroke: ${props => props.theme.sky} !important; */
-      -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
-      filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
-      transition: 0.3s !important;
-    }
-     .contrast:hover ~ p{
-      color: ${props => props.theme.sky};
-      text-shadow: 1px 1px 3px ${props => props.theme.sky};
-      transition: 0.3s !important;
-     }
-    .eko{
-      height: 525px;
-      display: flex;
-      align-self: center;
-      align-items: center;
-      flex-direction: column;
-      padding: 50px;
-      box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
-      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
-      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
-      backdrop-filter: blur(var(--blur));
-      -webkit-backdrop-filter: blur(var(--blur));
-      border: 1px solid;
-      border-color:  ${props => props.theme.panelColor};
-      border-radius: 500px;
-      overflow: visible;
-      transition: 1.3s;
-    }
-    .eko-thumb{
-      text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
-      color: ${props => props.theme.LiHover};
-      font-family: "ekodigital", Helvetica, sans-serif;
-      font-weight: 400;
-      font-style: normal;
-      font-size: 270px;
-      font-display: block;
-      vertical-align: middle;
-      letter-spacing: -15px;
-      -webkit-user-select: none; /* Safari */
-      -moz-user-select: none; /* Firefox */
-      -ms-user-select: none; /* IE10+/Edge */
-      user-select: none; /* Standard */
-    }
-
-  .desc {
-      padding: 0 20px;
-      line-height: 25px;
-      align-self: center;
-      display: flex;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    }
-  .title {
-      padding: 0.5% 0;
-      font-style: normal !important;
-      vertical-align: middle;
-      display: flex;
-      justify-content: center;
-      padding-bottom: 10px;
-    }
-    
-    .title a{
-      width: fit-content;
-      background-color:  ${props => props.theme.LiHover};
-      -webkit-box-shadow: 0px 3px 10px 1px  ${props => props.theme.LiHover};
-      -moz-box-shadow: 0px 3px 10px 1px  ${props => props.theme.LiHover};
-      box-shadow: 0px 3px 10px 1px  ${props => props.theme.LiHover};
-      color: #ebebeb !important;
-      align-self: center;
-      display: inline-block;
-      vertical-align: baseline;
-      padding: 0 10px;
-      text-shadow: 1px 1px 3px rgba(235, 235, 235, 0.5);
-      border-radius: 30px;
-    }
-    .title a:hover{
-      text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
-      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      color:  ${props => props.theme.panelColor};
-      font-style: italic;
-      transition: 1.3s;
-    }
-    .buyBtn {
-      text-align: center;
-      padding: 1px 9px;
-      width: 65px;
-      font-size: 13px;
-      font-style: normal !important;
-      font-weight: 800;
-      background-color: #c94343;
-      color: #ebebeb !important;
-      cursor: pointer;
-      display: inline;
-      align-self: center;
-      -webkit-user-select: none; /* Safari */
-      -moz-user-select: none; /* Firefox */
-      -ms-user-select: none; /* IE10+/Edge */
-      user-select: none; /* Standard */
-      border-radius: 30px;
-    }
-    .buyBtn:hover {
-      background-color: ${props => props.theme.LiHover};
-      -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
-      -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
-      box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
     }
 
 //Not Mobile

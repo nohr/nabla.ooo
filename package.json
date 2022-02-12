@@ -15,6 +15,7 @@
     "react-scripts": "5.0.0",
     "styled-components": "^5.3.3",
     "three": "^0.136.0",
+    "use-font-face-observer": "^1.1.77",
     "use-sound": "^4.0.1",
     "valtio": "^1.2.11",
     "web-vitals": "^2.1.4"
