@@ -1,0 +1,47 @@
+[debug] [2022-02-12T11:19:15.850Z] ----------------------------------------------------------------------
+[debug] [2022-02-12T11:19:15.852Z] Command:       /usr/local/bin/firebase /Users/aitenoria/.cache/firebase/tools/lib/node_modules/firebase-tools/lib/bin/firebase init
+[debug] [2022-02-12T11:19:15.852Z] CLI Version:   9.23.0
+[debug] [2022-02-12T11:19:15.852Z] Platform:      darwin
+[debug] [2022-02-12T11:19:15.852Z] Node Version:  v12.18.1
+[debug] [2022-02-12T11:19:15.858Z] Time:          Sat Feb 12 2022 06:19:15 GMT-0500 (Eastern Standard Time)
+[debug] [2022-02-12T11:19:15.858Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2022-02-12T11:19:15.901Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2022-02-12T11:19:15.901Z] > authorizing via signed-in user (aite@nabla.ooo)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/aitenoria/GitHub/nabla.ooo
+
+Before we get started, keep in mind:
+
+  * You are initializing within an existing Firebase project directory
+
+[info] 
+=== Project Setup
+[info] 
+[info] First, let's associate this project directory with a Firebase project.
+[info] You can create multiple project aliases by running firebase use --add, 
+[info] but for now we'll just set up a default project.
+[info] 
+[info] i  .firebaserc already has a default project, using nabla7. 
+[debug] [2022-02-12T11:19:19.743Z] > refreshing access token with scopes: []
+[debug] [2022-02-12T11:19:19.744Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ <request body omitted>
+[debug] [2022-02-12T11:19:19.914Z] <<< HTTP RESPONSE 200 {"expires":"Mon, 01 Jan 1990 00:00:00 GMT","cache-control":"no-cache, no-store, max-age=0, must-revalidate","pragma":"no-cache","date":"Sat, 12 Feb 2022 11:19:19 GMT","content-type":"application/json; charset=utf-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","server":"scaffolding on HTTPServer2","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2022-02-12T11:19:19.958Z] >>> [apiv2][query] GET https://firebase.googleapis.com/v1beta1/projects/nabla7 [none]
+[debug] [2022-02-12T11:19:20.405Z] <<< [apiv2][status] GET https://firebase.googleapis.com/v1beta1/projects/nabla7 200
+[debug] [2022-02-12T11:19:20.405Z] <<< [apiv2][body] GET https://firebase.googleapis.com/v1beta1/projects/nabla7 {"projectId":"nabla7","projectNumber":"22669283456","displayName":"nabla","name":"projects/nabla7","resources":{"hostingSite":"nabla7","storageBucket":"nabla7.appspot.com","locationId":"us-central"},"state":"ACTIVE"}
+[info] 
+=== Hosting Setup
+[info] 
+[info] Your public directory is the folder (relative to your project directory) that
+[info] will contain Hosting assets to be uploaded with firebase deploy. If you
+[info] have a build process for your assets, use your build's output directory.
+[info] 
