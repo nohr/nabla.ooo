@@ -18,6 +18,7 @@ import {
   Routes,
   Route
 } from "react-router-dom"
+import CircleType from 'circletype';
 
 //Audio Imports
 import useSound from 'use-sound'
@@ -35,6 +36,15 @@ function UI() {
   const [close] = useSound(sound3, { volume: state.sfxVolume, soundEnabled: !state.muted });
   const [play, { stop }] = useSound(tardigradefile, { volume: 3.5, interrupt: true, loop: true });
 
+  useEffect(() => {
+    let title = document.querySelector('.song');
+    if (title) {
+      const song = new CircleType(title).radius(128);
+      return song;
+    }
+
+  }, [])
+
   //Play the select sound for all links with .w
   useEffect(() => {
     let links = document.querySelectorAll(".w");
@@ -42,12 +52,8 @@ function UI() {
       links.forEach(function (link) {
         link.addEventListener("click", select)
       })
-    } else if (state.isPort) {
-      links = document.querySelectorAll(".w");
-      links.forEach(function (link) {
-        link.addEventListener("click", select)
-      })
     }
+
     return () => {
       links = null;
     }

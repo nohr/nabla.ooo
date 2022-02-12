@@ -309,7 +309,7 @@ function Settings() {
                     onMouseEnter={() => { document.getElementById("audiohead").style.width = headwidth.first.max }}
                     onMouseLeave={() => { document.getElementById("audiohead").style.width = headwidth.first.min }}
                 >
-                    <Folder id="muteunmute" className="li"><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
+                    <Folder style={{ cursor: "wait" }} id="muteunmute" className="li"><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
                     <Folder id="playstop" className="li"><PlayPauseIcon arg={1} />Music</Folder>
                     {/* <Folder id="Next" className="li w">Next</Folder> */}
                 </div>

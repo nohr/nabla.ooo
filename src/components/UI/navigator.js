@@ -32,7 +32,7 @@ const Nav = styled.div`
     .header {
         border-bottom: 1px solid ${props => props.theme.panelColor};
         margin: 0 0 8px 0;
-        padding: 5px 0px 21px;
+        padding: 10px 0px 16px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -68,7 +68,7 @@ const Nav = styled.div`
     position: absolute;
     z-index: 500;
     left: 50%;
-    bottom: 4%;
+    bottom: 8%;
     transform: translate(-50%, 0);
     stroke: ${props => props.theme.panelColor};
     fill: ${props => props.theme.panelColor};
@@ -129,10 +129,15 @@ const Nav = styled.div`
 
   .song{
     position: absolute;
-    bottom: 23px;
-     border: none;
+     top: 3%;
+    /* margin: 0 auto; */
+    left: 48%;
+    margin: 0;
+    /* transform: translate(-30%, 0%) !important; */
+    border: none;
     white-space: nowrap;
-    pointer-events: all;
+    /* pointer-events: none;
+    opacity: 0; */
     animation: flash 2s infinite;
     transition: 1.3s;
     cursor: pointer;
@@ -173,12 +178,13 @@ function Navigator() {
     nav.current.classList.add("glow")
   };
 
+  const songVis = state.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" };
 
   return (
     //NAV
     <Draggable nodeRef={nav} handle=".grabber" bounds=".container" onDrag={onControlledDrag} >
       <Nav ref={nav} className="Panel nav">
-        <div className='header' >
+        <div className='header'>
           <SvgNabla />
         </div>
         <Search />
@@ -189,10 +195,10 @@ function Navigator() {
           <NavLink className="li w" to="/store">
             Store
           </NavLink >
-          <NavLink className="li w" to="/blog" style={{ cursor: "wait" }}>
+          <NavLink className="li w" to="/blog">
             Blog
           </NavLink >
-          <NavLink className={({ isActive }) => (isActive ? 'active li w' : 'li w')} to="/contrast" style={{ cursor: "wait" }}>
+          <NavLink className="li w" to="/contrast" style={{ cursor: "wait" }}>
             Contrast
           </NavLink >
           <Folder className="li folder portLink" tabIndex="0">
@@ -203,8 +209,8 @@ function Navigator() {
             Options
             {snap.isSett ? <SideArrow /> : <Arrow />}
           </Folder>
-          {snap.playMusic && <p className="song" onClick={() => { state.isSett = true; }} tabIndex="0">nohri - tardigrade</p>}
         </div>
+        <p className="song" style={songVis} onClick={() => { state.isSett = true; }} tabIndex="0">nohri - tardigrade</p>
         {snap.loading ? <Spinner /> : <Grabber />}
       </Nav>
     </Draggable>
