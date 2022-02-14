@@ -36,10 +36,9 @@ const StoreContainer = styled.div`
 
     .eko{
       height: 525px;
-      display: flex;
-      align-self: center;
-      align-items: center;
-      flex-direction: column;
+      display: grid;
+      grid-template-rows: 65% 35%;
+      justify-items: center;
       padding: 50px;
       box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
       -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
