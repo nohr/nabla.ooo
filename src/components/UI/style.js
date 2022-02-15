@@ -10,7 +10,7 @@ export const Container = styled.div`
   align-items: center;
   position: fixed;
   z-index: 470;
-  overflow: scroll;
+  overflow-y: overlay;
   -webkit-overflow-scrolling: touch;
   height: 100%;
   width: 100%;
