@@ -26,9 +26,9 @@ const StoreContainer = styled.div`
 
     @font-face {
   font-family: "ekodigital";
-  src: url("https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff2?alt=media&token=2ecf835d-a956-4f86-a8c3-11819f2a11ec")
+  src: url("https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff2?alt=media&token=a5430e10-d4fe-4325-89cc-f64a0e18ac6f")
       format("woff2"),
-    url("https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff?alt=media&token=08ac051d-78bb-4c67-b26c-a3a184cba89d")
+    url("https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff?alt=media&token=9ba41528-4ac1-46a6-8b67-b5141cca944c")
       format("woff");
   font-weight: normal;
   font-style: normal;
@@ -83,7 +83,7 @@ const StoreContainer = styled.div`
       font-family: "ekodigital", Helvetica, sans-serif;
       font-weight: 400;
       font-style: normal;
-      font-size: 270px;
+      font-size: 350px;
       font-display: block;
       vertical-align: middle;
       letter-spacing: -15px;

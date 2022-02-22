@@ -68,7 +68,7 @@ function Floor() {
         args={[70, 70]}
       />
       <MeshReflectorMaterial
-        resolution={2048}
+        resolution={1024}
         mirror={0.15}
         blur={[250, 250]}
         mixBlur={14}
@@ -127,7 +127,7 @@ function CanvasComp() {
   const { height, width } = useWindowDimensions();
   const snap = useSnapshot(state);
   return (
-    <Canvas shadowMap colorManagement pixelRatio={[1, 1.5]} frameloop="demand" performance={{ min: 1 }} onLoad={state.loading} >
+    <Canvas shadowMap colorManagement dpr={[1, 2]} pixelRatio={[1, 1.5]} frameloop="demand" performance={{ min: 1 }} onLoad={state.loading} >
       <PerspectiveCamera makeDefault target={[0, 2, 0]} position={snap.cameraPosition} near={.1} fov={20} aspect={width / height} />
       <fog attach="fog" args={[state.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, 40]} />
       <Suspense fallback={null}>
