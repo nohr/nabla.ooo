@@ -70,9 +70,8 @@ export const Container = styled.div`
       display: flex;
     }
     ::-webkit-scrollbar-thumb {
-      outline: 1px solid ${props => props.theme.panelColor};
+      background-color:${props => props.theme.panelColor};
       border-radius: 4px;
-      background-color: transparent;
       /* transition: 0.3s; */
     }
     ::-webkit-scrollbar-thumb:hover {

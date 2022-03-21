@@ -37,9 +37,8 @@ const Setter = styled.div`
           position: absolute;
         }
         ::-webkit-scrollbar-thumb {
-          outline: 1px solid ${props => props.theme.panelColor};
+          background-color:${props => props.theme.panelColor};
           border-radius: 4px;
-          background-color: transparent;
           transition: 0.3s;
         }
         ::-webkit-scrollbar-thumb:hover {
@@ -50,10 +49,6 @@ const Setter = styled.div`
               transition: 0.3s;
         }
     }
-  *{
-    width: min-content;
-    scroll-behavior: smooth;
-  }
 
   .li{
     justify-content: flex-start;
