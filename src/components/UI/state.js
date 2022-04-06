@@ -38,7 +38,7 @@ export const state = proxy({
         LiHover: "#00538f67",
         LiActiveBackground: "#5e5e5e67",
         blend: "unset",
-        backdrop: "rgba(255, 255, 255, 0.50)",
+        backdrop: "rgba(255, 255, 255, 0.8)",
         //Canvas
         sky: "#EDEDED",
         fog: "#B8B8B8",
@@ -61,7 +61,7 @@ export const state = proxy({
         LiHover: "#1FA2FF67",
         LiActiveBackground: "#ebebeb67",
         blend: "unset",
-        backdrop: "rgba(0, 0, 0, 0.60)",
+        backdrop: "rgba(0, 0, 0, 0.8)",
         //Canvas
         sky: "#0D0D0D",
         fog: "#010101",

@@ -93,12 +93,13 @@ const PageData = React.memo(function PageData(id, setSelectedImg) {
                     <TextWrapper key={`${Math.random()}`} className="textWrapper">
                         <span key={`${Math.random()}`} className="lot">LOT#: {Math.random()}</span>
                         <h2 key={`${work.projectName}`}>{work.projectName}</h2>
-                        <p key={`${work.statement}`}>{work.statement}</p>
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                             <h5 key={`${work.projectMedium}`}>{`${work.projectMedium}`}</h5>
                             <h4 key={`${work.projectYear}`}>{`${work.projectYear.toDate().getMonth() + 1} ${work.projectYear.toDate().getFullYear()}`}</h4>
                             <h5 key={`${work.projectClient}`}>{`${work.projectClient}`}</h5>
                         </div>
+                        <p key={`${work.statement}`}>{work.statement}</p>
+
                     </TextWrapper>
                     <ImgGrid setSelectedImg={setSelectedImg} work={work} />
                 </Sector>

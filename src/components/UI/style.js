@@ -95,8 +95,8 @@ justify-content: space-between;
 gap: 20px;
 position: relative;
 overflow: hidden;
-backdrop-filter: blur(var(--blur));
--webkit-backdrop-filter: blur(var(--blur));
+/* backdrop-filter: blur(var(--blur)); */
+/* -webkit-backdrop-filter: blur(var(--blur)); */
 transition: 1.3s;
 
 & .lot{
@@ -114,7 +114,7 @@ export const TextWrapper = styled.div`
   align-self: center;
   padding-left: 20px;
   display: grid;
-  grid-template-rows: 2% 35% 53% 10%;
+  grid-template-rows: 2% 35% 5% 58%;
   transition: 1.3s;
   
   @media only screen and (max-width: 768px) {
@@ -127,13 +127,14 @@ export const TextWrapper = styled.div`
 }
 
 & h4, & h5{
-  align-self: flex-end;
+  align-self: center;
   margin: 5px 0;
 }
 & p {
 text-indent: 2em;
 line-height: 2;
 overflow-y: scroll;
+padding: 0 !important;
   ::-webkit-scrollbar {
       -webkit-appearance: none;
       width: 5px;
