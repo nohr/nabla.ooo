@@ -5,6 +5,7 @@ import { useSnapshot } from 'valtio'
 import { state } from '../UI/state'
 import { Head } from './Page'
 import styled from 'styled-components'
+import useDocumentTitle from '../UI/documentTitle'
 // import { HeadSVG } from "../UI/svg";
 //TODO: Replace with HeadSVG
 // console.log(process.env.REACT_APP_NOTION_KEY);
@@ -37,6 +38,7 @@ const Ttile = styled.div`
     gap: 10px;
 `
 function Blog() {
+    useDocumentTitle("Nabla Blog")
     const snap = useSnapshot(state);
     const nodeRef = useRef(null);
     return (

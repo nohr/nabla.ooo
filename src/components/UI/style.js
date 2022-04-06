@@ -85,10 +85,10 @@ export const Container = styled.div`
 export const Sector = styled.div`
 border: solid 1px ;
 border-color: transparent ${props => props.theme.panelColor} transparent ${props => props.theme.panelColor};
-/* border-radius: 75px; */
+border-radius: 10px;
 display: flex;
 width: 100%;
-flex-direction:row;
+flex-direction:column;
 padding: 0px 0px 0px 0px;
 height: 90%;
 justify-content: space-between;
@@ -105,14 +105,14 @@ transition: 1.3s;
 }
 `
 export const TextWrapper = styled.div`
-  width:40%;
+  width:100%;
   flex-wrap: wrap;
   color: ${props => props.theme.panelColor};
   font-size: 14px;
   text-align: left;
-  height: 100%;
+  height: 40% !important;
   align-self: center;
-  padding-left: 20px;
+  padding: 0 20px 0 20px;
   display: grid;
   grid-template-rows: 2% 35% 5% 58%;
   transition: 1.3s;
@@ -124,6 +124,7 @@ export const TextWrapper = styled.div`
 & h2{
   clear:both;
   align-self: flex-end;
+    text-align: center;
 }
 
 & h4, & h5{
@@ -131,10 +132,10 @@ export const TextWrapper = styled.div`
   margin: 5px 0;
 }
 & p {
-text-indent: 2em;
+text-indent: 3em;
 line-height: 2;
 overflow-y: scroll;
-padding: 0 !important;
+padding: 0 240px !important;
   ::-webkit-scrollbar {
       -webkit-appearance: none;
       width: 5px;
@@ -162,15 +163,15 @@ padding: 0 !important;
 
 `
 export const ImgWrapper = styled.div`
-    width: 60%;
+    width: 100%;
     display: flex;
-    height: auto;
+    height: 60% !important;
     overflow-x: scroll;
     overflow-y: hidden;
     flex-direction: row;
     flex-wrap: nowrap;
     gap: 20px;
-    padding-bottom: 7px;
+    padding:0 20px 10px 20px ;
     margin-bottom: 1px;
     
     @media only screen and (max-width: 768px) {
@@ -178,17 +179,24 @@ export const ImgWrapper = styled.div`
     }
 
     .img-thumb:only-child{
+      /* margin: 0 auto; */
+    }
+
+    .Lvideo:only-child{
       margin: 0 auto;
-      padding: 0 27vw;
+      height: "100%";
+      width: "auto";
+      align-self: "center";
     }
 
     .img-thumb{
       overflow: hidden;
       width: 0;
-      padding: 0 25vw;
+      padding: 0 257px;
       position: relative;
-      opacity: 0.8;
+      opacity: 1;
       pointer-events: all;
+      border: 1px solid ${props => props.theme.panelColor} ;
     }
 
     .img-thumb:hover{
@@ -196,15 +204,15 @@ export const ImgWrapper = styled.div`
     }
 
     object{
-    min-height: 100%;
+    /* max-height: 100%; */
     min-width: 100%;
     max-height: 120%;
     /* max-width: 150%; */
     position: absolute;
     pointer-events:  none;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0%;
+    left: 0%;
+    transform: translate(-0%, -0%);
     -webkit-user-drag: none;
     user-select: none;
     -moz-user-select: none;
@@ -218,19 +226,15 @@ export const ImgWrapper = styled.div`
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-    opacity: 0.8;
+    opacity: 1;
     object-fit: contain;
     margin: 0;
     padding: 0;
     }
 
     .landscape{
-    width: 100% !important;
-    height: auto !important;
-    }
-
-    video:hover{
-      opacity: 100%;
+    height: 100% !important;
+    width: auto !important;
     }
 
     video[poster]{

@@ -9,6 +9,7 @@ import useDocumentTitle from '../UI/documentTitle'
 import { HeadSVG } from '../UI/svg'
 import styled from "styled-components";
 
+
 export const Head = styled.div`
       pointer-events: none;
       position: absolute;
@@ -64,6 +65,7 @@ function Page(id) {
     // const margin = state.setSwitched ? "margin-left: -40vw !important;" : "margin-left: calc(var(--panelWidth) + var(--headOffset));" 
     useDocumentTitle(id.title);
     const snap = useSnapshot(state);
+    
     return (
         <>  {snap.selectedImg === null &&
             <Head className="head"

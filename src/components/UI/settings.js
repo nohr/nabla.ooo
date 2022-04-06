@@ -151,7 +151,7 @@ function Settings() {
 
     }
     //Pause Canvas Animation
-    function togglePause() {
+    function togglePause(bool) {
         if (!state.paused) {
             //Pause Canvas
             state.paused = true;
@@ -317,7 +317,7 @@ function Settings() {
                 >
                     <Folder onClick={() => toggleTheme()} className="li w"><ModeIcon /><span>{snap.theme === "light" ? "Dark" : "Light"}</span></Folder>
                     <Folder onClick={() => toggleCanvas()} className="li w"><ShowHideIcon />{snap.canvasVisible ? "Hide" : "Show"}</Folder>
-                    {state.canvasVisible && <Folder onClick={() => togglePause()} className="li w"><PlayPauseIcon arg={2} />{snap.paused ? "Play" : "Pause"}</Folder>}
+                    {state.canvasVisible && <Folder onClick={() => togglePause(snap.paused)} className="li w"><PlayPauseIcon arg={2} />{snap.paused ? "Play" : "Pause"}</Folder>}
                     <Folder id="rowcolumn" onClick={() => toggleDirection()} className="li w"><DirectionIcon />{snap.direction ? "Column" : "Row"}</Folder>
                 </div>
                 {snap.isPort}

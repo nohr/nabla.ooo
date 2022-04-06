@@ -5,6 +5,7 @@ import { Container } from '../UI/style'
 import { Head } from './Page'
 import { ContrastLogo } from "../UI/svg";
 import styled from 'styled-components';
+import useDocumentTitle from '../UI/documentTitle';
 // import Draggable from 'react-draggable'
 // import { HeadSVG } from "../UI/svg";
 //TODO: Replace with HeadSVG
@@ -37,6 +38,7 @@ const ContrastWrap = styled.div`
      }
 `
 function Contrast() {
+    useDocumentTitle("Contrast")
     // const snap = useSnapshot(state);
     // const nodeRef = useRef(null);
     return (

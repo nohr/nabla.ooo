@@ -127,8 +127,8 @@ function CanvasComp() {
   const { height, width } = useWindowDimensions();
   const snap = useSnapshot(state);
   return (
-    <Canvas shadowMap colorManagement dpr={[1, 2]} pixelRatio={[1, 1.5]} frameloop="demand" performance={{ min: 1 }} onLoad={state.loading} >
-      <PerspectiveCamera makeDefault target={[0, 2, 0]} position={snap.cameraPosition} near={.1} fov={20} aspect={width / height} />
+    <Canvas shadowMap colorManagement dpr={[1, 2]} pixelRatio={[1, 1.5]} frameloop="demand" performance={{ min: 1 }} onLoad={state.paused} >
+      <PerspectiveCamera makeDefault target={[0, 1, 0]} position={snap.cameraPosition} near={.1} fov={20} aspect={width / height} />
       <fog attach="fog" args={[state.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, 40]} />
       <Suspense fallback={null}>
         <spotLight intensity={state.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}
@@ -156,10 +156,10 @@ function CanvasComp() {
         </EffectComposer>
       </Suspense>
       <OrbitControls
-        target={[0, 1.5, 0]}
+        target={[0, 0, 0]}
         enablePan={false}
         autoRotate={true}
-        autoRotateSpeed={snap.paused ? 0 : 0.5}
+        autoRotateSpeed={snap.paused ? 0 : snap.loading ? -5 : 1}
         minPolarAngle={Math.PI / 3}
         maxPolarAngle={Math.PI / 2}
         minDistance={20}

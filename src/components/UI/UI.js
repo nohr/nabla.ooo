@@ -45,6 +45,7 @@ function UI() {
 
   }, [])
 
+
   //Play the select sound for all links with .w
   useEffect(() => {
     let links = document.querySelectorAll(".w");
@@ -175,10 +176,10 @@ function UI() {
             <Route path="/info" element={<Info />} />
             <Route path="/contrast" element={<Contrast />} />
             {snap.selfs.map((work) => (
-              <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`${work.name} @ Nabla`} id={`${work.id}`} />} />
+              <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`Nabla`} id={`${work.id}`} />} />
             ))}
             {snap.clients.map((work) => (
-              <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`${work.name} @ Nabla`} id={`${work.id}`} />} />
+              <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`Nabla & ${work.name}`} id={`${work.id}`} />} />
             ))}
             {/* broken - needs UI to rerender */}
             <Route path={`/${snap.query}-results`} element={<Results title={`${snap.query} Results`} />} />

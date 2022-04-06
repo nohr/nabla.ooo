@@ -5,7 +5,7 @@ import useDocumentTitle from "../UI/documentTitle";
 import { Head } from "./Page";
 
 function Home() {
-    useDocumentTitle("Nabla - Alpha Build");
+    useDocumentTitle("Nabla");
     return (
         <>
             <Head className="head">

@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React, { useRef, useEffect } from "react"
 import useSound from 'use-sound'
 import home from '../Sounds/home.mp3'
 import { Homer } from './style'
@@ -367,6 +367,39 @@ export function ClearIcon() {
 export function HeadSVG(id) {
   const snap = useSnapshot(state);
   const nodeRef = useRef(null);
+
+  // function hideHeader() {
+  //   const header = nodeRef.current;
+  //   console.log(header);
+  //   if (header) {
+  //     header.style.transition = "15s"
+  //     header.style.opacity = "0%";
+  //   }
+  //   var opacity = 0;
+  //   var intervalID = 0;
+  //   function fadeout() {
+  //     setInterval(hide, 200);
+  //   }
+  //   function hide() {
+  //     var body = document.getElementById("body");
+  //     opacity =
+  //       Number(window.getComputedStyle(body).getPropertyValue("opacity"))
+
+  //     if (opacity > 0) {
+  //       opacity = opacity - 0.1;
+  //       body.style.opacity = opacity
+  //     }
+  //     else {
+  //       clearInterval(intervalID);
+  //     }
+  //   }
+  //   fadeout()
+  // }
+
+  // useEffect(() => {
+  //   hideHeader()
+  // }, [])
+
   if (id.id === 'geese') {
     return (
       <Draggable nodeRef={nodeRef} position={snap.prtPosition} onStart={() => false}>

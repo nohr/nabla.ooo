@@ -40,16 +40,16 @@ function Ball(props) {
 
 export default function CD() {
   const group = useRef()
-  useFrame(() => {
-    if (!state.paused) {
-      group.current.rotation.x += state.loading ? .009 : state.CDRotationX;
-      group.current.rotation.y += state.loading ? .009 : state.CDRotationY;
-    }
-  });
+  // useFrame(() => {
+  //   if (!state.paused) {
+  //     group.current.rotation.y += state.loading ? .009 : state.CDRotationX;
+  //     // group.current.rotation.y += state.loading ? .009 : state.CDRotationY;
+  //   }
+  // });
 
   return (
-    <group ref={group} position={[0, 2, 0]} dispose={null}
-      rotation={[-Math.PI / 2, 0, Math.PI / 2]} receiveShadow castShadow >
+    <group ref={group} position={[0, 1, 0]} dispose={null}
+      rotation={[-Math.PI / 2, Math.PI / 2, Math.PI / 2]} receiveShadow castShadow >
       <group position={[0, 0, 1]} scale={.01}>
         <Ball position={[5.28, 0, -265.23]} />
         <Ball position={[306.5, 0, 134.46]} />

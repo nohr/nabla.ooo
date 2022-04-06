@@ -77,7 +77,7 @@ export const state = proxy({
         noise: 0.045,
     },
     //Canvas
-    paused: false,
+    paused: true,
     canvasVisible: true,
     CDRotationX: 0.002,
     CDRotationY: 0.002,

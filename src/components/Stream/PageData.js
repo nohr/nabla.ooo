@@ -1,10 +1,9 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { GetSectors, db } from '../../firebase'
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import { ImgWrapper, Sector, TextWrapper } from "../UI/style"
 import { motion } from 'framer-motion'
-// import '@iconfu/svg-inject.min.js'
 
 
 const ImgGrid = ({ work }) => {
@@ -38,26 +37,12 @@ const ImgGrid = ({ work }) => {
             } else if (work.orientation === "landscape") {
                 return (
                     <div
-                        key={Math.random()} style={{
-                            height: "min-content",
-                            alignSelf: "center",
-                        }}>
+                        key={Math.random()} className="Lvideo">
                         <video className={"landscape"} key={`${Math.random()}`} autoPlay={work.autoplay} playsInline controls preload={"none"} poster={`${work.poster}`} loop={work.loop} muted={work.muted} src={`${url.url}`}>{`${work.at}`}</video>
                     </div>
                 )
             }
         }
-        // else if (element === "svg") {
-        //     return (
-        //         <motion.div className="img-thumb"
-        //             key={Math.random()}
-        //             layout
-        //             whileHover={{ opacity: 1 }}
-        //             onClick={() => setSelectedImg(url.url)}
-        //         ><img key={`${Math.random()}`} src={`${url.url}`} alt={`${work.at}`} onload={SVGInject(this)} />
-        //         </motion.div>
-        //     )
-        // }
         else {
             return (
                 <motion.div className="img-thumb"
@@ -94,9 +79,9 @@ const PageData = React.memo(function PageData(id, setSelectedImg) {
                         <span key={`${Math.random()}`} className="lot">LOT#: {Math.random()}</span>
                         <h2 key={`${work.projectName}`}>{work.projectName}</h2>
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
-                            <h5 key={`${work.projectMedium}`}>{`${work.projectMedium}`}</h5>
-                            <h4 key={`${work.projectYear}`}>{`${work.projectYear.toDate().getMonth() + 1} ${work.projectYear.toDate().getFullYear()}`}</h4>
                             <h5 key={`${work.projectClient}`}>{`${work.projectClient}`}</h5>
+                            <h4 key={`${work.projectYear}`}>{`${work.projectYear.toDate().getMonth() + 1} ${work.projectYear.toDate().getFullYear()}`}</h4>
+                            <h5 key={`${work.projectMedium}`}>{`${work.projectMedium}`}</h5>
                         </div>
                         <p key={`${work.statement}`}>{work.statement}</p>
 
