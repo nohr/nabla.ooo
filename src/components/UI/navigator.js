@@ -189,6 +189,14 @@ function Navigator() {
         </div>
         <Search />
         <div className="grid">
+          <Folder className="li folder portLink" tabIndex="0">
+            Projects
+            {snap.isPort ? <SideArrow /> : <Arrow />}
+          </Folder>
+          <Folder className="li folder settLink" tabIndex="0">
+            Options
+            {snap.isSett ? <SideArrow /> : <Arrow />}
+          </Folder>
           <NavLink className="li w" to="/info" style={{ cursor: "wait" }}>
             Info
           </NavLink>
@@ -201,14 +209,7 @@ function Navigator() {
           <NavLink className="li w" to="/contrast" style={{ cursor: "wait" }}>
             Contrast
           </NavLink >
-          <Folder className="li folder portLink" tabIndex="0">
-            Projects
-            {snap.isPort ? <SideArrow /> : <Arrow />}
-          </Folder>
-          <Folder className="li folder settLink" tabIndex="0">
-            Options
-            {snap.isSett ? <SideArrow /> : <Arrow />}
-          </Folder>
+
         </div>
         <p className="song" style={songVis} onClick={() => { state.isSett = true; }} tabIndex="0">nohri - tardigrade</p>
         {snap.loading ? <Spinner /> : <Grabber />}

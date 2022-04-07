@@ -378,7 +378,6 @@ export function HeadSVG(id) {
       var opacity = 0;
       var intervalID = 0;
       function fadeout() {
-        console.log(header);
         setInterval(hide, 500);
       }
       function hide() {

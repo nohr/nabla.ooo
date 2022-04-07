@@ -178,17 +178,6 @@ export const ImgWrapper = styled.div`
       width: 50%;
     }
 
-    .img-thumb:only-child{
-      /* margin: 0 auto; */
-    }
-
-    .Lvideo:only-child{
-      margin: 0 auto;
-      height: "100%";
-      width: "auto";
-      align-self: "center";
-    }
-
     .img-thumb{
       overflow: hidden;
       width: 0;

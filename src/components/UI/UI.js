@@ -25,7 +25,7 @@ import useSound from 'use-sound'
 import sound1 from "../Sounds/select.mp3"
 import sound2 from '../Sounds/open.mp3'
 import sound3 from '../Sounds/close.mp3'
-import tardigradefile from "../Sounds/tardigrade.wav"
+import tardigradefile from "../Sounds/tardigrade.mp3"
 
 
 //UI -- Parent Component

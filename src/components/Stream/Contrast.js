@@ -14,27 +14,28 @@ const ContrastWrap = styled.div`
     text-align: center;
     width: 100%;
     padding: 20px;
-
+    color: ${props => props.theme.sky};
     .contrast{
-      fill: ${props => props.theme.panelColor};
+      fill: ${props => props.theme.sky};
+            -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
+      filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
       stroke: none;
       width: 90vw;
-      transition: 1.3s;
     }
     .contrast:hover{
       cursor: wait;
     }
     .contrast:hover{
-      fill: ${props => props.theme.sky};
+      fill: ${props => props.theme.panelColor};
       /* stroke: ${props => props.theme.sky} !important; */
-      -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
-      filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
-      transition: 0.3s !important;
+      -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.panelColor});
+      filter: drop-shadow(1px 1px 6px ${props => props.theme.panelColor});
+      transition: 17s !important;
     }
      .contrast:hover ~ p{
-      color: ${props => props.theme.sky};
-      text-shadow: 1px 1px 3px ${props => props.theme.sky};
-      transition: 0.3s !important;
+      color: ${props => props.theme.panelColor};
+      text-shadow: 1px 1px 3px ${props => props.theme.panelColor};
+      transition: 17s !important;
      }
 `
 function Contrast() {

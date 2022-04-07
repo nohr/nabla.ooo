@@ -3,12 +3,13 @@ import { useSnapshot } from 'valtio'
 import CD from './CD'
 import useWindowDimensions from '../UI/window'
 import React, { Suspense } from 'react'
+import { Html, useProgress } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import { useTexture, MeshReflectorMaterial, softShadows, PerspectiveCamera, OrbitControls } from '@react-three/drei'
 // import { MeshReflectorMaterial } from '@react-three/drei';
 // import { MeshReflectorMaterial } from '@react-three/drei/materials/MeshReflectorMaterial';
 import { EffectComposer, Noise } from '@react-three/postprocessing'
-
+import "../../App.css"
 // Canvas
 softShadows();
 
@@ -122,15 +123,31 @@ function Floor() {
   );
 }
 
-//App
+// Spinner
+const Spinner = () => {
+  const { active, progress, errors, item, loaded, total } = useProgress()
+  return (
+    <Html fullscreen>
+      <div className="canvasSpinner">
+        <div className="gugmu9vdpaw">
+          {/* if (progres) */}
+          <p>{`${progress}`}</p>
+          <div></div>
+        </div>
+      </div>
+    </Html>)
+}
+// Composition
 function CanvasComp() {
   const { height, width } = useWindowDimensions();
   const snap = useSnapshot(state);
+
+
   return (
-    <Canvas shadowMap colorManagement dpr={[1, 2]} pixelRatio={[1, 1.5]} frameloop="demand" performance={{ min: 1 }} onLoad={state.paused} >
+    <Canvas shadowMap colorManagement dpr={[1, 2]} pixelRatio={[1, 1.5]} frameloop="demand" performance={{ min: 1 }} >
       <PerspectiveCamera makeDefault target={[0, 1, 0]} position={snap.cameraPosition} near={.1} fov={20} aspect={width / height} />
       <fog attach="fog" args={[state.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, 40]} />
-      <Suspense fallback={null}>
+      <Suspense fallback={<Spinner />}>
         <spotLight intensity={state.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}
           decay={1}
           color={state.theme === 'light' ? snap.light.fog : snap.dark.spotlight}

@@ -24,16 +24,6 @@ const StoreContainer = styled.div`
   overflow: visible;
   gap: 60px;
 
-    @font-face {
-  font-family: "ekodigital";
-  src: url("https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff2?alt=media&token=a5430e10-d4fe-4325-89cc-f64a0e18ac6f")
-      format("woff2"),
-    url("https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff?alt=media&token=9ba41528-4ac1-46a6-8b67-b5141cca944c")
-      format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-
     .eko{
       height: 525px;
       display: grid;
@@ -80,7 +70,7 @@ const StoreContainer = styled.div`
     .eko-thumb{
       text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
       color: ${props => props.theme.LiHover};
-      font-family: "ekodigital", Helvetica, sans-serif;
+      font-family: "ekodigital", Helvetica, sans-serif !important;
       font-weight: 400;
       font-style: normal;
       font-size: 350px;
@@ -188,17 +178,9 @@ function Store() {
       family: `ekodigital`,
     },
   ]);
-
   if (isFontListLoaded) {
     ekoRef.current.setAttribute("style", "filter: blur(0px);")
   }
-
-  // const eko = new FontFaceObserver('Output Sans');
-  // console.log(eko);
-
-
-  // isFontListLoaded ? ekoRef.current.setAttribute("style", "filter: blur(0px);") : ekoRef.current.setAttribute("style", "filter: blur(30px);");
-
 
   return (
     <>

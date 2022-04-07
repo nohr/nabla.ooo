@@ -30,15 +30,92 @@
   <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <meta name="theme-color" content="#E7E7E7" />
+  <meta name="theme-color" content="#0D0D0D" />
   <meta name="description" content="Hompage of Nabla Ltd." />
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   <title>Nabla</title>
+  <style type="text/css">
+    html {
+      background-color: #0D0D0D;
+    }
+
+    @media (prefers-color-scheme: light) {
+      html {
+        background-color: #ededed !important;
+      }
+
+      .gugmu9vdpaw div {
+        box-shadow: 0 1.8px 0 0 #00538f !important;
+      }
+    }
+
+    @keyframes gugmu9vdpaw {
+      0% {
+        transform: rotate(0deg)
+      }
+
+      50% {
+        transform: rotate(180deg)
+      }
+
+      100% {
+        transform: rotate(360deg)
+      }
+    }
+
+    .gugmu9vdpaw div {
+      position: absolute;
+      animation: gugmu9vdpaw 0.25s linear infinite;
+      width: 40px;
+      height: 40px;
+      top: 80px;
+      left: 80px;
+      border-radius: 50%;
+      box-shadow: 0 1.8px 0 0 #85ceff;
+      transform-origin: 20px 20.9px;
+    }
+
+    .htmlSpinner {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 200px;
+      height: 200px;
+      display: inline-block;
+      overflow: hidden;
+      background: none;
+    }
+
+    .gugmu9vdpaw {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform: translateZ(0) scale(1);
+      backface-visibility: hidden;
+      transform-origin: 0 0;
+      /* see note above */
+    }
+
+    @font-face {
+      font-family: "ekodigital";
+      src: url("https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff2?alt=media&token=a5430e10-d4fe-4325-89cc-f64a0e18ac6f") format("woff2"),
+        url("https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff?alt=media&token=9ba41528-4ac1-46a6-8b67-b5141cca944c") format("woff");
+      font-weight: normal;
+      font-style: normal;
+    }
+  </style>
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run nabla.ooo.</noscript>
   <div id="root"></div>
+  <div class="htmlSpinner">
+    <div class="gugmu9vdpaw">
+      <div></div>
+    </div>
+  </div>
+  </div>
+  </div>
 </body>
 
 </html>
