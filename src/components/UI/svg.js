@@ -6,6 +6,7 @@ import { state } from './state'
 import Draggable from "react-draggable";
 import { useSnapshot } from 'valtio'
 import styled from "styled-components"
+import { useLocation } from "react-router-dom"
 
 
 
@@ -367,38 +368,35 @@ export function ClearIcon() {
 export function HeadSVG(id) {
   const snap = useSnapshot(state);
   const nodeRef = useRef(null);
+  const location = useLocation();
 
-  // function hideHeader() {
-  //   const header = nodeRef.current;
-  //   console.log(header);
-  //   if (header) {
-  //     header.style.transition = "15s"
-  //     header.style.opacity = "0%";
-  //   }
-  //   var opacity = 0;
-  //   var intervalID = 0;
-  //   function fadeout() {
-  //     setInterval(hide, 200);
-  //   }
-  //   function hide() {
-  //     var body = document.getElementById("body");
-  //     opacity =
-  //       Number(window.getComputedStyle(body).getPropertyValue("opacity"))
+  useEffect(() => {
+    const header = nodeRef.current;
+    header.style.transition = "0s";
+    header.style.opacity = 1;
+    if (header) {
+      var opacity = 0;
+      var intervalID = 0;
+      function fadeout() {
+        console.log(header);
+        setInterval(hide, 500);
+      }
+      function hide() {
+        opacity =
+          Number(window.getComputedStyle(header).getPropertyValue("opacity"))
 
-  //     if (opacity > 0) {
-  //       opacity = opacity - 0.1;
-  //       body.style.opacity = opacity
-  //     }
-  //     else {
-  //       clearInterval(intervalID);
-  //     }
-  //   }
-  //   fadeout()
-  // }
-
-  // useEffect(() => {
-  //   hideHeader()
-  // }, [])
+        if (opacity > 0) {
+          opacity = opacity - 0.1;
+          header.style.transition = "1.3s";
+          header.style.opacity = opacity
+        }
+        else {
+          clearInterval(intervalID);
+        }
+      }
+      setTimeout(fadeout, 1000)
+    }
+  }, [location])
 
   if (id.id === 'geese') {
     return (

@@ -22,6 +22,7 @@ export const Head = styled.div`
       /* ${props => props.margin} */
       margin-left: calc(var(--panelWidth) + var(--headOffset));
       mix-blend-mode: ${props => props.theme.blend} !important;
+      /* opacity: 1; */
 
     & h1{
         justify-self: flex-start;
@@ -36,7 +37,7 @@ export const Head = styled.div`
         font-weight: 400;
         font-style: normal;
         -webkit-text-stroke-color: ${props => props.theme.panelColor};
-        transition: 1.3s;
+        /* transition: 1.3s; */
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
@@ -56,7 +57,7 @@ export const Head = styled.div`
       height: auto;
       overflow: visible;
       margin: 20px 20px;
-      transition: 1.3s;
+      /* transition: 1.3s; */
     }
 ` 
 //offset head
@@ -67,12 +68,12 @@ function Page(id) {
     const snap = useSnapshot(state);
     
     return (
-        <>  {snap.selectedImg === null &&
+        <>  
             <Head className="head"
                 // margin={margin}
             >
                     <HeadSVG id={id.id}/>
-            </Head>}
+            </Head>
             <Container className="container">
                 <PageData id={id.id}/>
                     {snap.selectedImg ? <Modal /> : null}

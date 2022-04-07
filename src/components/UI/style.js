@@ -112,7 +112,7 @@ export const TextWrapper = styled.div`
   text-align: left;
   height: 40% !important;
   align-self: center;
-  padding: 0 20px 0 20px;
+  padding: 0 280px 0 280px;
   display: grid;
   grid-template-rows: 2% 35% 5% 58%;
   transition: 1.3s;
@@ -135,7 +135,7 @@ export const TextWrapper = styled.div`
 text-indent: 3em;
 line-height: 2;
 overflow-y: scroll;
-padding: 0 240px !important;
+padding: 0 !important;
   ::-webkit-scrollbar {
       -webkit-appearance: none;
       width: 5px;

@@ -54,11 +54,11 @@ export const state = proxy({
     },
     dark: {
         //UI
-        panelColor: "#1FA2FF",
+        panelColor: "#85CEFF",
         textHover: "#F3E8EE",
         placeholder: "unset",
         link: "#C6182A",
-        LiHover: "#1FA2FF67",
+        LiHover: "#85CEFF67",
         LiActiveBackground: "#ebebeb67",
         blend: "unset",
         backdrop: "rgba(0, 0, 0, 0.8)",
