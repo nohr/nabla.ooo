@@ -4,7 +4,7 @@ import { useSnapshot } from 'valtio'
 import { GlobalStyle, Container } from "./style"
 import Navigator from "./navigator"
 import Projects from "./projects"
-import Settings from "./settings"
+import Options from "./options"
 import { ThemeProvider } from "styled-components"
 import Home from '../Stream/Home'
 import Info from '../Stream/Info'
@@ -58,7 +58,7 @@ function UI() {
     return () => {
       links = null;
     }
-  }, [select])
+  }, [select, state])
 
   //Toggle projects panel
   useEffect(() => {
@@ -78,7 +78,7 @@ function UI() {
     }
   }, [open, close])
 
-  //Toggle settings panel
+  //Toggle Options panel
   useEffect(() => {
     let settLink = document.querySelector(".settLink")
     function toggleSett() {
@@ -116,7 +116,7 @@ function UI() {
     return () => {
       muteunmute = null;
     }
-  }, [select])
+  }, [])
 
   useEffect(() => {
     let playstop = document.getElementById("playstop")
@@ -136,7 +136,7 @@ function UI() {
     return () => {
       playstop = null;
     }
-  }, [play, stop, select])
+  }, [play, stop])
 
   useEffect(() => {
     // let sectors = document.querySelectorAll(".sector")
@@ -170,7 +170,7 @@ function UI() {
           <GlobalStyle />
           <Navigator />
           <Projects />
-          <Settings />
+          <Options />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/store" element={<Store />} />
