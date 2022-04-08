@@ -1,5 +1,5 @@
 //Navigator -- Child of <UI />
-import React, { useRef } from "react"
+import React, { useRef, useEffect } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import { Folder } from "./style"
@@ -178,7 +178,6 @@ function Navigator() {
     nav.current.classList.add("glow")
   };
 
-  const songVis = state.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" };
 
   return (
     //NAV
@@ -209,9 +208,10 @@ function Navigator() {
           <NavLink className="li w" to="/contrast" style={{ cursor: "wait" }}>
             Contrast
           </NavLink >
-
+          {/* force reload */}
+          {snap.playMusic}
         </div>
-        <p className="song" style={songVis} onClick={() => { state.isSett = true; }} tabIndex="0">nohri - tardigrade</p>
+        <p className="song" style={state.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isSett = true; }} tabIndex="0">nohri - tardigrade</p>
         {snap.loading ? <Spinner /> : <Grabber />}
       </Nav>
     </Draggable>

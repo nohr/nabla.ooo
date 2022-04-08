@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import { GlobalStyle, Container } from "./style"
@@ -31,18 +31,20 @@ import tardigradefile from "../Sounds/tardigrade.mp3"
 //UI -- Parent Component
 function UI() {
   const snap = useSnapshot(state);
-  const [select] = useSound(sound1, { volume: state.sfxVolume, soundEnabled: !state.muted });
-  const [open] = useSound(sound2, { volume: state.sfxVolume, soundEnabled: !state.muted });
-  const [close] = useSound(sound3, { volume: state.sfxVolume, soundEnabled: !state.muted });
-  const [play, { stop }] = useSound(tardigradefile, { volume: 1, interrupt: true, loop: true });
+  const [select] = useSound(sound1, { soundEnabled: !state.muted });
+  const [open] = useSound(sound2, { soundEnabled: !state.muted });
+  const [close] = useSound(sound3, { soundEnabled: !state.muted });
+  const audio = useRef()
 
+  console.log("render");
+
+  // CircleType
   useEffect(() => {
     let title = document.querySelector('.song');
     if (title) {
       const song = new CircleType(title).radius(128);
       return song;
     }
-
   }, [])
 
 
@@ -58,7 +60,7 @@ function UI() {
     return () => {
       links = null;
     }
-  }, [select, state])
+  }, [select])
 
   //Toggle projects panel
   useEffect(() => {
@@ -76,7 +78,7 @@ function UI() {
     return () => {
       portLink = null;
     }
-  }, [open, close])
+  })
 
   //Toggle Options panel
   useEffect(() => {
@@ -94,22 +96,16 @@ function UI() {
     return () => {
       settLink = null;
     }
-  }, [open, close])
+  })
 
   // AUDIO
-  //Toggle audio volume
+  //Toggle SFX 
   useEffect(() => {
     let muteunmute = document.querySelector("#muteunmute")
     const toggleMute = () => {
-      if (state.muted === false) {
-        state.muted = true;
-        console.log("mu");
-      } else if (state.muted === true) {
-        state.muted = false;
-        console.log("un");
-        select();
-      }
+      state.muted ? state.muted = false : state.muted = true;
     }
+
     if (muteunmute) {
       muteunmute.addEventListener("click", toggleMute)
     }
@@ -118,17 +114,18 @@ function UI() {
     }
   }, [])
 
+  // Toggle Music
   useEffect(() => {
-    let playstop = document.getElementById("playstop")
+    const tardigrade = audio.current;
+    let playstop = document.querySelector("#playstop")
     const toggleMusic = () => {
       if (state.playMusic === false) {
-        play();
-        state.playMusic = true
+        state.playMusic = true;
+        tardigrade.play();
       } else if (state.playMusic === true) {
-        stop();
-        state.playMusic = false
+        state.playMusic = false;
+        tardigrade.pause();
       }
-      console.log(state.playMusic);
     }
     if (playstop) {
       playstop.addEventListener("click", toggleMusic)
@@ -136,18 +133,7 @@ function UI() {
     return () => {
       playstop = null;
     }
-  }, [play, stop])
-
-  useEffect(() => {
-    // let sectors = document.querySelectorAll(".sector")
-    // const title = document.querySelector(".title")
-    const head = document.querySelector(".head");
-
-    // sectors ? console.log(sectors.length) : () => console.log(document.querySelectorAll(".sector").length)
-
-    if (state.setSwitched && state.prtSwitched) { head.style.marginLeft = "-40vw !important" };
-
-  }, [state])
+  }, [state.playMusic])
 
   var x = window.matchMedia("(max-width: 768px)");
   if (x.matches) {
@@ -165,31 +151,36 @@ function UI() {
   } else {
     //Not Mobile
     return (
-      <Router>
-        <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
-          <GlobalStyle />
-          <Navigator />
-          <Projects />
-          <Options />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/store" element={<Store />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/info" element={<Info />} />
-            <Route path="/contrast" element={<Contrast />} />
-            {snap.selfs.map((work) => (
-              <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`Nabla`} id={`${work.id}`} />} />
-            ))}
-            {snap.clients.map((work) => (
-              <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`Nabla & ${work.name}`} id={`${work.id}`} />} />
-            ))}
-            {/* broken - needs UI to rerender */}
-            <Route path={`/${snap.query}-results`} element={<Results title={`${snap.query} Results`} />} />
-            <Route element={NotFound} />
-            {/* <Redirect from="*" to="/404" /> */}
-          </Routes>
-        </ThemeProvider>
-      </Router>
+      <>
+        <audio ref={audio} loop>
+          <source src={tardigradefile}></source>
+        </audio>
+        <Router>
+          <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
+            <GlobalStyle />
+            <Navigator />
+            <Projects />
+            <Options />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/store" element={<Store />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/info" element={<Info />} />
+              <Route path="/contrast" element={<Contrast />} />
+              {snap.selfs.map((work) => (
+                <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`Nabla`} id={`${work.id}`} />} />
+              ))}
+              {snap.clients.map((work) => (
+                <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`Nabla & ${work.name}`} id={`${work.id}`} />} />
+              ))}
+              {/* broken - needs UI to rerender */}
+              <Route path={`/${snap.query}-results`} element={<Results title={`${snap.query} Results`} />} />
+              <Route element={NotFound} />
+              {/* <Redirect from="*" to="/404" /> */}
+            </Routes>
+          </ThemeProvider>
+        </Router>
+      </>
     )
   }
 }

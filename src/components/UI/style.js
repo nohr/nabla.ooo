@@ -97,7 +97,7 @@ border-radius: 10px;
 display: flex;
 width: 100%;
 flex-direction:column;
-padding: 0px 0px 0px 0px;
+padding: 10px 0px 0px 0px;
 height: 90%;
 justify-content: space-between;
 gap: 20px;
@@ -122,7 +122,7 @@ export const TextWrapper = styled.div`
   align-self: center;
   padding: 0 280px 0 280px;
   display: grid;
-  grid-template-rows: 2% 35% 5% 58%;
+  grid-template-rows: 5% 32% 5% 58%;
   transition: 1.3s;
   
   @media only screen and (max-width: 768px) {
@@ -130,6 +130,7 @@ export const TextWrapper = styled.div`
   }
 
 & h2{
+  font-size: 40px;
   clear:both;
   align-self: flex-end;
     text-align: center;
@@ -138,6 +139,13 @@ export const TextWrapper = styled.div`
 & h4, & h5{
   align-self: center;
   margin: 5px 0;
+}
+
+& h4{
+  justify-self: center;
+}
+& h5.last{
+  justify-self: flex-end;
 }
 & p {
 text-indent: 3em;

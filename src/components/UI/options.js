@@ -305,7 +305,7 @@ function Options() {
                     onMouseLeave={() => { document.getElementById("audiohead").style.width = headwidth.first.min }}
                 >
                     <Folder style={{ cursor: "wait" }} id="muteunmute" className="li"><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
-                    <Folder id="playstop" className="li"><PlayPauseIcon arg={1} />Music</Folder>
+                    <Folder id="playstop" className="li"><PlayPauseIcon arg={1} />{snap.playMusic ? "Music" : "Music"}</Folder>
                     {/* <Folder id="Next" className="li w">Next</Folder> */}
                 </div>
                 <p style={secondHeader}

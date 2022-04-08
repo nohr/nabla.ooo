@@ -120,7 +120,7 @@ function Search() {
     }
     window.addEventListener("keyup", handleKeyPress);
     window.addEventListener("keydown", handleKeyPress);
-  }, [enter, navigate, query])
+  }, [navigate, query])
 
   return (
     <SearchWrapper id="search">

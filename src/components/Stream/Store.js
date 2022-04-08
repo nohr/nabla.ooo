@@ -9,6 +9,7 @@ import styled from "styled-components";
 import useFontFaceObserver from "use-font-face-observer";
 import { DiagonalArrow, Header } from "../UI/svg";
 
+
 const StoreContainer = styled.div`
   display: flex !important;
   align-items: center;
@@ -73,12 +74,16 @@ const StoreContainer = styled.div`
       vertical-align: middle;
       letter-spacing: -15px;
       -webkit-user-select: none; /* Safari */
-      -moz-user-select: none; /* Firefox */
+      -moz-user-select: none; /* Fiefox */
       -ms-user-select: none; /* IE10+/Edge */
       user-select: none; /* Standard */
       transition: 2.3s;
       filter: blur(30px);
+    }
+
+    .eko-thumb:hover{
   	animation: pulse 4s infinite;
+
     }
 
     @keyframes pulse {
@@ -105,16 +110,17 @@ const StoreContainer = styled.div`
     text-align: center;
     }
   .title {
-      padding: 0.5% 0;
+      padding: 0.5% 10px;
       font-style: normal !important;
       vertical-align: middle;
       display: flex;
       justify-content: center;
-      padding-bottom: 10px;
+      /* padding-bottom: 10px; */
     }
     
-    .title a{
-      width: fit-content;
+    a{
+      /* height: min-content; */
+      width: max-content;
       background-color:  ${props => props.theme.LiHover};
       -webkit-box-shadow: 0px 3px 10px 1px  ${props => props.theme.LiHover};
       -moz-box-shadow: 0px 3px 10px 1px  ${props => props.theme.LiHover};
@@ -128,7 +134,7 @@ const StoreContainer = styled.div`
       text-shadow: 1px 1px 3px rgba(235, 235, 235, 0.5);
       border-radius: 30px;
     }
-    .title a:hover{
+    a:hover{
       text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
       box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
       -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
@@ -186,7 +192,10 @@ function Store() {
               Aa
             </div>
             <div className="desc">
-              <div className="title"> <HashLink className="w" to={"/nabla#EkoDigital"}> Eko Digital <DiagonalArrow /></HashLink></div>
+              <HashLink className="title w" to="/nabla#EkoDigital">
+                Eko Digital
+                <DiagonalArrow />
+              </HashLink>
               My first display font offers a stencil with a distinct futuristic style. <br />
               <i style={{ opacity: ".5" }}>It's just what your acid graphics were missing!</i>
               <br />

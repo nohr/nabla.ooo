@@ -56,7 +56,8 @@ function Info() {
       <Header id='info' />
       <Container className="container info">
         <OldCD />
-        <p>aite@nabla.ooo</p>
+        <p style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }}
+        >aite@nabla.ooo</p>
         {/* <ContactForm /> */}
       </Container>
     </>

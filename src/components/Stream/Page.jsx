@@ -33,7 +33,7 @@ const Results = React.memo(function Results() {
     console.log(state.query);
     return (
         <>
-            <Header/>
+            <Header id={snap.query}/>
             <Container className="container">
                 <div>
                     {snap.query}

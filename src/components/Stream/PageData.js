@@ -71,17 +71,27 @@ const ImgGrid = ({ work }) => {
 const PageData = React.memo(function PageData(id, setSelectedImg) {
     const snap = useSnapshot(state);
     GetSectors(db, id.id)
+
+    const makeLot = (work) => {
+        let lot = (id.id.slice(0, 2)) + (work.projectYear.toDate().getFullYear().toString().slice(2, 5)) + (work.projectYear.toDate().getMonth() + 1) + (work.projectName.slice(0, 3));
+        lot = lot.toUpperCase();
+        return lot;
+    };
+
     return (
         <>
             {snap.sectors.map((work) => (
                 <Sector key={`${Math.random()}`} id={work.projectName.replace(/\s+/g, '')} className="sector">
                     <TextWrapper key={`${Math.random()}`} className="textWrapper">
-                        <span key={`${Math.random()}`} className="lot">LOT#: {Math.random()}</span>
-                        <h2 key={`${work.projectName}`}>{work.projectName}</h2>
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
+                            <span key={`${Math.random()}`} className="lot">LOT#: {makeLot(work)}</span>
+                            <span key={`${Math.random()}`} className="lot">LOT#: {makeLot(work)}</span>
+                        </div>
+                        <h2 key={`${work.projectName}`}>{work.projectName}</h2>
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", justifyContent: "center" }}>
                             <h5 key={`${work.projectClient}`}>{`${work.projectClient}`}</h5>
                             <h4 key={`${work.projectYear}`}>{`${work.projectYear.toDate().getMonth() + 1} ${work.projectYear.toDate().getFullYear()}`}</h4>
-                            <h5 key={`${work.projectMedium}`}>{`${work.projectMedium}`}</h5>
+                            <h5 className="last" key={`${work.projectMedium}`}>{`${work.projectMedium}`}</h5>
                         </div>
                         <p key={`${work.statement}`}>{work.statement}</p>
 
