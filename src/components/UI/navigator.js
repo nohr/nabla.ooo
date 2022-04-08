@@ -197,7 +197,7 @@ function Navigator() {
             Options
             {snap.isSett ? <SideArrow /> : <Arrow />}
           </Folder>
-          <NavLink className="li w" to="/info" style={{ cursor: "wait" }}>
+          <NavLink className="li w" to="/info">
             Info
           </NavLink>
           <NavLink className="li w" to="/store">

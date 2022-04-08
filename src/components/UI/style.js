@@ -81,6 +81,14 @@ export const Container = styled.div`
           -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
           /* transition: 0.3s; */
     }
+    .oldNabla{
+      fill: ${props => props.theme.panelColor};
+      overflow: visible;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%,-60%);
+    }
 `
 export const Sector = styled.div`
 border: solid 1px ;
@@ -200,8 +208,8 @@ export const ImgWrapper = styled.div`
     position: absolute;
     pointer-events:  none;
     top: 0%;
-    left: 0%;
-    transform: translate(-0%, -0%);
+    left: 50%;
+    transform: translate(-50%, -0%);
     -webkit-user-drag: none;
     user-select: none;
     -moz-user-select: none;
@@ -300,7 +308,7 @@ export const GlobalStyle = createGlobalStyle`
         --panelPadding: 26px 42.5px;
         --headOffset: 10px;
         --edge: 20px;
-        --blur: 5px;
+        --blur: 2px;
     }
     html, body, #root {
         /* isolation: isolate; */
@@ -312,8 +320,8 @@ export const GlobalStyle = createGlobalStyle`
       width: var(--panelWidth);
       height: var(--panelHeight);
       scroll-snap-type: none;
-      /* backdrop-filter: blur(var(--blur));
-      -webkit-backdrop-filter: blur(var(--blur)); */
+      backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur));
       mix-blend-mode: ${props => props.theme.blend};
       border: 1px solid ${props => props.theme.panelColor};
       color: ${props => props.theme.panelColor};

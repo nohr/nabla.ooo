@@ -4,7 +4,7 @@ import { Container } from "../UI/style";
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import useDocumentTitle from "../UI/documentTitle";
-import { Header } from "../UI/svg";
+import { Header, OldCD } from "../UI/svg";
 
 // const ContactForm = () => {
 //   const [status, setStatus] = useState("Send");
@@ -53,18 +53,11 @@ function Info() {
 
   return (
     <>
-      {/* <Head className="head">
-        <Draggable nodeRef={nodeRef} position={snap.prtPosition} onStart={() => false}>
-          <h1 ref={nodeRef}>info</h1>
-        </Draggable>
-      </Head> */}
       <Header id='info' />
       <Container className="container info">
-        {/* <p>aite@nabla.ooo</p>
-        <ContactForm />
-        <img src="https://global.yamaha-motor.com/design_technology/design/concept/motoroid/img/sec03_img05.jpg" alt="bike" />
-        <img src="https://global.yamaha-motor.com/design_technology/design/concept/motoroid/img/sec03_img05.jpg" alt="bike" />
-         */}
+        <OldCD />
+        <p>aite@nabla.ooo</p>
+        {/* <ContactForm /> */}
       </Container>
     </>
   )

@@ -116,7 +116,7 @@ function UI() {
     return () => {
       muteunmute = null;
     }
-  }, [state, select])
+  }, [select])
 
   useEffect(() => {
     let playstop = document.getElementById("playstop")
