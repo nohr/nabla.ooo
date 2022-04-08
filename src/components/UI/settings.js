@@ -57,7 +57,7 @@ const Setter = styled.div`
     position: relative;
     height: fit-content;
     padding-left: 10px;
-    transition: 0.9s;
+    transition: 0.3s;
   }
 
   p{

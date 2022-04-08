@@ -1,7 +1,5 @@
 import React, { useRef } from "react"
 import '../../App.css'
-import Draggable from "react-draggable";
-import { Head } from "./Page";
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import { Container } from "../UI/style";
@@ -9,10 +7,7 @@ import useDocumentTitle from "../UI/documentTitle";
 import { HashLink } from 'react-router-hash-link';
 import styled from "styled-components";
 import useFontFaceObserver from "use-font-face-observer";
-import { DiagonalArrow } from "../UI/svg";
-
-// import { HeadSVG } from "../UI/svg";
-//TODO: Replace with HeadSVG
+import { DiagonalArrow, Header } from "../UI/svg";
 
 const StoreContainer = styled.div`
   display: flex !important;
@@ -170,7 +165,6 @@ const StoreContainer = styled.div`
 function Store() {
   useDocumentTitle("Store @ Nabla");
   const snap = useSnapshot(state);
-  const nodeRef = useRef(null);
   const ekoRef = useRef(null);
 
   const isFontListLoaded = useFontFaceObserver([
@@ -184,11 +178,7 @@ function Store() {
 
   return (
     <>
-      <Head className="head">
-        <Draggable nodeRef={nodeRef} position={snap.prtPosition} onStart={() => false}>
-          <h1 ref={nodeRef} >store</h1>
-        </Draggable>
-      </Head>
+      <Header id={"store"} />
       <Container className="container">
         <StoreContainer>
           <div className="eko">

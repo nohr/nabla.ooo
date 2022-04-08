@@ -20,7 +20,7 @@ export const state = proxy({
     direction: false,
     muted: false,
     playMusic: false,
-    navPosition: { x: Math.random(), y: Math.random() },
+    // navPosition: { x: Math.random(), y: Math.random() },
     prtPosition: { x: 0, y: 0 },
     setPosition: { x: 0, y: 0 },
     modalPosition: { x: 0, y: 0 },

@@ -34,7 +34,7 @@ function UI() {
   const [select] = useSound(sound1, { volume: state.sfxVolume, soundEnabled: !state.muted });
   const [open] = useSound(sound2, { volume: state.sfxVolume, soundEnabled: !state.muted });
   const [close] = useSound(sound3, { volume: state.sfxVolume, soundEnabled: !state.muted });
-  const [play, { stop }] = useSound(tardigradefile, { volume: 3.5, interrupt: true, loop: true });
+  const [play, { stop }] = useSound(tardigradefile, { volume: 1, interrupt: true, loop: true });
 
   useEffect(() => {
     let title = document.querySelector('.song');
@@ -102,10 +102,12 @@ function UI() {
     let muteunmute = document.querySelector("#muteunmute")
     const toggleMute = () => {
       if (state.muted === false) {
-        state.muted = true
+        state.muted = true;
+        console.log("mu");
       } else if (state.muted === true) {
-        state.muted = false
-        select()
+        state.muted = false;
+        console.log("un");
+        select();
       }
     }
     if (muteunmute) {
@@ -114,7 +116,7 @@ function UI() {
     return () => {
       muteunmute = null;
     }
-  }, [select])
+  }, [state, select])
 
   useEffect(() => {
     let playstop = document.getElementById("playstop")
@@ -145,7 +147,7 @@ function UI() {
 
     if (state.setSwitched && state.prtSwitched) { head.style.marginLeft = "-40vw !important" };
 
-  }, [])
+  }, [state])
 
   var x = window.matchMedia("(max-width: 768px)");
   if (x.matches) {

@@ -2,13 +2,9 @@ import React from 'react'
 import { Container } from '../UI/style'
 // import { useSnapshot } from 'valtio'
 // import { state } from '../UI/state'
-import { Head } from './Page'
 import { ContrastLogo } from "../UI/svg";
 import styled from 'styled-components';
 import useDocumentTitle from '../UI/documentTitle';
-// import Draggable from 'react-draggable'
-// import { HeadSVG } from "../UI/svg";
-//TODO: Replace with HeadSVG
 
 const ContrastWrap = styled.div`
     text-align: center;
@@ -44,11 +40,6 @@ function Contrast() {
     // const nodeRef = useRef(null);
     return (
         <>
-            <Head className="head">
-                {/* <Draggable nodeRef={nodeRef} position={snap.prtPosition} onStart={() => false}>
-                    <h1 ref={nodeRef}>contrast</h1>
-                </Draggable> */}
-            </Head>
             <Container className="container">
                 <ContrastWrap>
                     <ContrastLogo />

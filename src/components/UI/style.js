@@ -312,8 +312,8 @@ export const GlobalStyle = createGlobalStyle`
       width: var(--panelWidth);
       height: var(--panelHeight);
       scroll-snap-type: none;
-      backdrop-filter: blur(var(--blur));
-      -webkit-backdrop-filter: blur(var(--blur));
+      /* backdrop-filter: blur(var(--blur));
+      -webkit-backdrop-filter: blur(var(--blur)); */
       mix-blend-mode: ${props => props.theme.blend};
       border: 1px solid ${props => props.theme.panelColor};
       color: ${props => props.theme.panelColor};
@@ -424,14 +424,7 @@ a.active:not(.nablaWrapper){
         width: 100vw;
     }
 
-    .HomeCD{
-      padding: 0;
-      width: 641.75px !important;
-      stroke: ${props => props.theme.panelColor} !important;
-      fill: none;
-      margin-top: 288px !important;
-      margin-left: calc(-1 * var(--panelWidth) + 15px) !important;
-    }
+
     .notfound {
       width: 100vw;
       height: 100%;
@@ -462,106 +455,5 @@ a.active:not(.nablaWrapper){
     /* margin: 0 30px; */
   }
 
-}
-
-//Mobile
-@media only screen and (max-width: 768px) {
-  .nablaWrapper{
-    background-color: transparent;
-  }
-  .Panel{
-    mix-blend-mode: normal;
-    width: 50vw;
-    padding: 0 10px 30px 10px;
-    /*Border*/
-    /* --aug-bl: 12px;
-    --aug-tl: 12px;
-    --aug-br: 25px;
-    --aug-tr: 10px; */
-  }
-  .nav{
-    height: min-content;
-  }
-
-  .header{
-    grid-column-start: 1;
-    grid-column-end: 4;
-    grid-row-start: 1;
-    grid-row-end: 1;
-  }
-
-  .li{
-    font-size: 18px;
-    padding: 6px 0;
-  }
-
-  h1 {
-    font-size: 17vw;
-  }
-
-  h1, .head svg {
-    top: unset;
-    left: unset;
-    padding-top: 7px;
-    padding-right: 7px;
-  }
-  .head svg {
-    stroke-width: 0.5px;
-    width: 92vw;
-  }
-
-  .head{
-    justify-content: center;
-    margin-left: 0;
-
-  }
-  
-  .sector{
-    flex-direction: column-reverse;
-    padding: 0;
-    height: 95%;
-  }
-
-  .textWrapper,.imgWrapper{
-    width: 100% !important;
-    height: 50%;
-  }
-  .imgWrapper{
-    padding-top: 20px;
-    /* This cuts off starting images in carousel no clue why */
-    /* justify-content: center; */
-  }
-  .textWrapper{
-    padding-right: 20px;
-    padding-bottom: 30px;
-  }
-  .img-thumb{
-        padding:18vw 0;
-  }
-
-  .str{
-    align-items: flex-end;
-  }
-  .eko {
-    flex-direction: column;
-    width: fit-content;
-    padding: 20px;
-    align-self: center;
-    margin-bottom: 70px;
-  }
-  .buyBtn{
-    font-size: 20px;
-    align-self: center;
-  }
-  .eko-thumb {
-    border-right: none;
-    font-size: 40vw;
-  }
-  .title p{
-    display: block;
-  }
-  .desc{
-    border-top: 1px solid ${props => props.theme.panelColor};
-  }
 }
 `

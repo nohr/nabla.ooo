@@ -1,21 +1,17 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import { Container } from '../UI/style'
-import Draggable from 'react-draggable'
 import { useSnapshot } from 'valtio'
 import { state } from '../UI/state'
-import { Head } from './Page'
 import styled from 'styled-components'
 import useDocumentTitle from '../UI/documentTitle'
-// import { HeadSVG } from "../UI/svg";
-//TODO: Replace with HeadSVG
-// console.log(process.env.REACT_APP_NOTION_KEY);
+import { Header } from "../UI/svg";
 
 const BlogWrap = styled.div`
     width: 600px;
     display: flex;
     flex-direction: column;
     gap: 7vh;
-    padding-top: 300px;
+    /* padding-top: 300px; */
     transition: 1.3s;
 `
 const PostWrap = styled.div`
@@ -40,14 +36,9 @@ const Ttile = styled.div`
 function Blog() {
     useDocumentTitle("Nabla Blog")
     const snap = useSnapshot(state);
-    const nodeRef = useRef(null);
     return (
         <>
-            <Head className="head">
-                <Draggable nodeRef={nodeRef} position={snap.prtPosition} onStart={() => false}>
-                    <h1 ref={nodeRef}>blog</h1>
-                </Draggable>
-            </Head>
+            <Header id='blog' />
             <Container className="container">
                 <BlogWrap>
                     {snap.blog.map((post) => (

@@ -1,13 +1,10 @@
-import React, { useRef } from "react";
+import React from "react";
 import '../../App.css'
-import Draggable from "react-draggable";
 import { Container } from "../UI/style";
-import { Head } from "./Page";
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import useDocumentTitle from "../UI/documentTitle";
-// import { HeadSVG } from "../UI/svg";
-//TODO: Replace with HeadSVG
+import { Header } from "../UI/svg";
 
 // const ContactForm = () => {
 //   const [status, setStatus] = useState("Send");
@@ -53,15 +50,15 @@ import useDocumentTitle from "../UI/documentTitle";
 function Info() {
   useDocumentTitle("Info @ Nabla");
   const snap = useSnapshot(state);
-  const nodeRef = useRef(null);
 
   return (
     <>
-      <Head className="head">
+      {/* <Head className="head">
         <Draggable nodeRef={nodeRef} position={snap.prtPosition} onStart={() => false}>
           <h1 ref={nodeRef}>info</h1>
         </Draggable>
-      </Head>
+      </Head> */}
+      <Header id='info' />
       <Container className="container info">
         {/* <p>aite@nabla.ooo</p>
         <ContactForm />

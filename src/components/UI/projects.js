@@ -50,7 +50,7 @@ const Porter = styled.div`
     width: 90%;
 
   .li{
-    transition: 0.9s !important;
+    transition: 0.3s !important;
   }
 
     ::-webkit-scrollbar {
