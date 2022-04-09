@@ -145,7 +145,7 @@ function CanvasComp() {
 
   return (
     <Canvas shadowMap colorManagement dpr={[1, 2]} pixelRatio={[1, 1.5]} frameloop="demand" >
-      <PerspectiveCamera makeDefault target={[0, 1, 0]} position={snap.cameraPosition} near={.1} fov={20} aspect={width / height} />
+      <PerspectiveCamera makeDefault target={[0, 0, 0]} position={snap.cameraPosition} near={.1} fov={20} aspect={width / height} />
       <fog attach="fog" args={[state.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, 40]} />
       <Suspense fallback={<Spinner />}>
         <spotLight intensity={state.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}
