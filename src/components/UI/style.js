@@ -124,9 +124,9 @@ export const TextWrapper = styled.div`
   display: grid;
   grid-template-rows: 5% 32% 5% 58%;
   transition: 1.3s;
-  
-  @media only screen and (max-width: 768px) {
-  width: 50%;
+
+  @media only screen and (max-width: 1336px) {
+  padding: 0 20px 0 20px;
   }
 
 & h2{
@@ -189,10 +189,6 @@ export const ImgWrapper = styled.div`
     gap: 20px;
     padding:0 20px 10px 20px ;
     margin-bottom: 1px;
-    
-    @media only screen and (max-width: 768px) {
-      width: 50%;
-    }
 
     .img-thumb{
       overflow: hidden;
