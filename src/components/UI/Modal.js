@@ -22,7 +22,7 @@ const Modal = () => {
         state.modalPosition = { x, y };
     };
 
-    if (element == "svg") {
+    if (element === "svg") {
         return (
             <>
                 <motion.div className="backdrop" onClick={handleClick}

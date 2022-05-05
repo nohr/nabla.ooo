@@ -27,12 +27,13 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-  <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+  <link rel="icon" type="image/png" href="./images/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <meta name="theme-color" content="#0D0D0D" />
+  <meta name="theme-color" content="#D0D0D0" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0D0D0D" media="(prefers-color-scheme: dark)">
   <meta name="description" content="Hompage of Nabla Ltd." />
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="apple-touch-icon" href="./images/logo1024.png" />
   <title>Nabla</title>
   <style type="text/css">
     html {
@@ -41,7 +42,7 @@
 
     @media (prefers-color-scheme: light) {
       html {
-        background-color: #ededed !important;
+        background-color: #D0D0D0 !important;
       }
 
       .gugmu9vdpaw div {
@@ -71,7 +72,7 @@
       top: 80px;
       left: 80px;
       border-radius: 50%;
-      box-shadow: 0 1.8px 0 0 #85ceff;
+      box-shadow: 0 1.8px 0 0 #006C6E;
       transform-origin: 20px 20.9px;
     }
 
@@ -108,14 +109,23 @@
 
 <body>
   <noscript>You need to enable JavaScript to run nabla.ooo.</noscript>
-  <div id="root"></div>
-  <div class="htmlSpinner">
-    <div class="gugmu9vdpaw">
-      <div></div>
+  <div id="root">
+    <div class="htmlSpinner">
+      <div class="gugmu9vdpaw">
+        <div></div>
+      </div>
     </div>
   </div>
-  </div>
-  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./serviceworker.js')
+          .then((reg) => console.log('Success: ', reg.scope))
+          .catch((err) => console.log('Failure: ', err));
+      })
+    }
+  </script>
 </body>
 
 </html>

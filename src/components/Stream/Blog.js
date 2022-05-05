@@ -34,7 +34,7 @@ const Ttile = styled.div`
     gap: 10px;
 `
 function Blog() {
-    useDocumentTitle("Nabla Blog")
+    useDocumentTitle(" Blog")
     const snap = useSnapshot(state);
     return (
         <>

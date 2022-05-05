@@ -1,15 +1,16 @@
+import React, { Suspense, useLayoutEffect } from 'react'
+import "../../App.css"
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import CD from './CD'
 import useWindowDimensions from '../UI/window'
-import React, { Suspense } from 'react'
-import { Html, useProgress } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
-import { useTexture, MeshReflectorMaterial, softShadows, PerspectiveCamera, OrbitControls } from '@react-three/drei'
+import { RepeatWrapping } from 'three'
+import { useTexture, MeshReflectorMaterial, softShadows, PerspectiveCamera, OrbitControls, Html, useProgress } from '@react-three/drei'
 // import { MeshReflectorMaterial } from '@react-three/drei';
 // import { MeshReflectorMaterial } from '@react-three/drei/materials/MeshReflectorMaterial';
 import { EffectComposer, Noise } from '@react-three/postprocessing'
-import "../../App.css"
+
 // Canvas
 softShadows();
 
@@ -53,13 +54,22 @@ function Wall() {
 }
 
 function Floor() {
-  const textures = useTexture([
-    "../Ice_OCC.jpg",
-    "../Ice_NORM.jpg",
-    "../Ice_DISP.png",
-    "../floor_rough.jpg"]);
-  const [ao, normal, height, roughness] = textures;
   const snap = useSnapshot(state);
+  const textures = useTexture([
+    "/images/reflector/Ice_OCC.jpg",
+    "/images/reflector/Ice_NORM.jpg",
+    "/images/reflector/Ice_DISP.png",
+    "/images/reflector/floor_rough.jpeg"
+  ]);
+  const [ao, normal, height, roughness] = textures;
+  useLayoutEffect(() => {
+    textures.forEach(
+      (texture) => (
+        texture.wrapT = texture.wrapS = RepeatWrapping,
+        texture.repeat.set(2, 2)
+      )
+    );
+  }, [textures]);
   return (
     <mesh
       rotation={[-Math.PI / 2, 0, 0]}
@@ -125,12 +135,11 @@ function Floor() {
 
 // Spinner
 const Spinner = () => {
-  const { active, progress, errors, item, loaded, total } = useProgress()
+  const { progress } = useProgress()
   return (
     <Html fullscreen>
       <div className="canvasSpinner">
         <div className="gugmu9vdpaw">
-          {/* if (progres) */}
           <p>{`${progress}`}</p>
           <div></div>
         </div>
@@ -144,12 +153,14 @@ function CanvasComp() {
 
 
   return (
-    <Canvas shadowMap colorManagement dpr={[1, 2]} pixelRatio={[1, 1.5]} frameloop="demand" >
+    <Canvas dpr={[1, 2]} frameloop={state.paused ? "demand" : "always"} >
       <PerspectiveCamera makeDefault target={[0, 0, 0]} position={snap.cameraPosition} near={.1} fov={20} aspect={width / height} />
       <fog attach="fog" args={[state.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, 40]} />
       <Suspense fallback={<Spinner />}>
-        <spotLight intensity={state.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}
-          decay={1}
+        <spotLight
+          intensity={state.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}
+          decay={2}
+          angle={Math.PI / 2}
           color={state.theme === 'light' ? snap.light.fog : snap.dark.spotlight}
           position={[90, 60, -50]}
 

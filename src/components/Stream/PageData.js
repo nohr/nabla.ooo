@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react'
-import { GetSectors, db } from '../../firebase'
+import React, { useRef } from 'react'
+import { GetSectors, db } from '../..'
 import { state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import { ImgWrapper, Sector, TextWrapper } from "../UI/style"
@@ -24,7 +24,6 @@ const ImgGrid = ({ work }) => {
         const link = new URL(`${url.url}`)
         const extension = link.pathname.split(".")
         const element = types.get(extension[extension.length - 1].toLowerCase())
-        // console.log(url.url)
 
         if (element === "video") {
             if (work.orientation === "portrait") {

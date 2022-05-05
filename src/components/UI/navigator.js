@@ -1,5 +1,5 @@
 //Navigator -- Child of <UI />
-import React, { useRef, useEffect } from "react"
+import React, { useRef } from "react"
 import { state } from './state'
 import { useSnapshot } from 'valtio'
 import { Folder } from "./style"

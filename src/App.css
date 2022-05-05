@@ -106,7 +106,7 @@ canvas {
   top: 80px;
   left: 80px;
   border-radius: 50%;
-  box-shadow: 0 1.8px 0 0 #85ceff;
+  box-shadow: 0 1.8px 0 0 #006C6E;
   transform-origin: 20px 20.9px;
 }
 
@@ -135,8 +135,8 @@ position: absolute;
 top: 45%;
 left: 50%;
 transform: translate(-50%,-55%);
-color: #85ceff;
-text-shadow: 0 1px 1 1 #85ceff;
+color: #006C6E;
+text-shadow: 0 1px 1 1 #006C6E;
 font-size: 12px;
 
 }

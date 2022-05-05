@@ -1,8 +1,8 @@
 import React from "react";
 import '../../App.css'
 import { Container } from "../UI/style";
-import { state } from '../UI/state'
-import { useSnapshot } from 'valtio'
+// import { state } from '../UI/state'
+// import { useSnapshot } from 'valtio'
 import useDocumentTitle from "../UI/documentTitle";
 import { Header, OldCD } from "../UI/svg";
 
@@ -48,8 +48,7 @@ import { Header, OldCD } from "../UI/svg";
 // };
 
 function Info() {
-  useDocumentTitle("Info @ Nabla");
-  const snap = useSnapshot(state);
+  useDocumentTitle("Info");
 
   return (
     <>

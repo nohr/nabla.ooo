@@ -1,21 +1,38 @@
 {
   "short_name": "Nabla",
-  "name": "Hompage of Nabla Ltd.",
+  "name": "nabla.ooo",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "images/favicon.ico",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
+      "src": "images/logo192.png",
+      "sizes": "192x192",
+      "type": "image/png"
     },
     {
-      "src": "logo512.png",
+      "src": "images/logo512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "images/logo1024.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    },
+    {
+      "src": "images/maskable_logo196.png",
+      "sizes": "196x196",
       "type": "image/png",
-      "sizes": "512x512"
+      "purpose": "any maskable"
+    },
+    {
+      "src": "images/maskable_logo196.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ],
   "start_url": ".",

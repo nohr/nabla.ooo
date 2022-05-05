@@ -40,12 +40,12 @@ function Ball(props) {
 
 export default function CD() {
   const group = useRef()
-  // useFrame(() => {
-  //   if (!state.paused) {
-  //     group.current.rotation.y += state.loading ? .009 : state.CDRotationX;
-  //     // group.current.rotation.y += state.loading ? .009 : state.CDRotationY;
-  //   }
-  // });
+  useFrame(() => {
+    if (!state.paused) {
+      group.current.rotation.y += state.loading ? .009 : state.CDRotationX;
+      group.current.rotation.y += state.loading ? .009 : state.CDRotationY;
+    }
+  });
 
   return (
     <group ref={group} position={[0, 1, 0]} dispose={null}

@@ -103,8 +103,6 @@ justify-content: space-between;
 gap: 20px;
 position: relative;
 overflow: hidden;
-/* backdrop-filter: blur(var(--blur)); */
-/* -webkit-backdrop-filter: blur(var(--blur)); */
 transition: 1.3s;
 
 & .lot{
@@ -211,9 +209,9 @@ export const ImgWrapper = styled.div`
     /* max-width: 150%; */
     position: absolute;
     pointer-events:  none;
-    top: 0%;
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -0%);
+    transform: translate(-50%, -50%);
     -webkit-user-drag: none;
     user-select: none;
     -moz-user-select: none;

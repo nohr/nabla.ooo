@@ -2,7 +2,7 @@ import React from 'react'
 import CanvasComp from './components/Canvas/Canvas'
 import UI from './components/UI/UI'
 import { state } from './components/UI/state'
-import { db, GetWorks } from './firebase'
+import { db, GetWorks } from '.'
 import { getGPUTier } from 'detect-gpu';
 
 //App 

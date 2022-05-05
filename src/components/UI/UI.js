@@ -18,7 +18,7 @@ import {
   Routes,
   Route
 } from "react-router-dom"
-import CircleType from 'circletype';
+import CircleType from "circletype"
 
 //Audio Imports
 import useSound from 'use-sound'
@@ -43,7 +43,6 @@ function UI() {
     let title = document.querySelector('.song');
     if (title) {
       const song = new CircleType(title).radius(128);
-      return song;
     }
   }, [])
 
@@ -116,15 +115,15 @@ function UI() {
 
   // Toggle Music
   useEffect(() => {
-    const tardigrade = audio.current;
+    const currentSong = audio.current;
     let playstop = document.querySelector("#playstop")
     const toggleMusic = () => {
       if (state.playMusic === false) {
         state.playMusic = true;
-        tardigrade.play();
+        currentSong.play();
       } else if (state.playMusic === true) {
         state.playMusic = false;
-        tardigrade.pause();
+        currentSong.pause();
       }
     }
     if (playstop) {
@@ -133,7 +132,7 @@ function UI() {
     return () => {
       playstop = null;
     }
-  }, [state.playMusic])
+  }, [])
 
   var x = window.matchMedia("(max-width: 768px)");
   if (x.matches) {

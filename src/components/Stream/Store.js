@@ -1,7 +1,7 @@
 import React, { useRef } from "react"
 import '../../App.css'
-import { state } from '../UI/state'
-import { useSnapshot } from 'valtio'
+// import { state } from '../UI/state'
+// import { useSnapshot } from 'valtio'
 import { Container } from "../UI/style";
 import useDocumentTitle from "../UI/documentTitle";
 import { HashLink } from 'react-router-hash-link';
@@ -78,7 +78,7 @@ const StoreContainer = styled.div`
       -ms-user-select: none; /* IE10+/Edge */
       user-select: none; /* Standard */
       transition: 2.3s;
-      filter: blur(30px);
+      /* filter: blur(30px); */
     }
 
     .eko-thumb:hover{
@@ -168,19 +168,21 @@ const StoreContainer = styled.div`
     }
 `
 
-function Store() {
-  useDocumentTitle("Store @ Nabla");
-  const snap = useSnapshot(state);
-  const ekoRef = useRef(null);
 
-  const isFontListLoaded = useFontFaceObserver([
-    {
-      family: `ekodigital`,
-    },
-  ]);
-  if (isFontListLoaded) {
-    ekoRef.current.setAttribute("style", "filter: blur(0px);")
-  }
+
+function Store() {
+  useDocumentTitle("Store");
+  const ekoRef = useRef(null);
+  // function FontObserver() {
+  //   const isFontListLoaded = useFontFaceObserver([
+  //     {
+  //       family: `ekodigital`,
+  //     },
+  //   ]);
+  //   if (isFontListLoaded) {
+  //     ekoRef.current.setAttribute("style", "filter: blur(0px);")
+  //   }
+  // }
 
   return (
     <>
@@ -188,7 +190,7 @@ function Store() {
       <Container className="container">
         <StoreContainer>
           <div className="eko">
-            <div className="eko-thumb" ref={ekoRef}>
+            <div className="eko-thumb" ref={ekoRef} >
               Aa
             </div>
             <div className="desc">
