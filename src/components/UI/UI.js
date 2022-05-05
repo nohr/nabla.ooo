@@ -174,7 +174,7 @@ function UI() {
               ))}
               {/* broken - needs UI to rerender */}
               <Route path={`/${snap.query}-results`} element={<Results title={`${snap.query} Results`} />} />
-              <Route element={NotFound} />
+              {/* <Route element={NotFound} /> */}
               {/* <Redirect from="*" to="/404" /> */}
             </Routes>
           </ThemeProvider>
