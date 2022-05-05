@@ -35,6 +35,24 @@
       "purpose": "any maskable"
     }
   ],
+  "shortcuts": [
+    {
+      "name": "Info",
+      "url": "/info"
+    },
+    {
+      "name": "Store",
+      "url": "/store"
+    },
+    {
+      "name": "Blog",
+      "url": "/blog"
+    },
+    {
+      "name": "Contrast",
+      "url": "/contrast"
+    }
+  ],
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#E7E7E7",
