@@ -26,17 +26,32 @@ const Nav = styled.div`
   .grid{
     display: grid;
     justify-items: center;
+    padding-top: 10px;
+    gap: 5px;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
   }
     .header {
         border-bottom: 1px solid ${props => props.theme.panelColor};
         margin: 0 0 8px 0;
-        padding: 10px 0px 16px;
+        padding: 10px 0px 5px;
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-direction: column;
+        flex-wrap: nowrap;
     }
+
+    .quote{
+      padding: 4px 0 4px;
+      font-size: 10px;
+      height: 19.5px !important;
+    -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
 
     & .li{
     width: 80%;
@@ -162,6 +177,40 @@ const Nav = styled.div`
 	}
 }
 `
+export const Homer = styled(NavLink)`
+  height: 100%;
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  margin: 9px 0 2px 0;
+  padding-top: 5px;
+  padding-bottom: 3px;
+  border-radius: 120px;
+  overflow: visible;
+
+  & svg{
+    align-self:center;
+    fill: ${props => props.theme.panelColor};
+    color: ${props => props.theme.panelColor};
+    transition: 2.3s;
+  }
+
+  &:hover {
+    background-color: ${props => props.theme.LiHover};
+    -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
+    -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
+    box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
+    transition: 0.6s;
+  }
+
+  &:hover > svg{
+    fill: ${props => props.theme.textHover};
+    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
+    filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
+    transition: 2.3s;
+  }
+
+`
 
 function Navigator() {
   const snap = useSnapshot(state);
@@ -185,9 +234,16 @@ function Navigator() {
       <Nav ref={nav} className="Panel nav">
         <div className='header'>
           <SvgNabla />
+          <div className="quote w">{`${state.quotes}`}</div>
         </div>
         <Search />
         <div className="grid">
+          <NavLink className="li w" to="/info">
+            Info
+          </NavLink>
+          <NavLink className="li w" to="/store">
+            Store
+          </NavLink >
           <Folder className="li folder portLink" tabIndex="0">
             Projects
             {snap.isPort ? <SideArrow /> : <Arrow />}
@@ -196,16 +252,10 @@ function Navigator() {
             Options
             {snap.isSett ? <SideArrow /> : <Arrow />}
           </Folder>
-          <NavLink className="li w" to="/info">
-            Info
-          </NavLink>
-          <NavLink className="li w" to="/store">
-            Store
-          </NavLink >
-          <NavLink className="li w" to="/blog">
+          <NavLink className="li w" to="/blog" style={{ display: "none" }}>
             Blog
           </NavLink >
-          <NavLink className="li w" to="/contrast" style={{ cursor: "wait" }}>
+          <NavLink className="li w" to="/contrast" style={{ display: "none" }}>
             Contrast
           </NavLink >
           {/* force reload */}

@@ -2,12 +2,14 @@ import React from 'react'
 import CanvasComp from './components/Canvas/Canvas'
 import UI from './components/UI/UI'
 import { state } from './components/UI/state'
-import { db, GetWorks } from '.'
+import { db, GetSiteInfo, GetWorks } from '.'
 import { getGPUTier } from 'detect-gpu';
 
 //App 
 function App() {
-
+  GetSiteInfo(db);
+  //Load project titles
+  GetWorks(db);
   // GPU
   (async () => {
     const gpuTier = await getGPUTier();
@@ -27,8 +29,6 @@ function App() {
     // }
   })();
 
-  //Load project titles
-  GetWorks(db);
   //Change the theme based on user preference
   window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !state.themeChanged ?
     (state.theme = 'dark') : (state.theme = 'light')

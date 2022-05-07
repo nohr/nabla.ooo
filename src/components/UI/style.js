@@ -1,6 +1,7 @@
 //Styling for the UI - proceed with caution
 import styled, { createGlobalStyle } from "styled-components"
 import { NavLink } from "react-router-dom"
+import { state } from "./state"
 
 export const Container = styled.div`
   display: flex;
@@ -195,11 +196,14 @@ export const ImgWrapper = styled.div`
       position: relative;
       opacity: 1;
       pointer-events: all;
-      border: 1px solid ${props => props.theme.panelColor} ;
+      border: 1px solid ${props => props.theme.panelColor};
+      filter: grayscale(1);
+      transition: 0.3s;
     }
 
     .img-thumb:hover{
       cursor: pointer;
+      filter: grayscale(0) !important;
     }
 
     object{
@@ -229,6 +233,13 @@ export const ImgWrapper = styled.div`
     object-fit: contain;
     margin: 0;
     padding: 0;
+      filter: grayscale(1) !important;
+      transition: 0.3s;
+
+      &:hover{
+      filter: grayscale(0);
+      transition: 0.3s;
+      }
     }
 
     .landscape{
@@ -238,6 +249,8 @@ export const ImgWrapper = styled.div`
 
     video[poster]{
       object-fit: fill;
+      filter: grayscale(1);
+      transition: 0.3s;
     }
     ::-webkit-scrollbar {
   -webkit-appearance: none;
@@ -256,40 +269,6 @@ export const ImgWrapper = styled.div`
       -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
       transition: 0.3s;
 }
-`
-export const Homer = styled(NavLink)`
-  height: 100%;
-  width: 70%;
-  display: flex;
-  justify-content: center;
-  margin: 9px 0 2px 0;
-  padding-top: 3px;
-  padding-bottom: 1px;
-  border-radius: 120px;
-  overflow: visible;
-
-  & svg{
-    align-self:center;
-    fill: ${props => props.theme.panelColor};
-    color: ${props => props.theme.panelColor};
-    transition: 2.3s;
-  }
-
-  &:hover {
-    background-color: ${props => props.theme.LiHover};
-    -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
-    -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
-    box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
-    transition: 0.6s;
-  }
-
-  &:hover > svg{
-    fill: ${props => props.theme.textHover};
-    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
-    filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
-    transition: 2.3s;
-  }
-
 `
 export const Folder = styled.div`
   width: 100%;

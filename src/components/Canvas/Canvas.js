@@ -10,6 +10,7 @@ import { useTexture, MeshReflectorMaterial, softShadows, PerspectiveCamera, Orbi
 // import { MeshReflectorMaterial } from '@react-three/drei';
 // import { MeshReflectorMaterial } from '@react-three/drei/materials/MeshReflectorMaterial';
 import { EffectComposer, Noise } from '@react-three/postprocessing'
+import { ShaderMaterial } from 'three'
 
 // Canvas
 softShadows();
@@ -100,36 +101,6 @@ function Floor() {
         bumpMap={height}
       />
     </mesh>
-    // <Reflector
-    //   resolution={1024}
-    //   receiveShadow
-    //   mirror={0.25}
-    //   blur={[250, 250]}
-    //   mixBlur={14}
-    //   mixStrength={1}
-    //   minDepthThreshold={0.9}
-    //   maxDepthThreshold={1.1}
-    //   depthScale={20}
-    //   depthToBlurRatioBias={0.2}
-    //   rotation={[-Math.PI / 2, 0, 0]}
-    //   args={[70, 70]}
-    // >
-    //   {(Material, props) => (
-    //     <Material
-    //       color={state.theme === 'light' ? snap.light.Surface : snap.dark.Surface}
-    //       metalness={0}
-    //       roughness={state.theme === 'light' ? snap.light.SurfaceRough : snap.dark.SurfaceRough}
-    //       roughnessMap={roughness}
-    //       aoMap={ao}
-    //       normalMap={normal}
-    //       normalScale={[1, 1]}
-    //       envMapIntensity={10}
-    //       bumpMap={height}
-    //       {...props}
-    //     />
-    //   )
-    //   }
-    // </Reflector >
   );
 }
 

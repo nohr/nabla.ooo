@@ -8,6 +8,7 @@ import { getFirestore, collection, getDocs, orderBy, where, query } from 'fireba
 import { getAnalytics } from "firebase/analytics";
 import { state } from "./components/UI/state";
 import { getDatabase } from "firebase/database";
+import { async } from '@firebase/util';
 
 
 const container = document.getElementById('root');
@@ -42,6 +43,7 @@ export async function GetWorks(db) {
   const selfs = query(colRef, orderBy("date", "desc"), where("type", "==", "self"));
   const clients = query(colRef, orderBy("date", "desc"), where("type", "==", "client"));
   const blogs = query(blogRef, orderBy("created", "desc"), where('status', '==', 'LIVE'));
+
   const selfsSnapshot = await getDocs(selfs);
   const clientsSnapshot = await getDocs(clients);
   const blogSnashot = await getDocs(blogs);
@@ -49,6 +51,17 @@ export async function GetWorks(db) {
   state.clients = clientsSnapshot.docs.map(doc => doc.data());
   state.blog = blogSnashot.docs.map(doc => doc.data());
   state.loading = false;
+
+}
+
+export async function GetSiteInfo(db) {
+  const siteRef = collection(db, 'siteinfo');
+  const quoteSnapshot = await getDocs(siteRef);
+  let quotes = quoteSnapshot.docs.map(doc => doc.data())[0].quotes;
+  // Randomize Quotes
+  console.log(quotes);
+  const random = Math.floor(Math.random() * quotes.length);
+  state.quotes = quotes[random];
 }
 
 export async function GetSectors(db, work) {

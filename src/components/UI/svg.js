@@ -1,14 +1,12 @@
 import React, { useRef, useEffect } from "react"
 import useSound from 'use-sound'
 import home from '../Sounds/home.mp3'
-import { Homer } from './style'
+import { Homer } from './navigator'
 import { state } from './state'
 import Draggable from "react-draggable";
 import { useSnapshot } from 'valtio'
 import styled from "styled-components"
 import { useLocation } from "react-router-dom"
-
-
 
 export function SvgNabla() {
   const [play] = useSound(home, { volume: state.sfxVolume, soundEnabled: !state.muted });
