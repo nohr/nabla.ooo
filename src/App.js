@@ -29,9 +29,7 @@ function App() {
     // }
   })();
 
-  //Change the theme based on user preference
-  window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches && !state.themeChanged ?
-    (state.theme = 'dark') : (state.theme = 'light')
+
   return (
     <>
       <UI />
