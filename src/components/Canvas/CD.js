@@ -48,9 +48,9 @@ export default function CD() {
   // });
 
   return (
-    <group ref={group} position={[0, 1, 0]} dispose={null}
+    <group ref={group} position={[0, 2, 0]} dispose={null}
       rotation={[-Math.PI / 2, Math.PI / 2, Math.PI / 2]} receiveShadow castShadow >
-      <group position={[0, 0, 1]} scale={.01}>
+      <group position={[0, 0, 0]} scale={.01}>
         <Ball position={[5.28, 0, -265.23]} />
         <Ball position={[306.5, 0, 134.46]} />
         <Ball position={[-296.7, 0, 134.46]} />

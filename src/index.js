@@ -59,7 +59,6 @@ export async function GetSiteInfo(db) {
   const quoteSnapshot = await getDocs(siteRef);
   let quotes = quoteSnapshot.docs.map(doc => doc.data())[0].quotes;
   // Randomize Quotes
-  console.log(quotes);
   const random = Math.floor(Math.random() * quotes.length);
   state.quotes = quotes[random];
 }

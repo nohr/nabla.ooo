@@ -7,8 +7,6 @@ import useWindowDimensions from '../UI/window'
 import { Canvas } from '@react-three/fiber'
 import { RepeatWrapping } from 'three'
 import { useTexture, MeshReflectorMaterial, softShadows, PerspectiveCamera, OrbitControls, Html, useProgress } from '@react-three/drei'
-// import { MeshReflectorMaterial } from '@react-three/drei';
-// import { MeshReflectorMaterial } from '@react-three/drei/materials/MeshReflectorMaterial';
 import { EffectComposer, Noise } from '@react-three/postprocessing'
 import { ShaderMaterial } from 'three'
 
