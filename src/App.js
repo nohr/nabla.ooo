@@ -2,20 +2,17 @@ import React from 'react'
 import CanvasComp from './components/Canvas/Canvas'
 import UI from './components/UI/UI'
 import { state } from './components/UI/state'
-import { db, GetSiteInfo, GetWorks } from '.'
 import { getGPUTier } from 'detect-gpu';
 
 //App 
 function App() {
-  GetSiteInfo(db);
-  //Load project titles
-  GetWorks(db);
   // GPU
   (async () => {
     const gpuTier = await getGPUTier();
 
-    if (gpuTier.tier >= 3) {
-      state.paused = false;
+    if (gpuTier.tier >= 3 || gpuTier.isMobile === true) {
+      //TODO: change to false for live build
+      state.paused = true;
     }
 
     console.log(gpuTier);

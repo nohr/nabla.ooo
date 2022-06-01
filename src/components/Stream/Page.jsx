@@ -8,11 +8,7 @@ import Modal from "../UI/Modal";
 import useDocumentTitle from '../UI/documentTitle'
 import { Header } from '../UI/svg'
 
-
-//offset head
-    
 function Page(id) {
-    // const margin = state.setSwitched ? "margin-left: -40vw !important;" : "margin-left: calc(var(--panelWidth) + var(--headOffset));" 
     useDocumentTitle(id.title);
     const snap = useSnapshot(state);
     return (
@@ -26,21 +22,5 @@ function Page(id) {
     )
 }
 
-const Results = React.memo(function Results() {
-    // const margin = state.setSwitched ? "margin-left: -40vw !important;" : "margin-left: calc(var(--panelWidth) + var(--headOffset));" 
-    useDocumentTitle("Results");
-    const snap = useSnapshot(state);
-    console.log(state.query);
-    return (
-        <>
-            <Header id={snap.query}/>
-            <Container className="container">
-                <div>
-                    {snap.query}
-                </div>
-            </Container>
-        </>
-    )
-})
 
-export { Page, Results }
+export { Page }

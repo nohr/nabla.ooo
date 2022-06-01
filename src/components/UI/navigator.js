@@ -6,8 +6,8 @@ import { Folder } from "./style"
 import styled from "styled-components"
 import { NavLink } from "react-router-dom"
 import Draggable from 'react-draggable'
-import Search from "./search"
 import { SvgNabla, Spinner, Arrow, SideArrow, Grabber } from './svg'
+import { Search } from './search'
 
 const Nav = styled.div`
   padding: 0em 42.5px 30px 42.5px;
@@ -64,7 +64,7 @@ const Nav = styled.div`
     }
 
     .folder{
-      padding-right: 5px;
+      padding-right: 2px;
     }
 
   & .speaker{
@@ -178,7 +178,7 @@ const Nav = styled.div`
 }
 `
 export const Homer = styled(NavLink)`
-  height: 100%;
+  height: fit-content;
   width: 70%;
   display: flex;
   justify-content: center;
@@ -216,7 +216,23 @@ function Navigator() {
   const snap = useSnapshot(state);
   const nav = useRef(null);
 
-  // console.log(state.navPosition);
+  // Glow on Spacebar
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Shift') {
+      e.preventDefault();
+      nav.current.classList.add("glow")
+    } else {
+      return;
+    }
+  })
+  window.addEventListener('keyup', (e) => {
+    if (e.key === 'Shift') {
+      e.preventDefault();
+      nav.current.classList.remove("glow")
+    } else {
+      return;
+    }
+  })
 
   const onControlledDrag = (e, position) => {
     let { x, y } = position;
@@ -226,7 +242,6 @@ function Navigator() {
 
     nav.current.classList.add("glow")
   };
-
 
   return (
     //NAV
@@ -244,11 +259,11 @@ function Navigator() {
           <NavLink className="li w" to="/store">
             Store
           </NavLink >
-          <Folder className="li folder portLink" tabIndex="0">
+          <Folder className="li folder portLink" tabIndex="1">
             Projects
             {snap.isPort ? <SideArrow /> : <Arrow />}
           </Folder>
-          <Folder className="li folder settLink" tabIndex="0">
+          <Folder className="li folder settLink" tabIndex="1">
             Options
             {snap.isSett ? <SideArrow /> : <Arrow />}
           </Folder>

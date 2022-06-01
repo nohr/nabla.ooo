@@ -8,7 +8,6 @@ import { getFirestore, collection, getDocs, orderBy, where, query } from 'fireba
 import { getAnalytics } from "firebase/analytics";
 import { state } from "./components/UI/state";
 import { getDatabase } from "firebase/database";
-import { async } from '@firebase/util';
 
 
 const container = document.getElementById('root');
@@ -31,8 +30,8 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
-const analytics = getAnalytics(app);
-const database = getDatabase();
+// const analytics = getAnalytics(app);
+// const database = getDatabase();
 // console.log(database);
 
 // Get works from database
@@ -50,18 +49,32 @@ export async function GetWorks(db) {
   state.selfs = selfsSnapshot.docs.map(doc => doc.data());
   state.clients = clientsSnapshot.docs.map(doc => doc.data());
   state.blog = blogSnashot.docs.map(doc => doc.data());
-  state.loading = false;
 
+  const entitiesRef = query(colRef, orderBy('date', 'desc'), where('date', '!=', null))
+  const entitiesSnapshot = await getDocs(entitiesRef);
+  let mediumRef = query(colRef, orderBy('projectMedium', 'asc'), where('projectMedium', '!=', null))
+  const mediumSnapshot = await getDocs(mediumRef);
+  mediumSnapshot.docs.map(doc => doc.data()).forEach((one) => {
+    if (state.mediums.indexOf(one['projectMedium']) === -1) {
+      state.mediums.push(one['projectMedium'])
+    }
+  })
+
+  state.loading = false;
 }
+
+GetWorks(db);
 
 export async function GetSiteInfo(db) {
   const siteRef = collection(db, 'siteinfo');
-  const quoteSnapshot = await getDocs(siteRef);
-  let quotes = quoteSnapshot.docs.map(doc => doc.data())[0].quotes;
+  const siteinfoSnapshot = await getDocs(siteRef);
+  let quotes = siteinfoSnapshot.docs.map(doc => doc.data())[0].quotes;
   // Randomize Quotes
   const random = Math.floor(Math.random() * quotes.length);
   state.quotes = quotes[random];
 }
+
+GetSiteInfo(db);
 
 export async function GetSectors(db, work) {
   state.loading = true;
@@ -69,6 +82,7 @@ export async function GetSectors(db, work) {
   const sectors = query(sectorRef, orderBy("projectYear", "desc"), where("at", "==", `${work}`));
   const sectorSnapshot = await getDocs(sectors);
   state.sectors = sectorSnapshot.docs.map(doc => doc.data());
+
   state.loading = false;
 }
 // Themes

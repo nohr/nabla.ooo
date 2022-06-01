@@ -12,7 +12,8 @@ import Store from '../Stream/Store'
 import Blog from "../Stream/Blog"
 import Contrast from "../Stream/Contrast"
 import NotFound from "../Stream/NotFound"
-import { Page, Results } from '../Stream/Page.jsx'
+import { Page } from '../Stream/Page.jsx'
+import { Results } from './search'
 import {
   BrowserRouter as Router,
   Routes,
@@ -36,8 +37,6 @@ function UI() {
   const [close] = useSound(sound3, { soundEnabled: !state.muted });
   const audio = useRef()
 
-  console.log("render");
-
   // CircleType
   useEffect(() => {
     let title = document.querySelector('.song');
@@ -45,7 +44,6 @@ function UI() {
       const song = new CircleType(title).radius(128);
     }
   }, [])
-
 
   //Play the select sound for all links with .w
   useEffect(() => {
@@ -172,9 +170,8 @@ function UI() {
               {snap.clients.map((work) => (
                 <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`Nabla & ${work.name}`} id={`${work.id}`} />} />
               ))}
-              {/* broken - needs UI to rerender */}
-              <Route path={`/${snap.query}-results`} element={<Results title={`${snap.query} Results`} />} />
-              {/* <Route element={NotFound} /> */}
+              <Route path={`/results`} element={<Results />} />
+              {/* <Route path='*' element={NotFound} /> */}
               {/* <Redirect from="*" to="/404" /> */}
             </Routes>
           </ThemeProvider>

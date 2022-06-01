@@ -18,7 +18,7 @@ export const state = proxy({
     isSett: false,
     prtSwitched: false,
     setSwitched: false,
-    direction: true,
+    direction: false,
     muted: false,
     playMusic: false,
     // navPosition: { x: Math.random(), y: Math.random() },
@@ -28,6 +28,7 @@ export const state = proxy({
     dist: 79,
     //Search
     query: '',
+    mediums: [],
     //Theme
     theme: "light",
     light: {
@@ -83,5 +84,5 @@ export const state = proxy({
     CDRotationX: 0.002,
     CDRotationY: 0.002,
     CDRotationZ: 0.0001,
-    cameraPosition: [-20, 5, 1],
+    cameraPosition: [-20, 5, -1],
 });

@@ -1,7 +1,5 @@
 //Styling for the UI - proceed with caution
 import styled, { createGlobalStyle } from "styled-components"
-import { NavLink } from "react-router-dom"
-import { state } from "./state"
 
 export const Container = styled.div`
   display: flex;
@@ -93,7 +91,7 @@ export const Container = styled.div`
 `
 export const Sector = styled.div`
 border: solid 1px ;
-border-color: transparent ${props => props.theme.panelColor} transparent ${props => props.theme.panelColor};
+border-color: ${props => props.theme.panelColor};
 border-radius: 10px;
 display: flex;
 width: 100%;
@@ -294,6 +292,11 @@ export const GlobalStyle = createGlobalStyle`
     html, body, #root {
         /* isolation: isolate; */
         background-color: ${props => props.theme.sky};
+    }
+
+    *::selection{
+      color: inherit;
+      background-color: #d0d0d0;
     }
     //Panel
     .Panel {

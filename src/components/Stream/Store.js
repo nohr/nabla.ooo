@@ -115,7 +115,8 @@ const StoreContainer = styled.div`
       vertical-align: middle;
       display: flex;
       justify-content: center;
-      /* padding-bottom: 10px; */
+      align-items: center;
+
     }
     
     a{

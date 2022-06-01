@@ -430,9 +430,9 @@ export function Header(id) {
 
   useEffect(() => {
     const header = nodeRef.current;
-    header.style.transition = "0s";
-    header.style.opacity = 1;
     if (header) {
+      header.style.transition = "0s";
+      header.style.opacity = 1;
       var opacity = 0;
       var intervalID = 0;
       function fadeout() {
