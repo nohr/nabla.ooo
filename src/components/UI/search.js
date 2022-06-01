@@ -1,12 +1,200 @@
 import { useRef, useState, useEffect } from "react";
 import { state } from "./state";
-import { snapshot, useSnapshot } from "valtio";
+import { useSnapshot } from "valtio";
 import styled from "styled-components"
 import { SearchIcon, ClearIcon, Header } from "./svg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import useDocumentTitle from "./documentTitle";
 import { db } from "../..";
 import { collection, where, query, getDocs, orderBy } from "firebase/firestore/lite";
+
+let searchQuery;
+
+// Search
+export function Search() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const searchTerm = searchParams.get('search') || '';
+  const Bar = useRef(null);
+  const navigate = useNavigate();
+  const locationFull = useLocation();
+  const location = useLocation().pathname;
+  const byTitle = (search) => (title) => title.title.toLowerCase().includes((search || '').toLowerCase());
+
+  useEffect(() => {
+    let keys = {};
+
+    function handleKeyPress(e) {
+
+      if (e.key === "Escape") {
+        Bar.current.blur();
+        return;
+      }
+      if (e.key === 'Enter' || e.key === 'Shift' || e.key === 'Meta' || e.key === 'CapsLock' || e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'Alt') {
+        return;
+      }
+    }
+
+    function handleFocusCommand(e) {
+      // Alt + f to focus search
+      let { keyCode, type } = e || Event;
+      const isKeyUp = (type === 'keyup');
+      keys[keyCode] = isKeyUp;
+      if (isKeyUp && keys[18] && keys[70]) {
+        keys = {};
+        Bar.current.focus();
+      } else {
+        return;
+      }
+    }
+    Bar.current.addEventListener("keyup", handleKeyPress);
+    window.addEventListener("keyup", handleFocusCommand);
+
+    return () => {
+      Bar.current.removeEventListener("keyup", handleKeyPress);
+      window.removeEventListener("keyup", handleFocusCommand);
+    }
+  }, [searchTerm])
+
+  function handleChange(e) {
+    const search = e.target.value;
+    searchQuery = e.target.value;
+
+
+    if (search) {
+      setSearchParams({ search });
+    } else {
+      setSearchParams({});
+    }
+
+    console.log(locationFull);
+  };
+
+  return (
+    <SearchWrapper id="search">
+      <SearchBar
+        placeholder="Search (alt + f)"
+        type="text"
+        value={searchTerm}
+        onChange={(e) => handleChange(e)}
+        ref={Bar}
+      >
+      </SearchBar>
+      <SearchIcon />
+      {searchTerm &&
+        <div
+          onClick={
+            () => {
+              setSearchParams({});
+              Bar.current.focus()
+            }
+          }
+          id="clearIcon"
+        >
+          <ClearIcon />
+        </div>}
+    </SearchWrapper>
+  )
+}
+
+
+// const Results = React.memo(
+export function Results() {
+  const [result, setResult] = useState(null);
+  const snap = useSnapshot(state);
+  useDocumentTitle(`${searchQuery} - Search Results`);
+
+  useEffect(() => {
+    setResult(searchQuery)
+  }, [searchQuery])
+
+  return (
+    <>
+      <Header id={result} />
+      <ResultsContainer className="container">
+        <Params>
+          {snap.mediums.map(one => {
+            return <h4>{one}</h4>
+          })}
+        </Params>
+        <Sector>
+          <LayerHeader>
+            Entities
+          </LayerHeader>
+          <TitlesLayer>
+            <Title to={`/${result}`}>
+              {result}
+            </Title>
+            <Title to={`/${result}`}>
+              {result}
+            </Title>
+            <Title to={`/${result}`}>
+              {result}
+            </Title>
+            <Title to={`/${result}`}>
+              {result}
+            </Title>
+            <Title to={`/${result}`}>
+              {result}
+            </Title>
+            <Title to={`/${result}`}>
+              {result}
+            </Title>
+            <Title to={`/${result}`}>
+              {result}
+            </Title>
+            <Title to={`/${result}`}>
+              {result}
+            </Title>
+            <Title to={`/${result}`}>
+              {result}
+            </Title>
+            <Title to={`/${result}`}>
+              {result}
+            </Title>
+            <Title to={`/${result}`}>
+              {result}
+            </Title>
+            <Title to={`/${result}`}>
+              {result}
+            </Title>
+          </TitlesLayer>
+        </Sector>
+        <Sector>
+          <LayerHeader>
+            Projects
+          </LayerHeader>
+          <ProjectsLayer>
+            <Project to={`/${result}`}>
+              {result}
+            </Project>
+            <Project to={`/${result}`}>
+              {result}
+            </Project>
+            <Project to={`/${result}`}>
+              {result}
+            </Project>
+            <Project to={`/${result}`}>
+              {result}
+            </Project>
+            <Project to={`/${result}`}>
+              {result}
+            </Project>
+          </ProjectsLayer>
+        </Sector>
+        <Sector>
+          <LayerHeader>
+            Products
+          </LayerHeader>
+          <ProjectsLayer>
+            <Project to={`/${result}`}>
+              eko
+            </Project>
+          </ProjectsLayer>
+        </Sector>
+      </ResultsContainer>
+    </>
+  )
+}
 
 export const SearchWrapper = styled.div`
   position: relative;
@@ -83,103 +271,6 @@ export const SearchBar = styled.input`
     transition: 0.3s;
   } 
 `
-let searchQuery;
-let params = [];
-
-// Search
-export function Search() {
-  const [result, setResult] = useState('');
-  const [allDocs, setAllDocs] = useState([])
-  const Bar = useRef(null);
-  const navigate = useNavigate();
-
-  async function findResults(thequery) {
-    navigate(`/results`);
-    searchQuery = thequery;
-    // Find in database
-    // console.log(allDocs)
-  }
-
-  useEffect(() => {
-    let keys = {};
-    searchQuery = '';
-
-    function handleKeyPress(e) {
-      let { keyCode, type } = e || Event;
-      const isKeyUp = (type === 'keyup');
-      keys[keyCode] = isKeyUp;
-
-      if (e.key === "Escape") {
-        Bar.current.blur();
-        return;
-      }
-      if (e.key === 'Enter' || e.key === 'Shift' || e.key === 'Meta' || e.key === 'CapsLock' || e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'Alt') {
-        return;
-      }
-
-      if (result.length > 0) {
-        findResults(result);
-        return;
-      }
-
-      if (result.length === 0) {
-        if (e.key === 'Backspace') {
-          navigate(`/`);
-          return;
-        }
-      }
-
-    }
-
-    Bar.current.addEventListener("keyup", handleKeyPress);
-    window.addEventListener("keyup", (e) => {
-      // Alt + f to focus search
-      let { keyCode, type } = e || Event;
-      const isKeyUp = (type === 'keyup');
-      keys[keyCode] = isKeyUp;
-      if (isKeyUp && keys[18] && keys[70]) {
-        keys = {};
-        Bar.current.focus();
-      } else {
-        return;
-      }
-    })
-  }, [result])
-
-  function handleChange(e) {
-    setResult(e.target.value);
-    console.log(e.target.value);
-  }
-
-  return (
-    <SearchWrapper id="search">
-      <SearchBar
-        placeholder="Search (alt + f)"
-        type="text"
-        value={result}
-        onChange={(e) => handleChange(e)}
-
-        ref={Bar}
-      >
-      </SearchBar>
-      <SearchIcon />
-      {result &&
-        <div
-          onClick={
-            () => {
-              setResult('')
-              Bar.current.focus()
-              navigate(`/`);
-            }
-          }
-          id="clearIcon"
-        >
-          <ClearIcon />
-        </div>}
-    </SearchWrapper>
-  )
-}
-
 const ResultsContainer = styled.div`
   display: flex;
   margin: 20px 5px;
@@ -325,103 +416,3 @@ const Sector = styled.div`
   width: 100%;
   position: relative;
 `
-// const Results = React.memo(
-export function Results() {
-  const [result, setResult] = useState(null);
-  const snap = useSnapshot(state)
-  const navigate = useNavigate();
-  useDocumentTitle(`${searchQuery} - Search Results`);
-
-  useEffect(() => {
-    setResult(searchQuery)
-  }, [searchQuery])
-
-  return (
-    <>
-      <Header id={result} />
-      <ResultsContainer className="container">
-        <Params>
-          {snap.mediums.map(one => {
-            return <h4>{one}</h4>
-          })}
-        </Params>
-        <Sector>
-          <LayerHeader>
-            Entities
-          </LayerHeader>
-          <TitlesLayer>
-            <Title to={`/${result}`}>
-              {result}
-            </Title>
-            <Title to={`/${result}`}>
-              {result}
-            </Title>
-            <Title to={`/${result}`}>
-              {result}
-            </Title>
-            <Title to={`/${result}`}>
-              {result}
-            </Title>
-            <Title to={`/${result}`}>
-              {result}
-            </Title>
-            <Title to={`/${result}`}>
-              {result}
-            </Title>
-            <Title to={`/${result}`}>
-              {result}
-            </Title>
-            <Title to={`/${result}`}>
-              {result}
-            </Title>
-            <Title to={`/${result}`}>
-              {result}
-            </Title>
-            <Title to={`/${result}`}>
-              {result}
-            </Title>
-            <Title to={`/${result}`}>
-              {result}
-            </Title>
-            <Title to={`/${result}`}>
-              {result}
-            </Title>
-          </TitlesLayer>
-        </Sector>
-        <Sector>
-          <LayerHeader>
-            Projects
-          </LayerHeader>
-          <ProjectsLayer>
-            <Project to={`/${result}`}>
-              {result}
-            </Project>
-            <Project to={`/${result}`}>
-              {result}
-            </Project>
-            <Project to={`/${result}`}>
-              {result}
-            </Project>
-            <Project to={`/${result}`}>
-              {result}
-            </Project>
-            <Project to={`/${result}`}>
-              {result}
-            </Project>
-          </ProjectsLayer>
-        </Sector>
-        <Sector>
-          <LayerHeader>
-            Products
-          </LayerHeader>
-          <ProjectsLayer>
-            <Project to={`/${result}`}>
-              eko
-            </Project>
-          </ProjectsLayer>
-        </Sector>
-      </ResultsContainer>
-    </>
-  )
-}
-// )

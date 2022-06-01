@@ -38,20 +38,25 @@ export const db = getFirestore(app);
 export async function GetWorks(db) {
   state.loading = true;
   const colRef = collection(db, 'portfolio');
-  const blogRef = collection(db, 'blog');
   const selfs = query(colRef, orderBy("date", "desc"), where("type", "==", "self"));
   const clients = query(colRef, orderBy("date", "desc"), where("type", "==", "client"));
-  const blogs = query(blogRef, orderBy("created", "desc"), where('status', '==', 'LIVE'));
 
   const selfsSnapshot = await getDocs(selfs);
   const clientsSnapshot = await getDocs(clients);
-  const blogSnashot = await getDocs(blogs);
   state.selfs = selfsSnapshot.docs.map(doc => doc.data());
   state.clients = clientsSnapshot.docs.map(doc => doc.data());
-  state.blog = blogSnashot.docs.map(doc => doc.data());
 
   const entitiesRef = query(colRef, orderBy('date', 'desc'), where('date', '!=', null))
   const entitiesSnapshot = await getDocs(entitiesRef);
+  state.entities = entitiesSnapshot.docs.map(doc => doc.data());
+
+  let projectNameRef = query(colRef, orderBy('projectName', 'asc'), where('projectName', '!=', null))
+  const projectNameSnapshot = await getDocs(projectNameRef);
+  projectNameSnapshot.docs.map(doc => doc.data()).forEach((one) => {
+    state.projectNames.push(one['projectName'])
+  })
+  console.log(state.projectNames);
+
   let mediumRef = query(colRef, orderBy('projectMedium', 'asc'), where('projectMedium', '!=', null))
   const mediumSnapshot = await getDocs(mediumRef);
   mediumSnapshot.docs.map(doc => doc.data()).forEach((one) => {
@@ -64,6 +69,15 @@ export async function GetWorks(db) {
 }
 
 GetWorks(db);
+
+async function GetBlog(db) {
+  state.loading = true;
+  const blogRef = collection(db, 'blog');
+  const blogs = query(blogRef, orderBy("created", "desc"), where('status', '==', 'LIVE'));
+  const blogSnashot = await getDocs(blogs);
+  state.blog = blogSnashot.docs.map(doc => doc.data());
+  state.loading = false;
+}
 
 export async function GetSiteInfo(db) {
   const siteRef = collection(db, 'siteinfo');

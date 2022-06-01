@@ -216,23 +216,25 @@ function Navigator() {
   const snap = useSnapshot(state);
   const nav = useRef(null);
 
-  // Glow on Spacebar
-  window.addEventListener('keydown', (e) => {
-    if (e.key === 'Shift') {
-      e.preventDefault();
-      nav.current.classList.add("glow")
-    } else {
-      return;
-    }
-  })
-  window.addEventListener('keyup', (e) => {
-    if (e.key === 'Shift') {
-      e.preventDefault();
-      nav.current.classList.remove("glow")
-    } else {
-      return;
-    }
-  })
+  if (nav.current) {
+    // Glow on Spacebar
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Shift') {
+        e.preventDefault();
+        nav.current.classList.add("glow")
+      } else {
+        return;
+      }
+    })
+    window.addEventListener('keyup', (e) => {
+      if (e.key === 'Shift') {
+        e.preventDefault();
+        nav.current.classList.remove("glow")
+      } else {
+        return;
+      }
+    })
+  };
 
   const onControlledDrag = (e, position) => {
     let { x, y } = position;

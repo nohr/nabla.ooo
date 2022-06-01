@@ -3,7 +3,9 @@ import CanvasComp from './components/Canvas/Canvas'
 import UI from './components/UI/UI'
 import { state } from './components/UI/state'
 import { getGPUTier } from 'detect-gpu';
-
+import {
+  BrowserRouter as Router,
+} from 'react-router-dom'
 //App 
 function App() {
   // GPU
@@ -28,10 +30,10 @@ function App() {
 
 
   return (
-    <>
+    <Router>
       <UI />
       <CanvasComp />
-    </>
+    </Router>
   );
 }
 

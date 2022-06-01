@@ -29,6 +29,8 @@ export const state = proxy({
     //Search
     query: '',
     mediums: [],
+    entities: [],
+    projectNames: [],
     //Theme
     theme: "light",
     light: {

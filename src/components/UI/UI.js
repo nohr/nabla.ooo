@@ -15,9 +15,9 @@ import NotFound from "../Stream/NotFound"
 import { Page } from '../Stream/Page.jsx'
 import { Results } from './search'
 import {
-  BrowserRouter as Router,
   Routes,
-  Route
+  Route,
+  useLocation
 } from "react-router-dom"
 import CircleType from "circletype"
 
@@ -132,6 +132,9 @@ function UI() {
     }
   }, [])
 
+
+  const location = useLocation();
+  console.log(location.search);
   var x = window.matchMedia("(max-width: 768px)");
   if (x.matches) {
     //Mobile
@@ -152,7 +155,7 @@ function UI() {
         <audio ref={audio} loop>
           <source src={tardigradefile}></source>
         </audio>
-        <Router>
+        <>
           <ThemeProvider theme={snap.theme === 'light' ? snap.light : snap.dark}>
             <GlobalStyle />
             <Navigator />
@@ -170,12 +173,12 @@ function UI() {
               {snap.clients.map((work) => (
                 <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`Nabla & ${work.name}`} id={`${work.id}`} />} />
               ))}
-              <Route path={`/results`} element={<Results />} />
+              <Route path={`${location.search}`} element={<Results />} />
               {/* <Route path='*' element={NotFound} /> */}
               {/* <Redirect from="*" to="/404" /> */}
             </Routes>
           </ThemeProvider>
-        </Router>
+        </>
       </>
     )
   }
