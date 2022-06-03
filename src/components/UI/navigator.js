@@ -1,13 +1,90 @@
 //Navigator -- Child of <UI />
 import React, { useRef } from "react"
-import { state } from './state'
-import { useSnapshot } from 'valtio'
+import { state } from "./state"
+import { useSnapshot } from "valtio"
 import { Folder } from "./style"
 import styled from "styled-components"
 import { NavLink } from "react-router-dom"
-import Draggable from 'react-draggable'
-import { SvgNabla, Spinner, Arrow, SideArrow, Grabber } from './svg'
-import { Search } from './search'
+import Draggable from "react-draggable"
+import { SvgNabla, Spinner, Arrow, SideArrow, Grabber } from "./svg"
+import { Search } from "./search"
+
+function Navigator() {
+  const snap = useSnapshot(state);
+  const nav = useRef(null);
+
+  if (nav.current) {
+    // Glow on Spacebar
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Shift") {
+        e.preventDefault();
+        nav.current.classList.add("glow")
+      } else {
+        return;
+      }
+    })
+    window.addEventListener("keyup", (e) => {
+      if (e.key === "Shift") {
+        e.preventDefault();
+        nav.current.classList.remove("glow")
+      } else {
+        return;
+      }
+    })
+  };
+
+  const onControlledDrag = (e, position) => {
+    let { x, y } = position;
+    state.navPosition = { x, y };
+    state.prtPosition = { x, y };
+    state.setPosition = { x, y };
+
+    nav.current.classList.add("glow")
+  };
+
+  return (
+    //NAV
+    <Draggable nodeRef={nav} handle=".grabber" bounds=".container" onDrag={onControlledDrag} >
+      <Nav ref={nav} className="Panel nav">
+        <div className="header">
+          <SvgNabla />
+          <div className="quote w">{`${state.quotes}`}</div>
+        </div>
+        <Search />
+        <div className="grid">
+          <NavLink className="li w" to="/info">
+            Info
+          </NavLink>
+          <NavLink className="li w" to="/store">
+            Store
+          </NavLink >
+          <Folder className="li folder proLink" tabIndex="1"
+          >
+            Projects
+            {snap.isPro ? <SideArrow /> : <Arrow />}
+          </Folder>
+          <Folder className="li folder optLink" tabIndex="1"
+          >
+            Options
+            {snap.isOpt ? <SideArrow /> : <Arrow />}
+          </Folder>
+          {/* <NavLink className="li w" to="/blog" style={{ display: "none" }}>
+            Blog
+          </NavLink >
+          <NavLink className="li w" to="/contrast" style={{ display: "none" }}>
+            Contrast
+          </NavLink > */}
+          {/* force reload */}
+          {snap.playMusic}
+        </div>
+        <p className="song" style={state.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true; }} tabIndex="0">nohri - tardigrade</p>
+        {snap.loading ? <Spinner /> : <Grabber />}
+      </Nav>
+    </Draggable>
+  )
+}
+
+export default Navigator
 
 const Nav = styled.div`
   padding: 0em 42.5px 30px 42.5px;
@@ -43,6 +120,7 @@ const Nav = styled.div`
     }
 
     .quote{
+      text-indent: 0 !important;
       padding: 4px 0 4px;
       font-size: 10px;
       height: 19.5px !important;
@@ -211,78 +289,3 @@ export const Homer = styled(NavLink)`
   }
 
 `
-
-function Navigator() {
-  const snap = useSnapshot(state);
-  const nav = useRef(null);
-
-  if (nav.current) {
-    // Glow on Spacebar
-    window.addEventListener('keydown', (e) => {
-      if (e.key === 'Shift') {
-        e.preventDefault();
-        nav.current.classList.add("glow")
-      } else {
-        return;
-      }
-    })
-    window.addEventListener('keyup', (e) => {
-      if (e.key === 'Shift') {
-        e.preventDefault();
-        nav.current.classList.remove("glow")
-      } else {
-        return;
-      }
-    })
-  };
-
-  const onControlledDrag = (e, position) => {
-    let { x, y } = position;
-    state.navPosition = { x, y };
-    state.prtPosition = { x, y };
-    state.setPosition = { x, y };
-
-    nav.current.classList.add("glow")
-  };
-
-  return (
-    //NAV
-    <Draggable nodeRef={nav} handle=".grabber" bounds=".container" onDrag={onControlledDrag} >
-      <Nav ref={nav} className="Panel nav">
-        <div className='header'>
-          <SvgNabla />
-          <div className="quote w">{`${state.quotes}`}</div>
-        </div>
-        <Search />
-        <div className="grid">
-          <NavLink className="li w" to="/info">
-            Info
-          </NavLink>
-          <NavLink className="li w" to="/store">
-            Store
-          </NavLink >
-          <Folder className="li folder portLink" tabIndex="1">
-            Projects
-            {snap.isPort ? <SideArrow /> : <Arrow />}
-          </Folder>
-          <Folder className="li folder settLink" tabIndex="1">
-            Options
-            {snap.isSett ? <SideArrow /> : <Arrow />}
-          </Folder>
-          <NavLink className="li w" to="/blog" style={{ display: "none" }}>
-            Blog
-          </NavLink >
-          <NavLink className="li w" to="/contrast" style={{ display: "none" }}>
-            Contrast
-          </NavLink >
-          {/* force reload */}
-          {snap.playMusic}
-        </div>
-        <p className="song" style={state.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isSett = true; }} tabIndex="0">nohri - tardigrade</p>
-        {snap.loading ? <Spinner /> : <Grabber />}
-      </Nav>
-    </Draggable>
-  )
-}
-
-export default Navigator

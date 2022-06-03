@@ -1,9 +1,8 @@
 import React from "react";
 import '../../App.css'
-import { Container } from "../UI/style";
+import { Container } from "./Page";
 // import { state } from '../UI/state'
 // import { useSnapshot } from 'valtio'
-import useDocumentTitle from "../UI/documentTitle";
 import { Header, OldCD } from "../UI/svg";
 
 // const ContactForm = () => {
@@ -47,13 +46,15 @@ import { Header, OldCD } from "../UI/svg";
 //   );
 // };
 
-function Info() {
-  useDocumentTitle("Info");
-
+function Info(props) {
   return (
     <>
       <Header id='info' />
-      <Container className="container info">
+      <Container className="container info"
+        opacity={props.opacity}
+        pointerEvents={props.pointerEvents}
+        transition={props.transition}
+      >
         <OldCD />
         <h1 style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }}
         >aite@nabla.ooo</h1>

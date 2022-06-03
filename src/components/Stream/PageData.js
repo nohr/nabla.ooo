@@ -11,8 +11,8 @@ const ImgGrid = ({ work }) => {
     function setSelectedImg(selected) {
         state.selectedImg = selected;
         setTimeout(() => {
-            state.isPort = false;
-            state.isSett = false;
+            state.isPro = false;
+            state.isOpt = false;
 
         }, 300);
     }

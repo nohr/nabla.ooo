@@ -1,14 +1,14 @@
 //Options -- Child of Panel
 import React, { useRef } from "react"
-import { state } from './state'
-import { useSnapshot } from 'valtio'
-import Draggable from 'react-draggable'
+import { state } from "./state"
+import { useSnapshot } from "valtio"
+import Draggable from "react-draggable"
 import { Folder } from "./style"
 import styled from "styled-components"
 import useWindowDimensions from "./window"
 import { DirectionIcon, ModeIcon, MuteIcon, PlayPauseIcon, ShowHideIcon } from "./svg"
 
-const Setter = styled.div`
+const Option = styled.div`
     padding: var(--panelPadding);
     padding-bottom: 0;
     position: absolute;
@@ -111,22 +111,22 @@ const Setter = styled.div`
 `
 
 function Options() {
-    const sett = useRef(null);
+    const opt = useRef(null);
     const snap = useSnapshot(state);
-    const settLink = document.querySelector(".settLink")
-    if (state.isSett) { settLink.classList.add("folderActive") }
-    if (state.selectedImg) { settLink.classList.remove("folderActive") }
+    let optLink = document.querySelector(".optLink")
+    if (state.selectedImg) { optLink.classList.remove("folderActive") }
+
     //Audio configured in App.js
 
     //DISPLAY
     //Toggle Theme
     const toggleTheme = () => {
         state.themeChanged = true;
-        state.theme === 'light' ? state.theme = 'dark' : state.theme = 'light';
+        state.theme === "light" ? state.theme = "dark" : state.theme = "light";
 
     }
     // Toggle Canvas Visibility
-    const canvas = document.getElementsByTagName('canvas')[0];
+    const canvas = document.getElementsByTagName("canvas")[0];
     function toggleCanvas() {
         if (!state.canvasVisible) {
             //Show Canvas
@@ -191,12 +191,12 @@ function Options() {
         const down2 = { x: 0, y: (state.navWidth * 2) - (state.dist * 2) };
 
         //Row
-        if (((state.direction ? vWidth : vHeight) - (state.navWidth * 2) - state.dist + 30) < (state.direction ? state.setPosition.x : state.setPosition.y) && state.isSett) {
+        if (((state.direction ? vWidth : vHeight) - (state.navWidth * 2) - state.dist + 30) < (state.direction ? state.setPosition.x : state.setPosition.y) && state.isOpt) {
             //goes over the right side
             if (state.setSwitched) {
                 state.setSwitched = true;
                 if (!state.prtSwitched) {
-                    if (state.isPort) {
+                    if (state.isPro) {
                         console.log("1");
                         return state.direction ? left1 : up1;
                     } else {
@@ -205,7 +205,7 @@ function Options() {
                         return state.direction ? right1 : down1;
                     }
                 } else {
-                    if (state.isPort) {
+                    if (state.isPro) {
                         console.log("3");
                         return state.direction ? left2 : up2;
                     } else {
@@ -217,7 +217,7 @@ function Options() {
             } else {
                 state.setSwitched = true;
                 if (!state.prtSwitched) {
-                    if (state.isPort) {
+                    if (state.isPro) {
                         state.setSwitched = true;
                         console.log("5");
                         return state.direction ? left1 : up1;
@@ -227,7 +227,7 @@ function Options() {
                         return state.direction ? right1 : down1;
                     }
                 } else {
-                    if (state.isPort) {
+                    if (state.isPro) {
                         console.log("7");
                         return state.direction ? left2 : up2;
                     } else {
@@ -237,7 +237,7 @@ function Options() {
                     }
                 }
             }
-        } else if (!state.isSett) {
+        } else if (!state.isOpt) {
             return { x: 0, y: 0 }
         } else {
             //is normal
@@ -245,13 +245,13 @@ function Options() {
                 state.setSwitched = false;
                 if (!state.prtSwitched) {
                     state.setSwitched = false;
-                    if (state.isPort) {
+                    if (state.isPro) {
                         return state.direction ? left1 : up1;
                     } else {
                         return state.direction ? left2 : up2;
                     }
                 } else {
-                    if (state.isPort) {
+                    if (state.isPro) {
                         return state.direction ? right1 : down1;
                     } else {
                         return state.direction ? right2 : down2;
@@ -259,13 +259,13 @@ function Options() {
                 }
             } else {
                 if (!state.prtSwitched) {
-                    if (state.isPort) {
+                    if (state.isPro) {
                         return state.direction ? right2 : down2;
                     } else {
                         return state.direction ? right1 : down1;
                     }
                 } else {
-                    if (state.isPort) {
+                    if (state.isPro) {
                         return state.direction ? left2 : up2;
                     } else {
                         return state.direction ? left1 : up1;
@@ -282,7 +282,7 @@ function Options() {
     const top = snap.direction ? "padding-top: 26px;" : snap.setSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
     const firstHeader = snap.direction ? { width: "100%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
     const secondHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
-    const hide = snap.isSett ? "opacity: 1; pointer-events: all; transition: 0.4s; " : "opacity: 0; pointer-events: none; transition: 0s;";
+    const hide = snap.isOpt ? "opacity: 1; pointer-events: all; transition: 0.4s; " : "opacity: 0; pointer-events: none; transition: 0s;";
     const headwidth = {
         first: {
             max: snap.direction ? "119%" : "100%",
@@ -295,8 +295,8 @@ function Options() {
     }
 
     return (
-        <Draggable nodeRef={sett} position={snap.setPosition} positionOffset={offset} onStart={() => false}>
-            <Setter hide={hide} layout={layout} top={top} ref={sett} className="Panel set">
+        <Draggable nodeRef={opt} position={snap.setPosition} positionOffset={offset} onStart={() => false}>
+            <Option hide={hide} layout={layout} top={top} ref={opt} className="Panel opt">
                 <p style={firstHeader}
                     id="audiohead"
                 >Audio</p>
@@ -320,8 +320,8 @@ function Options() {
                     {state.canvasVisible && <Folder onClick={() => togglePause(snap.paused)} className="li w"><PlayPauseIcon arg={2} />{snap.paused ? "Play" : "Pause"}</Folder>}
                     <Folder id="rowcolumn" onClick={() => toggleDirection()} className="li w"><DirectionIcon />{snap.direction ? "Column" : "Row"}</Folder>
                 </div>
-                {snap.isPort}
-            </Setter>
+                {snap.isPro}
+            </Option>
         </Draggable>
     );
 }

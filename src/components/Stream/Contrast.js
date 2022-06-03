@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container } from '../UI/style'
+import { Container } from "./Page";
 // import { useSnapshot } from 'valtio'
 // import { state } from '../UI/state'
 import { ContrastLogo } from "../UI/svg";
@@ -34,20 +34,24 @@ const ContrastWrap = styled.div`
       transition: 17s !important;
      }
 `
-function Contrast() {
-    useDocumentTitle("Contrast")
-    // const snap = useSnapshot(state);
-    // const nodeRef = useRef(null);
-    return (
-        <>
-            <Container className="container">
-                <ContrastWrap>
-                    <ContrastLogo />
-                    <p>It's ready when it's ready!</p>
-                </ContrastWrap>
-            </Container>
-        </>
-    )
+function Contrast(props) {
+  useDocumentTitle("Contrast")
+  // const snap = useSnapshot(state);
+  // const nodeRef = useRef(null);
+  return (
+    <>
+      <Container className="container"
+        opacity={props.opacity}
+        pointerEvents={props.pointerEvents}
+        transition={props.transition}
+      >
+        <ContrastWrap>
+          <ContrastLogo />
+          <p>It's ready when it's ready!</p>
+        </ContrastWrap>
+      </Container>
+    </>
+  )
 }
 
 export default Contrast

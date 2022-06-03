@@ -1,13 +1,13 @@
 //Projects -- Child of Panel
 import { useRef } from "react"
-import { state } from './state'
+import { state } from "./state"
 import useWindowDimensions from "./window"
-import { useSnapshot } from 'valtio'
-import Draggable from 'react-draggable'
+import { useSnapshot } from "valtio"
+import Draggable from "react-draggable"
 import { NavLink } from "react-router-dom"
 import styled from "styled-components"
 
-const Porter = styled.div`
+const Project = styled.div`
   padding: var(--panelPadding);
   padding-bottom: 0;
   position: absolute;
@@ -80,11 +80,10 @@ const Porter = styled.div`
 `
 
 function Projects() {
-  const port = useRef(null);
+  const pro = useRef(null);
   const snap = useSnapshot(state);
-  const portLink = document.querySelector(".portLink")
-  if (state.isPort) { portLink.classList.add("folderActive") }
-  if (state.selectedImg) { portLink.classList.remove("folderActive") }
+  let proLink = document.querySelector(".proLink")
+  if (state.selectedImg) { proLink.classList.remove("folderActive") }
 
   // offset and direction of panel from nav
   let vWidth = useWindowDimensions().width;
@@ -117,7 +116,7 @@ function Projects() {
           return snap.direction ? left1 : up1
         }
       }
-    } else if (!state.isPort) {
+    } else if (!state.isPro) {
       return { x: 0, y: 0 }
     } else {
       //is normal
@@ -147,7 +146,7 @@ function Projects() {
   const top = snap.direction ? "padding-top: 280x;" : snap.prtSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
   const firstHeader = snap.direction ? { width: "100%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
   const secondHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
-  const hide = snap.isPort ? "opacity: 1; pointer-events: all; transition: 0.2s; " : "opacity: 0; pointer-events: none; transition: 0s;";
+  const hide = snap.isPro ? "opacity: 1; pointer-events: all; transition: 0.2s; " : "opacity: 0; pointer-events: none; transition: 0s;";
   const headwidth = {
     first: {
       max: snap.direction ? "119%" : "100%",
@@ -162,8 +161,8 @@ function Projects() {
 
 
   return (
-    <Draggable nodeRef={port} position={snap.prtPosition} positionOffset={offset} onStart={() => false} >
-      <Porter hide={hide} layout={layout} top={top} grabbed={state.grabbed ? "" : ""} ref={port} className=" Panel prt">
+    <Draggable nodeRef={pro} position={snap.prtPosition} positionOffset={offset} onStart={() => false} >
+      <Project hide={hide} layout={layout} top={top} grabbed={state.grabbed ? "" : ""} ref={pro} className=" Panel pro">
         <p style={firstHeader}
           id="selfhead"
         >Self-Initiate</p>
@@ -172,7 +171,7 @@ function Projects() {
           onMouseLeave={() => { document.getElementById("selfhead").style.width = headwidth.first.min }}
         >
           {snap.selfs && snap.selfs.map((work) => (
-            <NavLink className="li w" to={`/${work.id}`} tabIndex={state.isPort ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
+            <NavLink className="li w" to={`/${work.id}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
           ))}
         </div>
         <p style={secondHeader}
@@ -183,11 +182,11 @@ function Projects() {
           onMouseLeave={() => { document.getElementById("clienthead").style.width = headwidth.second.min }}
         >
           {snap.clients && snap.clients.map((work) => (
-            <NavLink className="li w" to={`/${work.id}`} tabIndex={state.isPort ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
+            <NavLink className="li w" to={`/${work.id}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
           ))}
         </div>
-        {snap.isSett}
-      </Porter>
+        {snap.isOpt}
+      </Project>
     </Draggable >
   )
 }

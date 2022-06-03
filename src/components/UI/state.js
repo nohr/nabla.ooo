@@ -1,4 +1,4 @@
-import { proxy } from 'valtio'
+import { proxy } from "valtio"
 
 export const state = proxy({
     //UI
@@ -6,7 +6,7 @@ export const state = proxy({
     clients: [],
     sectors: [],
     blog: [],
-    quotes: '',
+    quotes: "",
     selectedImg: null,
     loading: true,
     containerWidth: 0,
@@ -14,8 +14,8 @@ export const state = proxy({
     sfxVolume: 1,
     // Panel
     navWidth: 270,
-    isPort: false,
-    isSett: false,
+    isPro: false,
+    isOpt: false,
     prtSwitched: false,
     setSwitched: false,
     direction: false,
@@ -27,10 +27,11 @@ export const state = proxy({
     modalPosition: { x: 0, y: 0 },
     dist: 79,
     //Search
-    query: '',
+    query: "",
     mediums: [],
     entities: [],
-    projectNames: [],
+    projects: [],
+    location: "",
     //Theme
     theme: "light",
     light: {
@@ -46,10 +47,10 @@ export const state = proxy({
         //Canvas
         sky: "#BFBFBF",
         fog: "#B8B8B8",
-        CD: '#E3B5A4',
-        CDHover: '#0A0A0A',
+        CD: "#E3B5A4",
+        CDHover: "#0A0A0A",
         CDRough: 0,
-        Surface: '#AEDEFF',
+        Surface: "#AEDEFF",
         SurfaceRough: 0.3,
         spotIntensity: 6,
         ambIntensity: 0.3,
@@ -70,11 +71,11 @@ export const state = proxy({
         sky: "#0D0D0D",
         fog: "#0D0D0D",
         CD: "#0A0A0A",
-        CDHover: '#E3B5A4',
+        CDHover: "#E3B5A4",
         CDRough: .1389,
-        Surface: '#005A5C',
+        Surface: "#005A5C",
         SurfaceRough: 30,
-        spotlight: '#009698',
+        spotlight: "#009698",
         spotIntensity: 5,
         ambIntensity: 0.8,
         rectIntensity: 0.21,

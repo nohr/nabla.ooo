@@ -1,10 +1,9 @@
 import React, { useRef } from "react"
-import '../../App.css'
-// import { state } from '../UI/state'
-// import { useSnapshot } from 'valtio'
-import { Container } from "../UI/style";
-import useDocumentTitle from "../UI/documentTitle";
-import { HashLink } from 'react-router-hash-link';
+import "../../App.css"
+// import { state } from "../UI/state"
+// import { useSnapshot } from "valtio"
+import { Container } from "./Page";
+import { HashLink } from "react-router-hash-link";
 import styled from "styled-components";
 import useFontFaceObserver from "use-font-face-observer";
 import { DiagonalArrow, Header } from "../UI/svg";
@@ -171,8 +170,7 @@ const StoreContainer = styled.div`
 
 
 
-function Store() {
-  useDocumentTitle("Store");
+function Store(props) {
   const ekoRef = useRef(null);
   // function FontObserver() {
   //   const isFontListLoaded = useFontFaceObserver([
@@ -188,7 +186,11 @@ function Store() {
   return (
     <>
       <Header id={"store"} />
-      <Container className="container">
+      <Container className="container"
+        opacity={props.opacity}
+        pointerEvents={props.pointerEvents}
+        transition={props.transition}
+      >
         <StoreContainer>
           <div className="eko">
             <div className="eko-thumb" ref={ekoRef} >
@@ -200,7 +202,7 @@ function Store() {
                 <DiagonalArrow />
               </HashLink>
               My first display font offers a stencil with a distinct futuristic style. <br />
-              <i style={{ opacity: ".5" }}>It's just what your acid graphics were missing!</i>
+              <i style={{ opacity: ".5" }}>It"s just what your acid graphics were missing!</i>
               <br />
               <a className="buyBtn" href="https://nablaooo.gumroad.com/l/ekodigi" target="_blank" rel="noopener noreferrer">
                 $30

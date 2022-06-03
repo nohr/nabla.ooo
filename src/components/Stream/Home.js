@@ -1,10 +1,8 @@
 import React from "react";
 import '../../App.css'
-import { Container } from "../UI/style";
-import useDocumentTitle from "../UI/documentTitle";
+import { Container } from "./Page";
 
 function Home() {
-    useDocumentTitle("Nabla");
     return (
         <>
             <Container className="hom container">

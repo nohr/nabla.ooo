@@ -12,6 +12,7 @@ const Modal = () => {
     const extension = link.pathname.split(".")
     const element = types.get(extension[extension.length - 1].toLowerCase())
     // console.log(element);
+
     const handleClick = (e) => {
         if (e.target.classList.contains('backdrop')) {
             state.selectedImg = null;

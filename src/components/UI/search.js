@@ -3,62 +3,77 @@ import { state } from "./state";
 import { useSnapshot } from "valtio";
 import styled from "styled-components"
 import { SearchIcon, ClearIcon, Header } from "./svg";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import useDocumentTitle from "./documentTitle";
-import { db } from "../..";
-import { collection, where, query, getDocs, orderBy } from "firebase/firestore/lite";
 
 let searchQuery;
 
 // Search
 export function Search() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchTerm = searchParams.get('search') || '';
+  const [placeholder, setPlaceholder] = useState("Search (alt + f)")
+  const searchTerm = searchParams.get("search") || "";
   const Bar = useRef(null);
-  const navigate = useNavigate();
-  const locationFull = useLocation();
-  const location = useLocation().pathname;
-  const byTitle = (search) => (title) => title.title.toLowerCase().includes((search || '').toLowerCase());
+  const byTitle = (search) => (title) => title.title.toLowerCase().includes((search || "").toLowerCase());
 
   useEffect(() => {
     let keys = {};
 
-    function handleKeyPress(e) {
-
-      if (e.key === "Escape") {
-        Bar.current.blur();
+    function handleClick() {
+      if (Bar.current === document.activeElement) {
+        setPlaceholder("Cancel (esc)")
         return;
-      }
-      if (e.key === 'Enter' || e.key === 'Shift' || e.key === 'Meta' || e.key === 'CapsLock' || e.key === 'ArrowUp' || e.key === 'ArrowLeft' || e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === 'Alt') {
+      } else {
+        setPlaceholder("Search (alt + f)")
         return;
       }
     }
 
-    function handleFocusCommand(e) {
+    function handleKeyPress(e) {
+      // esc to clear search and blur input
+      if (e.key === "Escape") {
+        setSearchParams({});
+        Bar.current.blur();
+        setPlaceholder("Search (alt + f)")
+        return;
+      }
+      // Do nothing when these are pressed
+      if (e.key === "Enter" || e.key === "Shift" || e.key === "Meta" || e.key === "CapsLock" || e.key === "ArrowUp" || e.key === "ArrowLeft" || e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === "Alt") {
+        return;
+      }
+    }
+
+    function handleCommandPress(e) {
       // Alt + f to focus search
       let { keyCode, type } = e || Event;
-      const isKeyUp = (type === 'keyup');
+      const isKeyUp = (type === "keyup");
       keys[keyCode] = isKeyUp;
       if (isKeyUp && keys[18] && keys[70]) {
         keys = {};
         Bar.current.focus();
+        setPlaceholder("Cancel (esc)")
       } else {
         return;
       }
     }
-    Bar.current.addEventListener("keyup", handleKeyPress);
-    window.addEventListener("keyup", handleFocusCommand);
+    if (Bar.current) {
+      Bar.current.addEventListener("keyup", handleKeyPress);
+    }
+    window.addEventListener("click", handleClick)
+    window.addEventListener("keyup", handleCommandPress);
 
     return () => {
-      Bar.current.removeEventListener("keyup", handleKeyPress);
-      window.removeEventListener("keyup", handleFocusCommand);
+      if (Bar.current) {
+        Bar.current.removeEventListener("keyup", handleKeyPress);
+      }
+      window.removeEventListener("click", handleClick)
+      window.removeEventListener("keyup", handleCommandPress);
     }
-  }, [searchTerm])
+  }, [searchTerm, setSearchParams])
 
   function handleChange(e) {
     const search = e.target.value;
     searchQuery = e.target.value;
-
 
     if (search) {
       setSearchParams({ search });
@@ -66,13 +81,13 @@ export function Search() {
       setSearchParams({});
     }
 
-    console.log(locationFull);
   };
 
   return (
     <SearchWrapper id="search">
       <SearchBar
-        placeholder="Search (alt + f)"
+        placeholder={placeholder}
+        // onBlur={}
         type="text"
         value={searchTerm}
         onChange={(e) => handleChange(e)}
@@ -105,15 +120,15 @@ export function Results() {
 
   useEffect(() => {
     setResult(searchQuery)
-  }, [searchQuery])
+  }, [])
 
   return (
     <>
       <Header id={result} />
       <ResultsContainer className="container">
         <Params>
-          {snap.mediums.map(one => {
-            return <h4>{one}</h4>
+          {snap.mediums.map((one, i) => {
+            return <h4 key={i}>{one}</h4>
           })}
         </Params>
         <Sector>
@@ -280,7 +295,7 @@ const ResultsContainer = styled.div`
   align-items: flex-start;
   align-content: flex-start;
   position: fixed;
-  z-index: 470;
+  z-index: 3500;
   overflow-y: overlay;
   -webkit-overflow-scrolling: touch;
   height: 100%;
