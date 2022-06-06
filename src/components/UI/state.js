@@ -1,13 +1,23 @@
 import { proxy } from "valtio"
 
 export const state = proxy({
-    //UI
+    // Firebase
     selfs: [],
     clients: [],
     sectors: [],
     blog: [],
+    products: [],
+    projects: [],
+    projectNames: [],
+    projectClients: [],
+    projectYears: [],
+    mediums: [],
+    by: [],
     quotes: "",
+    statement: null,
+    //UI
     selectedImg: null,
+    selectedDesc: null,
     loading: true,
     containerWidth: 0,
     themeChanged: false,
@@ -16,6 +26,7 @@ export const state = proxy({
     navWidth: 270,
     isPro: false,
     isOpt: false,
+    drag: false,
     prtSwitched: false,
     setSwitched: false,
     direction: false,
@@ -25,13 +36,8 @@ export const state = proxy({
     prtPosition: { x: 0, y: 0 },
     setPosition: { x: 0, y: 0 },
     modalPosition: { x: 0, y: 0 },
+    descPosition: { x: 0, y: 0 },
     dist: 79,
-    //Search
-    query: "",
-    mediums: [],
-    entities: [],
-    projects: [],
-    location: "",
     //Theme
     theme: "light",
     light: {
@@ -42,8 +48,10 @@ export const state = proxy({
         link: "#00538f",
         LiHover: "#00538f67",
         LiActiveBackground: "#5e5e5e67",
-        blend: "unset",
+        blend: "plus-lighter",
         backdrop: "rgba(255, 255, 255, 0.8)",
+        layerBG: '#ffffff20',
+        bwElement: '#000',
         //Canvas
         sky: "#BFBFBF",
         fog: "#B8B8B8",
@@ -65,8 +73,10 @@ export const state = proxy({
         link: "#C6182A",
         LiHover: "#00969867",
         LiActiveBackground: "#ebebeb67",
-        blend: "unset",
+        blend: "luminosity",
         backdrop: "rgba(0, 0, 0, 0.8)",
+        layerBG: '#00000020',
+        bwElement: '#fff',
         //Canvas
         sky: "#0D0D0D",
         fog: "#0D0D0D",
@@ -76,7 +86,7 @@ export const state = proxy({
         Surface: "#005A5C",
         SurfaceRough: 30,
         spotlight: "#009698",
-        spotIntensity: 5,
+        spotIntensity: 0.5,
         ambIntensity: 0.8,
         rectIntensity: 0.21,
         noise: 0.045,

@@ -6,11 +6,13 @@ import reportWebVitals from "./reportWebVitals";
 import { initializeApp } from "firebase/app"
 import { getFirestore, collection, getDocs, orderBy, where, query } from "firebase/firestore/lite";
 import { state } from "./components/UI/state";
-
+import {
+  BrowserRouter as Router, useLocation,
+} from 'react-router-dom'
 
 const container = document.getElementById("root");
 const root = createRoot(container);
-root.render(<App tab="home" />);
+root.render(<Router><App tab="home" /></Router>);
 
 
 reportWebVitals();
@@ -29,8 +31,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
+// Initialize location and search term
+// let value = URLSearchParams.search.slice(8).toLocaleLowerCase().split('&')[0];
+
+
 // Get works from database
-export async function GetWorks(db) {
+export async function GetWorks(db, term) {
   state.loading = true;
   const colRef = collection(db, "portfolio");
   const selfs = query(colRef, orderBy("date", "desc"), where("type", "==", "self"));
@@ -41,29 +47,47 @@ export async function GetWorks(db) {
   state.selfs = selfsSnapshot.docs.map(doc => doc.data());
   state.clients = clientsSnapshot.docs.map(doc => doc.data());
 
-  const entitiesRef = query(colRef, orderBy("date", "desc"), where("date", "!=", null))
-  const entitiesSnapshot = await getDocs(entitiesRef);
-  state.entities = entitiesSnapshot.docs.map(doc => doc.data());
+  const projectClientsRef = query(colRef, orderBy("name", "asc"), where("name", "!=", null))
+  const projectClientsSnapshot = await getDocs(projectClientsRef);
+  state.projectClients = projectClientsSnapshot.docs.map(doc => doc.data());
 
-  // Get complete list of projects
-  let projectsRef = query(colRef, orderBy("projectName", "asc"), where("projectName", "!=", null))
+  // TODO: siphon if term is visible
+  let projectsRef;
+  projectsRef = query(colRef, orderBy("projectName", "asc"))
+
+  if (term) {
+    console.log(term);
+  }
+
   const projectsSnapshot = await getDocs(projectsRef);
   projectsSnapshot.docs.map(doc => doc.data()).forEach((one) => {
     state.projects.push(one)
-  })
-  console.log(state.projects);
-
-  let mediumRef = query(colRef, orderBy("projectMedium", "asc"), where("projectMedium", "!=", null))
-  const mediumSnapshot = await getDocs(mediumRef);
-  mediumSnapshot.docs.map(doc => doc.data()).forEach((one) => {
     if (state.mediums.indexOf(one["projectMedium"]) === -1) {
       state.mediums.push(one["projectMedium"])
     }
   })
 
+  state.projects.map(({ projectYear, by }) => {
+    let year;
+    if (projectYear) {
+      year = eval(projectYear.toDate().getFullYear());
+      if (state.projectYears.indexOf(year) === -1) {
+        state.projectYears.push(year)
+        state.projectYears.sort(function (a, b) { if (b) { return b - a } });
+      }
+    }
+
+    let byInitials = by;
+    if (state.by.indexOf(byInitials) === -1) {
+      state.by.push(byInitials)
+    }
+  })
   state.loading = false;
 }
-GetWorks(db);
+
+GetWorks(db)
+
+
 
 async function GetBlog(db) {
   state.loading = true;

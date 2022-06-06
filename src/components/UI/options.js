@@ -12,7 +12,7 @@ const Option = styled.div`
     padding: var(--panelPadding);
     padding-bottom: 0;
     position: absolute;
-    z-index: 3500;
+    z-index: 4000;
     left: var(--edge);
     margin: 20px 0 0 0;
     display: grid;
@@ -116,7 +116,7 @@ function Options() {
     let optLink = document.querySelector(".optLink")
     if (state.selectedImg) { optLink.classList.remove("folderActive") }
 
-    //Audio configured in App.js
+    //Audio configured in UI.js
 
     //DISPLAY
     //Toggle Theme

@@ -17,7 +17,7 @@ import { useLocation } from "react-router-dom";
 
 export const Container = styled.div`
   display: flex;
-  gap: 60px;
+  gap: 30px;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
@@ -34,7 +34,13 @@ export const Container = styled.div`
   pointer-events: ${props => props.pointerEvents};
   opacity: ${props => props.opacity};
 
+    @media only screen and (max-width: 1866px) {
+      padding-top: ${props => props.paddingTop} !important;
+      padding-bottom:  ${props => props.paddingTop} !important;
+    }
+
   & .backdrop{
+    cursor: alias;
     position: fixed;
     top: 0;
     left: 0;
@@ -68,6 +74,31 @@ export const Container = styled.div`
     }
   }
 
+  & .backdrop .description{
+border: 1px solid ${props => props.theme.panelColor};
+border-radius: 10px;
+position: absolute;
+bottom: 20px;
+left: 20px;
+z-index: 500;
+padding: 10px;
+white-space: break-spaces;
+line-height: 25px;
+text-align: justify;
+width: 60ch;
+overflow-x: hidden;
+opacity: ${props => props.opacity};
+transition: 0.3s;  
+backdrop-filter: blur( 4px );
+  -webkit-backdrop-filter: blur( 4px );
+/* background-color: ${props => props.theme.sky}; */
+
+&:hover{
+  cursor: grab;
+}
+
+  }
+
   & .backdrop object:hover{
     cursor: grab;
   }
@@ -97,14 +128,6 @@ export const Container = styled.div`
           -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
           /* transition: 0.3s; */
     }
-    .oldNabla{
-      fill: ${props => props.theme.panelColor};
-      overflow: visible;
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%,-60%);
-    }
 `
 
 
@@ -114,7 +137,7 @@ function Page(id) {
     const location = useLocation();
     let opacity = location.search.length > 0 ? "0" : "1";
     let pointerEvents = location.search.length > 0 ? "none" : "all";
-    let transition = location.search.length > 0 ? "0.9s" : "unset";
+    let transition = location.search.length > 0 ? "0.3s" : "unset";
 
       //Toggle active panel buttons
   useEffect(() => {
@@ -141,20 +164,20 @@ function Page(id) {
     return <NotFound opacity={opacity} pointerEvents={pointerEvents} transition={transition}/>
     } else {
         return (
-        <>  
-            <Header id={id.id}/>
-                <Container className="container"
-                    opacity={opacity}
-                    pointerEvents={pointerEvents}
-                    transition={transition}
-                >
-                <PageData id={id.id}/>
-                    {snap.selectedImg ? <Modal /> : null}
+          <>
+            <Header id={id.id} />
+            <Container className="container"
+              opacity={opacity}
+              pointerEvents={pointerEvents}
+              transition={transition}
+              paddingTop={'180px'}
+            >
+              <PageData id={id.id} />
+              {snap.selectedImg ? <Modal /> : null}
             </Container>
-        </>
-    )
-} 
+          </>
+      )
+  }
 }
-
 
 export { Page }

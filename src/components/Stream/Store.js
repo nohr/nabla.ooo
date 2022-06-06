@@ -80,7 +80,7 @@ const StoreContainer = styled.div`
       /* filter: blur(30px); */
     }
 
-    .eko-thumb:hover{
+    /* .eko-thumb:hover{
   	animation: pulse 4s infinite;
 
     }
@@ -97,7 +97,7 @@ const StoreContainer = styled.div`
 	100% {
 		text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
 	}
-}
+} */
 
   .desc {
       padding: 0 20px;
@@ -150,6 +150,9 @@ const StoreContainer = styled.div`
       font-style: normal !important;
       font-weight: 800;
       background-color: #c94343;
+      -webkit-box-shadow: 0px 3px 10px 1px #c94343;
+      -moz-box-shadow: 0px 3px 10px 1px #c94343;
+      box-shadow: 0px 3px 10px 1px #c94343;
       color: #ebebeb !important;
       cursor: pointer;
       display: inline;

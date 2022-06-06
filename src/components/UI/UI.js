@@ -37,17 +37,23 @@ function UI() {
 
   // CircleType
   useEffect(() => {
+    let song;
     let title = document.querySelector(".song");
     if (title) {
-      const song = new CircleType(title).radius(128);
+      song = new CircleType(title).radius(128);
     }
-  }, [])
+    return () => {
+      title = null;
+      song = null;
+    }
+  })
 
   // Exit modals
   useEffect(() => {
     function handleKeyPress(e) {
       // esc to clear search and blur input
       if (e.key === "Escape") {
+        state.selectedDesc = null;
         state.selectedImg = null;
         return;
       }
@@ -65,6 +71,7 @@ function UI() {
 
   // Remove modal on link change
   useEffect(() => {
+    state.selectedDesc = null;
     state.selectedImg = null;
     let proLink = document.querySelector(".proLink");
     let optLink = document.querySelector(".optLink");
@@ -84,7 +91,7 @@ function UI() {
       proLink = null;
       optLink = null;
     }
-  }, [location])
+  }, [location, close])
 
 
   // PANELS
@@ -182,7 +189,7 @@ function UI() {
     }
   }, [])
 
-  var x = window.matchMedia("(max-width: 768px)");
+  var x = window.matchMedia("(max-width: 760px)");
   if (x.matches) {
     //Mobile
     return (

@@ -3,7 +3,9 @@ import '../../App.css'
 import { Container } from "./Page";
 // import { state } from '../UI/state'
 // import { useSnapshot } from 'valtio'
+import styled from "styled-components"
 import { Header, OldCD } from "../UI/svg";
+import { AA, BySign } from "../UI/search";
 
 // const ContactForm = () => {
 //   const [status, setStatus] = useState("Send");
@@ -46,6 +48,33 @@ import { Header, OldCD } from "../UI/svg";
 //   );
 // };
 
+const Contact = styled.div`
+position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+   display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+
+    .oldNabla{
+      fill: ${props => props.theme.panelColor};
+      padding-bottom: 100px;
+      overflow: visible;
+      /* position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%,-60%); */
+    }
+`
+const Email = styled.div`
+  display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+ `
+
 function Info(props) {
   return (
     <>
@@ -55,9 +84,14 @@ function Info(props) {
         pointerEvents={props.pointerEvents}
         transition={props.transition}
       >
-        <OldCD />
-        <h1 style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }}
-        >aite@nabla.ooo</h1>
+        <Contact>
+          <OldCD />
+          <h1>Aite Aigbe</h1>
+          <Email>
+            <BySign byColor={AA[0]} byGradient={AA[1]} >AA</BySign><h3>:</h3><h3 style={{ display: 'inline-block' }}
+            >{` ${`aite@nabla.ooo`}`}</h3>
+          </Email>
+        </Contact>
         {/* <ContactForm /> */}
       </Container>
     </>

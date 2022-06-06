@@ -1,5 +1,5 @@
 //Navigator -- Child of <UI />
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { state } from "./state"
 import { useSnapshot } from "valtio"
 import { Folder } from "./style"
@@ -13,25 +13,35 @@ function Navigator() {
   const snap = useSnapshot(state);
   const nav = useRef(null);
 
-  if (nav.current) {
-    // Glow on Spacebar
-    window.addEventListener("keydown", (e) => {
-      if (e.key === "Shift") {
-        e.preventDefault();
-        nav.current.classList.add("glow")
-      } else {
-        return;
-      }
-    })
-    window.addEventListener("keyup", (e) => {
-      if (e.key === "Shift") {
-        e.preventDefault();
-        nav.current.classList.remove("glow")
-      } else {
-        return;
-      }
-    })
-  };
+  let pro;
+  let opt;
+  useEffect(() => {
+    pro = document.querySelector('.pro');
+    opt = document.querySelector('.opt');
+    if (nav.current) {
+      // Glow on Spacebar
+      window.addEventListener("keydown", (e) => {
+        if (e.key === "Shift") {
+          e.preventDefault();
+          nav.current.classList.add("glow")
+          pro.classList.add("glow")
+          opt.classList.add("glow")
+        } else {
+          return;
+        }
+      })
+      window.addEventListener("keyup", (e) => {
+        if (e.key === "Shift") {
+          e.preventDefault();
+          nav.current.classList.remove("glow")
+          pro.classList.remove("glow")
+          opt.classList.remove("glow")
+        } else {
+          return;
+        }
+      })
+    };
+  }, [])
 
   const onControlledDrag = (e, position) => {
     let { x, y } = position;
@@ -44,7 +54,8 @@ function Navigator() {
 
   return (
     //NAV
-    <Draggable nodeRef={nav} handle=".grabber" bounds=".container" onDrag={onControlledDrag} >
+    <Draggable nodeRef={nav} handle=".grabber" bounds="body"
+      onDrag={onControlledDrag} >
       <Nav ref={nav} className="Panel nav">
         <div className="header">
           <SvgNabla />
@@ -58,12 +69,12 @@ function Navigator() {
           <NavLink className="li w" to="/store">
             Store
           </NavLink >
-          <Folder className="li folder proLink" tabIndex="1"
+          <Folder className="li folder proLink" tabIndex="-1"
           >
             Projects
             {snap.isPro ? <SideArrow /> : <Arrow />}
           </Folder>
-          <Folder className="li folder optLink" tabIndex="1"
+          <Folder className="li folder optLink" tabIndex="-1"
           >
             Options
             {snap.isOpt ? <SideArrow /> : <Arrow />}
