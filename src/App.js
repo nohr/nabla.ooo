@@ -4,33 +4,71 @@ import UI from './components/UI/UI'
 import { state } from './components/UI/state'
 import { getGPUTier } from 'detect-gpu';
 
+// Search Imports
+import { history } from 'instantsearch.js/es/lib/routers';
+import { InstantSearch } from 'react-instantsearch-hooks-web';
+import algoliasearch from "algoliasearch"
+
+
 //App 
 function App() {
+  const startTime = performance.now();
   // GPU
   (async () => {
     const gpuTier = await getGPUTier();
-
-    if (gpuTier.tier >= 3 || gpuTier.isMobile === true) {
-      //TODO: change to false for live build
-      state.paused = true;
+    if (state.cached) {
+      return;
+    } else {
+      if (gpuTier.tier >= 3 || gpuTier.isMobile === true) {
+        //TODO: change to false for live build
+        state.paused = true;
+        console.log(gpuTier);
+      }
     }
-
-    console.log(gpuTier);
-    // Example output:
-    // {
-    //   "tier": 1,
-    //   "isMobile": false,
-    //   "type": "BENCHMARK",
-    //   "fps": 21,
-    //   "gpu": "intel iris graphics 6100"
-    // }
   })();
 
+  // Search
+  const searchClient = algoliasearch('QYRMFVSZ3U', 'f5aad11cf6f85eb1bf098a3f6f346290');
+  const indexName = 'projects';
+  const routing = {
+    router: history(),
+    stateMapping: {
+      stateToRoute(uiState) {
+        const indexUiState = uiState[indexName];
+        return {
+          query: indexUiState.query,
+          // categories: indexUiState.menu?.categories,
+          // brand: indexUiState.refinementList?.refinementList.brand,
+          // page: indexUiState.page,
+        };
+      },
+      routeToState(routeState) {
+        return {
+          [indexName]: {
+            query: routeState.query,
+            // menu: {
+            //   categories: routeState.categories,
+            // },
+            // refinementList: {
+            //   brand: routeState.brand,
+            // },
+            // page: routeState.page,
+          },
+        };
+      },
+    },
+  };
+
+  const duration = performance.now() - startTime;
+  console.log(`App took ${duration}ms`);
   return (
-    <>
+    <InstantSearch
+      searchClient={searchClient}
+      indexName="projects"
+      routing={routing}>
       <UI />
       <CanvasComp />
-    </>
+    </InstantSearch>
   );
 }
 

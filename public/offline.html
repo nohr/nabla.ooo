@@ -29,15 +29,9 @@
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" href="./images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="theme-color" content="#D0D0D0" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#C1C2C2" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#0D0D0D" media="(prefers-color-scheme: dark)">
     <meta name="description" content="Hompage of Nabla Ltd." />
-    <link rel="preload"
-        href="https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff2?alt=media&token=a5430e10-d4fe-4325-89cc-f64a0e18ac6f"
-        as="font" type="font/woff2" crossorigin>
-    <link rel="preload"
-        href="https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff?alt=media&token=9ba41528-4ac1-46a6-8b67-b5141cca944c"
-        as="font" type="font/woff" crossorigin>
     <link rel="manifest" href="./manifest.json" />
     <link rel="apple-touch-icon" href="./images/logo1024.png" />
     <title>Nabla</title>
@@ -78,7 +72,7 @@
             top: 80px;
             left: 80px;
             border-radius: 50%;
-            box-shadow: 0 1.8px 0 0 #006C6E;
+            box-shadow: 0 1.8px 0 0 #E3D0CA;
             transform-origin: 20px 20.9px;
         }
 
@@ -100,15 +94,27 @@
             transform: translateZ(0) scale(1);
             backface-visibility: hidden;
             transform-origin: 0 0;
-            /* see note above */
         }
 
-        @font-face {
-            font-family: "ekodigital";
-            src: url("https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff2?alt=media&token=a5430e10-d4fe-4325-89cc-f64a0e18ac6f") format("woff2"),
-                url("https://firebasestorage.googleapis.com/v0/b/nabla7.appspot.com/o/assets%2Fekodigital-webfont.woff?alt=media&token=9ba41528-4ac1-46a6-8b67-b5141cca944c") format("woff");
-            font-weight: normal;
-            font-style: normal;
+        .canvasSpinner {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            display: inline-block;
+            overflow: hidden;
+            background: none;
+        }
+
+        .gugmu9vdpaw p {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -55%);
+            color: #E3D0CA;
+            text-shadow: 0 1px 1 1 #E3D0CA;
+            font-size: 12px;
         }
     </style>
 </head>

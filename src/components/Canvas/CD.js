@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import * as THREE from "three";
 import { useFrame } from '@react-three/fiber'
-import { state } from '../UI/state';
+import { state, cloud } from '../UI/state';
 
 function Ball(props) {
   const material = new THREE.MeshPhysicalMaterial({
@@ -42,8 +42,8 @@ export default function CD() {
   const group = useRef()
   // useFrame(() => {
   //   if (!state.paused) {
-  //     group.current.rotation.y += state.loading ? .009 : state.CDRotationX;
-  //     group.current.rotation.y += state.loading ? .009 : state.CDRotationY;
+  //     group.current.rotation.y += cloud.loading ? .009 : state.CDRotationX;
+  //     group.current.rotation.y += cloud.loading ? .009 : state.CDRotationY;
   //   }
   // });
 

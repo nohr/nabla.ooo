@@ -1,86 +1,33 @@
 import { useRef, useState, useEffect } from "react";
-import { state } from "./state";
+import { state, cloud } from "./state";
 import { useSnapshot } from "valtio";
 import styled from "styled-components"
-import { SearchIcon, ClearIcon, Header, Program } from "./svg";
-import { Link, useSearchParams } from "react-router-dom";
+import { SearchBarIcon, ClearIcon, Header, Program } from "./svg";
+import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import useDocumentTitle from "./documentTitle";
-import { useLocation } from "react-router-dom";
 //Audio Imports
 import useSound from "use-sound"
 import sound1 from "../Sounds/select.mp3"
-import { db } from "../..";
-import { collection, getDocs, orderBy, query, where } from "firebase/firestore/lite";
 // Search Imports
-import algoliasearch from 'algoliasearch/lite';
-import { history } from 'instantsearch.js/es/lib/routers';
-import { InstantSearch, SearchBox } from 'react-instantsearch-hooks-web';
+import { useHits, useRefinementList } from 'react-instantsearch-hooks-web';
+import { useSearchBox } from "react-instantsearch-hooks-web";
 
-const searchClient = algoliasearch('QYRMFVSZ3U', 'f5aad11cf6f85eb1bf098a3f6f346290');
-let searchQuery;
-
-const indexName = 'instant_search';
-
-const routing = {
-  router: history(),
-  stateMapping: {
-    stateToRoute(uiState) {
-      const indexUiState = uiState[indexName];
-      return {
-        search: indexUiState.query,
-        categories: indexUiState.menu?.categories,
-        brand: indexUiState.refinementList?.refinementList.brand,
-        page: indexUiState.page,
-      };
-    },
-    routeToState(routeState) {
-      return {
-        [indexName]: {
-          query: routeState.search,
-          menu: {
-            categories: routeState.categories,
-          },
-          refinementList: {
-            brand: routeState.brand,
-          },
-          page: routeState.page,
-        },
-      };
-    },
-  },
-};
-
-export function Kh() {
-  return (
-    <InstantSearch
-      searchClient={searchClient}
-      indexName="projects"
-      routing={routing}>
-      <SearchBox
-      // submitIconComponent={null}
-      />
-    </InstantSearch>
-  );
-}
 // Search
 export function Search() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [placeholder, setPlaceholder] = useState("Search (alt + f)")
-  const searchTerm = searchParams.get("search") || "";
-  let value;
+  const { query, refine, clear } = useSearchBox();
+  const [placeholder, setPlaceholder] = useState("Search (alt + z)")
   const Bar = useRef(null);
 
   useEffect(() => {
     let keys = {};
-    value = searchTerm.slice(8).toLocaleLowerCase().split('&')[0];
 
-    function handleClick() {
+    function handleClick(e) {
       if (Bar.current === document.activeElement) {
         setPlaceholder("Cancel (esc)")
         return;
       } else {
-        setPlaceholder("Search (alt + f)")
+        setPlaceholder("Search (alt + z)")
         return;
       }
     }
@@ -88,13 +35,13 @@ export function Search() {
     function handleKeyPress(e) {
       // esc to clear search and blur input
       if (e.key === "Escape") {
-        setSearchParams({});
+        refine('');
         Bar.current.blur();
-        setPlaceholder("Search (alt + f)")
+        setPlaceholder("Search (alt + z)")
         return;
       }
       // Do nothing when these are pressed
-      if (e.key === "Enter" || e.key === "Shift" || e.key === "Meta" || e.key === "CapsLock" || e.key === "ArrowUp" || e.key === "ArrowLeft" || e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === "Alt") {
+      if (e.key === "Enter" || e.key === "Shift" || e.key === "CapsLock" || e.key === "ArrowUp" || e.key === "ArrowLeft" || e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === "Alt") {
         return;
       }
     }
@@ -102,9 +49,10 @@ export function Search() {
     function handleCommandPress(e) {
       // Alt + f to focus search
       let { keyCode, type } = e || Event;
-      const isKeyUp = (type === "keyup");
-      keys[keyCode] = isKeyUp;
-      if (isKeyUp && keys[18] && keys[70]) {
+      const isKeyDown = (type === "keydown");
+      keys[keyCode] = isKeyDown;
+      if (isKeyDown && (e.altKey === true) && keys[90]) {
+        e.preventDefault();
         keys = {};
         Bar.current.focus();
         setPlaceholder("Cancel (esc)")
@@ -113,38 +61,25 @@ export function Search() {
       }
     }
     if (Bar.current) {
-      Bar.current.addEventListener("keyup", handleKeyPress);
+      Bar.current.addEventListener("keydown", handleKeyPress);
     }
-    window.addEventListener("click", handleClick)
-    window.addEventListener("keyup", handleCommandPress);
+    window.addEventListener("click", handleClick);
+    window.addEventListener("keydown", handleCommandPress);
 
     return () => {
       if (Bar.current) {
-        Bar.current.removeEventListener("keyup", handleKeyPress);
+        Bar.current.removeEventListener("keydown", handleKeyPress);
       }
-      window.removeEventListener("click", handleClick)
-      window.removeEventListener("keyup", handleCommandPress);
+      window.removeEventListener("click", handleClick);
+      window.removeEventListener("keydown", handleCommandPress);
     }
-  }, [searchTerm, setSearchParams])
-
-  async function handleSearch(term) {
-    state.loading = true;
-    const projectsSnapshot = await getDocs(query(collection(db, 'portfolio'), orderBy('projectName', 'asc', where('projectName', 'in', `${term}`))));
-    state.projects = projectsSnapshot.docs.map(doc => doc.data());
-    console.log(state.projects, term);
-    state.loading = false;
-  }
+  }, [query, refine])
 
   function handleChange(e) {
-    const search = e.target.value;
-    searchQuery = e.target.value;
-
-    // handleSearch(search)
-
-    if (search) {
-      setSearchParams({ search });
+    if (e.target.value) {
+      !state.colorWheel && refine(e.target.value);
     } else {
-      setSearchParams({});
+      refine('');
     }
   };
 
@@ -153,17 +88,18 @@ export function Search() {
       <SearchBar
         placeholder={placeholder}
         type="text"
-        value={searchTerm}
+        value={query}
         onChange={(e) => handleChange(e)}
         ref={Bar}
       >
       </SearchBar>
-      <SearchIcon />
-      {searchTerm &&
+      {cloud.chatMode}
+      <SearchBarIcon />
+      {query.length > 0 &&
         <div
           onClick={
             () => {
-              setSearchParams({});
+              refine('')
               Bar.current.focus()
             }
           }
@@ -171,62 +107,70 @@ export function Search() {
         >
           <ClearIcon />
         </div>}
-    </SearchWrapper>
-  )
+    </SearchWrapper>)
+}
+
+export function CreatorMedal({ name }) {
+  if (name) {
+    return <BySign
+      onClick={name === 'AA' ?
+        () => navigator.clipboard.writeText('aite@nabla.ooo') : () => null}
+      byColor={eval(name)[0]} byGradient={eval(name)[1]} >{name}</BySign>
+  }
 }
 
 export function Results() {
   const snap = useSnapshot(state);
-  const location = useLocation();
-  let value = location.search.slice(8).toLocaleLowerCase().split('&')[0];
-  useDocumentTitle(`${value} - Search Results`);
-  // const byTitle = (search) => (title) => title.title.toLowerCase().includes((search || "").toLowerCase());
+  const { query, refine } = useSearchBox();
+  useDocumentTitle(`${query} - Search Results`);
   const [select] = useSound(sound1, { soundEnabled: !state.muted });
   const [active, setActive] = useState(false);
   const [statement, setStatement] = useState(null);
   const [program, setProgram] = useState(null);
-  const [searchParams, setSearchParams] = useSearchParams();
   const [by, setBy] = useState(null);
+  let opacity = query.length > 0 ? "1" : "0";
+  let pointerEvents = query.length ? "all" : "none";
+  let transition = query.length ? "0.3s" : "0s";
+
 
   // Results image slider
-  function Block(val) {
-    if (val.images) {
+  function Block(hit) {
+    if (hit.images) {
       // Get enxtentions of files
       const types = new Map([["jpg", "img"], ["jpeg", "img"], ["png", "img"], ["gif", "img"], ["mp4", "video"], ["svg", "svg"]])
-      const link = new URL(`${val.images[0]}`)
+      const link = new URL(hit.images[0])
       const extension = link.pathname.split(".")
       const element = types.get(extension[extension.length - 1].toLowerCase())
 
       if (element === "video") {
-        if (val.orientation === "portrait") {
+        if (hit.orientation === "portrait") {
           return (
             <video
               key={`${Math.random()}`}
               autoPlay={false}
               playsInline
               preload={"none"}
-              poster={val.poster}
+              poster={hit.poster}
               loop={true}
               muted={true}
-              src={`${val.images[0]}`}
+              src={hit.images[0]}
             >
-              {`${val.at}`}
+              {hit.at}
             </video>
-
           )
-        } else if (val.orientation === "landscape") {
+        } else if (hit.orientation === "landscape") {
           return (
             <video
               className={"landscape"}
               key={`${Math.random()}`}
               autoPlay={false}
               playsInline preload={"none"}
-              poster={val.poster}
+              poster={hit.poster}
               loop={true}
-              muted={true}
-              src={`${val.images[0]}`}
+              muted={snap.muted}
+              src={hit.images[0]}
             >
-              {`${val.at}`}
+              {hit.at}
             </video>
           )
         }
@@ -235,165 +179,227 @@ export function Results() {
         return (
           <object
             key={`${Math.random()}`}
-            data={`${val.images[0]}`}
+            data={hit.images[0]}
           >
-            {`${val.at}`}
+            {hit.at}
           </object>
         )
       }
     }
-
   }
-
-  function CreatorMedal({ name }) {
-    if (name) {
-      return <BySign byColor={eval(name)[0]} byGradient={eval(name)[1]} >{name}</BySign>
-    }
-  }
-
-  let filteredProjects = [];
-  let filteredProducts = [];
-  let filteredClients = [];
-
-  state.projects.filter((val) => {
-    filteredProjects.push(val)
-  })
-  state.projectClients.filter((val) => {
-    filteredClients.push(val)
-  })
 
   function QuickInfo() {
     return (
       <InfoBox
-        mask={`-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0.1)))`}
+        mask={`-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,3)), to(rgba(0,0,0,0)))`}
         opacity={statement ? '1' : '0'}
       >
         <div className="icons">
           {program && <Program program={program} />}
           <CreatorMedal name={by} />
         </div>
-        <Scroller
-          mask={`-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)))`}
-        >
+        <Scroller>
           {<p>
             {statement && `"${statement}"`}
-            {`  
-            `}
+
           </p>}
         </Scroller>
       </InfoBox>
     )
   }
-  var x = window.matchMedia("(max-height: 1000px)");
-  return (
-    <>
-      <Header id={value} />
-      <Overlay className="container">
-        {x.matches && <QuickInfo />}
-        {/* SIDE LAYER */}
-        <SideGroup>
-          <Params left='60px'>
-            {/* CREATORS */}
-            <Param >
-              <p className="paramGroup">Creator</p>
-              {snap.by.map((val, key) => {
-                return <BySign
-                  key={key}
-                  byColor={eval(val)[0]} byGradient={eval(val)[1]}
-                  className={active ? 'active' : ''}
-                  onClick={() => setActive(!active)}
-                >
-                  {val}
-                </BySign>
-              })}
-            </Param>
-            {/* YEARS */}
-            <Param >
-              <p className="paramGroup">Year</p>
-              {snap.projectYears.map((val, key) => {
-                const year = searchParams.get('filter') === `${val}`;
-                return <p
-                  key={key}
-                  className={year ? 'active' :
-                    searchParams.get('filter') ? 'inactive' : ''}
-                  onClick={() => {
-                    {
-                      year
-                        ? setSearchParams({ search: `${value}` })
-                        : !searchParams.get('filter') &&
-                        setSearchParams({ search: `${value}`, filter: `${val}` });
-                    }
-                  }}
-                >
-                  {val}
-                </p>
-              })}
-            </Param>
-            {/* MEDIUMS */}
-            <Param>
-              <p className="paramGroup">Medium</p>
-              {snap.mediums.map((val, key) => {
-                if (val) {
-                  const medium = searchParams.get('filter') === `${val}`;
+
+  function hoverPlay(e) {
+    // Get the second child as video
+    let video;
+    var playPromise
+    e.currentTarget.children[1] && (video = e.currentTarget.children[1]);
+    // Show loading animation if the video isn't loaded
+    (video && (video.tagName === 'VIDEO')) && (
+      playPromise = video.play())
+    if (playPromise !== undefined) {
+      playPromise.then(_ => {
+        cloud.loading = false;
+        // Play on hover if it's a video
+        // video.pause();
+        return;
+      })
+        .catch(error => {
+          cloud.loading = true;
+          console.log(error);
+          return;
+        });
+    }
+  }
+
+  // Initialize catergories and filter hits
+  const { hits } = useHits()
+
+  const options = {
+    attribute: 'projectMedium',
+    operator: 'and',
+    sortBy: ['count:desc', 'name:asc', "isRefined:desc"],
+  }
+  const { mediums, results, sendEvent } = useRefinementList(options);
+
+  // console.log(mediums);
+  let filteredClients = [];
+  let filteredCreators = [];
+  let filteredYears = [];
+  let filteredProducts = [];
+
+
+  if (query.length > 0) {
+    hits.filter((hit) => {
+      hit.name && filteredClients.push(hit);
+      hit.productName && filteredProducts.push(hit);
+      let year = '2020';
+      // hit.projectYear && (console.log(hit.projectYear))
+      year && filteredYears && (year = eval(year));
+      year && filteredYears && (filteredYears.indexOf(year) === -1) && filteredYears.push(year);
+      filteredYears && filteredYears.sort(function (a, b) { if (b) { return b - a } });
+      hit.by && filteredCreators && (filteredCreators.indexOf(hit.by) === -1) && (filteredCreators.push(hit.by))
+    })
+    return (
+      <>
+        <Header id={query} />
+        <Overlay
+          opacity={opacity}
+          pointerEvents={pointerEvents}
+          transition={transition}
+          className="container"
+        >
+          {/* SIDE LAYER */}
+          <SideGroup>
+            <Params left='60px'>
+              {/* CREATORS */}
+              <Param >
+                <p className="paramGroup">Creator</p>
+                {filteredCreators.map((val, key) => {
+                  return <BySign
+                    key={key}
+                    byColor={eval(val)[0]} byGradient={eval(val)[1]}
+                    className={active ? 'active' : ''}
+                    onClick={() => setActive(!active)}
+                  >
+                    {val}
+                  </BySign>
+                })}
+              </Param>
+              {/* YEARS */}
+              <Param >
+                <p className="paramGroup">Year</p>
+                {filteredYears.map((val, key) => {
+                  const year = query === `${val}`;
                   return <p
                     key={key}
-                    className={active ? 'active' : ''}
+                    className={year ? 'active' :
+                      query ? 'inactive' : ''}
                     onClick={() => {
-                      setActive(!active);
+                      {
+                        year
+                          ? refine({ search: `${query}` })
+                          : !query &&
+                          refine({ search: `${query}`, filter: `${val}` });
+                      }
                     }}
                   >
-                    {val.toUpperCase()}
+                    {val}
                   </p>
-                }
-              })}
-            </Param>
-          </Params>
-          {!x.matches && <QuickInfo />}
-        </SideGroup>
-        <ResultsGroup>
-          {filteredClients.length === 0 ? <h3>No Clients</h3> : <Number paddingLeft='30px' paddingRight='30px' right='15px'> Clients <h3>{filteredClients.length}</h3></Number>}
-          {/* CLIENTS */}
-          <ClientsLayer>
-            {filteredClients.map(({ id, name }) => {
-              return <Client key={Math.random()} onClick={select} to={`/${id}`}>{name}</Client>
-            })}
-          </ClientsLayer>
-          {/* PROJECTS */}
-          <ItemsLayer display={'grid'} height={'max-content'} paddingBottom={'40px'} mask={`-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0.1)))`}>
-            {filteredProjects.length === 0 ? <h3>No Projects </h3> : <Number bottom='20px' right='25px'> Projects <h3>{snap.projects.length}</h3></Number>}
-            {filteredProjects.map((work) => {
-              // console.log(work);
-              return <Item
-                key={Math.random()}
-                size='300px'
-                onClick={select}
-                className="bubbles"
-                onMouseOver={(e) => {
-                  if (e.currentTarget.children[1] && (e.currentTarget.children[1].tagName === 'VIDEO')) {
-                    e.currentTarget.children[1].play()
+                })}
+              </Param>
+              {/* MEDIUMS */}
+              <Param>
+                <p className="paramGroup">Medium</p>
+                {mediums && mediums.map((val, key) => {
+                  if (val) {
+                    return <p
+                      key={key}
+                      className={active ? 'active' : ''}
+                      onClick={() => {
+                        setActive(!active);
+                      }}
+                    >
+                      {val.toUpperCase()}
+                    </p>
                   }
-                  work.statement && setStatement(work.statement)
-                  work.program && !program && setProgram(work.program)
-                  work.by && setBy(work.by)
-                }} onMouseOut={() => {
-                  setProgram(null)
-                  setStatement('')
-                  setBy(null)
-                }
-                }
-                to={`${work.at}#${work.projectName.replace(/\s+/g, '').toLowerCase()}`}
-              ><h3 className="queryBubbleText">{work.projectName}</h3>{Block(work)}</Item>
-            })}
-          </ItemsLayer>
-          {/* PRODUCTS */}
-          <ItemsLayer display={'block'} height={'min-content'} paddingBottom={'20px'}>
-            {filteredClients.length === 0 ? <h3>No Products</h3> : <Number bottom='20px' right='25px'> Products <h3>{filteredClients.length}</h3></Number>}
-            <Item size='125px !important' onClick={select} to={`/store`}><h3 className="queryBubbleText">Eko Digital</h3></Item>
-          </ItemsLayer>
-        </ResultsGroup>
-      </Overlay>
-    </>
-  )
+                })}
+              </Param>
+            </Params>
+            {!window.matchMedia("(max-height: 1000px)").matches && <QuickInfo />}
+          </SideGroup>
+          {window.matchMedia("(max-height: 1000px)").matches && <QuickInfo />}
+          <ResultsGroup>
+            {filteredClients.length === 0 ? <h3>No Clients</h3> : <Number paddingLeft='30px' paddingRight='30px' right='15px'> Clients <h3>{filteredClients.length}</h3></Number>}
+            {/* CLIENTS */}
+            <ClientsLayer>
+              {filteredClients.map(one => (
+                <Client key={Math.random()}
+                  onClick={() => (select, refine(''))}
+                  to={`/${one.id}`}>{one.name}</Client>
+              ))}
+            </ClientsLayer>
+            {/* PROJECTS */}
+            <ItemsLayer display={'grid'} height={'min-content'} paddingBottom={'40px'} mask={`-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0.1)))`}>
+              {hits.length === 0 ? <h3>No Projects </h3> : <Number bottom='20px' right='25px'> Projects <h3>{hits.length}</h3></Number>}
+              {hits.map((hit) => (
+                hit.projectClient &&
+                <Item
+                  key={Math.random()}
+                  size='300px'
+                  onClick={() => (select, refine(''))}
+                  className="bubbles"
+                  onMouseOver={(e) => {
+                    if (e.currentTarget.children[1] && (e.currentTarget.children[1].tagName === 'VIDEO')) {
+                      e.currentTarget.children[1].play()
+                    }
+                    hit.statement && setStatement(hit.statement)
+                    hit.program && !program && setProgram(hit.program)
+                    hit.by && setBy(hit.by)
+                  }} onMouseOut={() => {
+                    setProgram(null)
+                    setStatement('')
+                    setBy(null)
+                  }
+                  }
+                  to={`${hit.at}#${hit.projectName.replace(/\s+/g, '').toLowerCase()}`}
+                ><h3 className="queryBubbleText">
+                    {hit.projectName}</h3>
+                  {Block(hit)}
+                </Item>
+              ))}
+            </ItemsLayer>
+            {/* PRODUCTS */}
+            <ItemsLayer display={'block'} height={'min-content'} paddingBottom={'20px'}>
+              {filteredProducts.length === 0 ? <h3>No Products</h3> : <Number bottom='20px' right='25px'> Products <h3>{filteredProducts.length}</h3></Number>}
+              {filteredProducts.map((hit) => (
+                hit.productName &&
+                <Item
+                  key={Math.random()}
+                  size='125px !important'
+                  onClick={() => (select, refine(''))}
+                  onMouseOver={(e) => {
+                    hoverPlay(e)
+                    hit.statement && setStatement(hit.statement)
+                    hit.program && !program && setProgram(hit.program)
+                    hit.by && setBy(hit.by)
+                  }} onMouseOut={() => {
+                    setProgram(null)
+                    setStatement('')
+                    setBy(null)
+                  }}
+                  to={`store#${hit.productName.replace(/\s+/g, '').toLowerCase()}`}
+                >
+                  <h3 className="queryBubbleText">
+                    {hit.productName}</h3>
+                  {Block(hit)}
+                </Item>
+              ))}
+            </ItemsLayer>
+          </ResultsGroup>
+        </Overlay>
+      </>
+    )
+  }
 }
 
 export const SearchWrapper = styled.div`
@@ -473,11 +479,13 @@ export const SearchBar = styled.input`
 `
 const Overlay = styled.div`
   display: flex;
-
+  opacity: ${props => props.opacity};
+  pointer-events: ${props => props.pointerEvents};
+  transition: ${props => props.transition};
   margin: 0px 5px;
   position: fixed;
   z-index: 3500;
-  overflow-x: visible;    
+  overflow-x: visible;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
   height: 100%;
@@ -485,7 +493,6 @@ const Overlay = styled.div`
   padding: 20px;
   font-size: 14px;
   color: ${props => props.theme.panelColor};
-  transition: 2.3s;
 `
 const SideGroup = styled.div`
   height: 100%;
@@ -546,11 +553,13 @@ const Client = styled(Link)`
   width: fit-content;
   height: min-content;
   font-size: 16px;
+  font-weight: 300;
   white-space: nowrap;
-  text-decoration: underline;
+  /* text-decoration: underline; */
   color: inherit;
   background-color: ${props => props.theme.layerBG};
   border-radius: 12px;
+  border: 1px solid transparent;
   transition: 0.3s;
   padding: 10px;
   margin: 5px 10px;
@@ -559,9 +568,10 @@ const Client = styled(Link)`
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-      text-shadow: 1px 1px 3px ${props => props.theme.sky};
+  text-shadow: 1px 1px 3px ${props => props.theme.panelColor};
 
   &:hover{
+      border: 1px solid ${props => props.theme.panelColor};
       background-color: ${props => props.theme.LiHover};
       -webkit-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
       -moz-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
@@ -618,11 +628,10 @@ const Item = styled(HashLink)`
   align-items: center;
   height: ${props => props.size};
   width: ${props => props.size};
-  padding: 20px;
   border: 1px solid ${props => props.theme.panelColor};
   border-radius: 50%;
   color: inherit;
-  transition: 0.3s;
+  transition: 0.6s;
   backdrop-filter: blur(var(--blur));
   -webkit-backdrop-filter: blur(var(--blur));
     overflow: hidden;
@@ -637,7 +646,9 @@ const Item = styled(HashLink)`
     pointer-events:  none;
     }
   &:hover{
-    box-shadow: 0 8px 20px 0 ${props => props.theme.panelColor};
+    width: calc(inherit + 30px);
+    height: calc(inherit + 30px);
+    /* box-shadow: 0 8px 20px 0 ${props => props.theme.panelColor}; */
   }
   &:hover > object, &:hover > video{
     filter: grayscale(0) !important;
@@ -647,18 +658,18 @@ const Item = styled(HashLink)`
     /* color: ${props => props.theme.sky}; */
       /* border: 1px solid ${props => props.theme.panelColor}; */
       border-radius: 50px;
-      padding: 10px;
       color: #ebebeb;
       background-color: ${props => props.theme.LiHover};
       color:  ${props => props.theme.textHover};
-      -webkit-box-shadow: 0px 2px 10px 1px  ${props => props.theme.panelColor};
-      -moz-box-shadow: 0px 2px 10px 1px  ${props => props.theme.panelColor};
-      box-shadow: 0px 2px 10px 1px  ${props => props.theme.panelColor};
       text-shadow: 1px 1px 3px  ${props => props.theme.textHover};
   }
   & h3{
-      text-shadow: 1px 1px 3px ${props => props.theme.sky};
-    width: fit-content;
+    white-space: pre-wrap;
+    padding: 20px;
+    font-weight: 300;
+      text-shadow: 1px 1px 3px ${props => props.theme.panelColor};
+    width: min-content;
+    text-align: justify;
     pointer-events: none;
     z-index: 400;
     position: absolute;
@@ -672,7 +683,7 @@ const Item = styled(HashLink)`
   }
   object{
     opacity: 0.2;
-    min-height: 300px;
+    min-height: 100%;
     max-width: 650px;
     filter: grayscale(1);
     transition: 0.3s;
@@ -688,7 +699,7 @@ const Item = styled(HashLink)`
   video{
     pointer-events: none;
     min-height: 350px;
-    max-width: 850px;
+    max-width: 100%;
     opacity: 0.2;
     filter: grayscale(1);
     transition: 0.3s;
@@ -698,6 +709,7 @@ const Item = styled(HashLink)`
     padding: 0;
   }
   .landscape{
+    min-height: 100% !important;
   height: 100% !important;
   width: auto !important;
   }
@@ -843,7 +855,7 @@ const Param = styled.div`
   height: fit-content;
   padding-right: 10px;
   margin-left: 10px;
-  margin-top: calc(var(--panelWidth) + 1vh);
+  margin-top: calc(var(--panelWidth) + 40px);
   border: 1px solid;
   border-radius: 10px;
   border-color:transparent ${props => props.theme.panelColor} transparent transparent;
@@ -856,7 +868,8 @@ const Param = styled.div`
     background-color: ${props => props.theme.LiHover};
     text-shadow: 1px 1px 3px  ${props => props.theme.textHover};
     font-style: italic;
-    transform: skew(0deg, -10deg);
+    border: 1px solid ${props => props.theme.panelColor};
+    /* transform: skew(0deg, -10deg); */
   }
   .inactive{
     cursor: default;
@@ -870,23 +883,23 @@ const Param = styled.div`
     text-shadow: 1px 1px 3px  ${props => props.theme.sky};
     }
   }
-
   & .paramGroup{
     font-size: 10px !important;
     background-color: transparent !important;
     padding: 0px 6px 1px 6px !important;
     align-self: center;
     font-stretch: expanded !important;
+    text-shadow: 9px 4px 13px  ${props => props.theme.panelColor};
 
     &:hover{
     background-color: none !important;
     color: inherit !important;
+    text-shadow: none !important;
     }
   }
-
   & *{
-    text-transform: lowercase;
     font-weight: 800;
+    text-transform: lowercase;
     font-size: 12px;
     transition: 0.3s;
     background-color: ${props => props.theme.layerBG};
@@ -938,6 +951,7 @@ border: 1px solid  ${props => props.theme.backdrop};
   -moz-box-shadow: 0px 2px 10px 1px ${props => props.theme.sky};
   box-shadow: 0px 2px 10px 1px ${props => props.theme.sky};
         -webkit-mask-image: ${props => props.mask} !important;
+        mask-image: ${props => props.mask} !important;
 
         & .icons{
           display: flex;
@@ -949,7 +963,7 @@ border: 1px solid  ${props => props.theme.backdrop};
 
     @media only screen and (max-height: 1000px) {
       &{
-        mask-image: ${props => props.mask} !important;
+        background-color: ${props => props.theme.sky};
         position: fixed !important;
         z-index: 3200;
         top: 30px !important;
@@ -957,7 +971,7 @@ border: 1px solid  ${props => props.theme.backdrop};
         /* height: 20%; */
         /*  transform: translateY(50%); */
         width: 350px;
-        height: 40vh;
+        height: 30vh;
         overflow-y: hidden;
       }
   }
@@ -972,9 +986,11 @@ export const Scroller = styled.div`
 }
 `
 export const BySign = styled.span`
+  cursor: pointer;
+  border-radius: 7px;
   text-transform: uppercase !important;
   text-indent: 0;
-  font-weight: 800;
+  font-weight: 800 !important;
   font-size: 11px;
   margin-left: 5px;
   display: inline-block;
@@ -983,7 +999,6 @@ export const BySign = styled.span`
   line-height: 17px;
   padding: 0px 5px;
   /* background-color: ${props => props.theme.panelColor}; */
-  border-radius: 7px;
   color: ${props => props.theme.textHover};
 	text-shadow: 1px 1px 10px ${props => props.theme.sky};
   background: ${props => props.byColor};
@@ -993,6 +1008,10 @@ export const BySign = styled.span`
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
+
+    &:hover{
+      border: 1px solid ${props => props.theme.panelColor};
+    }
 `
 export const AA = [`rgba(230,4,49,1)`,
   `linear-gradient(333deg, rgba(227,119,141,1) 0%, rgba(230,4,49,1) 100%)`]

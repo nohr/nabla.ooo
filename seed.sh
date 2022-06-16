@@ -1,1 +1,9 @@
-LOCATION=us-central1 PROJECT_ID=nabla7 ALGOLIA_APP_ID=QYRMFVSZ3U ALGOLIA_API_KEY=3df22b18e3f90a3a056e8ea1a51073b2 ALGOLIA_INDEX_NAME=projects COLLECTION_PATH=portfolio FIELDS=at,program,projectClient,projectMedium,projectName,projectYear,statement GOOGLE_APPLICATION_CREDENTIALS=./nabla.json npx firestore-algolia-search
+LOCATION=us-central1 \
+PROJECT_ID=nabla7 \
+ALGOLIA_APP_ID=QYRMFVSZ3U \
+ALGOLIA_API_KEY=86a2102a00f2a2304fd0e01d7999961c \
+ALGOLIA_INDEX_NAME=projects \
+COLLECTION_PATH=portfolio \
+FIELDS=at,id,name,date,type,by,program,images,poster,orientation,projectYear,projectClient,projectMedium,productName,projectName,statement \
+GOOGLE_APPLICATION_CREDENTIALS=./nabla.json \
+npx firestore-algolia-search

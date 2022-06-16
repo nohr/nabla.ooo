@@ -5,7 +5,7 @@ import { Container } from "./Page";
 // import { useSnapshot } from 'valtio'
 import styled from "styled-components"
 import { Header, OldCD } from "../UI/svg";
-import { AA, BySign } from "../UI/search";
+import { AA, BySign, CreatorMedal } from "../UI/search";
 
 // const ContactForm = () => {
 //   const [status, setStatus] = useState("Send");
@@ -88,7 +88,9 @@ function Info(props) {
           <OldCD />
           <h1>Aite Aigbe</h1>
           <Email>
-            <BySign byColor={AA[0]} byGradient={AA[1]} >AA</BySign><h3>:</h3><h3 style={{ display: 'inline-block' }}
+            {/* <BySign byColor={AA[0]} byGradient={AA[1]}>AA</BySign> */}
+            <CreatorMedal name='AA' />
+            <h3><span style={{ userSelect: 'none' }}>:</span></h3><h3 style={{ display: 'inline-block', userSelect: 'all !important' }}
             >{` ${`aite@nabla.ooo`}`}</h3>
           </Email>
         </Contact>

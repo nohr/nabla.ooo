@@ -6,15 +6,15 @@ border: solid 1px;
 border-color: ${props => props.theme.panelColor};
 border-radius: 10px;
 display: flex;
-width: 48%;
-height: 90%;
+width: ${props => props.width};
+height: ${props => props.height};
 flex-direction:column;
 padding: 10px 0px 0px 0px;
 justify-content: space-around;
 gap: 20px;
 position: relative;
 overflow: hidden;
-transition: 1.3s;
+transition: 1.3s !important;
 
 & .lot{
   color: ${props => props.theme.panelColor};
@@ -60,6 +60,7 @@ export const TextWrapper = styled.div`
   clear:both;
   align-self: center;
     text-align: center;
+      text-shadow: 9px 4px 13px  ${props => props.theme.sky};
 }
 
 & h4, & h5{
@@ -114,7 +115,7 @@ export const TrayWrapper = styled.div`
   flex-wrap: nowrap;
   width: 100%;
   height: 70% !important;
-    padding:0 20px 10px 20px ;
+    padding:0 20px 20px 20px ;
     gap: 20px;
   
 `
@@ -127,7 +128,7 @@ export const ImgWrapper = styled.div`
     flex-direction: row;
     flex-wrap: nowrap;
     gap: 20px;
-    margin-bottom: 1px;
+    padding-bottom: 5px;
 
     .img-thumb{
       border-radius: 5px;
@@ -138,7 +139,7 @@ export const ImgWrapper = styled.div`
       opacity: 1;
       pointer-events: all;
       border: 1px solid ${props => props.theme.panelColor};
-      filter: grayscale(1);
+      filter: grayscale(0);
       transition: 0.3s;
 
       &:hover{
@@ -146,8 +147,8 @@ export const ImgWrapper = styled.div`
       border-radius: 50%;
       }
     }
-    .img-thumb:hover, video:hover {
-      filter: grayscale(0) !important;
+    .img-thumb:hover {
+      filter: grayscale(1) !important;
     }
     object{
       @media only screen and (max-width: 1440px) {
@@ -169,8 +170,9 @@ export const ImgWrapper = styled.div`
     -ms-user-select: none;
     }
     video{
+      filter: grayscale(0) !important;
       border-radius: 5px;
-    -webkit-user-drag: none;
+      -webkit-user-drag: none;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -179,13 +181,7 @@ export const ImgWrapper = styled.div`
     object-fit: contain;
     margin: 0;
     padding: 0;
-      filter: grayscale(1) !important;
-      transition: 0.3s;
-
-      &:hover{
-      filter: grayscale(0);
-      transition: 0.3s;
-      }
+    transition: 0.3s;
     }
     .landscape{
     height: 100% !important;
@@ -197,44 +193,48 @@ export const ImgWrapper = styled.div`
       filter: grayscale(1);
       transition: 0.3s;
     }
-    ::-webkit-scrollbar {
-  -webkit-appearance: none;
-  height: 9px;
-}
-::-webkit-scrollbar-thumb {
-  background-color: ${props => props.theme.panelColor};
-  border-radius: 4px;
-  transition: 0.3s;
-  overflow: visible;
-}
-::-webkit-scrollbar-thumb:hover {
-  background-color: ${props => props.theme.panelColor};
-      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+     ::-webkit-scrollbar {
+      -webkit-appearance: none;
+      height: 5px;
+      position: absolute;
+    }
+    ::-webkit-scrollbar-thumb {
+      outline: 1px solid ${props => props.theme.panelColor};
+      border-radius: 4px;
+      background-color: transparent;
       transition: 0.3s;
-}
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: ${props => props.theme.panelColor};
+          box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          transition: 0.3s;
+    }
 `
 export const InfoCard = styled.div`
     display: flex;
     overflow-y: scroll;
     flex-direction: column;
-    margin-bottom: 1px;
     white-space: break-spaces;
     line-height: 25px;   
     height: 100%;
     width: 50% !important;
-    padding-right: 0;
+    padding-left: 0px;
+    margin-left: 1px;
     text-align: justify;
 
-    & p {
-      height: min-content;
+    & {
       padding: 10px;
       border-radius: 10px;
       display: inline;
       background-color: ${props => props.theme.layerBG};
       /* text-indent: 3em; */
+
+      & p{
+      height: min-content;
       overflow-y: scroll !important;
+      }
 
   ::-webkit-scrollbar {
       -webkit-appearance: none;
@@ -267,14 +267,22 @@ export const Folder = styled.div`
   justify-content: space-between;
   align-items: center;
 `
-
+export const Wheel = styled.div`
+  position: absolute;
+  z-index: 4900;
+  left: 0;
+  transition: 0.9s !important;
+  opacity: ${props => props.opacity};
+  pointer-events: ${props => props.pointerEvents};
+  transition: ${props => props.transition};
+`
 export const GlobalStyle = createGlobalStyle`
     //App
     :root{
         --theme: ${props => props.theme.sky};
         --panelWidth: 270px;
         --panelHeight: 270px;
-        --panelPadding: 26px 42.5px;
+        --panelPadding: 6px 42.5px;
         --headOffset: 10px;
         --edge: 20px;
         --blur: 7px;
@@ -290,6 +298,7 @@ export const GlobalStyle = createGlobalStyle`
     }
     *{
       /* filter:contrast(1.1) ; */
+      animation-delay: 0s;
     }
     //Panel
     .Panel {
@@ -352,7 +361,7 @@ a.active:not(.nablaWrapper){
   -moz-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
   box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
   text-shadow: 1px 1px 3px  ${props => props.theme.textHover};
-  font-style: italic;
+  /* font-style: italic; */
 }
     .li{
       border-radius: 12px;
@@ -362,20 +371,29 @@ a.active:not(.nablaWrapper){
         transition: 0.9s;
     }
     .folderActive {
-      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      color:  ${props => props.theme.panelColor};
-      font-style: italic;
+      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
+      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
+      -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
+      color:  ${props => props.theme.panelColor} !important;
+      font-style: italic !important;
     }
     .folderActive:hover{
-      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
+      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
       /* border: 1px solid ${props => props.theme.LiHover} ; */
     }
     .folderActive:after{
-      border-radius: 5px;
+      border-radius: 5px !important;
     }
+      .active{
+  background-color: ${props => props.theme.LiActiveBackground};
+  color:  ${props => props.theme.textHover};
+  -webkit-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
+  -moz-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
+  box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
+  text-shadow: 1px 1px 3px  ${props => props.theme.textHover};
+  /* font-style: italic; */
+}
     .li:hover {
       background-color: ${props => props.theme.LiHover};
       -webkit-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
@@ -441,5 +459,9 @@ a.active:not(.nablaWrapper){
     /* margin: 0 30px; */
   }
 
+}
+.spectrum-ColorWheel-gradient_31462a:before, 
+.spectrum-ColorWheel-gradient_31462a:after{
+  border-color: ${props => props.theme.panelColor};
 }
 `

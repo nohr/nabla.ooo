@@ -1,118 +1,22 @@
 //Options -- Child of Panel
 import React, { useRef } from "react"
-import { state } from "./state"
+import { cloud, state } from "./state"
 import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
 import { Folder } from "./style"
 import styled from "styled-components"
 import useWindowDimensions from "./window"
-import { DirectionIcon, ModeIcon, MuteIcon, PlayPauseIcon, ShowHideIcon } from "./svg"
-
-const Option = styled.div`
-    padding: var(--panelPadding);
-    padding-bottom: 0;
-    position: absolute;
-    z-index: 4000;
-    left: var(--edge);
-    margin: 20px 0 0 0;
-    display: grid;
-    align-items: start;
-    ${props => props.layout}
-    ${props => props.hide}
-    ${props => props.top}
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-
-    .audio, .display{
-       width: 100%;
-       overflow-y: scroll;
-       padding: 2px 2px 0px 7px;
-       /* padding-bottom: 20px; */
-
-        ::-webkit-scrollbar {
-          -webkit-appearance: none;
-          width: 5px;
-          position: absolute;
-        }
-        ::-webkit-scrollbar-thumb {
-          background-color:${props => props.theme.panelColor};
-          border-radius: 4px;
-          transition: 0.3s;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          background-color: ${props => props.theme.panelColor};
-              box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-              -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-              -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-              transition: 0.3s;
-        }
-    }
-
-  .li{
-    justify-content: flex-start;
-    width: 70%;
-    margin: 0 auto 4px auto;
-    position: relative;
-    height: fit-content;
-    padding-left: 10px;
-    transition: 0.3s;
-  }
-
-  p{
-    margin: 3px auto 5px auto;
-    text-align: center;
-    border-bottom: 1px solid ${props => props.theme.panelColor};
-    transition: 0.9s;
-  }
-  svg:not(.ShowHideIcon):not(.light):not(.dark){
-    fill: none !important;
-    stroke: ${props => props.theme.panelColor};
-    stroke-width: 38px !important;
-  }
-
-  .dark{
-    fill: none !important;
-    stroke: ${props => props.theme.panelColor};
-    stroke-width: 12px !important;
-  }
-  
-  .modeIcon, .muteIcon, .ShowHideIcon{
-    position: absolute;
-    right: 6px;
-    width: 10px;
-    fill: ${props => props.theme.panelColor};
-    overflow: visible;
-    align-self: left;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .PlayPauseIcon{
-    position: absolute;
-    right: 7px;
-    height: 10px;
-    fill: ${props => props.theme.panelColor};
-    overflow: visible;
-    align-self: left;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-  .DirectionIcon{
-    stroke-width: 1px !important;
-    position: absolute;
-    right: 6px;
-    width: 10px;
-    overflow: visible;
-    align-self: left;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-`
+import { ColorIcon, DirectionIcon, ModeIcon, MuteIcon, PlayPauseIcon, ShowHideIcon } from "./svg"
+import { useSearchBox } from "react-instantsearch-hooks-web"
+import { useNavigate } from "react-router-dom"
 
 function Options() {
+    const { refine, clear } = useSearchBox();
+    const navigate = useNavigate();
     const opt = useRef(null);
+    const colorLink = useRef(null)
     const snap = useSnapshot(state);
+    const clip = useSnapshot(cloud)
     let optLink = document.querySelector(".optLink")
     if (state.selectedImg) { optLink.classList.remove("folderActive") }
 
@@ -123,35 +27,37 @@ function Options() {
     const toggleTheme = () => {
         state.themeChanged = true;
         state.theme === "light" ? state.theme = "dark" : state.theme = "light";
-
     }
     // Toggle Canvas Visibility
-    const canvas = document.getElementsByTagName("canvas")[0];
+    let canvas;
     function toggleCanvas() {
-        if (!state.canvasVisible) {
-            //Show Canvas
-            state.canvasVisible = true;
-            canvas.style.display = "block";
-            if (!state.paused) {
-                state.paused = true
-            } else if (state.paused) {
-                state.paused = true
-            }
-        } else if (state.canvasVisible) {
-            //Hide Canvas
-            state.canvasVisible = false;
-            canvas.style.display = "none";
-            if (!state.paused) {
-                state.paused = true;
-                state.CDRotationY = 0;
-                state.CDRotationZ = 0;
-                state.autoRotateSpeed = 0;
+        canvas = document.getElementsByTagName("canvas")[0];
+
+        if (canvas) {
+            if (!snap.canvasVisible) {
+                //Show Canvas
+                state.canvasVisible = true;
+                canvas.style.display = "block";
+                if (!snap.paused) {
+                    state.paused = true
+                } else if (snap.paused) {
+                    state.paused = true
+                }
+            } else if (snap.canvasVisible) {
+                //Hide Canvas
+                state.canvasVisible = false;
+                canvas.style.display = "none";
+                if (!snap.paused) {
+                    state.paused = true;
+                    state.CDRotationY = 0;
+                    state.CDRotationZ = 0;
+                    state.autoRotateSpeed = 0;
+                }
             }
         }
-
     }
     //Pause Canvas Animation
-    function togglePause(bool) {
+    function togglePause() {
         if (!state.paused) {
             //Pause Canvas
             state.paused = true;
@@ -176,6 +82,14 @@ function Options() {
         getPos()
     }
 
+    function openWheel() {
+        clear();
+        navigate('/');
+        state.colorWheel = true;
+        state.isOpt = false;
+        state.isPro = false;
+    }
+
     //offset and direction of panel from nav and projects
     let vWidth = useWindowDimensions().width;
     let vHeight = useWindowDimensions().height;
@@ -191,7 +105,7 @@ function Options() {
         const down2 = { x: 0, y: (state.navWidth * 2) - (state.dist * 2) };
 
         //Row
-        if (((state.direction ? vWidth : vHeight) - (state.navWidth * 2) - state.dist + 30) < (state.direction ? state.setPosition.x : state.setPosition.y) && state.isOpt) {
+        if (((state.direction ? vWidth : vHeight) - (state.navWidth * 2) - state.dist + 30) < (state.direction ? state.optPosition.x : state.optPosition.y) && state.isOpt) {
             //goes over the right side
             if (state.setSwitched) {
                 state.setSwitched = true;
@@ -276,54 +190,186 @@ function Options() {
     }
 
     const offset = getPos();
-    const firstheight = snap.direction ? { height: "75px" } : { height: "87px" };
-    const secondheight = snap.direction ? { height: "113px" } : { height: "161px" };
-    const layout = snap.direction ? "grid-template-rows: 10% 1fr 10% 1fr; padding-left: 45px;padding-right: 40px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 15% 1fr; padding: 80px 12px 26px;";
-    const top = snap.direction ? "padding-top: 26px;" : snap.setSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
-    const firstHeader = snap.direction ? { width: "100%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
+    const firstStyle = snap.direction ? { height: "75px" } : { height: "87px" };
+    const secondStyle = snap.direction ? { height: "133px" } : { height: "161px" };
+    const layout = snap.direction ? "grid-template-rows: 10% 0.9fr 10% 1.5fr; padding-left: 45px;padding-right: 40px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 15% 1fr; padding: 80px 12px 26px;";
+    const top = snap.direction ? "padding-top: 7px;" : snap.setSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
+    const firstHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
     const secondHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
     const hide = snap.isOpt ? "opacity: 1; pointer-events: all; transition: 0.4s; " : "opacity: 0; pointer-events: none; transition: 0s;";
     const headwidth = {
         first: {
-            max: snap.direction ? "119%" : "100%",
-            min: snap.direction ? "100%" : "64%",
+            max: snap.direction ? "100%" : "100%",
+            min: snap.direction ? "62%" : "62%",
         },
         second: {
-            max: snap.direction ? "119%" : "100%",
-            min: snap.direction ? "64%" : "64%",
+            max: snap.direction ? "100%" : "100%",
+            min: snap.direction ? "62%" : "62%",
         },
     }
 
+
     return (
-        <Draggable nodeRef={opt} position={snap.setPosition} positionOffset={offset} onStart={() => false}>
-            <Option hide={hide} layout={layout} top={top} ref={opt} className="Panel opt">
-                <p style={firstHeader}
-                    id="audiohead"
-                >Audio</p>
-                <div className="audio" style={firstheight}
-                    onMouseEnter={() => { document.getElementById("audiohead").style.width = headwidth.first.max }}
-                    onMouseLeave={() => { document.getElementById("audiohead").style.width = headwidth.first.min }}
+        <>
+            <Draggable nodeRef={opt} position={snap.optPosition} positionOffset={offset} onStart={() => false}>
+                <Option hide={hide} layout={layout} top={top} ref={opt}
+                    className={state.drag ? "Panel opt glow" : "Panel opt"}
                 >
-                    <Folder style={{ cursor: "wait" }} id="muteunmute" className="li"><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
-                    <Folder id="playstop" className="li"><PlayPauseIcon arg={1} />{snap.playMusic ? "Music" : "Music"}</Folder>
-                    {/* <Folder id="Next" className="li w">Next</Folder> */}
-                </div>
-                <p style={secondHeader}
-                    id="displayhead"
-                >Display</p>
-                <div className="display" style={secondheight}
-                    onMouseEnter={() => { document.getElementById("displayhead").style.width = headwidth.second.max }}
-                    onMouseLeave={() => { document.getElementById("displayhead").style.width = headwidth.second.min }}
-                >
-                    <Folder onClick={() => toggleTheme()} className="li w"><ModeIcon /><span>{snap.theme === "light" ? "Dark" : "Light"}</span></Folder>
-                    <Folder onClick={() => toggleCanvas()} className="li w"><ShowHideIcon />{snap.canvasVisible ? "Hide" : "Show"}</Folder>
-                    {state.canvasVisible && <Folder onClick={() => togglePause(snap.paused)} className="li w"><PlayPauseIcon arg={2} />{snap.paused ? "Play" : "Pause"}</Folder>}
-                    <Folder id="rowcolumn" onClick={() => toggleDirection()} className="li w"><DirectionIcon />{snap.direction ? "Column" : "Row"}</Folder>
-                </div>
-                {snap.isPro}
-            </Option>
-        </Draggable>
+                    <p style={firstHeader}
+                        id="audiohead"
+                    >Audio</p>
+                    <div className="audio" style={firstStyle}
+                        onMouseEnter={() => { document.getElementById("audiohead").style.width = headwidth.first.max }}
+                        onMouseLeave={() => { document.getElementById("audiohead").style.width = headwidth.first.min }}
+                    >
+                        <Folder id="muteunmute" className="li"><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
+                        <Folder id="playstop" className="li"><PlayPauseIcon arg={1} />{cloud.playMusic ? "Music" : "Music"}</Folder>
+                        {/* <Folder id="Next" className="li w">Next</Folder> */}
+                    </div>
+                    <p style={secondHeader}
+                        id="displayhead"
+                    >Display</p>
+                    <div className="display" style={secondStyle}
+                        onMouseEnter={() => { document.getElementById("displayhead").style.width = headwidth.second.max }}
+                        onMouseLeave={() => { document.getElementById("displayhead").style.width = headwidth.second.min }}
+                    >
+                        {state.canvasVisible &&
+                            <Folder width={snap.direction ? "80%" : "60%"} onClick={() => togglePause(snap.paused)} className="li w"><PlayPauseIcon arg={2} />{snap.paused ? "Play" : "Pause"}</Folder>}
+                        <Folder onClick={() => toggleCanvas()} className="li w"><ShowHideIcon />{snap.canvasVisible ? "Hide" : "Show"}</Folder>
+                        <Folder onClick={() => toggleTheme()} className="li w"><ModeIcon /><span>{snap.theme === "light" ? "Dark" : "Light"}</span></Folder>
+                        <Folder ref={colorLink} onClick={() => openWheel()} className="li w"><ColorIcon />{!snap.colorWheel ? "Color" : "Choose"}</Folder>
+                        <Folder id="rowcolumn" onClick={() => toggleDirection()} className="li w"><DirectionIcon />{snap.direction ? "Column" : "Row"}</Folder>
+                    </div>
+                    {snap.isPro}
+                    {cloud.playMusic}
+                </Option>
+            </Draggable >
+        </>
     );
 }
 
 export default Options
+
+const Option = styled.div`
+    padding: var(--panelPadding);
+    padding-bottom: 0;
+    position: absolute;
+    z-index: 4000;
+    left: var(--edge);
+    margin: 20px 0 0 0;
+    display: grid;
+    align-items: start;
+    ${props => props.layout}
+    ${props => props.hide}
+    ${props => props.top}
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+
+    .audio, .display{
+       width: 100%;
+       overflow-y: scroll;
+       padding: 2px 2px 0px 7px;
+
+        ::-webkit-scrollbar {
+          -webkit-appearance: none;
+          width: 5px;
+          position: absolute;
+        }
+        ::-webkit-scrollbar-thumb {
+            border: 1px solid;
+          border-color:${props => props.theme.panelColor};
+          border-radius: 4px;
+          transition: 0.3s;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background-color: ${props => props.theme.panelColor};
+              box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+              -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+              -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+              transition: 0.3s;
+        }
+    }
+
+       #audiohead, #displayhead{
+        text-transform: uppercase !important;
+        font-size: 1vh !important;
+        padding-bottom: 6px;
+
+        @media screen and (min-height: 1087px) and (max-height:1300px) {
+        font-size: 0.8vh !important;
+        }
+        @media screen and (min-height:1300px) {
+        font-size: 0.65vh !important;
+        }
+         }
+    .display{
+       padding-bottom: 10px !important;
+    }
+
+  .li{
+    justify-content: flex-end;
+    width: 65%;
+    margin: 4px auto 8px auto;
+    position: relative;
+    height: fit-content;
+    /* padding-top: 1px; */
+    padding-right: 7px;
+    transition: 0.3s;
+
+    & svg{
+        left: 7px !important;
+        right: unset !important;
+    }
+  }
+
+  p{
+    margin: 3px auto 5px auto;
+    text-align: center;
+    border-bottom: 1px solid ${props => props.theme.panelColor};
+    transition: 0.9s;
+  }
+  svg:not(.ShowHideIcon):not(.light):not(.dark){
+    fill: none !important;
+    stroke: ${props => props.theme.panelColor};
+    stroke-width: 38px !important;
+  }
+
+  .dark{
+    fill: none !important;
+    stroke: ${props => props.theme.panelColor};
+    stroke-width: 12px !important;
+  }
+  
+  .modeIcon, .muteIcon, .ShowHideIcon, .ColorIcon{
+    position: absolute;
+    right: 6px;
+    width: 10px;
+    fill: ${props => props.theme.panelColor};
+    overflow: visible;
+    align-self: left;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .PlayPauseIcon{
+    position: absolute;
+    right: 7px;
+    height: 10px;
+    fill: ${props => props.theme.panelColor};
+    overflow: visible;
+    align-self: left;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .DirectionIcon{
+    stroke-width: 1px !important;
+    position: absolute;
+    right: 6px;
+    width: 10px;
+    overflow: visible;
+    align-self: left;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+`

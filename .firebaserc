@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "nabla7"
+  },
+  "targets": {
+    "nabla7": {
+      "hosting": {
+        "beta": [
+          "nabka7"
+        ]
+      }
+    }
   }
 }

@@ -13,7 +13,56 @@ import Blog from "./Blog";
 import Contrast from "./Contrast";
 import Home from "./Home";
 import NotFound from "./NotFound";
-import { useLocation } from "react-router-dom";
+import { useSearchBox } from "react-instantsearch-hooks-web";
+
+export function Page(id) {
+  useDocumentTitle(id.title)
+  const { query } = useSearchBox();
+    const snap = useSnapshot(state);
+    let opacity = query.length > 0 ? "0" : "1";
+    let pointerEvents = query.length ? "none" : "all";
+    let transition = query.length ? "0.3s" : "unset";
+
+      //Toggle active panel buttons
+  useEffect(() => {
+      let proLink = document.querySelector(".proLink");
+      let optLink = document.querySelector(".proLink");
+    if (proLink) {
+        proLink.classList.remove("folderActive");
+      };
+      if (optLink) {
+        optLink.classList.remove("folderActive");
+      };
+  })
+    if (id.id === "Home") {
+    return <Home />
+    } else if (id.id === "Info") {
+    return <Info opacity={opacity} pointerEvents={pointerEvents} transition={transition} />
+    } else if (id.id === "Store") {
+    return <Store opacity={opacity} pointerEvents={pointerEvents} transition={transition}/>
+    } else if (id.id === "Blog") {
+    return <Blog opacity={opacity} pointerEvents={pointerEvents} transition={transition}/>
+    } else if (id.id === "Contrast") {
+    return <Contrast opacity={opacity} pointerEvents={pointerEvents} transition={transition}/>
+    } else if (id.id === "NotFound") {
+    return <NotFound opacity={opacity} pointerEvents={pointerEvents} transition={transition}/>
+    } else {
+        return (
+          <>
+            <Header id={id.id} />
+            <Container className="container"
+              opacity={opacity}
+              pointerEvents={pointerEvents}
+              transition={transition}
+              paddingTop={'180px'}
+            >
+              <PageData id={id.id} />
+              {snap.selectedImg ? <Modal /> : null}
+            </Container>
+          </>
+      )
+  }
+}
 
 export const Container = styled.div`
   display: flex;
@@ -24,6 +73,7 @@ export const Container = styled.div`
   position: fixed;
   z-index: 470;
   overflow-y: overlay;
+  overflow: ${props => props.overflow};
   -webkit-overflow-scrolling: touch;
   height: 100%;
   width: 100%;
@@ -129,55 +179,3 @@ backdrop-filter: blur( 4px );
           /* transition: 0.3s; */
     }
 `
-
-
-function Page(id) {
-    useDocumentTitle(id.title)
-    const snap = useSnapshot(state);
-    const location = useLocation();
-    let opacity = location.search.length > 0 ? "0" : "1";
-    let pointerEvents = location.search.length > 0 ? "none" : "all";
-    let transition = location.search.length > 0 ? "0.3s" : "unset";
-
-      //Toggle active panel buttons
-  useEffect(() => {
-      let proLink = document.querySelector(".proLink");
-      let optLink = document.querySelector(".proLink");
-    if (proLink) {
-        proLink.classList.remove("folderActive");
-      };
-      if (optLink) {
-        optLink.classList.remove("folderActive");
-      };
-  })
-    if (id.id === "Home") {
-    return <Home />
-    } else if (id.id === "Info") {
-    return <Info opacity={opacity} pointerEvents={pointerEvents} transition={transition} />
-    } else if (id.id === "Store") {
-    return <Store opacity={opacity} pointerEvents={pointerEvents} transition={transition}/>
-    } else if (id.id === "Blog") {
-    return <Blog opacity={opacity} pointerEvents={pointerEvents} transition={transition}/>
-    } else if (id.id === "Contrast") {
-    return <Contrast opacity={opacity} pointerEvents={pointerEvents} transition={transition}/>
-    } else if (id.id === "NotFound") {
-    return <NotFound opacity={opacity} pointerEvents={pointerEvents} transition={transition}/>
-    } else {
-        return (
-          <>
-            <Header id={id.id} />
-            <Container className="container"
-              opacity={opacity}
-              pointerEvents={pointerEvents}
-              transition={transition}
-              paddingTop={'180px'}
-            >
-              <PageData id={id.id} />
-              {snap.selectedImg ? <Modal /> : null}
-            </Container>
-          </>
-      )
-  }
-}
-
-export { Page }

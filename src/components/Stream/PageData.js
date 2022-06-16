@@ -1,6 +1,6 @@
-import React, { useRef } from 'react'
+import React, { useRef, useMemo } from 'react'
 import { GetSectors, db } from '../..'
-import { state } from '../UI/state'
+import { state, cloud } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import { ImgWrapper, InfoCard, Sector, TextWrapper, TrayWrapper } from "../UI/style"
 import { motion } from 'framer-motion'
@@ -15,11 +15,11 @@ const ImgGrid = ({ work }) => {
         if (work.description) {
             state.selectedDesc = work.description[index]
         }
-        setTimeout(() => {
-            state.isPro = false;
-            state.isOpt = false;
+        // setTimeout(() => {
+        //     state.isPro = false;
+        //     state.isOpt = false;
 
-        }, 300);
+        // }, 300);
     }
 
     // Each individual image or video
@@ -62,7 +62,7 @@ const ImgGrid = ({ work }) => {
     return (
         <TrayWrapper>
             <InfoCard>
-                {work.link && <Links link={work.link} />}
+                {/* {work.link && <Links link={work.link} />} */}
                 {work.program && <Program size={'40px'} program={work.program} />}
                 <Scroller>
                     {work.by ? (work.statement && <p>{`"${work.statement}" -`} {work.by === 'AA' && <BySign byColor={AA[0]} byGradient={AA[1]} >AA</BySign>}</p>) : (work.statement && <p>{`${work.statement}`}</p>)}
@@ -79,28 +79,31 @@ const ImgGrid = ({ work }) => {
     )
 }
 
-const PageData = React.memo(function PageData(id, setSelectedImg) {
-    const snap = useSnapshot(state);
-    GetSectors(db, id.id)
+function PageData(id, setSelectedImg) {
+    const clip = useSnapshot(cloud);
+    GetSectors(db, id.id);
 
     const makeLot = (work) => {
         let lot = (
             id.id.slice(0, 2))
             + (work.projectYear.toDate().getFullYear().toString().slice(2, 5))
-            // + (work.projectYear.toDate().getMonth() + 1)
+            + (work.projectYear.toDate().getMonth() + 1)
             + (work.projectName.slice(0, 2))
             + (work.by.slice(0, 1));
         lot = lot.toUpperCase();
         return lot;
     };
-
-    return (
+    console.log(clip.sectors.length);
+    const sectors = useMemo(() =>
         <>
-            {snap.sectors.map((work) => (
-                <Sector key={`${Math.random()}`} id={work.projectName.replace(/\s+/g, '')} className="sector">
+            {clip.sectors.map((work) => (
+                <Sector
+                    width={clip.sectors.length > 1 ? '48%' : '100%'}
+                    height={clip.sectors.length > 1 ? '90%' : '100%'}
+                    key={`${Math.random()}`} id={work.projectName.replace(/\s+/g, '')} className="sector">
                     <TextWrapper key={`${Math.random()}`} className="textWrapper">
                         <div style={{ display: "flex", justifyContent: "center" }}>
-                            <span key={`${Math.random()}`} className="lot">{makeLot(work)}</span>
+                            <span key={`${Math.random()}`} className="lot">{work.projectYear && makeLot(work)}</span>
                         </div>
                         <h2 key={`${work.projectName}`}>{work.projectName}</h2>
                         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", justifyContent: "center" }}>
@@ -112,8 +115,8 @@ const PageData = React.memo(function PageData(id, setSelectedImg) {
                     <ImgGrid setSelectedImg={setSelectedImg} work={work} />
                 </Sector>
             ))}
-        </>
-    )
-})
+        </>, [cloud.sectors])
+    return sectors;
+}
 
 export default PageData

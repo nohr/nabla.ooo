@@ -4,16 +4,22 @@ import "./App.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { initializeApp } from "firebase/app"
-import { getFirestore, collection, getDocs, orderBy, where, query } from "firebase/firestore/lite";
-import { state } from "./components/UI/state";
 import {
-  BrowserRouter as Router, useLocation,
+  getFirestore,
+  collection,
+  getDocs,
+  orderBy,
+  where,
+  query
+} from "firebase/firestore/lite";
+import { state, cloud } from "./components/UI/state";
+import {
+  BrowserRouter as Router,
 } from 'react-router-dom'
 
 const container = document.getElementById("root");
 const root = createRoot(container);
 root.render(<Router><App tab="home" /></Router>);
-
 
 reportWebVitals();
 
@@ -31,99 +37,90 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 
-// Initialize location and search term
-// let value = URLSearchParams.search.slice(8).toLocaleLowerCase().split('&')[0];
-
 
 // Get works from database
-export async function GetWorks(db, term) {
-  state.loading = true;
-  const colRef = collection(db, "portfolio");
-  const selfs = query(colRef, orderBy("date", "desc"), where("type", "==", "self"));
-  const clients = query(colRef, orderBy("date", "desc"), where("type", "==", "client"));
+export async function GetWorks(db) {
+  if (navigator.onLine) {
+    cloud.loading = true;
+    const colRef = collection(db, "portfolio");
+    const selfs = query(colRef, orderBy("date", "desc"), where("type", "==", "self"));
+    const clients = query(colRef, orderBy("date", "desc"), where("type", "==", "client"));
 
-  const selfsSnapshot = await getDocs(selfs);
-  const clientsSnapshot = await getDocs(clients);
-  state.selfs = selfsSnapshot.docs.map(doc => doc.data());
-  state.clients = clientsSnapshot.docs.map(doc => doc.data());
+    const selfsSnapshot = await getDocs(selfs);
+    const clientsSnapshot = await getDocs(clients);
+    cloud.selfs = selfsSnapshot.docs.map(doc => doc.data());
+    cloud.clients = clientsSnapshot.docs.map(doc => doc.data());
 
-  const projectClientsRef = query(colRef, orderBy("name", "asc"), where("name", "!=", null))
-  const projectClientsSnapshot = await getDocs(projectClientsRef);
-  state.projectClients = projectClientsSnapshot.docs.map(doc => doc.data());
+    const projectClientsRef = query(colRef, orderBy("name", "asc"), where("name", "!=", null))
+    const projectClientsSnapshot = await getDocs(projectClientsRef);
+    state.projectClients = projectClientsSnapshot.docs.map(doc => doc.data());
 
-  // TODO: siphon if term is visible
-  let projectsRef;
-  projectsRef = query(colRef, orderBy("projectName", "asc"))
-
-  if (term) {
-    console.log(term);
+    cloud.loading = false;
+  } else {
+    return;
   }
 
-  const projectsSnapshot = await getDocs(projectsRef);
-  projectsSnapshot.docs.map(doc => doc.data()).forEach((one) => {
-    state.projects.push(one)
-    if (state.mediums.indexOf(one["projectMedium"]) === -1) {
-      state.mediums.push(one["projectMedium"])
-    }
-  })
-
-  state.projects.map(({ projectYear, by }) => {
-    let year;
-    if (projectYear) {
-      year = eval(projectYear.toDate().getFullYear());
-      if (state.projectYears.indexOf(year) === -1) {
-        state.projectYears.push(year)
-        state.projectYears.sort(function (a, b) { if (b) { return b - a } });
-      }
-    }
-
-    let byInitials = by;
-    if (state.by.indexOf(byInitials) === -1) {
-      state.by.push(byInitials)
-    }
-  })
-  state.loading = false;
 }
-
 GetWorks(db)
 
-
-
 async function GetBlog(db) {
-  state.loading = true;
+  cloud.loading = true;
   const blogRef = collection(db, "blog");
   const blogs = query(blogRef, orderBy("created", "desc"), where("status", "==", "LIVE"));
   const blogSnashot = await getDocs(blogs);
   state.blog = blogSnashot.docs.map(doc => doc.data());
-  state.loading = false;
+  cloud.loading = false;
 }
 
 export async function GetSiteInfo(db) {
-  const siteRef = collection(db, "siteinfo");
-  const siteinfoSnapshot = await getDocs(siteRef);
-  let quotes = siteinfoSnapshot.docs.map(doc => doc.data())[0].quotes;
-  // Randomize Quotes
-  const random = Math.floor(Math.random() * quotes.length);
-  state.quotes = quotes[random];
+  if (navigator.onLine) {
+    const siteRef = collection(db, "siteinfo");
+    const siteinfoSnapshot = await getDocs(siteRef);
+    let quotes = siteinfoSnapshot.docs.map(doc => doc.data())[0].quotes;
+    // Randomize Quotes
+    const random = Math.floor(Math.random() * quotes.length);
+    state.quotes = quotes[random];
+  } else if (state.cached) {
+    state.quotes = state.quotes;
+  } else {
+    return;
+  }
 }
 GetSiteInfo(db);
 
 export async function GetSectors(db, work) {
-  state.loading = true;
+  cloud.loading = true;
   const sectorRef = collection(db, "portfolio");
   const sectors = query(sectorRef, orderBy("projectYear", "desc"), where("at", "==", `${work}`));
   const sectorSnapshot = await getDocs(sectors);
-  state.sectors = sectorSnapshot.docs.map(doc => doc.data());
-
-  state.loading = false;
+  cloud.sectors = sectorSnapshot.docs.map(doc => doc.data());
+  cloud.loading = false;
 }
+
+export async function GetStore() {
+  cloud.loading = true;
+  const storeRef = collection(db, "portfolio");
+  const items = query(storeRef, orderBy("productName", "desc"), where("productName", '!=', null));
+  const storeSnapshot = await getDocs(items);
+  state.store = storeSnapshot.docs.map(doc => doc.data());
+  cloud.loading = false;
+}
+GetStore();
+
 // Themes
-export function Themes() {
-  // Theme to prefrence and listen for changes
+// Theme to prefrence and listen for changes if no cache
+if (state.cached) {
+  state.theme = state.theme;
+} else {
   window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches && !state.themeChanged ?
     (state.theme = "dark") : (state.theme = "light")
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",
-    e => e.matches ? (state.theme = "dark") : (state.theme = "light") // listener
-  );
 }
-Themes();
+
+console.log(state.themeChanged);
+
+// listener
+!state.themeChanged ? (window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",
+  e => e.matches ? (state.theme = "dark") : (state.theme = "light")
+)) :
+  // TODO: change pwa header on theme change
+  state.theme === 'light' ? (state.theme = "light") : (state.theme = "dark");

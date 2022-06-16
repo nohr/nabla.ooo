@@ -1,6 +1,6 @@
-import React, { Suspense, useLayoutEffect } from 'react'
+import React, { Suspense, useEffect, useLayoutEffect } from 'react'
 import "../../App.css"
-import { state } from '../UI/state'
+import { cloud, state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import CD from './CD'
 import useWindowDimensions from '../UI/window'
@@ -8,7 +8,7 @@ import { Canvas } from '@react-three/fiber'
 import { RepeatWrapping } from 'three'
 import { useTexture, MeshReflectorMaterial, softShadows, PerspectiveCamera, OrbitControls, Html, useProgress } from '@react-three/drei'
 import { EffectComposer, Noise } from '@react-three/postprocessing'
-import { ShaderMaterial } from 'three'
+// import { ShaderMaterial } from 'three'
 
 // Canvas
 softShadows();
@@ -88,9 +88,9 @@ function Floor() {
         maxDepthThreshold={1.1}
         depthScale={10}
         depthToBlurRatioBias={20}
-        color={state.theme === 'light' ? snap.light.Surface : snap.dark.Surface}
+        color={snap.theme === 'light' ? snap.light.Surface : snap.dark.Surface}
         metalness={0}
-        roughness={state.theme === 'light' ? snap.light.SurfaceRough : snap.dark.SurfaceRough}
+        roughness={snap.theme === 'light' ? snap.light.SurfaceRough : snap.dark.SurfaceRough}
         roughnessMap={roughness}
         aoMap={ao}
         normalMap={normal}
@@ -105,32 +105,65 @@ function Floor() {
 // Spinner
 const Spinner = () => {
   const { progress } = useProgress()
-  return (
-    <Html fullscreen>
-      <div className="canvasSpinner">
-        <div className="gugmu9vdpaw">
-          <p>{`${progress}`}</p>
-          <div></div>
-        </div>
-      </div>
-    </Html>)
+  console.log(progress);
+  // return (
+  //   <Html fullscreen>
+  //     <div className="canvasSpinner">
+  //       <div className="gugmu9vdpaw">
+  //         <p>{`${progress}`}</p>
+  //         <div></div>
+  //       </div>
+  //     </div>
+  //   </Html>
+  // )
 }
 // Composition
 function CanvasComp() {
   const { height, width } = useWindowDimensions();
   const snap = useSnapshot(state);
+  const clip = useSnapshot(cloud);
 
+  // Toggle Canvas Visibility
+  let canvas;
+
+  useEffect(() => {
+    canvas = document.getElementsByTagName("canvas")[0];
+    if (canvas) {
+      if (snap.cached) {
+        if (snap.canvasVisible) {
+          //Show Canvas
+          canvas.style.display = "block";
+          if (!snap.paused) {
+            state.paused = true
+          } else if (snap.paused) {
+            state.paused = true
+          }
+        } else if (!snap.canvasVisible) {
+          //Hide Canvas
+          canvas.style.display = "none";
+          if (!snap.paused) {
+            state.paused = true;
+            state.CDRotationY = 0;
+            state.CDRotationZ = 0;
+            state.autoRotateSpeed = 0;
+          }
+        }
+      } else {
+        return;
+      }
+    }
+  }, []);
 
   return (
-    <Canvas dpr={[1, 2]} frameloop={state.paused ? "demand" : "always"} >
+    <Canvas dpr={[1, 2]} frameloop={snap.paused ? "demand" : "always"} >
       <PerspectiveCamera makeDefault target={[0, 0, 0]} position={snap.cameraPosition} near={.1} fov={20} aspect={width / height} />
-      <fog attach="fog" args={[state.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, 40]} />
+      <fog attach="fog" args={[snap.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, 40]} />
       <Suspense fallback={<Spinner />}>
         <spotLight
-          intensity={state.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}
+          intensity={snap.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}
           decay={2}
           angle={Math.PI / 2}
-          color={state.theme === 'light' ? snap.light.fog : snap.dark.spotlight}
+          color={snap.theme === 'light' ? snap.light.spotlight : snap.dark.spotlight}
           position={[90, 60, -50]}
 
         />
@@ -156,7 +189,7 @@ function CanvasComp() {
         target={[0, 0, 0]}
         enablePan={false}
         autoRotate={true}
-        autoRotateSpeed={snap.paused ? 0 : snap.loading ? -5 : 1}
+        autoRotateSpeed={snap.paused ? 0 : clip.loading ? -5 : 1}
         minPolarAngle={Math.PI / 3}
         maxPolarAngle={Math.PI / 2}
         minDistance={20}
