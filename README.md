@@ -7,9 +7,9 @@ This is the homepage for digital studio, Nabla Ltd.
 
 ##### CD
 
-- [] Conversation and auth
+- [ ] Conversation and auth
 - [x] Greeting quote from CD
-- [] Loading animation
+- [ ] Loading animation
 
 #### Keybindings
 
@@ -19,24 +19,24 @@ This is the homepage for digital studio, Nabla Ltd.
 
 #### Pages
 
-- [] Home contains new welcome splash screen
-- [] Info redesigned and populated with information
+- [ ] Home contains new welcome splash screen
+- [ ] Info redesigned and populated with information
 - [x] Store redesined with tilt animation for items
 
 #### Projects
 
 - [x] Creator initial medals for projects with statements
 - [x] Descriptions for images in overlays
-- [] Documentation for all projects
+- [ ] Documentation for all projects
 - [x] Icons for programs used for all projects
 - [x] Links for projects
-- [] Router makes individual pages for projects
-- [] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; using cloud functions generated LOT#
+- [ ] Router makes individual pages for projects
+- [ ] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; using cloud functions generated LOT#
 
 #### Search
 
 - [x] Live Search functional
-- [] Search Results overlay
+- [ ] Search Results overlay
 
 #### Misc.
 
@@ -47,7 +47,6 @@ This is the homepage for digital studio, Nabla Ltd.
 ## Links
 
 - [nabla.ooo/](https://nabla.ooo/)
-- [nabla.ooo/info](https://nabla.ooo/info)
 - [beta.nabla.ooo/](https://beta.nabla.ooo/)
 
 ## Etc.
