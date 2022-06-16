@@ -1,16 +1,65 @@
-import React, { useRef } from "react"
-import '../../App.css'
-// import { state } from '../UI/state'
-// import { useSnapshot } from 'valtio'
-import { Container } from "../UI/style";
-import useDocumentTitle from "../UI/documentTitle";
-import { HashLink } from 'react-router-hash-link';
+import React from "react";
+import "../../App.css";
+import { Container } from "./Page";
+import { HashLink } from "react-router-hash-link";
 import styled from "styled-components";
-import useFontFaceObserver from "use-font-face-observer";
-import { DiagonalArrow, Header } from "../UI/svg";
+import Tilty from 'react-tilty';
+import { DiagonalArrow, EkoThumb, Header } from "../UI/svg";
+import { state } from "../UI/state";
+import { useSnapshot } from "valtio";
 
+function Store(props) {
+  const snap = useSnapshot(state)
 
-const StoreContainer = styled.div`
+  return (<>
+    <Header id={"store"} />
+    <Container overflow='hidden' className="container"
+      opacity={props.opacity}
+      pointerEvents={props.pointerEvents}
+      transition={props.transition}
+    >
+      <StoreItemsLayer>
+        {
+          snap.store.map((item, key) => (
+            <Tilty key={key} reverse axis="xy"
+              style={{ transformStyle: 'preserve-3d' }}
+              scale={1} perspective={700} reset={false}
+            >
+              <StoreItem
+                id={item.productName.replace(/\s+/g, '')}
+                className="item">
+                <EkoThumb />
+                <div className="desc">
+                  <HashLink className="title w"
+                    style={{ transform: 'translateZ(190px)' }}
+                    to="/nabla#EkoDigital">
+                    {item.productName}
+                    <DiagonalArrow />
+                  </HashLink>
+                  <p>{item.tagline[0]} <br />
+                    <i style={{ opacity: ".5" }}>
+                      {item.tagline[1]}
+                    </i>
+                  </p>
+                  <a className="buyBtn"
+                    style={{ transform: 'translateZ(900px)' }}
+                    href={item.productURL}
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    BUY ${`${item.price}`}
+                  </a>
+                </div>
+              </StoreItem>
+            </Tilty>
+
+          ))}  </StoreItemsLayer>
+    </Container>
+  </>)
+}
+
+export default Store;
+
+const StoreItemsLayer = styled.div`
   display: flex !important;
   align-items: center;
   justify-content: space-between;
@@ -19,87 +68,51 @@ const StoreContainer = styled.div`
   flex-wrap: nowrap;
   overflow: visible;
   gap: 60px;
-
-    .eko{
-      height: 525px;
+`
+const StoreItem = styled.div`
+    width: auto;
+    aspect-ratio: 1 / 1;
+      height:85vh;
       display: grid;
-      grid-template-rows: 65% 35%;
+      grid-template-rows: 70% 30%;
       justify-items: center;
-      padding: 50px;
-      box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
-      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
-      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
+      padding: 50px 0 0;
+      box-shadow: 0 8px 32px 0 ${props => props.theme.LiHover};
+      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
+      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
       backdrop-filter: blur(var(--blur));
       -webkit-backdrop-filter: blur(var(--blur));
       border: 1px solid;
       border-color:  ${props => props.theme.panelColor};
-      border-radius: 500px;
+      border-radius: 50%;
       overflow: visible;
       transition: 1.3s;
-    }
-    .eko:hover{
+
+    &:hover{
   	animation: pulseItem 4s infinite;
     }
   @keyframes pulseItem {
 	0% {
 		text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
-      box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
-      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
-      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
+      box-shadow: 0 8px 32px 0 ${props => props.theme.LiHover};
+      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
+      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
 	}
 
 	50% {
 		text-shadow: 1px 1px 30px ${props => props.theme.LiHover};
-      box-shadow: 0 8px 12px 0 ${props => props.theme.panelColor};
-      -webkit-box-shadow:  0 8px 12px 0 ${props => props.theme.panelColor};
-      -moz-box-shadow:  0 8px 12px 0 ${props => props.theme.panelColor};
+      box-shadow: 0 8px 12px 0 ${props => props.theme.LiHover};
+      -webkit-box-shadow:  0 8px 12px 0 ${props => props.theme.LiHover};
+      -moz-box-shadow:  0 8px 12px 0 ${props => props.theme.LiHover};
 	}
 
 	100% {
 		text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
-      box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
-      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
-      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
+      box-shadow: 0 8px 32px 0 ${props => props.theme.LiHover};
+      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
+      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
 	}
 }
-
-    .eko-thumb{
-      text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
-      color: ${props => props.theme.LiHover};
-      font-family: "ekodigital", Helvetica, sans-serif !important;
-      font-weight: 400;
-      font-style: normal;
-      font-size: 350px;
-      font-display: block;
-      vertical-align: middle;
-      letter-spacing: -15px;
-      -webkit-user-select: none; /* Safari */
-      -moz-user-select: none; /* Fiefox */
-      -ms-user-select: none; /* IE10+/Edge */
-      user-select: none; /* Standard */
-      transition: 2.3s;
-      /* filter: blur(30px); */
-    }
-
-    .eko-thumb:hover{
-  	animation: pulse 4s infinite;
-
-    }
-
-    @keyframes pulse {
-	0% {
-		text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
-	}
-
-	50% {
-		text-shadow: 1px 1px 30px ${props => props.theme.LiHover};
-	}
-
-	100% {
-		text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
-	}
-}
-
   .desc {
       padding: 0 20px;
       line-height: 25px;
@@ -115,9 +128,9 @@ const StoreContainer = styled.div`
       vertical-align: middle;
       display: flex;
       justify-content: center;
-      /* padding-bottom: 10px; */
-    }
-    
+      align-items: center;
+
+    }  
     a{
       /* height: min-content; */
       width: max-content;
@@ -140,16 +153,20 @@ const StoreContainer = styled.div`
       -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
       -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
       color:  ${props => props.theme.panelColor};
-      transition: 1.3s;
+      transition: 0.6s;
     }
     .buyBtn {
+      transition: 0.6s;
       text-align: center;
       padding: 1px 9px;
-      width: 65px;
+      width: 40%;
       font-size: 13px;
       font-style: normal !important;
       font-weight: 800;
       background-color: #c94343;
+      -webkit-box-shadow: 0px 3px 10px 1px #c94343;
+      -moz-box-shadow: 0px 3px 10px 1px #c94343;
+      box-shadow: 0px 3px 10px 1px #c94343;
       color: #ebebeb !important;
       cursor: pointer;
       display: inline;
@@ -167,48 +184,3 @@ const StoreContainer = styled.div`
       box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover};
     }
 `
-
-
-
-function Store() {
-  useDocumentTitle("Store");
-  const ekoRef = useRef(null);
-  // function FontObserver() {
-  //   const isFontListLoaded = useFontFaceObserver([
-  //     {
-  //       family: `ekodigital`,
-  //     },
-  //   ]);
-  //   if (isFontListLoaded) {
-  //     ekoRef.current.setAttribute("style", "filter: blur(0px);")
-  //   }
-  // }
-
-  return (
-    <>
-      <Header id={"store"} />
-      <Container className="container">
-        <StoreContainer>
-          <div className="eko">
-            <div className="eko-thumb" ref={ekoRef} >
-              Aa
-            </div>
-            <div className="desc">
-              <HashLink className="title w" to="/nabla#EkoDigital">
-                Eko Digital
-                <DiagonalArrow />
-              </HashLink>
-              My first display font offers a stencil with a distinct futuristic style. <br />
-              <i style={{ opacity: ".5" }}>It's just what your acid graphics were missing!</i>
-              <br />
-              <a className="buyBtn" href="https://nablaooo.gumroad.com/l/ekodigi" target="_blank" rel="noopener noreferrer">
-                $30
-              </a>
-            </div>
-          </div>
-        </StoreContainer>
-      </Container>
-    </>
-  )
-}
-export default Store;

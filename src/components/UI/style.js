@@ -1,138 +1,66 @@
 //Styling for the UI - proceed with caution
 import styled, { createGlobalStyle } from "styled-components"
-import { NavLink } from "react-router-dom"
-import { state } from "./state"
 
-export const Container = styled.div`
-  display: flex;
-  gap: 60px;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  position: fixed;
-  z-index: 470;
-  overflow-y: overlay;
-  -webkit-overflow-scrolling: touch;
-  height: 100%;
-  width: 100%;
-  padding: 20px 15px 20px 20px;
-  font-size: 14px;
-  color: ${props => props.theme.panelColor};
-
-  & .backdrop{
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: ${props => props.theme.backdrop};
-    display: flex;
-    justify-content: center;
-  }
-
-  & .backdrop object{
-    display: block;
-    max-width: 80%;
-    max-height: 90%;
-    width: auto;
-    height: auto;
-    align-self: center;
-    box-shadow: 3px 5px 7px rgba(0,0,0,0.5);
-    -webkit-box-shadow:  3px 5px 7px rgba(0,0,0,0.5);
-    -moz-box-shadow:  3px 5px 7px rgba(0,0,0,0.5);
-    /* border: 1px solid ${props => props.theme.panelColor}; */
-    -webkit-user-drag: none;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-  
-    @media only screen and (max-width: 768px) {
-      max-width: 80%;
-      max-height: 100%;
-    }
-  }
-
-  & .backdrop object:hover{
-    cursor: grab;
-  }
-
-  /* &:last-child(){
-    margin-bottom: 60%;
-  } */
-
-  &:last-child():not(.backdrop){
-    height: 90%;
-  }
-
-  ::-webkit-scrollbar {
-      -webkit-appearance: none;
-      width: 5px;
-      display: flex;
-    }
-    ::-webkit-scrollbar-thumb {
-      background-color:${props => props.theme.panelColor};
-      border-radius: 4px;
-      /* transition: 0.3s; */
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background-color: ${props => props.theme.panelColor};
-          box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-          -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-          -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-          /* transition: 0.3s; */
-    }
-    .oldNabla{
-      fill: ${props => props.theme.panelColor};
-      overflow: visible;
-      position: absolute;
-      top: 40%;
-      left: 50%;
-      transform: translate(-50%,-60%);
-    }
-`
 export const Sector = styled.div`
-border: solid 1px ;
-border-color: transparent ${props => props.theme.panelColor} transparent ${props => props.theme.panelColor};
+border: solid 1px;
+border-color: ${props => props.theme.panelColor};
 border-radius: 10px;
 display: flex;
-width: 100%;
+width: ${props => props.width};
+height: ${props => props.height};
 flex-direction:column;
 padding: 10px 0px 0px 0px;
-height: 90%;
-justify-content: space-between;
+justify-content: space-around;
 gap: 20px;
 position: relative;
 overflow: hidden;
-transition: 1.3s;
+transition: 1.3s !important;
 
 & .lot{
   color: ${props => props.theme.panelColor};
   transition: 1.3s;
 }
+    @media screen and (max-width: 1440px) {
+      & {
+        width: 80%;
+        height: 80%;
+      }
+  }
+  @media screen and (max-width: 940px) {
+      & {
+        width: 100%;
+        height: 100%;
+      }
+  }
+  @media screen and (max-height: 1040px) {
+      & {
+        /* width: 80%; */
+        height: 100%;
+      }
+  }
 `
 export const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
   width:100%;
-  flex-wrap: wrap;
+  height: 30% !important;
+  flex-wrap: nowrap;
   color: ${props => props.theme.panelColor};
   font-size: 14px;
   text-align: left;
-  height: 40% !important;
   align-self: center;
-  padding: 0 280px 0 280px;
-  display: grid;
-  grid-template-rows: 5% 32% 5% 58%;
+  padding: 20px 20px 0 20px;
   transition: 1.3s;
-
-  @media only screen and (max-width: 1336px) {
-  padding: 0 20px 0 20px;
-  }
+  white-space: break-spaces;
+  /* line-height: 25px; */
 
 & h2{
+  line-height: 30px;
   font-size: 40px;
   clear:both;
-  align-self: flex-end;
+  align-self: center;
     text-align: center;
+      text-shadow: 9px 4px 13px  ${props => props.theme.sky};
 }
 
 & h4, & h5{
@@ -147,10 +75,14 @@ export const TextWrapper = styled.div`
   justify-self: flex-end;
 }
 & p {
-text-indent: 3em;
-line-height: 2;
-overflow-y: scroll;
-padding: 0 !important;
+  width: 60ch;
+  display: inline;
+  padding: 0% 3px;
+  background-color: ${props => props.theme.layerBG};
+  text-indent: 3em;
+  overflow-y: scroll;
+  padding: 0 !important;
+
   ::-webkit-scrollbar {
       -webkit-appearance: none;
       width: 5px;
@@ -177,42 +109,57 @@ padding: 0 !important;
 }
 
 `
+export const TrayWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  height: 70% !important;
+    padding:0 20px 20px 20px ;
+    gap: 20px;
+  
+`
 export const ImgWrapper = styled.div`
     width: 100%;
+    height: 100%;
     display: flex;
-    height: 60% !important;
     overflow-x: scroll;
     overflow-y: hidden;
     flex-direction: row;
     flex-wrap: nowrap;
     gap: 20px;
-    padding:0 20px 10px 20px ;
-    margin-bottom: 1px;
+    padding-bottom: 5px;
 
     .img-thumb{
+      border-radius: 5px;
       overflow: hidden;
-      width: 0;
-      padding: 0 257px;
+      width: 0px;
+      padding: 0 280px;
       position: relative;
       opacity: 1;
       pointer-events: all;
       border: 1px solid ${props => props.theme.panelColor};
-      filter: grayscale(1);
+      filter: grayscale(0);
       transition: 0.3s;
-    }
 
-    .img-thumb:hover{
+      &:hover{
       cursor: pointer;
-      filter: grayscale(0) !important;
+      border-radius: 50%;
+      }
     }
-
+    .img-thumb:hover {
+      filter: grayscale(1) !important;
+    }
     object{
+      @media only screen and (max-width: 1440px) {
+        grid-template-rows: 35% 30% 35%;
+        padding: 0 20px 0 20px;
+      }
     /* max-height: 100%; */
     min-width: 100%;
-    max-height: 120%;
-    /* max-width: 150%; */
+    max-height: 150%;
     position: absolute;
-    pointer-events:  none;
+    pointer-events:  all;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -222,9 +169,10 @@ export const ImgWrapper = styled.div`
     -webkit-user-select: none;
     -ms-user-select: none;
     }
-
     video{
-    -webkit-user-drag: none;
+      filter: grayscale(0) !important;
+      border-radius: 5px;
+      -webkit-user-drag: none;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
@@ -233,42 +181,81 @@ export const ImgWrapper = styled.div`
     object-fit: contain;
     margin: 0;
     padding: 0;
-      filter: grayscale(1) !important;
-      transition: 0.3s;
-
-      &:hover{
-      filter: grayscale(0);
-      transition: 0.3s;
-      }
+    transition: 0.3s;
     }
-
     .landscape{
     height: 100% !important;
     width: auto !important;
     }
-
     video[poster]{
+      border-radius: 5px;
       object-fit: fill;
       filter: grayscale(1);
       transition: 0.3s;
     }
-    ::-webkit-scrollbar {
-  -webkit-appearance: none;
-  height: 9px;
-}
-::-webkit-scrollbar-thumb {
-  background-color: ${props => props.theme.panelColor};
-  border-radius: 4px;
-  transition: 0.3s;
-  overflow: visible;
-}
-::-webkit-scrollbar-thumb:hover {
-  background-color: ${props => props.theme.panelColor};
-      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+     ::-webkit-scrollbar {
+      -webkit-appearance: none;
+      height: 5px;
+      position: absolute;
+    }
+    ::-webkit-scrollbar-thumb {
+      outline: 1px solid ${props => props.theme.panelColor};
+      border-radius: 4px;
+      background-color: transparent;
       transition: 0.3s;
-}
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: ${props => props.theme.panelColor};
+          box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          transition: 0.3s;
+    }
+`
+export const InfoCard = styled.div`
+    display: flex;
+    overflow-y: scroll;
+    flex-direction: column;
+    white-space: break-spaces;
+    line-height: 25px;   
+    height: 100%;
+    width: 50% !important;
+    padding-left: 0px;
+    margin-left: 1px;
+    text-align: justify;
+
+    & {
+      padding: 10px;
+      border-radius: 10px;
+      display: inline;
+      background-color: ${props => props.theme.layerBG};
+      /* text-indent: 3em; */
+
+      & p{
+      height: min-content;
+      overflow-y: scroll !important;
+      }
+
+  ::-webkit-scrollbar {
+      -webkit-appearance: none;
+      width: 5px;
+      position: absolute;
+    }
+    ::-webkit-scrollbar-thumb {
+      outline: 1px solid ${props => props.theme.panelColor};
+      border-radius: 4px;
+      background-color: transparent;
+      transition: 0.3s;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: ${props => props.theme.panelColor};
+          box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          transition: 0.3s;
+    }
+  }
+
 `
 export const Folder = styled.div`
   width: 100%;
@@ -280,20 +267,38 @@ export const Folder = styled.div`
   justify-content: space-between;
   align-items: center;
 `
+export const Wheel = styled.div`
+  position: absolute;
+  z-index: 4900;
+  left: 0;
+  transition: 0.9s !important;
+  opacity: ${props => props.opacity};
+  pointer-events: ${props => props.pointerEvents};
+  transition: ${props => props.transition};
+`
 export const GlobalStyle = createGlobalStyle`
     //App
     :root{
         --theme: ${props => props.theme.sky};
         --panelWidth: 270px;
         --panelHeight: 270px;
-        --panelPadding: 26px 42.5px;
+        --panelPadding: 6px 42.5px;
         --headOffset: 10px;
         --edge: 20px;
-        --blur: 2px;
+        --blur: 7px;
     }
     html, body, #root {
         /* isolation: isolate; */
         background-color: ${props => props.theme.sky};
+    }
+
+    *::selection{
+      color: inherit;
+      background-color: #00000020;
+    }
+    *{
+      /* filter:contrast(1.1) ; */
+      animation-delay: 0s;
     }
     //Panel
     .Panel {
@@ -303,19 +308,20 @@ export const GlobalStyle = createGlobalStyle`
       scroll-snap-type: none;
       backdrop-filter: blur(var(--blur));
       -webkit-backdrop-filter: blur(var(--blur));
-      mix-blend-mode: ${props => props.theme.blend};
       border: 1px solid ${props => props.theme.panelColor};
       color: ${props => props.theme.panelColor};
       border-radius: 185px;
       overflow: hidden;
     }
     .glow{
+      mix-blend-mode: ${props => props.theme.blend};
       box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
       -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
       -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
       /* transition: 1s; */
-      animation: pulseItem 2s infinite;
+      /* animation: pulseItem 2s infinite; */
     }
+
 
     @keyframes pulseItem {
 	0% {
@@ -355,7 +361,7 @@ a.active:not(.nablaWrapper){
   -moz-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
   box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
   text-shadow: 1px 1px 3px  ${props => props.theme.textHover};
-  font-style: italic;
+  /* font-style: italic; */
 }
     .li{
       border-radius: 12px;
@@ -365,20 +371,29 @@ a.active:not(.nablaWrapper){
         transition: 0.9s;
     }
     .folderActive {
-      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      color:  ${props => props.theme.panelColor};
-      font-style: italic;
+      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
+      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
+      -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
+      color:  ${props => props.theme.panelColor} !important;
+      font-style: italic !important;
     }
     .folderActive:hover{
-      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
+      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
       /* border: 1px solid ${props => props.theme.LiHover} ; */
     }
     .folderActive:after{
-      border-radius: 5px;
+      border-radius: 5px !important;
     }
+      .active{
+  background-color: ${props => props.theme.LiActiveBackground};
+  color:  ${props => props.theme.textHover};
+  -webkit-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
+  -moz-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
+  box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
+  text-shadow: 1px 1px 3px  ${props => props.theme.textHover};
+  /* font-style: italic; */
+}
     .li:hover {
       background-color: ${props => props.theme.LiHover};
       -webkit-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
@@ -444,5 +459,9 @@ a.active:not(.nablaWrapper){
     /* margin: 0 30px; */
   }
 
+}
+.spectrum-ColorWheel-gradient_31462a:before, 
+.spectrum-ColorWheel-gradient_31462a:after{
+  border-color: ${props => props.theme.panelColor};
 }
 `

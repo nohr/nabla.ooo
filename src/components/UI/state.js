@@ -1,78 +1,91 @@
-import { proxy } from 'valtio'
+import { proxy, subscribe } from "valtio"
 
-export const state = proxy({
-    //UI
-    selfs: [],
-    clients: [],
-    sectors: [],
+const storedStateString = localStorage.getItem('state');
+const initialState = storedStateString ? JSON.parse(storedStateString) : {
+    // Firebase
+    store: [],
     blog: [],
-    quotes: '',
+    projectNames: [],
+    projectClients: [],
+    mediums: [],
+    by: [],
+    quotes: "",
+    statement: null,
+    //UI
     selectedImg: null,
+    selectedDesc: null,
     loading: true,
     containerWidth: 0,
     themeChanged: false,
+    colorChanged: false,
     sfxVolume: 1,
+    muted: false,
+    playMusic: false,
+    modalPosition: { x: 0, y: 0 },
+    descPosition: { x: 0, y: 0 },
     // Panel
     navWidth: 270,
-    isPort: false,
-    isSett: false,
+    isPro: false,
+    isOpt: false,
+    colorWheel: false,
+    drag: false,
     prtSwitched: false,
     setSwitched: false,
     direction: true,
-    muted: false,
-    playMusic: false,
-    // navPosition: { x: Math.random(), y: Math.random() },
-    prtPosition: { x: 0, y: 0 },
-    setPosition: { x: 0, y: 0 },
-    modalPosition: { x: 0, y: 0 },
+    navPosition: { x: 0, y: 0 },
+    proPosition: { x: 0, y: 0 },
+    optPosition: { x: 0, y: 0 },
     dist: 79,
-    //Search
-    query: '',
     //Theme
     theme: "light",
     light: {
         //UI
-        panelColor: "#00538f",
+        panelColor: "hsl(205, 100%, 28%)",
         textHover: "#F3E8EE",
-        placeholder: "#00538f",
-        link: "#00538f",
-        LiHover: "#00538f67",
+        placeholder: "hsl(205, 100%, 28%)",
+        link: "hsl(205, 100%, 28%)",
+        LiHover: "hsla(205, 100%, 28%, 0.67)",
         LiActiveBackground: "#5e5e5e67",
-        blend: "unset",
+        blend: "plus-lighter",
         backdrop: "rgba(255, 255, 255, 0.8)",
+        layerBG: '#ffffff20',
+        bwElement: '#000',
         //Canvas
         sky: "#BFBFBF",
-        fog: "#B8B8B8",
-        CD: '#E3B5A4',
-        CDHover: '#0A0A0A',
+        fog: "hsl(360, 0%, 72%)",
+        CD: "hsla(14, 31%, 84%, 1)",
+        CDHover: "#0A0A0A",
         CDRough: 0,
-        Surface: '#AEDEFF',
-        SurfaceRough: 0.3,
+        Surface: "hsla(205, 100%, 80%, 1)",
+        SurfaceRough: 0,
+        spotlight: "hsl(360, 0%, 72%)",
         spotIntensity: 6,
         ambIntensity: 0.3,
         rectIntensity: 2,
-        noise: 0.29,
+        noise: 0.12,
     },
     dark: {
         //UI
-        panelColor: "#009698",
+        panelColor: "hsl(205, 31%, 70%)",
         textHover: "#F3E8EE",
-        placeholder: "unset",
+        placeholder: "hsl(205, 31%, 70%)",
         link: "#C6182A",
-        LiHover: "#00969867",
+        LiHover: "hsla(205, 31%, 70%, 0.67)",
         LiActiveBackground: "#ebebeb67",
-        blend: "unset",
+        blend: "plus-lighter",
         backdrop: "rgba(0, 0, 0, 0.8)",
+        layerBG: '#00000020',
+        bwElement: '#fff',
         //Canvas
         sky: "#0D0D0D",
         fog: "#0D0D0D",
         CD: "#0A0A0A",
-        CDHover: '#E3B5A4',
+        CDHover: "hsla(205, 31%, 70%, 1)",
         CDRough: .1389,
-        Surface: '#005A5C',
+        Surface: "hsla(205, 15%, 50%, 1)",
         SurfaceRough: 30,
-        spotlight: '#009698',
-        spotIntensity: 5,
+        spotlight: "hsla(205, 31%, 70%, 1)",
+        spotIntensity: 0.5,
         ambIntensity: 0.8,
         rectIntensity: 0.21,
         noise: 0.045,
@@ -83,5 +96,24 @@ export const state = proxy({
     CDRotationX: 0.002,
     CDRotationY: 0.002,
     CDRotationZ: 0.0001,
-    cameraPosition: [-20, 5, 1],
+    cameraPosition: [-20, 5, -1],
+};
+
+storedStateString ? initialState.cached = true : initialState.cached = false;
+
+export const state = proxy(initialState);
+subscribe(state, () => {
+    localStorage.setItem('state', JSON.stringify(state));
 });
+
+// Short-term State
+export const cloud = proxy({
+    // Firebase
+    selfs: [],
+    clients: [],
+    sectors: [],
+    //UI
+    chatMode: false,
+    loading: true,
+    playMusic: false
+})

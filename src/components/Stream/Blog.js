@@ -1,9 +1,8 @@
 import React from 'react'
-import { Container } from '../UI/style'
+import { Container } from "./Page";
 import { useSnapshot } from 'valtio'
 import { state } from '../UI/state'
 import styled from 'styled-components'
-import useDocumentTitle from '../UI/documentTitle'
 import { Header } from "../UI/svg";
 
 const BlogWrap = styled.div`
@@ -33,13 +32,16 @@ const Ttile = styled.div`
     align-items: center;
     gap: 10px;
 `
-function Blog() {
-    useDocumentTitle(" Blog")
+function Blog(props) {
     const snap = useSnapshot(state);
     return (
         <>
             <Header id='blog' />
-            <Container className="container">
+            <Container className="container"
+                opacity={props.opacity}
+                pointerEvents={props.pointerEvents}
+                transition={props.transition}
+            >
                 <BlogWrap>
                     {snap.blog.map((post) => (
                         <PostWrap key={Math.random()}>

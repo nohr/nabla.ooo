@@ -1,17 +1,18 @@
 import React from "react";
 import '../../App.css'
-import useDocumentTitle from "../UI/documentTitle";
-import { Container } from "../UI/style";
+import { Container } from "./Page";
 import { Header } from "../UI/svg";
 
-const NotFound = () => {
-    useDocumentTitle("404 @ Nabla");
-
+const NotFound = (props) => {
     return (
         <>
             <Header id="404" />
-            <Container className="container notfound">
-                <p>Can't find this page!</p>
+            <Container className="container notfound"
+                opacity={props.opacity}
+                pointerEvents={props.pointerEvents}
+                transition={props.transition}
+            >
+                <h2>Can't find this page!</h2>
             </Container>
 
         </>

@@ -43,17 +43,12 @@
     {
       "name": "Store",
       "url": "/store"
-    },
-    {
-      "name": "Blog",
-      "url": "/blog"
-    },
-    {
-      "name": "Contrast",
-      "url": "/contrast"
     }
   ],
   "start_url": ".",
+  "display_override": [
+    "window-controls-overlay"
+  ],
   "display": "standalone",
   "theme_color": "#E7E7E7",
   "background_color": "#E7E7E7"

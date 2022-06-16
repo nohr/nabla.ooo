@@ -1,10 +1,11 @@
 import React from "react";
 import '../../App.css'
-import { Container } from "../UI/style";
+import { Container } from "./Page";
 // import { state } from '../UI/state'
 // import { useSnapshot } from 'valtio'
-import useDocumentTitle from "../UI/documentTitle";
+import styled from "styled-components"
 import { Header, OldCD } from "../UI/svg";
+import { AA, BySign, CreatorMedal } from "../UI/search";
 
 // const ContactForm = () => {
 //   const [status, setStatus] = useState("Send");
@@ -47,16 +48,52 @@ import { Header, OldCD } from "../UI/svg";
 //   );
 // };
 
-function Info() {
-  useDocumentTitle("Info");
+const Contact = styled.div`
+position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+   display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
 
+    .oldNabla{
+      fill: ${props => props.theme.panelColor};
+      padding-bottom: 100px;
+      overflow: visible;
+      /* position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%,-60%); */
+    }
+`
+const Email = styled.div`
+  display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+ `
+
+function Info(props) {
   return (
     <>
       <Header id='info' />
-      <Container className="container info">
-        <OldCD />
-        <h1 style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)" }}
-        >aite@nabla.ooo</h1>
+      <Container className="container info"
+        opacity={props.opacity}
+        pointerEvents={props.pointerEvents}
+        transition={props.transition}
+      >
+        <Contact>
+          <OldCD />
+          <h1>Aite Aigbe</h1>
+          <Email>
+            {/* <BySign byColor={AA[0]} byGradient={AA[1]}>AA</BySign> */}
+            <CreatorMedal name='AA' />
+            <h3><span style={{ userSelect: 'none' }}>:</span></h3><h3 style={{ display: 'inline-block', userSelect: 'all !important' }}
+            >{` ${`aite@nabla.ooo`}`}</h3>
+          </Email>
+        </Contact>
         {/* <ContactForm /> */}
       </Container>
     </>
