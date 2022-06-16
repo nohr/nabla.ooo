@@ -4,7 +4,7 @@ import { state, cloud } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import { ImgWrapper, InfoCard, Sector, TextWrapper, TrayWrapper } from "../UI/style"
 import { motion } from 'framer-motion'
-import { AA, BySign, Scroller } from '../UI/search'
+import { CreatorMedal, Scroller } from '../UI/search'
 import { Links, Program } from '../UI/svg'
 
 const ImgGrid = ({ work }) => {
@@ -65,7 +65,7 @@ const ImgGrid = ({ work }) => {
                 {/* {work.link && <Links link={work.link} />} */}
                 {work.program && <Program size={'40px'} program={work.program} />}
                 <Scroller>
-                    {work.by ? (work.statement && <p>{`"${work.statement}" -`} {work.by === 'AA' && <BySign byColor={AA[0]} byGradient={AA[1]} >AA</BySign>}</p>) : (work.statement && <p>{`${work.statement}`}</p>)}
+                    {work.by ? (work.statement && <p>{`"${work.statement}" -`} {work.by === 'AA' && <CreatorMedal name={'AA'} />}</p>) : (work.statement && <p>{`${work.statement}`}</p>)}
                 </Scroller>
             </InfoCard>
             <ImgWrapper key={`${Math.random()}`} className="imgWrapper" ref={refWrapper}>
