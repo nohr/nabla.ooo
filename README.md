@@ -7,48 +7,48 @@ This is the homepage for digital studio, Nabla Ltd.
 
 ##### CD
 
-[] Conversation and auth
-[x] Greeting quote from CD
-[] Loading animation
+- [] Conversation and auth
+- [x] Greeting quote from CD
+- [] Loading animation
 
 #### Keybindings
 
-[x] Hold ‘shift’ to highlight panels
-[x] Press ‘esc’ to get out of overlays and search input
-[x] Search is now 'alt+z'
+- [x] Hold ‘shift’ to highlight panels
+- [x] Press ‘esc’ to get out of overlays and search input
+- [x] Search is now 'alt+z'
 
 #### Pages
 
-[] Home contains new welcome splash screen
-[] Info redesigned and populated with information
-[x] Store redesined with tilt animation for items
+- [] Home contains new welcome splash screen
+- [] Info redesigned and populated with information
+- [x] Store redesined with tilt animation for items
 
 #### Projects
 
-[x] Creator initial medals for projects with statements
-[x] Descriptions for images in overlays
-[] Documentation for all projects
-[x] Icons for programs used for all projects
-[x] Links for projects
-[] Router makes individual pages for projects
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[] using cloud functions generated LOT#
+- [x] Creator initial medals for projects with statements
+- [x] Descriptions for images in overlays
+- [] Documentation for all projects
+- [x] Icons for programs used for all projects
+- [x] Links for projects
+- [] Router makes individual pages for projects
+- [] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; using cloud functions generated LOT#
 
 #### Search
 
-[x] Live Search functional
-[] Search Results overlay
+- [x] Live Search functional
+- [] Search Results overlay
 
 #### Misc.
 
-[x] Persistent state
-[x] Music playing status follows on-device control
-[x] Major styling adjustments
+- [x] Persistent state
+- [x] Music playing status follows on-device control
+- [x] Major styling adjustments
 
 ## Links
 
-[nabla.ooo/](https://nabla.ooo/)
-[nabla.ooo/info](https://nabla.ooo/info)
-[beta.nabla.ooo/](https://beta.nabla.ooo/)
+- [nabla.ooo/](https://nabla.ooo/)
+- [nabla.ooo/info](https://nabla.ooo/info)
+- [beta.nabla.ooo/](https://beta.nabla.ooo/)
 
 ## Etc.
 
