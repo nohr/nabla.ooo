@@ -69,7 +69,7 @@ function Options() {
         } else {
             state.songIndex = 0;
         }
-        console.log(clip.songs[snap.songIndex]);
+        // console.log(clip.songs[snap.songIndex]);
         console.log(snap.songIndex);
         // cloud.playMusic = true;
         // currentSong.play();
