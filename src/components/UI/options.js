@@ -277,7 +277,7 @@ function Options() {
                         <Folder id="playstop" className="li"
                             onClick={() => toggleMusic()}
                         ><PlayPauseIcon arg={1} />{cloud.playMusic ? "Music" : "Music"}</Folder>
-                        {/* <Folder onClick={() => Next()} id="Next" className="li">Next</Folder> */}
+                        <Folder onClick={() => Next()} id="Next" className="li">Next</Folder>
                     </div>
                     <p style={secondHeader}
                         id="displayhead"
