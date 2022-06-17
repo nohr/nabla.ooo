@@ -1,5 +1,5 @@
 //Options -- Child of Panel
-import React, { useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import { cloud, state } from "./state"
 import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
@@ -9,19 +9,71 @@ import useWindowDimensions from "./window"
 import { ColorIcon, DirectionIcon, ModeIcon, MuteIcon, PlayPauseIcon, ShowHideIcon } from "./svg"
 import { useSearchBox } from "react-instantsearch-hooks-web"
 import { useNavigate } from "react-router-dom"
+import { getDownloadURL, ref } from "firebase/storage"
+import { storage } from "../.."
 
 function Options() {
-    const { refine, clear } = useSearchBox();
+    const { clear } = useSearchBox();
     const navigate = useNavigate();
     const opt = useRef(null);
+    const audio = useRef();
     const colorLink = useRef(null)
     const snap = useSnapshot(state);
-    const clip = useSnapshot(cloud)
+    const clip = useSnapshot(cloud);
     let optLink = document.querySelector(".optLink")
     if (state.selectedImg) { optLink.classList.remove("folderActive") }
 
     //Audio configured in UI.js
+    // Toggle Music
+    const currentSong = audio.current;
+    function toggleMusic() {
 
+        if (!cloud.songs[state.songIndex].url) {
+            getDownloadURL(ref(storage, `gs://nabla7.appspot.com/assets/songs/${cloud.songs[state.songIndex].name}.mp3`))
+                .then((url) => {
+                    cloud.songs[state.songIndex].url = url;
+                    currentSong.setAttribute('src', url);
+                    cloud.playMusic = true;
+                    currentSong.play();
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } else {
+            if (cloud.playMusic === false) {
+                cloud.playMusic = true;
+                currentSong.play();
+            } else if (cloud.playMusic === true) {
+                cloud.playMusic = false;
+                currentSong.pause();
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (currentSong) {
+            currentSong.addEventListener("play", () => {
+                cloud.playMusic = true;
+            })
+            currentSong.addEventListener("pause", () => {
+                cloud.playMusic = false;
+            })
+        }
+    }, [cloud.playMusic, state.songIndex])
+
+    function Next() {
+        cloud.playMusic = false;
+        currentSong.pause();
+        if (snap.songIndex < clip.songs.length - 1) {
+            state.songIndex += 1;
+        } else {
+            state.songIndex = 0;
+        }
+        console.log(clip.songs[snap.songIndex]);
+        console.log(snap.songIndex);
+        // cloud.playMusic = true;
+        // currentSong.play();
+    }
     //DISPLAY
     //Toggle Theme
     const toggleTheme = () => {
@@ -38,17 +90,17 @@ function Options() {
                 //Show Canvas
                 state.canvasVisible = true;
                 canvas.style.display = "block";
-                if (!snap.paused) {
-                    state.paused = true
-                } else if (snap.paused) {
-                    state.paused = true
+                if (!snap.canvasPaused) {
+                    state.canvasPaused = true
+                } else if (snap.canvasPaused) {
+                    state.canvasPaused = true
                 }
             } else if (snap.canvasVisible) {
                 //Hide Canvas
                 state.canvasVisible = false;
                 canvas.style.display = "none";
-                if (!snap.paused) {
-                    state.paused = true;
+                if (!snap.canvasPaused) {
+                    state.canvasPaused = true;
                     state.CDRotationY = 0;
                     state.CDRotationZ = 0;
                     state.autoRotateSpeed = 0;
@@ -58,14 +110,14 @@ function Options() {
     }
     //Pause Canvas Animation
     function togglePause() {
-        if (!state.paused) {
+        if (!state.canvasPaused) {
             //Pause Canvas
-            state.paused = true;
+            state.canvasPaused = true;
             state.autoRotateSpeed = 0;
 
-        } else if (state.paused) {
+        } else if (state.canvasPaused) {
             //Play Canvas
-            state.paused = false;
+            state.canvasPaused = false;
             state.autoRotateSpeed = 0.09;
         }
     }
@@ -192,7 +244,7 @@ function Options() {
     const offset = getPos();
     const firstStyle = snap.direction ? { height: "75px" } : { height: "87px" };
     const secondStyle = snap.direction ? { height: "133px" } : { height: "161px" };
-    const layout = snap.direction ? "grid-template-rows: 10% 0.9fr 10% 1.5fr; padding-left: 45px;padding-right: 40px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 15% 1fr; padding: 80px 12px 26px;";
+    const layout = snap.direction ? "grid-template-rows: 10% 1fr 10% 1fr; padding-left: 45px;padding-right: 40px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 15% 1fr; padding: 80px 12px 26px;";
     const top = snap.direction ? "padding-top: 7px;" : snap.setSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
     const firstHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
     const secondHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
@@ -208,7 +260,6 @@ function Options() {
         },
     }
 
-
     return (
         <>
             <Draggable nodeRef={opt} position={snap.optPosition} positionOffset={offset} onStart={() => false}>
@@ -223,8 +274,10 @@ function Options() {
                         onMouseLeave={() => { document.getElementById("audiohead").style.width = headwidth.first.min }}
                     >
                         <Folder id="muteunmute" className="li"><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
-                        <Folder id="playstop" className="li"><PlayPauseIcon arg={1} />{cloud.playMusic ? "Music" : "Music"}</Folder>
-                        {/* <Folder id="Next" className="li w">Next</Folder> */}
+                        <Folder id="playstop" className="li"
+                            onClick={() => toggleMusic()}
+                        ><PlayPauseIcon arg={1} />{cloud.playMusic ? "Music" : "Music"}</Folder>
+                        {/* <Folder onClick={() => Next()} id="Next" className="li">Next</Folder> */}
                     </div>
                     <p style={secondHeader}
                         id="displayhead"
@@ -234,7 +287,7 @@ function Options() {
                         onMouseLeave={() => { document.getElementById("displayhead").style.width = headwidth.second.min }}
                     >
                         {state.canvasVisible &&
-                            <Folder width={snap.direction ? "80%" : "60%"} onClick={() => togglePause(snap.paused)} className="li w"><PlayPauseIcon arg={2} />{snap.paused ? "Play" : "Pause"}</Folder>}
+                            <Folder width={snap.direction ? "80%" : "60%"} onClick={() => togglePause(snap.canvasPaused)} className="li w"><PlayPauseIcon arg={2} />{snap.canvasPaused ? "Play" : "Pause"}</Folder>}
                         <Folder onClick={() => toggleCanvas()} className="li w"><ShowHideIcon />{snap.canvasVisible ? "Hide" : "Show"}</Folder>
                         <Folder onClick={() => toggleTheme()} className="li w"><ModeIcon /><span>{snap.theme === "light" ? "Dark" : "Light"}</span></Folder>
                         <Folder ref={colorLink} onClick={() => openWheel()} className="li w"><ColorIcon />{!snap.colorWheel ? "Color" : "Choose"}</Folder>
@@ -242,6 +295,9 @@ function Options() {
                     </div>
                     {snap.isPro}
                     {cloud.playMusic}
+                    <audio ref={audio} loop>
+                        <source src={null}></source>
+                    </audio>
                 </Option>
             </Draggable >
         </>

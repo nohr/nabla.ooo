@@ -209,8 +209,9 @@ export function ModeIcon() {
   }
 }
 export function PlayPauseIcon(arg) {
+  const clip = useSnapshot(cloud);
   if (arg.arg === 1) {
-    if (cloud.playMusic === false) {
+    if (clip.playMusic === false) {
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -221,7 +222,7 @@ export function PlayPauseIcon(arg) {
           <path d="M321.2 161.16L49.31 4.19C34.39-4.44 22 1.47 20.24 17.21c-.12 1.25-.24 2.55-.24 3.93v314c0 18.61 13.17 26.23 29.31 16.91L316 198l5.19-3c16.13-9.28 16.13-24.52 0-33.85z"></path>
         </svg>
       );
-    } else if (cloud.playMusic === true) {
+    } else if (clip.playMusic === true) {
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -238,7 +239,7 @@ export function PlayPauseIcon(arg) {
       );
     }
   } else if (arg.arg === 2) {
-    if (state.paused === true) {
+    if (state.canvasPaused === true) {
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -249,7 +250,7 @@ export function PlayPauseIcon(arg) {
           <path d="M321.2 161.16L49.31 4.19C34.39-4.44 22 1.47 20.24 17.21c-.12 1.25-.24 2.55-.24 3.93v314c0 18.61 13.17 26.23 29.31 16.91L316 198l5.19-3c16.13-9.28 16.13-24.52 0-33.85z"></path>
         </svg>
       );
-    } else if (state.paused === false) {
+    } else if (state.canvasPaused === false) {
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"

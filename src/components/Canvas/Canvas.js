@@ -133,16 +133,16 @@ function CanvasComp() {
         if (snap.canvasVisible) {
           //Show Canvas
           canvas.style.display = "block";
-          if (!snap.paused) {
-            state.paused = true
-          } else if (snap.paused) {
-            state.paused = true
+          if (!snap.canvasPaused) {
+            state.canvasPaused = true
+          } else if (snap.canvasPaused) {
+            state.canvasPaused = true
           }
         } else if (!snap.canvasVisible) {
           //Hide Canvas
           canvas.style.display = "none";
-          if (!snap.paused) {
-            state.paused = true;
+          if (!snap.canvasPaused) {
+            state.canvasPaused = true;
             state.CDRotationY = 0;
             state.CDRotationZ = 0;
             state.autoRotateSpeed = 0;
@@ -155,7 +155,7 @@ function CanvasComp() {
   }, []);
 
   return (
-    <Canvas dpr={[1, 2]} frameloop={snap.paused ? "demand" : "always"} >
+    <Canvas dpr={[1, 2]} frameloop={snap.canvasPaused ? "demand" : "always"} >
       <PerspectiveCamera makeDefault target={[0, 0, 0]} position={snap.cameraPosition} near={.1} fov={20} aspect={width / height} />
       <fog attach="fog" args={[snap.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, 40]} />
       <Suspense fallback={<Spinner />}>
@@ -189,12 +189,12 @@ function CanvasComp() {
         target={[0, 0, 0]}
         enablePan={false}
         autoRotate={true}
-        autoRotateSpeed={snap.paused ? 0 : clip.loading ? -5 : 1}
+        autoRotateSpeed={snap.canvasPaused ? 0 : clip.loading ? -5 : 1}
         minPolarAngle={Math.PI / 3}
         maxPolarAngle={Math.PI / 2}
         minDistance={20}
         maxDistance={36}
-        enabled={snap.paused ? false : true}
+        enabled={snap.canvasPaused ? false : true}
       />
     </Canvas>
   );

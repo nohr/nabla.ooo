@@ -16,7 +16,7 @@
     "@react-three/postprocessing": "^2.3.2",
     "algoliasearch": "^4.13.1",
     "circletype": "^2.3.0",
-    "firebase": "^9.6.7",
+    "firebase": "^9.8.3",
     "fontfaceobserver": "^2.1.0",
     "framer-motion": "^6.2.3",
     "react": "^18.1.0",

@@ -136,9 +136,11 @@ function Navigator() {
           {/* force reload */}
           {clip.playMusic}
           {snap.isPro}
-          {/* {snap.isOpt} */}
+          {snap.isOpt}
         </div>
-        <p className="song" style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true; }} tabIndex="0">nohri - tardigrade</p>
+        <p className="song" style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true }} tabIndex="0">
+          {clip.songs[snap.songIndex].artist} - {clip.songs[snap.songIndex].name}
+        </p>
         {clip.loading ? <Spinner /> : (!snap.colorWheel && <Grabber />)}
       </Nav>
     </Draggable>

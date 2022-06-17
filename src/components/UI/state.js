@@ -19,10 +19,11 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     themeChanged: false,
     colorChanged: false,
     sfxVolume: 1,
-    muted: false,
-    playMusic: false,
     modalPosition: { x: 0, y: 0 },
     descPosition: { x: 0, y: 0 },
+    // Audio
+    muted: false,
+    songIndex: 0,
     // Panel
     navWidth: 270,
     isPro: false,
@@ -36,6 +37,13 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     proPosition: { x: 0, y: 0 },
     optPosition: { x: 0, y: 0 },
     dist: 79,
+    //Canvas
+    canvasPaused: true,
+    canvasVisible: true,
+    CDRotationX: 0.002,
+    CDRotationY: 0.002,
+    CDRotationZ: 0.0001,
+    cameraPosition: [-20, 5, -1],
     //Theme
     theme: "light",
     light: {
@@ -89,14 +97,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
         ambIntensity: 0.8,
         rectIntensity: 0.21,
         noise: 0.045,
-    },
-    //Canvas
-    paused: true,
-    canvasVisible: true,
-    CDRotationX: 0.002,
-    CDRotationY: 0.002,
-    CDRotationZ: 0.0001,
-    cameraPosition: [-20, 5, -1],
+    }
 };
 
 storedStateString ? initialState.cached = true : initialState.cached = false;
@@ -115,5 +116,12 @@ export const cloud = proxy({
     //UI
     chatMode: false,
     loading: true,
-    playMusic: false
+    playMusic: false,
+    songs: [{
+        name: 'tardigrade',
+        artist: 'nohri'
+    }, {
+        name: 'covenant',
+        artist: 'nohri'
+    }],
 })

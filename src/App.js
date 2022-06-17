@@ -21,7 +21,7 @@ function App() {
     } else {
       if (gpuTier.tier >= 3 || gpuTier.isMobile === true) {
         //TODO: change to false for live build
-        state.paused = true;
+        state.canvasPaused = false;
         console.log(gpuTier);
       }
     }

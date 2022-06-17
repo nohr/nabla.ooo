@@ -31,7 +31,7 @@ function Ball(props) {
       receiveShadow
       material={material}
     // material={!clicked ? material : material1}
-    // onClick={(e) => { !clicked && !state.paused ? setClick(true) : setClick(false) }}
+    // onClick={(e) => { !clicked && !state.canvasPaused ? setClick(true) : setClick(false) }}
     >
       <sphereGeometry args={[220, 100, 100]} />
     </mesh>
@@ -41,7 +41,7 @@ function Ball(props) {
 export default function CD() {
   const group = useRef()
   // useFrame(() => {
-  //   if (!state.paused) {
+  //   if (!state.canvasPaused) {
   //     group.current.rotation.y += cloud.loading ? .009 : state.CDRotationX;
   //     group.current.rotation.y += cloud.loading ? .009 : state.CDRotationY;
   //   }

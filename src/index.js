@@ -16,6 +16,7 @@ import { state, cloud } from "./components/UI/state";
 import {
   BrowserRouter as Router,
 } from 'react-router-dom'
+import { getStorage } from "firebase/storage";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
@@ -36,7 +37,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
-
+export const storage = getStorage(app);
 
 // Get works from database
 export async function GetWorks(db) {

@@ -23,7 +23,6 @@ import useSound from "use-sound"
 import sound1 from "../Sounds/select.mp3"
 import sound2 from "../Sounds/open.mp3"
 import sound3 from "../Sounds/close.mp3"
-import tardigradefile from "../Sounds/tardigrade.mp3"
 import Draggable from "react-draggable"
 
 let firstColor;
@@ -44,7 +43,6 @@ function UI() {
   const [select] = useSound(sound1, { soundEnabled: !state.muted });
   const [open] = useSound(sound2, { soundEnabled: !state.muted });
   const [close] = useSound(sound3, { soundEnabled: !state.muted });
-  const audio = useRef();
   const wheel = useRef();
   snap.cached ? (snap.theme === 'light' ? firstColor = snap.light.panelColor : firstColor = snap.dark.panelColor) : (snap.theme === 'light' ? firstColor = 'hsl(205, 100%, 28%)' : firstColor = 'hsl(205, 31%, 64%)');
   const [color, setColor] = useState(parseColor(firstColor));
@@ -87,7 +85,7 @@ function UI() {
       title = null;
       song = null;
     }
-  }, [])
+  }, [state.songIndex])
 
   // Exit modals
   useEffect(() => {
@@ -197,31 +195,6 @@ function UI() {
     }
   }, [])
 
-  // Toggle Music
-  useEffect(() => {
-    const currentSong = audio.current;
-    let playstop = document.querySelector("#playstop")
-    const toggleMusic = () => {
-      if (cloud.playMusic === false) {
-        cloud.playMusic = true;
-        currentSong.play();
-      } else if (cloud.playMusic === true) {
-        cloud.playMusic = false;
-        currentSong.pause();
-      }
-    }
-    if (playstop) {
-      playstop.addEventListener("click", toggleMusic)
-    }
-    if (currentSong) {
-      currentSong.addEventListener("play", () => {
-        cloud.playMusic = true;
-      })
-      currentSong.addEventListener("pause", () => {
-        cloud.playMusic = false;
-      })
-    }
-  }, [])
 
   var x = window.matchMedia("(max-width: 760px)");
   if (x.matches) {
@@ -260,9 +233,6 @@ function UI() {
             </Wheel>
           </Draggable>
         }
-        <audio ref={audio} loop>
-          <source src={tardigradefile}></source>
-        </audio>
         <ThemeProvider theme={snap.theme === "light" ? snap.light : snap.dark}>
           <GlobalStyle />
           <Navigator />
