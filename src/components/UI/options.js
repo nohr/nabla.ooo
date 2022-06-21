@@ -374,7 +374,8 @@ const Option = styled.div`
   .li{
     justify-content: flex-end;
     width: 65%;
-    margin: 4px auto 8px auto;
+    /* margin: 4px auto 8px auto; */
+    margin: 0 auto 4px auto;
     position: relative;
     height: fit-content;
     /* padding-top: 1px; */

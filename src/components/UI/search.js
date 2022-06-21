@@ -245,12 +245,14 @@ export function Results() {
   let filteredClients = [];
   let filteredCreators = [];
   let filteredYears = [];
+  let filteredProjects = [];
   let filteredProducts = [];
 
 
   if (query.length > 0) {
     hits.filter((hit) => {
       hit.name && filteredClients.push(hit);
+      hit.projectClient && filteredProjects.push(hit);
       hit.productName && filteredProducts.push(hit);
       let year = '2020';
       // hit.projectYear && (console.log(hit.projectYear))
@@ -340,7 +342,7 @@ export function Results() {
             </ClientsLayer>
             {/* PROJECTS */}
             <ItemsLayer display={'grid'} height={'min-content'} paddingBottom={'40px'} mask={`-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0.1)))`}>
-              {hits.length === 0 ? <h3>No Projects </h3> : <Number bottom='20px' right='25px'> Projects <h3>{hits.length}</h3></Number>}
+              {filteredProjects.length === 0 ? <h3>No Projects </h3> : <Number bottom='20px' right='25px'> Projects <h3>{filteredProjects.length}</h3></Number>}
               {hits.map((hit) => (
                 hit.projectClient &&
                 <Item

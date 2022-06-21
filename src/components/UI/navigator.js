@@ -112,13 +112,11 @@ function Navigator() {
                 Store
               </NavLink >
               <Folder className="li folder proLink" tabIndex={-1}
-
               >
                 Projects
                 {snap.isPro ? <SideArrow /> : <Arrow />}
               </Folder>
               <Folder className="li folder optLink" tabIndex={-1}
-
               >
                 Options
                 {snap.isOpt ? <SideArrow /> : <Arrow />}

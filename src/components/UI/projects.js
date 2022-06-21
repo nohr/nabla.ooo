@@ -149,7 +149,6 @@ const Project = styled.div`
   
   * .li{
     margin: 0 0 4px 0;
-
     width: 70%;
     transition: 0.9s !important;
   }

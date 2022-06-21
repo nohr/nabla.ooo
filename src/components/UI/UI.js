@@ -74,12 +74,13 @@ function UI() {
 
   snap.colorChanged && toHslString(color);
 
+  let title;
+  let song;
   // CircleType
   useEffect(() => {
-    let song;
-    let title = document.querySelector(".song");
+    title = document.querySelector(".song");
     if (title) {
-      song = new CircleType(title).radius(128);
+      title = new CircleType(title).radius(128);
     }
     return () => {
       title = null;
