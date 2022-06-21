@@ -227,7 +227,8 @@ const Nav = styled.div`
 
   & .speaker{
     fill: ${props => props.theme.panelColor};
-  	animation: pulse 2s infinite;
+    /* TODO: Make this pulse to tempo of current track */
+  	animation: pulse ${state.songIndex === 1 ? '1.7778s' : '2s'} infinite;
     transition: 1.3s;
 }
 

@@ -119,9 +119,11 @@ export const cloud = proxy({
     playMusic: false,
     songs: [{
         name: 'tardigrade',
-        artist: 'nohri'
+        artist: 'nohri',
+        tempo: 120,
     }, {
         name: 'covenant',
-        artist: 'nohri'
+        artist: 'nohri',
+        tempo: 135,
     }],
 })
