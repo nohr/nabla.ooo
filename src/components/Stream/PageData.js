@@ -2,7 +2,8 @@ import React, { useRef, useMemo } from 'react'
 import { GetSectors, db } from '../..'
 import { state, cloud } from '../UI/state'
 import { useSnapshot } from 'valtio'
-import { ImgWrapper, InfoCard, Sector, TextWrapper, TrayWrapper } from "../UI/style"
+import styled from 'styled-components'
+import { InfoCard } from "../UI/style"
 import { motion } from 'framer-motion'
 import { CreatorMedal, Scroller } from '../UI/search'
 import { Links, Program } from '../UI/svg'
@@ -93,7 +94,7 @@ function PageData(id, setSelectedImg) {
         lot = lot.toUpperCase();
         return lot;
     };
-    console.log(clip.sectors.length);
+
     const sectors = useMemo(() =>
         <>
             {clip.sectors.map((work) => (
@@ -115,8 +116,220 @@ function PageData(id, setSelectedImg) {
                     <ImgGrid setSelectedImg={setSelectedImg} work={work} />
                 </Sector>
             ))}
-        </>, [cloud.sectors])
+        </>)
     return sectors;
 }
 
 export default PageData
+
+const Sector = styled.div`
+border: solid 1px;
+border-color: ${props => props.theme.panelColor};
+border-radius: 10px;
+display: flex;
+width: ${props => props.width};
+height: ${props => props.height};
+flex-direction:column;
+padding: 10px 0px 0px 0px;
+justify-content: space-around;
+gap: 20px;
+position: relative;
+overflow: hidden;
+transition: 1.3s !important;
+
+& .lot{
+  color: ${props => props.theme.panelColor};
+  transition: 1.3s;
+}
+    @media screen and (max-width: 1440px) {
+      & {
+        width: 80%;
+        height: 80%;
+      }
+  }
+  @media screen and (max-width: 940px) {
+      & {
+        width: 100%;
+        height: 100%;
+      }
+  }
+  @media screen and (max-height: 1040px) {
+      & {
+        /* width: 80%; */
+        height: 100%;
+      }
+  }
+`
+const TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width:100%;
+  height: 20% !important;
+  flex-wrap: nowrap;
+  color: ${props => props.theme.panelColor};
+  font-size: 14px;
+  text-align: left;
+  align-self: center;
+  padding: 20px 20px 0 20px;
+  transition: 1.3s;
+  white-space: break-spaces;
+  /* line-height: 25px; */
+
+& h2{
+  line-height: 30px;
+  font-size: 40px;
+  clear:both;
+  align-self: center;
+    text-align: center;
+      text-shadow: 9px 4px 13px  ${props => props.theme.sky};
+}
+
+& h4, & h5{
+  align-self: center;
+  margin: 5px 0;
+}
+
+& h4{
+  justify-self: center;
+}
+& h5.last{
+  justify-self: flex-end;
+}
+& p {
+  width: 60ch;
+  display: inline;
+  padding: 0% 3px;
+  background-color: ${props => props.theme.layerBG};
+  text-indent: 3em;
+  overflow-y: scroll;
+  padding: 0 !important;
+
+  ::-webkit-scrollbar {
+      -webkit-appearance: none;
+      width: 5px;
+      position: absolute;
+    }
+    ::-webkit-scrollbar-thumb {
+      outline: 1px solid ${props => props.theme.panelColor};
+      border-radius: 4px;
+      background-color: transparent;
+      transition: 0.3s;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: ${props => props.theme.panelColor};
+          box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          transition: 0.3s;
+    }
+}
+
+& a{
+  color: ${props => props.theme.link};
+  text-decoration: underline;
+}
+
+`
+const TrayWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  width: 100%;
+  height: 70% !important;
+    padding:0 20px 20px 20px ;
+    gap: 20px;
+  
+`
+const ImgWrapper = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 20px;
+    padding-bottom: 5px;
+
+    .img-thumb{
+      border-radius: 5px;
+      overflow: hidden;
+      width: 0px;
+      padding: 0 280px;
+      position: relative;
+      opacity: 1;
+      pointer-events: all;
+      border: 1px solid ${props => props.theme.panelColor};
+      filter: grayscale(0);
+      transition: 0.3s;
+
+      &:hover{
+      cursor: pointer;
+      border-radius: 50%;
+      }
+    }
+    .img-thumb:hover {
+      filter: grayscale(1) !important;
+    }
+    object{
+      @media only screen and (max-width: 1440px) {
+        grid-template-rows: 35% 30% 35%;
+        padding: 0 20px 0 20px;
+      }
+    /* max-height: 100%; */
+    min-width: 100%;
+    max-height: 150%;
+    position: absolute;
+    pointer-events:  all;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    }
+    video{
+      filter: grayscale(0) !important;
+      border-radius: 5px;
+      -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    opacity: 1;
+    object-fit: contain;
+    margin: 0;
+    padding: 0;
+    transition: 0.3s;
+    }
+    .landscape{
+    height: 100% !important;
+    width: auto !important;
+    }
+    video[poster]{
+      border-radius: 5px;
+      object-fit: fill;
+      filter: grayscale(1);
+      transition: 0.3s;
+    }
+     ::-webkit-scrollbar {
+      -webkit-appearance: none;
+      height: 5px;
+      position: absolute;
+    }
+    ::-webkit-scrollbar-thumb {
+      outline: 1px solid ${props => props.theme.panelColor};
+      border-radius: 4px;
+      background-color: transparent;
+      transition: 0.3s;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: ${props => props.theme.panelColor};
+          box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          transition: 0.3s;
+    }
+`

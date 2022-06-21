@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import { state } from "../UI/state"
+import { cloud, state } from "../UI/state"
 import { useSnapshot } from "valtio"
 import styled from "styled-components"
 import "../../App.css"
@@ -15,14 +15,22 @@ import Home from "./Home";
 import NotFound from "./NotFound";
 import { useSearchBox } from "react-instantsearch-hooks-web";
 
+
 export function Page(id) {
   useDocumentTitle(id.title)
-  const { query } = useSearchBox();
-    const snap = useSnapshot(state);
+    const { query } = useSearchBox();
+  const snap = useSnapshot(state);
+  const clip = useSnapshot(cloud);
     let opacity = query.length > 0 ? "0" : "1";
     let pointerEvents = query.length ? "none" : "all";
     let transition = query.length ? "0.3s" : "unset";
-
+    let padding = clip.sectors.length > 1 ? '' : `
+          @media only screen and (max-width: 1866px) {
+          padding-top: ${props => props.paddingTop} !important;
+          padding-bottom:  ${props => props.paddingTop} !important;
+        }
+    `
+  
       //Toggle active panel buttons
   useEffect(() => {
       let proLink = document.querySelector(".proLink");
@@ -54,7 +62,7 @@ export function Page(id) {
               opacity={opacity}
               pointerEvents={pointerEvents}
               transition={transition}
-              paddingTop={'180px'}
+              // padding={padding}
             >
               <PageData id={id.id} />
               {snap.selectedImg ? <Modal /> : null}
@@ -78,16 +86,12 @@ export const Container = styled.div`
   height: 100%;
   width: 100%;
   padding: 20px 15px 20px 20px;
+  padding: ${props=>props.padding};
   font-size: 14px;
   color: ${props => props.theme.panelColor};
   transition: ${props => props.transition};
   pointer-events: ${props => props.pointerEvents};
   opacity: ${props => props.opacity};
-
-    @media only screen and (max-width: 1866px) {
-      padding-top: ${props => props.paddingTop} !important;
-      padding-bottom:  ${props => props.paddingTop} !important;
-    }
 
   & .backdrop{
     cursor: alias;

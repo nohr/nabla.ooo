@@ -26,19 +26,24 @@ function Options() {
     //Audio configured in UI.js
     // Toggle Music
     const currentSong = audio.current;
+
+    function loadSong(song) {
+        getDownloadURL(ref(storage, `gs://nabla7.appspot.com/assets/songs/${song.name}.mp3`))
+            .then((url) => {
+                cloud.songs[state.songIndex].url = url;
+                currentSong.setAttribute('src', url);
+                cloud.playMusic = true;
+                currentSong.play();
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     function toggleMusic() {
 
         if (!cloud.songs[state.songIndex].url) {
-            getDownloadURL(ref(storage, `gs://nabla7.appspot.com/assets/songs/${cloud.songs[state.songIndex].name}.mp3`))
-                .then((url) => {
-                    cloud.songs[state.songIndex].url = url;
-                    currentSong.setAttribute('src', url);
-                    cloud.playMusic = true;
-                    currentSong.play();
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
+            loadSong(cloud.songs[state.songIndex]);
         } else {
             if (cloud.playMusic === false) {
                 cloud.playMusic = true;
@@ -64,14 +69,16 @@ function Options() {
     function Next() {
         cloud.playMusic = false;
         currentSong.pause();
-        if (snap.songIndex < clip.songs.length - 1) {
+        console.log(state.songIndex);
+
+        if (state.songIndex < clip.songs.length - 1) {
             state.songIndex += 1;
         } else {
             state.songIndex = 0;
         }
-        // console.log(clip.songs[snap.songIndex]);
-        console.log(snap.songIndex);
-        // cloud.playMusic = true;
+        if (!cloud.songs[state.songIndex].url) {
+            loadSong(cloud.songs[state.songIndex]);
+        }
         // currentSong.play();
     }
     //DISPLAY

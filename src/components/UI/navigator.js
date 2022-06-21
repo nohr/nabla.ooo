@@ -15,7 +15,6 @@ import { useSearchBox } from "react-instantsearch-hooks-web"
 // import sound3 from "../Sounds/close.mp3"
 
 function Navigator() {
-  const startTime = performance.now();
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud)
   const { clear } = useSearchBox();
@@ -29,7 +28,7 @@ function Navigator() {
     pro = document.querySelector('.pro');
     opt = document.querySelector('.opt');
     if (nav.current) {
-      // Glow on Spacebar
+      // Glow on Shift
       window.addEventListener("keydown", (e) => {
         if (e.key === "Shift") {
           e.preventDefault();
@@ -91,8 +90,6 @@ function Navigator() {
     state.colorChanged = false;
   }
 
-  const duration = performance.now() - startTime;
-  console.log(`Nav took ${duration}ms`);
   return (
     //NAV
     <Draggable nodeRef={nav} handle=".grabber" bounds="body"
@@ -135,8 +132,8 @@ function Navigator() {
           }
           {/* force reload */}
           {clip.playMusic}
-          {snap.isPro}
-          {snap.isOpt}
+          {/* {snap.isPro}
+          {snap.isOpt} */}
         </div>
         <p className="song" style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true }} tabIndex="0">
           {clip.songs[snap.songIndex].artist} - {clip.songs[snap.songIndex].name}
