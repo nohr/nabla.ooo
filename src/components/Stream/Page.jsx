@@ -19,7 +19,6 @@ import { useSearchBox } from "react-instantsearch-hooks-web";
 export function Page(id) {
   useDocumentTitle(id.title)
     const { query } = useSearchBox();
-  const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
     let opacity = query.length > 0 ? "0" : "1";
     let pointerEvents = query.length ? "none" : "all";
@@ -65,7 +64,7 @@ export function Page(id) {
               // padding={padding}
             >
               <PageData id={id.id} />
-              {snap.selectedImg ? <Modal /> : null}
+              {clip.selectedImg ? <Modal /> : null}
             </Container>
           </>
       )
@@ -73,18 +72,19 @@ export function Page(id) {
 }
 
 const Modal = () => {
-    const snap = useSnapshot(state);
-    const nodeRef = useRef(null);
-    const descRef = useRef(null);
-    const types = new Map([["jpg", "img"], ["jpeg", "img"], ["png", "img"], ["gif", "img"], ["mp4", "video"], ["svg", "svg"]])
-    const link = new URL(`${snap.selectedImg}`)
-    const extension = link.pathname.split(".")
-    const element = types.get(extension[extension.length - 1].toLowerCase())
+  const snap = useSnapshot(state);
+  const clip = useSnapshot(cloud);
+  const nodeRef = useRef(null);
+  const descRef = useRef(null);
+    // const types = new Map([["jpg", "img"], ["jpeg", "img"], ["png", "img"], ["gif", "img"], ["mp4", "video"], ["svg", "svg"]])
+    // const link = new URL(`${clip.selectedImg}`)
+    // const extension = link.pathname.split(".")
+    // const element = types.get(extension[extension.length - 1].toLowerCase())
     // console.log(element);
 
     const handleClick = (e) => {
         if (e.target.classList.contains('backdrop')) {
-            state.selectedImg = null;
+            cloud.selectedImg = null;
             state.selectedDesc = null;
         }
     }
@@ -103,7 +103,7 @@ const Modal = () => {
                     <div className='description' ref={descRef}><p>{snap.selectedDesc}</p></div>
                 </Draggable>}
                 <Draggable nodeRef={nodeRef} bounds="body" position={snap.modalPosition} onDrag={onControlledDrag} >
-                    <motion.object ref={nodeRef} data={snap.selectedImg} alt="full content"
+                    <motion.object ref={nodeRef} data={clip.selectedImg} alt="full content"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }} />
                 </Draggable>

@@ -114,6 +114,7 @@ export const cloud = proxy({
     clients: [],
     sectors: [],
     //UI
+    selectedImg: null,
     chatMode: false,
     loading: true,
     playMusic: false,

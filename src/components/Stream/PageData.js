@@ -12,7 +12,7 @@ const ImgGrid = ({ work }) => {
   const refWrapper = useRef(null);
   function setSelectedImg(selected) {
     let index = work.images.indexOf(selected)
-    state.selectedImg = selected;
+    cloud.selectedImg = selected;
     if (work.description) {
       state.selectedDesc = work.description[index]
     }

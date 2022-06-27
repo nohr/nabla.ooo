@@ -36,7 +36,7 @@ This is the homepage for digital studio, Nabla Ltd.
 #### Search
 
 - [x] Live Search functional
-- [ ] Search Results overlay
+- [x] Search Results overlay
 
 #### Misc.
 

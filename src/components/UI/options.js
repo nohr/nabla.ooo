@@ -21,7 +21,7 @@ function Options() {
     const snap = useSnapshot(state);
     const clip = useSnapshot(cloud);
     let optLink = document.querySelector(".optLink")
-    if (state.selectedImg) { optLink.classList.remove("folderActive") }
+    if (cloud.selectedImg) { optLink.classList.remove("folderActive") }
 
     //Audio configured in UI.js
     // Toggle Music

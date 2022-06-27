@@ -94,7 +94,7 @@ function UI() {
       // esc to clear search and blur input
       if (e.key === "Escape") {
         state.selectedDesc = null;
-        state.selectedImg = null;
+        cloud.selectedImg = null;
         return;
       }
       // Do nothing when these are pressed

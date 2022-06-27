@@ -12,8 +12,6 @@ function Projects() {
   const pro = useRef(null);
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
-  let proLink = document.querySelector(".proLink")
-  if (snap.selectedImg) { proLink.classList.remove("folderActive") }
 
   // offset and direction of panel from nav
   let vWidth = useWindowDimensions().width;
