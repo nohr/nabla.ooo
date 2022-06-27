@@ -152,9 +152,9 @@ export const Container = styled.div`
     width: auto;
     height: auto;
     align-self: center;
-    box-shadow: 3px 5px 7px rgba(0,0,0,0.5);
-    -webkit-box-shadow:  3px 5px 7px rgba(0,0,0,0.5);
-    -moz-box-shadow:  3px 5px 7px rgba(0,0,0,0.5);
+    /* box-shadow: 3px 5px 7px rgba(0,0,0,0.5); */
+    /* -webkit-box-shadow:  3px 5px 7px rgba(0,0,0,0.5); */
+    /* -moz-box-shadow:  3px 5px 7px rgba(0,0,0,0.5); */
     /* border: 1px solid ${props => props.theme.panelColor}; */
     -webkit-user-drag: none;
     user-select: none;
