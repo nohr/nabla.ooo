@@ -198,7 +198,7 @@ export function Results() {
           {program && <Program program={program} />}
           <CreatorMedal name={by} />
         </div>
-        <Scroller>
+        <Scroller animation='autoscroll 10s linear infinite'>
           {<p>
             {statement && `"${statement}"`}
 
@@ -979,7 +979,7 @@ border: 1px solid  ${props => props.theme.backdrop};
   }
 `
 export const Scroller = styled.div`
-  /* animation: autoscroll 10s linear infinite; */
+  animation: ${props=>props.animation};
   @keyframes autoscroll {from {transform: translate3d(0,0,0);} to {transform: translate3d(0,-90%,0);}};
 
   & p{

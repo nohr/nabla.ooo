@@ -134,7 +134,7 @@ function Navigator() {
           {snap.isOpt} */}
         </div>
         <p className="song" style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true }} tabIndex="0">
-          {clip.songs[snap.songIndex].artist} - {clip.songs[snap.songIndex].name}
+          {clip.songs[state.songIndex].artist} - {clip.songs[state.songIndex].name}
         </p>
         {clip.loading ? <Spinner /> : (!snap.colorWheel && <Grabber />)}
       </Nav>

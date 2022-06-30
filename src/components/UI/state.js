@@ -12,8 +12,6 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     quotes: "",
     statement: null,
     //UI
-    selectedImg: null,
-    selectedDesc: null,
     loading: true,
     containerWidth: 0,
     themeChanged: false,
@@ -55,7 +53,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
         LiHover: "hsla(205, 100%, 28%, 0.67)",
         LiActiveBackground: "#5e5e5e67",
         blend: "plus-lighter",
-        backdrop: "rgba(255, 255, 255, 0.8)",
+        backdrop: "#BFBFBF98",
         layerBG: '#ffffff20',
         bwElement: '#000',
         //Canvas
@@ -81,7 +79,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
         LiHover: "hsla(205, 31%, 70%, 0.67)",
         LiActiveBackground: "#ebebeb67",
         blend: "plus-lighter",
-        backdrop: "rgba(0, 0, 0, 0.8)",
+        backdrop: "#0D0D0D98",
         layerBG: '#00000020',
         bwElement: '#fff',
         //Canvas
@@ -114,7 +112,9 @@ export const cloud = proxy({
     clients: [],
     sectors: [],
     //UI
+    work: null,
     selectedImg: null,
+    selectedDesc: null,
     chatMode: false,
     loading: true,
     playMusic: false,

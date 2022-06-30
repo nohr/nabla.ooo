@@ -43,6 +43,7 @@ This is the homepage for digital studio, Nabla Ltd.
 - [x] Persistent state
 - [x] Music playing status follows on-device control
 - [x] Major styling adjustments
+- [x] Resizable project cards (Note: the cards might jitter on pages with more than one project.)
 
 ## Links
 

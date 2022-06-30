@@ -6,7 +6,7 @@ import Draggable from "react-draggable"
 import { Folder } from "./style"
 import styled from "styled-components"
 import useWindowDimensions from "./window"
-import { ColorIcon, DirectionIcon, ModeIcon, MuteIcon, PlayPauseIcon, ShowHideIcon } from "./svg"
+import { ColorIcon, DirectionIcon, ModeIcon, MuteIcon, NextIcon, PlayPauseIcon, ShowHideIcon } from "./svg"
 import { useSearchBox } from "react-instantsearch-hooks-web"
 import { useNavigate } from "react-router-dom"
 import { getDownloadURL, ref } from "firebase/storage"
@@ -66,7 +66,7 @@ function Options() {
         }
     }, [cloud.playMusic, state.songIndex])
 
-    function Next() {
+    function NextSong() {
         cloud.playMusic = false;
         currentSong.pause();
         console.log(state.songIndex);
@@ -78,8 +78,10 @@ function Options() {
         }
         if (!cloud.songs[state.songIndex].url) {
             loadSong(cloud.songs[state.songIndex]);
+        } else {
+            currentSong.setAttribute('src', cloud.songs[state.songIndex].url);
+            currentSong.play();
         }
-        // currentSong.play();
     }
     //DISPLAY
     //Toggle Theme
@@ -143,7 +145,7 @@ function Options() {
 
     function openWheel() {
         clear();
-        navigate('/');
+        // navigate('/');
         state.colorWheel = true;
         state.isOpt = false;
         state.isPro = false;
@@ -255,7 +257,7 @@ function Options() {
     const top = snap.direction ? "padding-top: 7px;" : snap.setSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
     const firstHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
     const secondHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
-    const hide = snap.isOpt ? "opacity: 1; pointer-events: all; transition: 0.4s; " : "opacity: 0; pointer-events: none; transition: 0s;";
+    const hide = snap.isOpt ? "opacity: 1; pointer-events: all; transition: 0.5s; " : "opacity: 0; pointer-events: none; transition: 0s;";
     const headwidth = {
         first: {
             max: snap.direction ? "100%" : "100%",
@@ -284,7 +286,7 @@ function Options() {
                         <Folder id="playstop" className="li"
                             onClick={() => toggleMusic()}
                         ><PlayPauseIcon arg={1} />{cloud.playMusic ? "Music" : "Music"}</Folder>
-                        <Folder onClick={() => Next()} id="Next" className="li">Next</Folder>
+                        <Folder onClick={() => NextSong()} id="Next" className="li"><NextIcon /> Next</Folder>
                     </div>
                     <p style={secondHeader}
                         id="displayhead"
@@ -317,7 +319,7 @@ const Option = styled.div`
     padding: var(--panelPadding);
     padding-bottom: 0;
     position: absolute;
-    z-index: 4000;
+    z-index: 4210;
     left: var(--edge);
     margin: 20px 0 0 0;
     display: grid;
@@ -332,7 +334,7 @@ const Option = styled.div`
 
     .audio, .display{
        width: 100%;
-       overflow-y: scroll;
+       /* overflow-y: scroll; */
        padding: 2px 2px 0px 7px;
 
         ::-webkit-scrollbar {
@@ -406,7 +408,7 @@ const Option = styled.div`
     stroke-width: 12px !important;
   }
   
-  .modeIcon, .muteIcon, .ShowHideIcon, .ColorIcon{
+  .nextIcon, .modeIcon, .muteIcon, .ShowHideIcon, .ColorIcon{
     position: absolute;
     right: 6px;
     width: 10px;
@@ -416,6 +418,21 @@ const Option = styled.div`
     top: 50%;
     transform: translateY(-50%);
   }
+   .ColorChangedIcon {
+    position: absolute;
+    right: 6px;
+    width: 10px;
+    overflow: visible;
+    align-self: left;
+    top: 50%;
+    transform: translateY(-50%);
+    stroke: ${props => props.theme.panelColor};
+
+    circle{
+    fill: ${props => props.theme.panelColor};
+    }
+  }
+
   .PlayPauseIcon{
     position: absolute;
     right: 7px;

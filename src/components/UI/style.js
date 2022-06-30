@@ -1,51 +1,6 @@
 //Styling for the UI - proceed with caution
 import styled, { createGlobalStyle } from "styled-components"
 
-export const InfoCard = styled.div`
-    display: flex;
-    overflow-y: scroll;
-    flex-direction: column;
-    white-space: break-spaces;
-    line-height: 25px;   
-    height: 100%;
-    width: 50% !important;
-    padding-left: 0px;
-    margin-left: 1px;
-    text-align: justify;
-
-    & {
-      padding: 10px;
-      border-radius: 10px;
-      display: inline;
-      background-color: ${props => props.theme.layerBG};
-      /* text-indent: 3em; */
-
-      & p{
-      height: min-content;
-      overflow-y: scroll !important;
-      }
-
-  ::-webkit-scrollbar {
-      -webkit-appearance: none;
-      width: 5px;
-      position: absolute;
-    }
-    ::-webkit-scrollbar-thumb {
-      outline: 1px solid ${props => props.theme.panelColor};
-      border-radius: 4px;
-      background-color: transparent;
-      transition: 0.3s;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background-color: ${props => props.theme.panelColor};
-          box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-          -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-          -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-          transition: 0.3s;
-    }
-  }
-
-`
 export const Folder = styled.div`
   width: 100%;
   margin: 3px 0;
@@ -103,7 +58,9 @@ export const GlobalStyle = createGlobalStyle`
       overflow: hidden;
     }
     .glow{
-      mix-blend-mode: ${props => props.theme.blend};
+      background-color: ${props => props.theme.panelColor} !important;
+      /* color: ${props => props.theme.bwElement} !important; */
+      /* mix-blend-mode: ${props => props.theme.blend}; */
       box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
       -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
       -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};

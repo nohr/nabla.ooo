@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react"
 import { state, cloud } from "./state"
 import { useSnapshot } from "valtio"
 import { GlobalStyle, Wheel } from "./style"
-import { Container } from "../Stream/Page.jsx"
+import { Container, Next, Prev } from "../Stream/Page.jsx"
 import Navigator from "./navigator"
 import Projects from "./projects"
 import Options from "./options"
@@ -88,17 +88,29 @@ function UI() {
     }
   }, [state.songIndex])
 
-  // Exit modals
+  // Manage modals
   useEffect(() => {
     function handleKeyPress(e) {
-      // esc to clear search and blur input
+      // esc to clear modal
       if (e.key === "Escape") {
-        state.selectedDesc = null;
+        cloud.selectedDesc = null;
         cloud.selectedImg = null;
         return;
       }
+
+      // Next
+      if (e.key === "ArrowRight") {
+        Next()
+        return;
+      }
+
+      // Prev
+      if (e.key === "ArrowLeft") {
+        Prev()
+        return;
+      }
       // Do nothing when these are pressed
-      if (e.key === "Enter" || e.key === "Shift" || e.key === "Meta" || e.key === "CapsLock" || e.key === "ArrowUp" || e.key === "ArrowLeft" || e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === "Alt") {
+      if (e.key === "Enter" || e.key === "Shift" || e.key === "Meta" || e.key === "CapsLock" || e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "Alt") {
         return;
       }
     }
@@ -118,11 +130,11 @@ function UI() {
       !snap.isPro ? open() : close();
       if (snap.isPro) {
         state.isPro = false;
-        proLink && proLink.classList.remove("folderActive");
+        // proLink && proLink.classList.remove("folderActive");
         return;
       } else {
         state.isPro = true;
-        proLink && proLink.classList.add("folderActive");
+        // proLink && proLink.classList.add("folderActive");
         return;
       }
     };

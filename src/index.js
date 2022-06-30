@@ -117,8 +117,6 @@ if (state.cached) {
     (state.theme = "dark") : (state.theme = "light")
 }
 
-console.log(state.themeChanged);
-
 // listener
 !state.themeChanged ? (window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change",
   e => e.matches ? (state.theme = "dark") : (state.theme = "light")
