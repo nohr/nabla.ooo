@@ -23,6 +23,12 @@ export function Page(id) {
   let opacity = query.length > 0 ? "0" : "1";
   let pointerEvents = query.length ? "none" : "all";
   let transition = query.length ? "0.3s" : "unset";
+  let margin =
+    cloud.sectors.length > 0
+      ? state.direction
+        ? `padding-top: 300px !important; `
+        : `padding-left: 300px !important; `
+      : ``;
 
   //Toggle active panel buttons
   useEffect(() => {});
@@ -77,7 +83,7 @@ export function Page(id) {
           opacity={opacity}
           pointerEvents={pointerEvents}
           transition={transition}
-          // padding={padding}
+          margin={margin}
         >
           <PageData id={id.id} />
           {clip.selectedImg ? <Modal /> : null}
@@ -142,7 +148,7 @@ const Modal = memo(function Modal() {
   function Video() {
     if (clip.work.orientation === "portrait") {
       return (
-        <video
+        <motion.video
           style={{
             height: "100%",
           }}
@@ -156,11 +162,11 @@ const Modal = memo(function Modal() {
           src={`${clip.selectedImg}`}
         >
           {"portrait"}
-        </video>
+        </motion.video>
       );
     } else if (clip.work.orientation === "landscape") {
       return (
-        <video
+        <motion.video
           className={"landscape"}
           key={`${Math.random()}`}
           autoPlay={true}
@@ -173,7 +179,7 @@ const Modal = memo(function Modal() {
           src={`${clip.selectedImg}`}
         >
           {"landscape"}
-        </video>
+        </motion.video>
       );
     }
   }
@@ -252,6 +258,7 @@ const Modal = memo(function Modal() {
 });
 
 export const Container = styled.div`
+  ${(props) => props.margin}
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
@@ -265,7 +272,6 @@ export const Container = styled.div`
   height: 100%;
   width: 100%;
   padding: 20px 15px 20px 20px;
-  padding: ${(props) => props.padding};
   font-size: 14px;
   color: ${(props) => props.theme.panelColor};
   transition: ${(props) => props.transition};

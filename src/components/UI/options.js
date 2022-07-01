@@ -257,7 +257,7 @@ function Options() {
     const top = snap.direction ? "padding-top: 7px;" : snap.setSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
     const firstHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
     const secondHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
-    const hide = snap.isOpt ? "opacity: 1; pointer-events: all; transition: 0.5s; " : "opacity: 0; pointer-events: none; transition: 0s;";
+    const hide = snap.isOpt ? "opacity: 1; pointer-events: all; transition: 0.4s; " : "opacity: 0; pointer-events: none; transition: 0s;";
     const headwidth = {
         first: {
             max: snap.direction ? "100%" : "100%",

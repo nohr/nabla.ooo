@@ -33,13 +33,14 @@ const ImgGrid = ({ work }) => {
     if (element === "video") {
       if (work.orientation === "portrait") {
         return (
-          <video 
-          onClick={() => {
-            setSelectedImg(url.url)
-          cloud.work = work}}
-          style={{
-            height: "100%"
-          }} key={`${Math.random()}`} autoPlay={eval(work.autoplay)} playsInline preload={"none"} poster={`${work.poster}`} loop={eval(work.loop)} muted={eval(work.muted)} src={`${url.url}`}>{`${work.at}`}</video>
+          <video
+            onClick={() => {
+              setSelectedImg(url.url)
+              cloud.work = work
+            }}
+            style={{
+              height: "100%"
+            }} key={`${Math.random()}`} autoPlay={eval(work.autoplay)} playsInline preload={"none"} poster={`${work.poster}`} loop={eval(work.loop)} muted={eval(work.muted)} src={`${url.url}`}>{`${work.at}`}</video>
 
         )
       } else if (work.orientation === "landscape") {
@@ -48,10 +49,11 @@ const ImgGrid = ({ work }) => {
             key={Math.random()} className="Lvideo"
             onClick={() => {
               setSelectedImg(url.url)
-            cloud.work = work}}
+              cloud.work = work
+            }}
           >
             <p className='playText'>PLAY</p>
-            <video className={"landscape"} key={`${Math.random()}`} autoPlay={eval(work.autoplay)} playsInline  preload={"none"} poster={work.poster ? `${work.poster}` : false} loop={eval(work.loop)} muted={eval(work.muted)} src={`${url.url}`}>{`${work.at}`}</video>
+            <video className={"landscape"} key={`${Math.random()}`} autoPlay={eval(work.autoplay)} playsInline preload={"none"} poster={work.poster ? `${work.poster}` : false} loop={eval(work.loop)} muted={eval(work.muted)} src={`${url.url}`}>{`${work.at}`}</video>
           </div>
         )
       }
@@ -63,7 +65,8 @@ const ImgGrid = ({ work }) => {
           whileHover={{ opacity: 1 }}
           onClick={() => {
             setSelectedImg(url.url)
-          cloud.work = work}}
+            cloud.work = work
+          }}
         ><object key={`${Math.random()}`} data={`${url.url}`}>{`${work.at}`}</object>
         </motion.div>
       )
@@ -90,7 +93,7 @@ const ImgGrid = ({ work }) => {
   )
 }
 
-function PageData({id}, setSelectedImg) {
+function PageData({ id }, setSelectedImg) {
   const clip = useSnapshot(cloud);
   GetSectors(db, id);
 
@@ -112,14 +115,14 @@ function PageData({id}, setSelectedImg) {
         height={clip.sectors.length > 1 ? '90% !important' : '100%'}
         key={`${Math.random()}`} id={work.projectName.replace(/\s+/g, '')} className="sector">
         <TextWrapper key={`${Math.random()}`} className="textWrapper">
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div>
             <span key={`${Math.random()}`} className="lot">{work.projectYear && makeLot(work)}</span>
           </div>
           <h2 key={`${work.projectName}`}>{work.projectName}</h2>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", justifyContent: "center" }}>
-            <h5 key={`${work.projectClient}`}>{`${work.projectClient}`}</h5>
+          <div className='metadata'>
+            {/* <h5 key={`${work.projectClient}`}>{`${work.projectClient}`}</h5> */}
             <h4 key={`${work.projectYear}`}>{`${work.projectYear.toDate().getMonth() + 1} ${work.projectYear.toDate().getFullYear()}`}</h4>
-            <h5 className="last" key={`${work.projectMedium}`}>{`${work.projectMedium}`}</h5>
+            <h5 key={`${work.projectMedium}`}>{`${work.projectMedium}`}</h5>
           </div>
         </TextWrapper>
         <ImgGrid setSelectedImg={setSelectedImg} work={work} />
@@ -184,25 +187,28 @@ const TextWrapper = styled.div`
   /* line-height: 25px; */
 
 & h2{
+  margin: 20px 0;
   line-height: 30px;
   font-size: 40px;
   clear:both;
-  align-self: center;
+  align-self: flex-start;
     text-align: center;
       text-shadow: 9px 4px 13px  ${props => props.theme.sky};
 }
 
+& .metadata{
+  display: flex;
+  gap: 20px;
+}
 & h4, & h5{
-  align-self: center;
+  align-self: flex-start;
   margin: 5px 0;
 }
 
 & h4{
-  justify-self: center;
+  justify-self: flex-start;
 }
-& h5.last{
-  justify-self: flex-end;
-}
+
 & p {
   /* width: 60ch; */
   display: inline;
@@ -259,16 +265,19 @@ const ImgWrapper = styled.div`
     gap: 20px;
     padding-bottom: 5px;
 
+    .img-thumb, video{
+      border-radius: 5px;
+      border: 1px solid ${props => props.theme.panelColor};
+    }
+
     .img-thumb{
       height: 100%;
-      border-radius: 5px;
       overflow: hidden;
       width: 0px;
       padding: 0 280px;
       position: relative;
       opacity: 1;
       pointer-events: all;
-      border: 1px solid ${props => props.theme.panelColor};
       filter: grayscale(0);
       transition: 0.3s;
 
@@ -341,7 +350,7 @@ const ImgWrapper = styled.div`
     height: 100% !important;
     width: auto !important;
     }
-    video:hover, .landscape:hover{ 
+    video:hover, .landscape:hover{
       transition:0.3s;
       cursor: pointer;
       border: solid 1px;
