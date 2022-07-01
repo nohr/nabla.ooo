@@ -122,7 +122,7 @@ function PageData({ id }, setSelectedImg) {
           <div className='metadata'>
             {/* <h5 key={`${work.projectClient}`}>{`${work.projectClient}`}</h5> */}
             <h4 key={`${work.projectYear}`}>{`${work.projectYear.toDate().getMonth() + 1} ${work.projectYear.toDate().getFullYear()}`}</h4>
-            <h5 key={`${work.projectMedium}`}>{`${work.projectMedium}`}</h5>
+            <h4 key={`${work.projectMedium}`}>{`${work.projectMedium}`}</h4>
           </div>
         </TextWrapper>
         <ImgGrid setSelectedImg={setSelectedImg} work={work} />
