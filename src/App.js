@@ -28,7 +28,7 @@ function App() {
   })();
 
   // Search
-  const searchClient = algoliasearch('QYRMFVSZ3U', '${{ secrets.ALGOLIA_API_KEY }}');
+  const searchClient = algoliasearch('QYRMFVSZ3U', 'a5bc9e2f6d2b720f636a828233179a8f');
   const indexName = 'projects';
   const routing = {
     router: history(),
