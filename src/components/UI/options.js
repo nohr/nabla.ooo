@@ -296,7 +296,7 @@ function Options() {
                         onMouseLeave={() => { document.getElementById("displayhead").style.width = headwidth.second.min }}
                     >
                         {state.canvasVisible &&
-                            <Folder width={snap.direction ? "80%" : "60%"} onClick={() => togglePause(snap.canvasPaused)} className="li w"><PlayPauseIcon arg={2} />{snap.canvasPaused ? "Play" : "Pause"}</Folder>}
+                            <Folder onClick={() => togglePause()} width={snap.direction ? "80%" : "60%"} className="li w"><PlayPauseIcon arg={2} />{snap.canvasPaused ? "Play" : "Pause"}</Folder>}
                         <Folder onClick={() => toggleCanvas()} className="li w"><ShowHideIcon />{snap.canvasVisible ? "Hide" : "Show"}</Folder>
                         <Folder onClick={() => toggleTheme()} className="li w"><ModeIcon /><span>{snap.theme === "light" ? "Dark" : "Light"}</span></Folder>
                         <Folder ref={colorLink} onClick={() => openWheel()} className="li w"><ColorIcon />{!snap.colorWheel ? "Color" : "Choose"}</Folder>

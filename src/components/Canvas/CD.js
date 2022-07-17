@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import * as THREE from "three";
-import { useFrame } from '@react-three/fiber'
+// import { useFrame } from '@react-three/fiber'
 import { state, cloud } from '../UI/state';
 
 function Ball(props) {

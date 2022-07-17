@@ -16,15 +16,15 @@ function App() {
   // GPU
   (async () => {
     const gpuTier = await getGPUTier();
-    if (state.cached) {
-      return;
-    } else {
-      if (gpuTier.tier >= 3 || gpuTier.isMobile === true) {
-        //TODO: change to false for live build
-        state.canvasPaused = false;
-      }
-      console.log(gpuTier);
+    // if (state.cached) {
+
+    // } else {
+    if (gpuTier.tier >= 3 || gpuTier.isMobile === true) {
+      //TODO: change to false for live build
+      state.canvasPaused = false;
     }
+    console.log(gpuTier);
+    // }
   })();
 
   // Search

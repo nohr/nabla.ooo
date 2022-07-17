@@ -95,23 +95,31 @@ export function Page(id) {
 // Get current index in image array
 let num;
 export function Next() {
-  num = cloud.work.images.indexOf(cloud.selectedImg);
-  if (cloud.work.images[num + 1]) {
-    if (num !== -1) {
-      num += 1;
-      cloud.selectedImg = cloud.work.images[num];
-      cloud.selectedDesc = cloud.work.description[num];
+  if (cloud.work) {
+    num = cloud.work.images.indexOf(cloud.selectedImg);
+    if (cloud.work.images[num + 1]) {
+      if (num !== -1) {
+        num += 1;
+        cloud.selectedImg = cloud.work.images[num];
+        if (cloud.work.description) {
+          cloud.selectedDesc = cloud.work.description[num];
+        }
+      }
     }
   }
 }
 
 export function Prev() {
-  num = cloud.work.images.indexOf(cloud.selectedImg);
-  if (cloud.work.images[num - 1]) {
-    if (num !== -1) {
-      num -= 1;
-      cloud.selectedImg = cloud.work.images[num];
-      cloud.selectedDesc = cloud.work.description[num];
+  if (cloud.work) {
+    num = cloud.work.images.indexOf(cloud.selectedImg);
+    if (cloud.work.images[num - 1]) {
+      if (num !== -1) {
+        num -= 1;
+        cloud.selectedImg = cloud.work.images[num];
+        if (cloud.work.description) {
+          cloud.selectedDesc = cloud.work.description[num];
+        }
+      }
     }
   }
 }

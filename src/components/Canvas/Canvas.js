@@ -189,12 +189,14 @@ function CanvasComp() {
         target={[0, 0, 0]}
         enablePan={false}
         autoRotate={true}
-        autoRotateSpeed={snap.canvasPaused ? 0 : clip.loading ? -5 : 1}
+        autoRotateSpeed={
+          clip.loading ? -5 : 1}
         minPolarAngle={Math.PI / 3}
         maxPolarAngle={Math.PI / 2}
         minDistance={20}
         maxDistance={36}
-        enabled={snap.canvasPaused ? false : true}
+        enabled={
+          snap.canvasPaused ? false : true}
       />
     </Canvas>
   );

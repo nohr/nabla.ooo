@@ -36,7 +36,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     optPosition: { x: 0, y: 0 },
     dist: 79,
     //Canvas
-    canvasPaused: true,
+    canvasPaused: false,
     canvasVisible: true,
     CDRotationX: 0.002,
     CDRotationY: 0.002,
