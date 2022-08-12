@@ -12,13 +12,15 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     quotes: "",
     statement: null,
     //UI
-    loading: true,
     containerWidth: 0,
     themeChanged: false,
     colorChanged: false,
-    sfxVolume: 1,
+    sfxVolume: 0.7,
     modalPosition: { x: 0, y: 0 },
     descPosition: { x: 0, y: 0 },
+    // Mobile
+    modal: false,
+    gyro: false,
     // Audio
     muted: false,
     songIndex: 0,
@@ -28,12 +30,17 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     isOpt: false,
     colorWheel: false,
     drag: false,
+    draged: false,
     prtSwitched: false,
     setSwitched: false,
     direction: true,
     navPosition: { x: 0, y: 0 },
     proPosition: { x: 0, y: 0 },
     optPosition: { x: 0, y: 0 },
+    mobileNavPosition: { x: 0, y: 0 },
+    searchPosition: { x: 0, y: 0 },
+    grabberPosition: { x: 0, y: 0 },
+    optionsPosition: { x: 0, y: 0 },
     dist: 79,
     //Canvas
     canvasPaused: false,
@@ -41,8 +48,9 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     CDRotationX: 0.002,
     CDRotationY: 0.002,
     CDRotationZ: 0.0001,
-    cameraPosition: [-20, 5, -1],
+    cameraPosition: [-20, 6, -1],
     //Theme
+    auto: false,
     theme: "light",
     light: {
         //UI
@@ -65,7 +73,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
         Surface: "hsla(205, 100%, 80%, 1)",
         SurfaceRough: 0,
         spotlight: "hsl(360, 0%, 72%)",
-        spotIntensity: 6,
+        spotIntensity: 0.6,
         ambIntensity: 0.3,
         rectIntensity: 2,
         noise: 0.12,
@@ -93,7 +101,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
         spotlight: "hsla(205, 31%, 70%, 1)",
         spotIntensity: 0.5,
         ambIntensity: 0.8,
-        rectIntensity: 0.21,
+        rectIntensity: 0.5,
         noise: 0.045,
     }
 };
@@ -111,13 +119,21 @@ export const cloud = proxy({
     selfs: [],
     clients: [],
     sectors: [],
+    projects: [],
     //UI
+    UILoading: true,
+    hue: 205,
+    mobile: false,
+    preview: [],
+    selected: [],
     work: null,
     selectedImg: null,
     selectedDesc: null,
     chatMode: false,
-    loading: true,
     playMusic: false,
+    playRate: 0.75,
+    resetRate: (Math.random() * (1.15 - 0.15) + 0.15),
+    selectRate: (Math.random() * (1.15 - 0.85) + 0.85),
     songs: [{
         name: 'tardigrade',
         artist: 'nohri',
@@ -127,4 +143,18 @@ export const cloud = proxy({
         artist: 'nohri',
         tempo: 135,
     }],
+    // Accelerometer
+    leftright: 0,
+    frontback: 0,
+    // Canvas
+    CanvasLoading: true,
+    target: [0, 6, 3],
+    selected: false,
+    prevMat: null,
+    mobileCameraPosition: [0, 20, 25],
+    mobileCameraRotation: [0, 0, 0],
+    mobileCameraQuaternion: [0, 0, 0],
+    // Mobile
+    orientation: true,
+    opt: false,
 })

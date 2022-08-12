@@ -1,7 +1,7 @@
+
 import React, { useRef } from 'react';
 import * as THREE from "three";
-// import { useFrame } from '@react-three/fiber'
-import { state, cloud } from '../UI/state';
+import { state } from '../UI/state';
 
 function Ball(props) {
   const material = new THREE.MeshPhysicalMaterial({
@@ -38,7 +38,7 @@ function Ball(props) {
   )
 }
 
-export default function CD() {
+export function CD({ ...props }) {
   const group = useRef()
   // useFrame(() => {
   //   if (!state.canvasPaused) {
@@ -49,7 +49,7 @@ export default function CD() {
 
   return (
     <group ref={group} position={[0, 1.5, 0]} dispose={null}
-      rotation={[-Math.PI / 2, Math.PI / 2, Math.PI / 2]} receiveShadow castShadow >
+      {...props} receiveShadow castShadow >
       <group position={[0, 0, 0]} scale={.01}>
         <Ball position={[5.28, 0, -265.23]} />
         <Ball position={[306.5, 0, 134.46]} />
@@ -58,5 +58,4 @@ export default function CD() {
     </group>
   )
 }
-
 

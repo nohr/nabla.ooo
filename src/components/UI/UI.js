@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from "react"
+import React, { useEffect, useState, useRef, memo } from "react"
 import { state, cloud } from "./state"
 import { useSnapshot } from "valtio"
 import { GlobalStyle, Wheel } from "./style"
-import { Container, Next, Prev } from "../Stream/Page.jsx"
+import { Next, Prev } from "../Stream/Page.jsx"
 import Navigator from "./navigator"
 import Projects from "./projects"
 import Options from "./options"
@@ -18,12 +18,14 @@ import CircleType from "circletype"
 import { ColorWheel } from '@react-spectrum/color';
 import { parseColor } from "@react-stately/color"
 
-//Audio Imports
-import useSound from "use-sound"
-import sound1 from "../Sounds/select.mp3"
-import sound2 from "../Sounds/open.mp3"
-import sound3 from "../Sounds/close.mp3"
 import Draggable from "react-draggable"
+import MobileNavigator from "./mobileNavigator"
+import { useSearchBox } from "react-instantsearch-hooks-web"
+
+// Audio
+import useSound from "use-sound"
+import home from "../Sounds/home.mp3"
+import sound5 from "../Sounds/reset.mp3"
 
 let firstColor;
 let darkStringAlpha;
@@ -36,25 +38,30 @@ let cd;
 let fogLight = "hsl(360, 0%, 72%)"
 
 //UI -- Parent Component
-function UI() {
-  const startTime = performance.now();
+function UI({ select, confirm, open, close, nabla, quote, text, setText }) {
+  const [colorWheel, setColorWheel] = useState(false);
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
-  const [select] = useSound(sound1, { soundEnabled: !state.muted });
-  const [open] = useSound(sound2, { soundEnabled: !state.muted });
-  const [close] = useSound(sound3, { soundEnabled: !state.muted });
   const wheel = useRef();
+  const handle = useRef();
+  const { query, refine, clear } = useSearchBox();
   snap.cached ? (snap.theme === 'light' ? firstColor = snap.light.panelColor : firstColor = snap.dark.panelColor) : (snap.theme === 'light' ? firstColor = 'hsl(205, 100%, 28%)' : firstColor = 'hsl(205, 31%, 64%)');
   const [color, setColor] = useState(parseColor(firstColor));
+  const [song, setSong] = useState(`${clip.songs[state.songIndex].artist} - ${cloud.songs[state.songIndex].name}`);
+
+  const [dong] = useSound(home, { volume: 1.1, soundEnabled: !snap.muted, playbackRate: clip.playRate, interrupt: false });
+
+  const [reset] = useSound(sound5, { soundEnabled: !snap.muted, playbackRate: clip.resetRate });
 
   function toHslString(color) {
-    string = `hsl(${color.hue}, 100%, 28%)`
-    darkString = `hsl(${color.hue}, 31%, 64%)`
-    stringAlpha = `hsla(${color.hue}, 100%, 28%, 0.67)`
-    darkStringAlpha = `hsla(${color.hue}, 51%, 64%, 0.67)`
-    surface = `hsla(${color.hue}, 100%, 80%, 1)`;
-    darkSurface = `hsla(${color.hue}, 15%, 50%, 1)`;
-    cd = `hsla(${(color.hue)}, 31%, 84%, 1)`;
+    string = `hsl(${color}, 100%, 28%)`
+    darkString = `hsl(${color}, 31%, 64%)`
+    stringAlpha = `hsla(${color}, 100%, 28%, 0.67)`
+    darkStringAlpha = `hsla(${color}, 51%, 64%, 0.67)`
+    surface = `hsla(${color}, 100%, 80%, 1)`;
+    darkSurface = `hsla(${color}, 15%, 50%, 1)`;
+    cd = `hsla(${(color)}, 31%, 84%, 1)`;
+    cloud.hue = color;
 
     if (snap.theme === 'light' && snap.colorChanged) {
       state.light.panelColor = string;
@@ -72,21 +79,19 @@ function UI() {
     }
   }
 
-  snap.colorChanged && toHslString(color);
+  snap.colorChanged && toHslString(color.hue);
 
   let title;
-  let song;
   // CircleType
   useEffect(() => {
     title = document.querySelector(".song");
     if (title) {
-      title = new CircleType(title).radius(128);
+      title = new CircleType(title).radius(clip.mobile ? 170 : 128);
     }
     return () => {
       title = null;
-      song = null;
     }
-  }, [state.songIndex])
+  }, [snap.songIndex]);
 
   // Manage modals
   useEffect(() => {
@@ -176,104 +181,92 @@ function UI() {
     }
   }, [snap.isOpt, snap.colorWheel]);
 
-  // AUDIO
-  //Play the select sound for all links with .w
-  useEffect(() => {
-    let links = document.querySelectorAll(".w");
-    if (links) {
-      links.forEach(function (link) {
-        link.addEventListener("click", select)
-      })
-    }
-
-    return () => {
-      if (links) {
-        links.forEach(function (link) {
-          link.removeEventListener("click", select)
-        })
-        links = null;
+  return (
+    <>
+      {
+        !clip.mobile && <Draggable onStart={() => false} position={snap.navPosition}>
+          <Wheel
+            opacity={snap.colorWheel ? "1" : "0"}
+            pointerEvents={snap.colorWheel ? "all" : "none"}
+            transition={snap.colorWheel ? "0.3s" : "0s"}
+            ref={wheel}
+            onClick={() => state.colorChanged = true}
+          >
+            <ColorWheel
+              size={"310px"}
+              borderColor={`${props => props.theme.panelColor}`}
+              value={color}
+              onChange={setColor}
+              onChangeEnd={setColor} />
+          </Wheel>
+        </Draggable>
       }
-    }
-  }, [select, snap.colorWheel])
-
-  //Toggle SFX 
-  useEffect(() => {
-    let muteunmute = document.querySelector("#muteunmute")
-    const toggleMute = () => {
-      state.muted ? state.muted = false : state.muted = true;
-    }
-
-    if (muteunmute) {
-      muteunmute.addEventListener("click", toggleMute)
-    }
-  }, [])
-
-
-  var x = window.matchMedia("(max-width: 760px)");
-  if (x.matches) {
-    //Mobile
-    return (
       <ThemeProvider theme={snap.theme === "light" ? snap.light : snap.dark}>
         <GlobalStyle />
-        <Container className="container hom" >
-          <div style={{ textAlign: "center" }}>
-            <h2>nabla.ooo works a lot better on tablet and desktop, for now.</h2><br /><br /> <p>Come back on one of those devices while I work on making this experience something special.</p> <br /><br /> <b>Thank you!</b>
-          </div>
-        </Container>
+        {clip.mobile ?
+          <MobileNavigator
+            nabla={nabla}
+            dong={dong}
+            open={open}
+            close={close}
+            select={select}
+            confirm={confirm}
+            reset={reset}
+            song={song}
+            setSong={setSong}
+            colorWheel={colorWheel}
+            setColorWheel={setColorWheel}
+            quote={quote}
+            query={query}
+            refine={refine}
+            clear={clear}
+            handle={handle}
+            color={color}
+            setColor={setColor}
+            text={text}
+            setText={setText}
+          />
+          : <>
+            <Navigator
+              nabla={nabla}
+              dong={dong}
+              select={select}
+              confirm={confirm}
+              reset={reset}
+              song={song}
+              handle={handle}
+              color={color}
+              setColor={setColor}
+              quote={quote}
+              setText={setText} />
+            <Projects select={select} />
+            <Options
+              colorWheel={colorWheel}
+              setColorWheel={setColorWheel}
+              setSong={setSong} select={select} />
+            <Results select={select} />
+          </>}
+        <Routes>
+          <Route path="/" element={<Page title={"Nabla"} id={"Home"} />} />
+          <Route path="/store" element={<Page title={"Nabla Store"} id={"Store"} />} />
+          <Route path="/blog" element={<Page title={"Nabla Blog"} id={"Blog"} />} />
+          <Route path="/info" element={<Page title={"Nabla Info"} id={"Info"} />} />
+          <Route path="/contrast" element={<Page title={"Contrast"} id={"Contrast"} />} />
+          {clip.selfs.map((work) => (
+            <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`Nabla`} id={`${work.id}`} />} />
+          ))}
+          {clip.clients.map((work) => (
+            <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`Nabla & ${work.name}`} id={`${work.id}`} />} />
+          ))}
+          <Route path="*" element={<Page title={"Nabla not found"} id={"NotFound"} />} />
+          <Route
+            path="*"
+            element={<Navigate to="/404" replace />}
+          />
+        </Routes>
       </ThemeProvider>
-    )
-  } else {
-    //Not Mobile
-    const duration = performance.now() - startTime;
-    console.log(`UI took ${duration}ms`);
-    return (
-      <>
-        {
-          <Draggable onStart={() => false} position={snap.navPosition}>
-            <Wheel
-              opacity={snap.colorWheel ? "1" : "0"}
-              pointerEvents={snap.colorWheel ? "all" : "none"}
-              transition={snap.colorWheel ? "0.3s" : "0s"}
-              ref={wheel}
-              onClick={() => state.colorChanged = true}
-            >
-              <ColorWheel
-                size="310px"
-                borderColor={`${props => props.theme.panelColor}`}
-                value={color}
-                onChange={setColor}
-                onChangeEnd={setColor} />
-            </Wheel>
-          </Draggable>
-        }
-        <ThemeProvider theme={snap.theme === "light" ? snap.light : snap.dark}>
-          <GlobalStyle />
-          <Navigator />
-          <Projects />
-          <Options />
-          <Results />
-          <Routes>
-            <Route path="/" element={<Page title={"Nabla"} id={"Home"} />} />
-            <Route path="/store" element={<Page title={"Nabla Store"} id={"Store"} />} />
-            <Route path="/blog" element={<Page title={"Nabla Blog"} id={"Blog"} />} />
-            <Route path="/info" element={<Page title={"Nabla Info"} id={"Info"} />} />
-            <Route path="/contrast" element={<Page title={"Contrast"} id={"Contrast"} />} />
-            {clip.selfs.map((work) => (
-              <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`Nabla`} id={`${work.id}`} />} />
-            ))}
-            {clip.clients.map((work) => (
-              <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`Nabla & ${work.name}`} id={`${work.id}`} />} />
-            ))}
-            <Route path="*" element={<Page title={"Nabla not found"} id={"NotFound"} />} />
-            <Route
-              path="*"
-              element={<Navigate to="/404" replace />}
-            />
-          </Routes>
-        </ThemeProvider>
-      </>
-    )
-  }
+    </>
+  )
 }
 
-export default UI;
+export default memo(UI);

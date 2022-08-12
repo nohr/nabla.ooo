@@ -6,9 +6,6 @@ import { SearchBarIcon, ClearIcon, Header, Program } from "./svg";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import useDocumentTitle from "./documentTitle";
-//Audio Imports
-import useSound from "use-sound"
-import sound1 from "../Sounds/select.mp3"
 // Search Imports
 import { useHits, useRefinementList } from 'react-instantsearch-hooks-web';
 import { useSearchBox } from "react-instantsearch-hooks-web";
@@ -119,11 +116,11 @@ export function CreatorMedal({ name }) {
   }
 }
 
-export function Results() {
+export function Results({ select }) {
   const snap = useSnapshot(state);
+  const clip = useSnapshot(cloud);
   const { query, refine } = useSearchBox();
   useDocumentTitle(`${query} - Search Results`);
-  const [select] = useSound(sound1, { soundEnabled: !state.muted });
   const [active, setActive] = useState(false);
   const [statement, setStatement] = useState(null);
   const [program, setProgram] = useState(null);
@@ -198,7 +195,7 @@ export function Results() {
           {program && <Program program={program} />}
           <CreatorMedal name={by} />
         </div>
-        <Scroller animation='autoscroll 10s linear infinite'>
+        <Scroller animation='autoscroll 10s linear infinite' >
           {<p>
             {statement && `"${statement}"`}
 
@@ -218,13 +215,13 @@ export function Results() {
       playPromise = video.play())
     if (playPromise !== undefined) {
       playPromise.then(_ => {
-        cloud.loading = false;
+        cloud.UILoading = false;
         // Play on hover if it's a video
         // video.pause();
         return;
       })
         .catch(error => {
-          cloud.loading = true;
+          cloud.UILoading = true;
           console.log(error);
           return;
         });
@@ -336,7 +333,7 @@ export function Results() {
             <ClientsLayer>
               {filteredClients.map(one => (
                 <Client key={Math.random()}
-                  onClick={() => (select, refine(''))}
+                  onClick={() => { select(); refine(''); }}
                   to={`/${one.id}`}>{one.name}</Client>
               ))}
             </ClientsLayer>
@@ -348,7 +345,7 @@ export function Results() {
                 <Item
                   key={Math.random()}
                   size='300px'
-                  onClick={() => (select, refine(''))}
+                  onClick={() => { select(); refine(''); }}
                   className="bubbles"
                   onMouseOver={(e) => {
                     if (e.currentTarget.children[1] && (e.currentTarget.children[1].tagName === 'VIDEO')) {
@@ -378,7 +375,7 @@ export function Results() {
                 <Item
                   key={Math.random()}
                   size='125px !important'
-                  onClick={() => (select, refine(''))}
+                  onClick={() => { select(); refine(''); }}
                   onMouseOver={(e) => {
                     hoverPlay(e)
                     hit.statement && setStatement(hit.statement)
@@ -930,7 +927,8 @@ const Param = styled.div`
     }
   }
 `
-const InfoBox = styled.div`
+export const InfoBox = styled.div`
+  width: ${props => props.width};
 pointer-events: none;
 border-radius: 10px;
 position: relative;
@@ -939,7 +937,6 @@ margin: 0 10px 20px 10px;
 white-space: break-spaces;
 line-height: 25px;
 text-align: justify;
-width: 100%;
 overflow-x: hidden;
   overflow-y: hidden;
   text-overflow: ellipsis;
@@ -979,7 +976,7 @@ border: 1px solid  ${props => props.theme.backdrop};
   }
 `
 export const Scroller = styled.div`
-  animation: ${props=>props.animation};
+  /* animation: ${props => props.animation}; */
   @keyframes autoscroll {from {transform: translate3d(0,0,0);} to {transform: translate3d(0,-90%,0);}};
 
   & p{

@@ -28,16 +28,6 @@ html {
       html {
         background-color: #ededed;
       }
-    
-      .gugmu9vdpaw div {
-        box-shadow: 0 1.8px 0 0 #00538f !important;
-      }
-
-      .gugmu9vdpaw p {
-        color: #00538f !important;
-        text-shadow: 0 1px 1 1 #00538f !important;
-      
-      }
     }
 
 html,
@@ -55,7 +45,8 @@ body {
   font-size: 13px;
 }
 
-canvas {
+.r3fCanvas {
+  position: unset !important;
   z-index: -100;
   /* height: 100vh;
   width: 100vw; */
@@ -64,6 +55,39 @@ canvas {
   -ms-user-select: none; /* IE10+/Edge */
   user-select: none; /* Standard */
   overflow: hidden;
+}
+
+@media only screen and (min-width: 768px) {
+
+  .r3fCanvas {
+   overflow: hidden;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .r3fCanvas {
+    overflow: hidden;
+  }
+html,
+body,
+#root {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: none;
+}
+  #root {
+    user-select: none;
+  }
+
+  canvas{
+    user-select: none;
+  }
+            .stats {
+              display: flex;
+              position: fixed;
+            }
 }
 
 .htmlSpinner {

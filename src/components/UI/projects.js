@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom"
 import styled from "styled-components"
 import { useEffect } from "react"
 
-function Projects() {
+function Projects({ select }) {
   const pro = useRef(null);
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
@@ -99,7 +99,7 @@ function Projects() {
           onMouseLeave={() => { document.getElementById("selfhead").style.width = headwidth.first.min }}
         >
           {clip.selfs && clip.selfs.map((work) => (
-            <NavLink style={snap.direction ? { width: '70%' } : { width: '100%' }} className="li w" to={`/${work.id}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
+            <NavLink onClick={select} style={snap.direction ? { width: '70%' } : { width: '100%' }} className="li w" to={`/${work.id}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
           ))}
         </div>
         <p style={secondHeader}
@@ -110,7 +110,7 @@ function Projects() {
           onMouseLeave={() => { document.getElementById("clienthead").style.width = headwidth.second.min }}
         >
           {clip.clients && clip.clients.map((work) => (
-            <NavLink style={snap.direction ? { width: '70%' } : { width: '100%' }} className="li w" to={`/${work.id}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
+            <NavLink onClick={select} style={snap.direction ? { width: '70%' } : { width: '100%' }} className="li w" to={`/${work.id}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
           ))}
         </div>
         {snap.isOpt}

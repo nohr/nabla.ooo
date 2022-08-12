@@ -10,15 +10,121 @@ export const Folder = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-color: ${props => props.theme.panelColor};
+   ${props => props.border};
+
+   &.resetPos{
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+            backdrop-filter: blur(3px);
+            border: 1px solid ${props => props.theme.panelColor};
+            border-radius: 50%;
+            justify-content: center;
+            display:flex;
+            height: 50px;
+            flex-direction: column;
+            padding: 2px;
+            width: 50px;
+
+            & svg{
+            width: 24px !important;
+               }
+   }
+
+  &.circleButton{
+    border-radius: 50% !important;
+    width: 50px !important;
+    height: 50px !important;
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  &.color{
+  border-color: #ebebeb !important;
+    fill: ${props => props.theme.LiHover};
+    background-color: ${props => props.theme.LiHover};
+    -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.LiHover});
+    filter: drop-shadow(1px 1px 6px ${props => props.theme.LiHover});
+    text-align: center;
+    & svg{
+    animation: flashConfirm 0.6s steps(5, start) infinite;
+    -webkit-filter:none;
+    filter:none ;
+    fill: #ebebeb;
+    }
+    transition: 0s;
+    outline: 0px;
+
+  }
+  &.reset{
+  border-color: #ebebeb !important;
+    color: #ebebeb;
+    background-color: ${props => props.theme.LiActiveBackground};
+    -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.LiActiveBackground});
+    filter: drop-shadow(1px 1px 6px ${props => props.theme.LiActiveBackground});
+    text-align: center;
+    transition: 0.3s;
+
+  }
+
+    @keyframes flashConfirm {
+  to {
+    visibility: hidden;
+  }
+}
+  .nextIcon, .modeIcon, .muteIcon, .ShowHideIcon, .ColorIcon{
+    fill: ${props => props.theme.panelColor};
+    overflow: visible;
+  }
+  .ConfirmIcon,  .ResetIcon{
+    height: 80%;
+  }
+  .ResetIcon{
+    fill: #ebebeb;
+  }
+
+  .PlayPauseIcon{
+    fill: ${props => props.theme.panelColor};
+    overflow: visible;
+  }
+  .DirectionIcon{
+    stroke-width: 1px !important;
+    overflow: visible;
+  }
 `
 export const Wheel = styled.div`
+@media only screen and (max-width: 768px) {
+  & {
+   backdrop-filter: blur(4px);
+  }
+}
+   bottom: unset !important;
   position: absolute;
   z-index: 4900;
   left: 0;
   transition: 0.9s !important;
   opacity: ${props => props.opacity};
-  pointer-events: ${props => props.pointerEvents};
+  pointer-events: ${props => props.pointerEvents} !important;
   transition: ${props => props.transition};
+  &*{
+  border-width: 0px !important;
+  }
+
+  .spectrum-ColorLoupe_c818a8.is-open_c818a8{
+    opacity: 0 !important;
+  }
+  .spectrum-ColorWheel_31462a .spectrum-ColorWheel-handle_31462a{
+    height: 120px;
+    width: 120px;
+    border-color: ${props => props.theme.panelColor};
+    background-color:  ${props => props.theme.panelColor};
+  }
+  .spectrum-ColorHandle-color_5a9f41{
+    border-color: ${props => props.theme.panelColor};
+    background-color:  ${props => props.theme.panelColor} !important;
+  }
 `
 export const GlobalStyle = createGlobalStyle`
     //App
@@ -30,6 +136,7 @@ export const GlobalStyle = createGlobalStyle`
         --headOffset: 10px;
         --edge: 20px;
         --blur: 7px;
+        --transition:0.3s;
     }
     html, body, #root {
         /* isolation: isolate; */
@@ -44,6 +151,16 @@ export const GlobalStyle = createGlobalStyle`
       /* filter:contrast(1.1) ; */
       animation-delay: 0s;
     }
+
+          .gugmu9vdpaw div {
+        box-shadow: 0 1.8px 0 0 ${props => props.theme.panelColor} !important;
+      }
+
+      .gugmu9vdpaw p {
+        color: ${props => props.theme.panelColor} !important;
+        text-shadow: 0 1px 1 1 ${props => props.theme.panelColor} !important;
+
+      }
     //Panel
     .Panel {
       background-color: #00000000;
@@ -58,6 +175,7 @@ export const GlobalStyle = createGlobalStyle`
       overflow: hidden;
     }
     .glow{
+      fill: ${props => props.theme.panelColor} !important;
       background-color: ${props => props.theme.panelColor} !important;
       /* color: ${props => props.theme.bwElement} !important; */
       /* mix-blend-mode: ${props => props.theme.blend}; */
@@ -131,7 +249,8 @@ a.active:not(.nablaWrapper){
     .folderActive:after{
       border-radius: 5px !important;
     }
-      .active{
+      .active:not(.nablaWrapper){
+        border-color: #ebebeb;
   background-color: ${props => props.theme.LiActiveBackground};
   color:  ${props => props.theme.textHover};
   -webkit-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
@@ -139,6 +258,12 @@ a.active:not(.nablaWrapper){
   box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
   text-shadow: 1px 1px 3px  ${props => props.theme.textHover};
   /* font-style: italic; */
+
+   & svg{
+    fill: ${props => props.theme.textHover};
+    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
+    filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});  
+  }
 }
     .li:hover {
       background-color: ${props => props.theme.LiHover};
@@ -155,7 +280,8 @@ a.active:not(.nablaWrapper){
       float: right;
     }
     .li svg{
-      transition: 0.9s;
+      transition: var(--transition);
+      pointer-events: none;
     }
     .li:hover > svg {
       fill: ${props => props.theme.textHover};
@@ -165,16 +291,12 @@ a.active:not(.nablaWrapper){
       /* transition: 0.3s !important; */
     }
 
-    //Stream
-    //container for h1 or svg
-    
+    .li:hover > .ColorIcon{
+      stroke: inherit !important;
+      -webkit-filter: drop-shadow(1px 1px 6px inherit) !important;
+      filter: drop-shadow(1px 1px 6px inherit) !important;
 
-    .hom {
-        pointer-events: none;
-        width: 100vw;
     }
-
-
     .notfound {
       width: 100vw;
       height: 100%;
@@ -206,7 +328,7 @@ a.active:not(.nablaWrapper){
   }
 
 }
-.spectrum-ColorWheel-gradient_31462a:before, 
+.spectrum-ColorWheel-gradient_31462a:before,
 .spectrum-ColorWheel-gradient_31462a:after{
   border-color: ${props => props.theme.panelColor};
 }

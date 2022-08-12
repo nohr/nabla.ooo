@@ -1,24 +1,56 @@
 //Navigator -- Child of <UI />
-import React, { useEffect, useRef } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { cloud, state } from "./state"
 import { useSnapshot } from "valtio"
 import { Folder } from "./style"
 import styled from "styled-components"
 import { NavLink } from "react-router-dom"
 import Draggable from "react-draggable"
-import { SvgNabla, Spinner, Arrow, SideArrow, Grabber } from "./svg"
+import { SvgNabla, Spinner, Arrow, SideArrow, Grabber, characters } from "./svg"
 import { Search } from "./search"
 import { useSearchBox } from "react-instantsearch-hooks-web"
+import Scrambler from 'scrambling-text';
 
 //Audio Imports
 // import useSound from "use-sound"
 // import sound3 from "../Sounds/close.mp3"
-
-function Navigator() {
+export function closeWheel() {
+  state.colorWheel = false;
+}
+export function resetWheel() {
+  state.colorWheel = false;
+  if (state.theme === 'light') {
+    state.light.panelColor = 'hsl(205, 100%, 28%)';
+    state.light.placeholder = 'hsl(205, 100%, 28%)';
+    state.light.LiHover = "hsla(205, 100%, 28%, 0.67)";
+    state.light.CD = "hsla(14, 31%, 84%, 1)";
+    state.light.Surface = "hsla(205, 100%, 80%, 1)";
+    state.light.spotlight = "hsl(360, 0%, 72%)";
+  } else if (state.theme === 'dark') {
+    state.dark.panelColor = "hsl(205, 31%, 70%)";
+    state.dark.placeholder = "hsl(205, 31%, 70%)";
+    state.dark.LiHover = "hsla(205, 31%, 70%, 0.67)";
+    state.dark.Surface = "hsla(205, 15%, 50%, 1)";
+    state.dark.spotlight = "hsla(205, 31%, 70%, 1)";
+  }
+  state.colorChanged = false;
+}
+function Navigator({ nabla, dong, confirm, select, reset, song, handle }) {
   const snap = useSnapshot(state);
-  const clip = useSnapshot(cloud)
+  const clip = useSnapshot(cloud);
   const { clear } = useSearchBox();
   const nav = useRef(null);
+
+  // Text Scramble
+  const [text, setText] = useState(state.quotes);
+  const quote = useRef(new Scrambler());
+
+  useEffect(() => {
+    if (quote.current) {
+      // console.log(quote.current);
+      (!clip.UILoading && !clip.CanvasLoading) && quote.current.scramble(text, setText, { characters: characters });
+    }
+  }, []);
 
   // Glow
   let pro;
@@ -57,7 +89,7 @@ function Navigator() {
     state.proPosition = { x, y };
     state.optPosition = { x, y };
     state.drag = true;
-
+    state.draged = true;
     nav.current.classList.add("glow");
   };
 
@@ -67,28 +99,6 @@ function Navigator() {
     state.drag = false;
   }
 
-  function closeWheel() {
-    state.colorWheel = false;
-  }
-
-  function resetWheel() {
-    state.colorWheel = false;
-    if (snap.theme === 'light') {
-      state.light.panelColor = 'hsl(205, 100%, 28%)';
-      state.light.placeholder = 'hsl(205, 100%, 28%)';
-      state.light.LiHover = "hsla(205, 100%, 28%, 0.67)";
-      state.light.CD = "hsla(14, 31%, 84%, 1)";
-      state.light.Surface = "hsla(205, 100%, 80%, 1)";
-      state.light.spotlight = "hsl(360, 0%, 72%)";
-    } else if (snap.theme === 'dark') {
-      state.dark.panelColor = "hsl(205, 31%, 70%)";
-      state.dark.placeholder = "hsl(205, 31%, 70%)";
-      state.dark.LiHover = "hsla(205, 31%, 70%, 0.67)";
-      state.dark.Surface = "hsla(205, 15%, 50%, 1)";
-      state.dark.spotlight = "hsla(205, 31%, 70%, 1)";
-    }
-    state.colorChanged = false;
-  }
 
   return (
     //NAV
@@ -98,17 +108,17 @@ function Navigator() {
       onDrag={onControlledDrag} >
       <Nav ref={nav} className="Panel nav">
         <div className="header">
-          <SvgNabla />
-          <div className="quote w">{`${snap.quotes}`}</div>
+          <SvgNabla nabla={nabla} dong={dong} clear={clear} />
+          <div className="quote w">{`${text}`}</div>
         </div>
         {navigator.onLine && <Search />}
         <div className="grid">
           {!snap.colorWheel &&
             <>
-              <NavLink onClick={() => clear()} className="li w" to="/info">
+              <NavLink onClick={() => { clear(); select(); }} className="li w" to="/info">
                 Info
               </NavLink>
-              <NavLink onClick={() => clear()} className="li w" to="/store">
+              <NavLink onClick={() => { clear(); select(); }} className="li w" to="/store">
                 Store
               </NavLink >
               <Folder className="li folder proLink" tabIndex={-1}
@@ -124,19 +134,18 @@ function Navigator() {
             </>}
           {snap.colorWheel &&
             <>
-              <Folder onClick={() => closeWheel()} className="li w Color">Confirm</Folder>
-              <Folder onClick={() => resetWheel()} className="li w Reset">Reset</Folder>
+              <Folder onClick={() => { closeWheel(); confirm(); }} className="li w Color">Confirm</Folder>
+              <Folder onClick={() => { resetWheel(); reset(); }} className="li w Reset">Reset</Folder>
             </>
           }
           {/* force reload */}
           {clip.playMusic}
-          {/* {snap.isPro}
-          {snap.isOpt} */}
         </div>
-        <p className="song" style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true }} tabIndex="0">
-          {clip.songs[state.songIndex].artist} - {clip.songs[state.songIndex].name}
-        </p>
-        {clip.loading ? <Spinner /> : (!snap.colorWheel && <Grabber />)}
+        <Song position={` left: 48%;`}
+          className="song" style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true }} tabIndex="0">
+          {song}
+        </Song>
+        {(clip.UILoading || clip.CanvasLoading) ? <Spinner /> : (!snap.colorWheel && <Grabber nav={nav} reset={reset} handle={handle} />)}
       </Nav>
     </Draggable>
   )
@@ -144,6 +153,61 @@ function Navigator() {
 
 export default Navigator
 
+export const Homer = styled(NavLink)`
+  height: fit-content;
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  margin: 9px 0 2px 0;
+  padding-top: 5px;
+  padding-bottom: 3px;
+  border-radius: 120px;
+  overflow: visible;
+  background-color: transparent !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+  user-select:none ;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+
+  & svg{
+    ${props => props.fill}
+    align-self:center;
+    fill: ${props => props.theme.panelColor};
+    color: ${props => props.theme.panelColor};
+    transition: 2.3s;
+    pointer-events: none;
+  }
+
+  &:hover{
+    background-color: ${props => props.theme.LiHover} !important;
+    -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    transition: 0.6s;
+
+  }
+
+  @media only screen and (min-width: 768px) {
+    &:hover {
+    background-color: ${props => props.theme.LiHover} !important;
+    -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    transition: 0.6s;
+  }
+      &:hover > svg{
+    fill: ${props => props.theme.textHover};
+    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
+    filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
+    transition: 1.0s;
+  }
+}
+
+`
 const Nav = styled.div`
   padding: 0em 42.5px 30px 42.5px;
   position: absolute;
@@ -175,6 +239,7 @@ const Nav = styled.div`
     }
 
     .quote{
+    white-space: nowrap;
       text-indent: 0 !important;
       padding: 4px 0 4px;
       font-size: 10px;
@@ -210,19 +275,39 @@ const Nav = styled.div`
     transform: translate(-50%, 0);
   }
 
+
   & .grabber{  
     cursor: grab;
     width: 50px;
     position: absolute;
     z-index: 500;
     left: 50%;
-    bottom: 8%;
+    top: 10px;
     transform: translate(-50%, 0);
     stroke: ${props => props.theme.panelColor};
     fill: ${props => props.theme.panelColor};
     fill-opacity: 0% !important; 
     stroke-width: 1px !important;
     transition: 1.3s;
+  }
+
+  & .resetPos{
+    position: absolute;
+    right: 40px;
+    width: 20px;
+    height: 20px;
+
+    &:hover{
+      border-color:${props => props.theme.textHover};
+    }
+
+    &:hover > .ResetIcon{
+      fill: ${props => props.theme.textHover};
+    }
+
+    & .ResetIcon{
+      fill: ${props => props.theme.panelColor};
+    }
   }
 
   & .speaker{
@@ -341,11 +426,15 @@ const Nav = styled.div`
     }
   }
 
-  .song{
+  & .song{
+    left: 48%;
+  }
+`
+export const Song = styled.p`
     position: absolute;
      top: 3%;
     /* margin: 0 auto; */
-    left: 48%;
+    ${props => props.position}
     margin: 0;
     /* transform: translate(-30%, 0%) !important; */
     border: none;
@@ -359,7 +448,7 @@ const Nav = styled.div`
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
-  }
+  
   @keyframes flash {
 	0% {
 		color: ${props => props.theme.panelColor};
@@ -375,42 +464,4 @@ const Nav = styled.div`
 		color: ${props => props.theme.panelColor};
 	}
 }
-`
-export const Homer = styled(NavLink)`
-  height: fit-content;
-  width: 70%;
-  display: flex;
-  justify-content: center;
-  margin: 9px 0 2px 0;
-  padding-top: 5px;
-  padding-bottom: 3px;
-  border-radius: 120px;
-  overflow: visible;
-  background-color: transparent !important;
-  -webkit-box-shadow: none !important;
-  -moz-box-shadow: none !important;
-  box-shadow: none !important;
-
-  & svg{
-    align-self:center;
-    fill: ${props => props.theme.panelColor};
-    color: ${props => props.theme.panelColor};
-    transition: 2.3s;
-  }
-
-  &:hover {
-    background-color: ${props => props.theme.LiHover} !important;
-    -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    transition: 0.6s;
-  }
-
-  &:hover > svg{
-    fill: ${props => props.theme.textHover};
-    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
-    filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
-    transition: 1.0s;
-  }
-
 `

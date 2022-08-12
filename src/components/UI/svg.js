@@ -1,22 +1,122 @@
 import React, { useRef, useEffect } from "react"
-import useSound from "use-sound"
-import home from "../Sounds/home.mp3"
 import { Homer } from "./navigator"
 import { cloud, state } from "./state"
 import Draggable from "react-draggable";
 import { useSnapshot } from "valtio"
 import styled from "styled-components"
 import { useSearchBox } from "react-instantsearch-hooks-web"
+import { Folder } from "./style";
+import { target } from "../Canvas/Composition";
+import { db, GetQuotes, newQuote } from "../..";
+import { toggleTheme } from "./options";
 
-export function SvgNabla() {
-  const [play] = useSound(home, { volume: state.sfxVolume, soundEnabled: !state.muted });
-  function dong() {
-    play()
-    // Move camera
+let taps = 0;
+let factor = 4;
+let talking = false;
+// Text scrambler
+
+export const characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '.', '!', '?', ' ', ' ', ' ', ' ', ' '];
+export function SvgNabla({ quote, clear, dong, nabla, setColor, color, text, setText }) {
+  const svg = useRef(null);
+  const clip = useSnapshot(cloud);
+
+  function getRandom(max, min) {
+    return Math.floor(Math.random() * (max - min) + min);
   }
+  const amount = getRandom(6, 4);
+  const speed = getRandom(250, 85);
+  const time = getRandom(2000, 1000);
+  const required = getRandom(2000, 1500);
+
+  function unActiveTap() {
+    if (cloud.target !== target || cloud.mobileCameraPosition !== [0, 20, 25] ||
+      cloud.mobileCameraRotation !== [0, 0, 0] ||
+      cloud.mobileCameraQuaternion !== [0, 0, 0] ||
+      cloud.selected) {
+      cloud.target = target;
+      // cloud.mobileCameraPosition = [0, 20, 25];
+      // cloud.mobileCameraRotation = [0, 0, 0];
+      // cloud.mobileCameraQuaternion = [0, 0, 0];
+      cloud.selected = false;
+    }
+    nabla.current && nabla.current.setAttribute("style", `
+        background-color: transparent !important;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    box-shadow: none !important;
+    transition:  ${(Math.random() * (0.45 - 0.15) + 0.15).toFixed(2) * 0.3}s !important;
+    `);
+    svg.current.style.fill = `${props => props.theme.panelColor}`;
+    svg.current && svg.current.setAttribute("style", `
+    -webkit-filter: none !important;
+    filter: none !important;
+    transition:  ${(Math.random() * (0.45 - 0.15) + 0.15).toFixed(2) * 0.3}s !important;
+        `);
+  }
+  function activeTap() {
+    nabla.current && nabla.current.setAttribute("style", `
+        background-color: ${props => props.theme.LiHover} !important;
+        border-color: ${props => props.theme.LiHover} !important;
+    -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    transition: ${(Math.random() * (0.45 - 0.15) + 0.15).toFixed(2) * 0.3}s !important;
+    `);
+
+    svg.current && svg.current.setAttribute("style", `
+    fill: #ebebeb;
+    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover}) !important;
+    filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover}) !important;
+    transition:   ${(Math.random() * (0.45 - 0.15) + 0.15).toFixed(2) * 0.3}s !important;
+        `);
+    if (talking) {
+      setTimeout(() => unActiveTap(), (cloud.playRate * 500))
+    }
+  }
+  const handleClick = () => {
+    if (!talking) {
+      cloud.playRate = (Math.random() * (0.45 - 0.15) + 0.15).toFixed(2);
+      cloud.selected = false;
+      clear();
+      dong();
+      taps += 1;
+      setTimeout(() => {
+        //  CD SPEECH
+        if (taps >= amount && taps <= (amount + 4)) {
+          talking = true;
+          // TODO: Trigger smile animation
+          newQuote().then(() => {
+            quote.current.scramble(state.quotes, setText, { characters: characters });
+          });
+          // console.log(snap.quotes.split(' ').length);
+          const loop = setInterval(() => {
+            // toggleTheme();
+            // document.getElementById("theme-color").style.transition = cloud.playRate * 500;
+            cloud.playRate = (Math.random() * (0.70 - 0.50) + 0.55).toFixed(2);
+            dong();
+            activeTap();
+            // (color.hue + (taps * factor)) < 360 ? setColor({ hue: taps * factor }) : setColor({ hue: 0 });
+            // setColor(color.hue + 10);
+            // console.log(color);
+          }, speed);
+          setTimeout(() => clearInterval(loop), time);
+          setTimeout(() => talking = false, time);
+          console.log(taps, amount, speed, time, clip.hue);
+        }
+        taps = 0;
+      }, required);
+
+    }
+  };
+
   return (
-    <Homer className="nablaWrapper" to="/" onClick={() => dong()}>
+    <Homer className="nablaWrapper" to="/"
+      ref={nabla}
+      onClick={() => handleClick()}
+      onTouchStart={() => !talking && activeTap()}
+      onTouchEnd={() => !talking && unActiveTap()}>
       <svg
+        ref={svg}
         xmlns="http://www.w3.org/2000/svg"
         height="38px"
         className="SvgNabla"
@@ -106,43 +206,101 @@ export function Spinner() {
     </svg>
   );
 }
-export function Grabber() {
-  const handle = useRef();
-  // const panel = document.getElementsByClassName("Panel")[0];
+export function Grabber({ handle, options, reset, navWrap, nav, setModal }) {
+  const grab = useRef(null);
+  const clip = useSnapshot(cloud);
+  const snap = useSnapshot(state);
+
   function handleEvent(e) {
-    if (e.type === "mousedown") {
-      handle.current.setAttribute("style", "fill-opacity: 70% !important; stroke-width: 0px !important; transition: 0.3s; cursor:grab !important;");
-      // document.getElementsByClassName("Panel").classList.add("grabbing")
-    } else if (e.type === "mouseenter") {
-      handle.current.setAttribute("style", "fill-opacity: 20% !important; stroke-width: 1px !important; transition: 0.3s; stroke-opacity: 50%; cursor:grab !important;");
-    } else if (e.type === "mouseleave") {
+    if (e.type === "mousedown" || e.type === "touchmove") {
+      state.draged = true;
+      navWrap.current.style.overFlowX = 'visible';
+      // navWrap.current.setAttribute("style", "transition: 0s !important;");
+      handle.current.setAttribute("style", "fill-opacity: 100% !important; stroke-width: 0px !important; transition: 0s !important; cursor:grab !important;");
+    } else if (e.type === "mouseenter" || e.type === "touchstart") {
+      handle.current.setAttribute("style", "fill-opacity: 20% !important; stroke-width: 1px !important; transition: 0.3s !important; stroke-opacity: 50%; cursor:grab !important;");
+    } else if (e.type === "mouseleave" || e.type === "touchend") {
       handle.current.setAttribute("style", "fill-opacity: 0% !important; stroke-width: 1px !important; transition: 0.3s; stroke-opacity: 100%; cursor:grab;");
     }
   }
 
   function release() {
     if (handle.current !== undefined && handle.current !== null) {
-      handle.current.setAttribute("style", "fill-opacity: 0% !important; stroke-width: 1px !important;transition: 0.3s; cursor:grab;");
+      handle.current.setAttribute("style", "fill-opacity: 0% !important; stroke-width: 1px !important; transition: 0.3s; cursor:grab;");
       // document.getElementsByClassName("Panel").classList.remove("grabbing")
     }
   }
   window.addEventListener("mouseup", release);
+  window.addEventListener("touchend", release);
+  window.addEventListener("touchstart", () => {
+    if (navWrap.current) {
+      navWrap.current.style.transition = "0.1s";
+    }
+    if (grab.current) {
+      grab.current.style.transition = "1.3s";
+    }
+  });
+
+  const onControlledDrag = (e, position) => {
+    let { x, y } = position;
+    state.searchPosition = { x: (x / - 1.7), y: 0 };
+    state.optionsPosition = { x: (x * 1.4), y: 0 };
+    state.grabberPosition = { x, y: 0 };
+    // console.log(grab.current);
+  }
 
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="grabber"
-      data-name="Layer 1"
-      viewBox="0 0 50 25"
-      onMouseDown={handleEvent} onMouseUp={handleEvent} onMouseEnter={handleEvent} onMouseLeave={handleEvent}
-      ref={handle}
-    >
-      <g>
-        <circle vectorEffect="non-scaling-stroke" cx="10.5" cy="12.5" r="3.18"></circle>
-        <circle vectorEffect="non-scaling-stroke" cx="25" cy="12.5" r="3.18"></circle>
-        <circle vectorEffect="non-scaling-stroke" cx="39.5" cy="12.5" r="3.18"></circle>
-      </g>
-    </svg>
+    <Draggable bounds={clip.mobile ? ".mobileNavWrap" : "body"} nodeRef={grab} onDrag={onControlledDrag} axis="x" position={clip.mobile ? snap.grabberPosition : { x: 0, y: 0 }}>
+      <div ref={grab} className='GrabberWrap'>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="grabber"
+          data-name="Layer 1"
+          viewBox="0 0 50 25"
+          onTouchStart={handleEvent} onTouchEnd={handleEvent} onTouchMove={handleEvent}
+          ref={handle}
+        >
+          <g>
+            <circle vectorEffect="non-scaling-stroke" cx="10.5" cy="12.5" r="3.18"></circle>
+            <circle vectorEffect="non-scaling-stroke" cx="25" cy="12.5" r="3.18"></circle>
+            <circle vectorEffect="non-scaling-stroke" cx="39.5" cy="12.5" r="3.18"></circle>
+          </g>
+        </svg>
+        {(!clip.mobile && (snap.draged)) &&
+          <Folder
+            onTouchEnd={() => {
+              setModal(false);
+              cloud.resetRate = (Math.random() * (0.85 - 0.65) + 0.65);
+              reset();
+              grab.current.style.transition = "1.3s";
+              navWrap.current.style.transition = "1.3s";
+              state.searchPosition = { x: 0, y: 0 };
+              state.optionsPosition = { x: 0, y: 0 };
+              state.grabberPosition = { x: 0, y: 0 };
+              state.mobileNavPosition = { x: 0, y: 0 };
+              state.draged = false;
+              setTimeout(() => {
+                navWrap.current.style.transition = "0.1s";
+                grab.current.style.transition = "1.3s";
+                console.log("transition returned");
+              }, "1300");
+            }}
+            onClick={() => {
+              state.isOpt = false;
+              state.isPro = false;
+              cloud.resetRate = (Math.random() * (0.85 - 0.65) + 0.65);
+              reset();
+              nav.current.style.transition = "1.3s";
+              state.navPosition = { x: 0, y: 0 };
+              state.draged = false;
+              setTimeout(() => {
+                nav.current.style.transition = "0.1s";
+                console.log("transition returned");
+              }, "1300");
+            }} className="li resetPos w">{clip.mobile ? "reset" : <ResetIcon />}
+          </Folder>}
+      </div>
+    </Draggable>
   );
 }
 export function Speaker() {
@@ -184,28 +342,52 @@ export function MuteIcon() {
   }
 }
 export function ModeIcon() {
-  if (state.theme === "light") {
+  function Auto() {
     return (
       <svg
         xmlns="http://www.w3.org/2000/svg"
+        width="354.098"
+        height="356.443"
         data-name="Layer 1"
-        className="modeIcon dark"
-        viewBox="0 0 126.13 144.27"
+        viewBox="0 0 354.098 356.443"
+        className="modeIcon"
+        style={{ transform: "scaleX(-1)" }}
       >
-        <path d="M67.67.11c2.39-.15 9-.34 14 .91 0 0 3.56.54 4 2.72S85 7.4 83.25 8.52a54.24 54.24 0 00-16.51 15.4c-6 8.89-9.59 18.48-10.11 29.28C55.84 69.64 60.82 84 72 95.85a51.69 51.69 0 0038 16.77c3.65 0 7.3-.59 11-.58 1.39 0 3.35.4 4.08 1.53 1 1.53.63 2.88-.37 4.54-3.56 3.73-6.94 7.73-10.95 10.92a68.63 68.63 0 01-36 14.81 68.56 68.56 0 01-35.62-5.43 70.22 70.22 0 01-30.35-25.59A69.31 69.31 0 01.2 82.27c-2.2-18 1-35 11.16-50.1C23.15 14.6 39.53 3.66 60.78.69 63 .39 65.22.26 67.67.11z"></path>
+        <path d="M81.376 87.591l-1.16-.794-1.502 2.17V59.473c0-5.863-4.766-10.618-10.643-10.618h-14.9c-5.879 0-10.643 4.755-10.643 10.618v87.077c0 5.863 4.764 10.618 10.643 10.618h87.273c5.877 0 10.643-4.755 10.643-10.618v-14.867c0-5.865-4.766-10.618-10.643-10.618h-32.121c7.935-9.16 18.635-17.79 27.199-22.167 4.256-2.124 8.515-4.247 12.506-5.574 3.991-1.593 8.247-2.654 12.506-3.451 5.321-1.062 12.238-1.593 17.827-1.593 49.491 0 90.999 40.881 90.999 91.053 0 .796-.531 8.76-1.064 13.007-2.396 15.398-8.78 32.124-22.351 48.05-9.845 11.416-29.534 24.689-47.629 28.14-12.238 2.389-18.358 11.947-18.358 21.238 0 11.151 8.513 21.238 21.019 21.238 4.79 0 13.305-2.654 17.561-3.982 19.424-6.105 39.114-16.46 58.005-36.901 16.497-18.05 25.278-36.634 30.333-54.952 2.396-8.494 3.726-18.316 4.79-26.812v-17.52c0-9.293-4.79-28.671-7.449-35.575-23.683-64.24-79.292-89.461-125.858-89.461-8.78 0-17.827.531-26.077 2.389-6.385 1.327-12.772 3.185-19.157 5.309-17.012 6.031-35.53 17.128-51.752 34.091h.002z"></path>
       </svg>
     );
-  } else if (state.theme === "dark") {
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        data-name="Layer 1"
-        className="modeIcon light"
-        viewBox="0 0 144.55 144.61"
-      >
-        <path d="M72.26 108.49a36.18 36.18 0 1136.21-36.12c-.03 19.86-16.35 36.28-36.21 36.12zM18.47 28.31c0-5.17 3.36-9 7.74-9.64a9 9 0 017.95 2.67q3.11 3.07 6.18 6.18A8.89 8.89 0 0142 38.39a8.62 8.62 0 01-7.06 4.67 9 9 0 01-7.48-2.72l-6.3-6.24a8.85 8.85 0 01-2.69-5.79zM116.39 18.53c5.1 0 8.93 3.34 9.55 7.79a8.93 8.93 0 01-2.64 7.87c-2.08 2.1-4.15 4.18-6.25 6.25a8.93 8.93 0 01-11 1.45 8.65 8.65 0 01-4.45-6.9 9.06 9.06 0 012.76-7.57c2.08-2.08 4.15-4.17 6.25-6.24a8.77 8.77 0 015.78-2.65zM18.46 116.68a9 9 0 012.5-5.89c2.25-2.3 4.51-4.6 6.84-6.84a9.11 9.11 0 0112.5 13.25c-2.09 2-4.11 4.13-6.19 6.17A9 9 0 0123.23 125c-3.16-1.73-4.64-4.54-4.77-8.32zM126.09 117c-.19 3.82-1.89 6.77-5.5 8.32a8.6 8.6 0 01-9.78-1.65c-2.42-2.22-4.73-4.58-7-7a9.11 9.11 0 0113.31-12.43c2.07 2.13 4.2 4.21 6.3 6.32a9.31 9.31 0 012.67 6.44zM63.2 13.65V9.04A8.6 8.6 0 0168 1.12a8.68 8.68 0 019.28.47 8.55 8.55 0 014 7.43v9.31a9.09 9.09 0 01-18.07 1.24 27.2 27.2 0 01-.08-4c.06-.67.07-1.29.07-1.92zM13.61 81.41h-4.7a9.09 9.09 0 01-1.27-18.07 7 7 0 011.21-.08h9.5a9.09 9.09 0 011.27 18.06 5.91 5.91 0 01-1.12.08zM130.94 81.41h-4.6a9 9 0 01-8.34-5.67 9.16 9.16 0 012.32-10.16 8.69 8.69 0 015.9-2.32h9.49A9.09 9.09 0 01137 81.32a5.91 5.91 0 01-1.12.08zM63.2 130.91v-4.61a9.09 9.09 0 0118.07-1.3 7.08 7.08 0 01.08 1.22v9.49A9.09 9.09 0 0163.29 137a6 6 0 01-.08-1.12v-5z"></path>
-      </svg>
-    );
+  }
+  if (state.theme === "dark") {
+    if (state.auto) {
+      return Auto();
+    } else {
+      return (
+        <svg
+
+          xmlns="http://www.w3.org/2000/svg"
+          data-name="Layer 1"
+          className="modeIcon dark"
+          viewBox="0 0 126.13 144.27"
+        >
+          <path d="M67.67.11c2.39-.15 9-.34 14 .91 0 0 3.56.54 4 2.72S85 7.4 83.25 8.52a54.24 54.24 0 00-16.51 15.4c-6 8.89-9.59 18.48-10.11 29.28C55.84 69.64 60.82 84 72 95.85a51.69 51.69 0 0038 16.77c3.65 0 7.3-.59 11-.58 1.39 0 3.35.4 4.08 1.53 1 1.53.63 2.88-.37 4.54-3.56 3.73-6.94 7.73-10.95 10.92a68.63 68.63 0 01-36 14.81 68.56 68.56 0 01-35.62-5.43 70.22 70.22 0 01-30.35-25.59A69.31 69.31 0 01.2 82.27c-2.2-18 1-35 11.16-50.1C23.15 14.6 39.53 3.66 60.78.69 63 .39 65.22.26 67.67.11z"></path>
+        </svg>
+      );
+    }
+  } else if (state.theme === "light") {
+    if (state.auto) {
+      return Auto();
+    } else {
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          data-name="Layer 1"
+          className="modeIcon light"
+          viewBox="0 0 144.55 144.61"
+        >
+          <path d="M72.26 108.49a36.18 36.18 0 1136.21-36.12c-.03 19.86-16.35 36.28-36.21 36.12zM18.47 28.31c0-5.17 3.36-9 7.74-9.64a9 9 0 017.95 2.67q3.11 3.07 6.18 6.18A8.89 8.89 0 0142 38.39a8.62 8.62 0 01-7.06 4.67 9 9 0 01-7.48-2.72l-6.3-6.24a8.85 8.85 0 01-2.69-5.79zM116.39 18.53c5.1 0 8.93 3.34 9.55 7.79a8.93 8.93 0 01-2.64 7.87c-2.08 2.1-4.15 4.18-6.25 6.25a8.93 8.93 0 01-11 1.45 8.65 8.65 0 01-4.45-6.9 9.06 9.06 0 012.76-7.57c2.08-2.08 4.15-4.17 6.25-6.24a8.77 8.77 0 015.78-2.65zM18.46 116.68a9 9 0 012.5-5.89c2.25-2.3 4.51-4.6 6.84-6.84a9.11 9.11 0 0112.5 13.25c-2.09 2-4.11 4.13-6.19 6.17A9 9 0 0123.23 125c-3.16-1.73-4.64-4.54-4.77-8.32zM126.09 117c-.19 3.82-1.89 6.77-5.5 8.32a8.6 8.6 0 01-9.78-1.65c-2.42-2.22-4.73-4.58-7-7a9.11 9.11 0 0113.31-12.43c2.07 2.13 4.2 4.21 6.3 6.32a9.31 9.31 0 012.67 6.44zM63.2 13.65V9.04A8.6 8.6 0 0168 1.12a8.68 8.68 0 019.28.47 8.55 8.55 0 014 7.43v9.31a9.09 9.09 0 01-18.07 1.24 27.2 27.2 0 01-.08-4c.06-.67.07-1.29.07-1.92zM13.61 81.41h-4.7a9.09 9.09 0 01-1.27-18.07 7 7 0 011.21-.08h9.5a9.09 9.09 0 011.27 18.06 5.91 5.91 0 01-1.12.08zM130.94 81.41h-4.6a9 9 0 01-8.34-5.67 9.16 9.16 0 012.32-10.16 8.69 8.69 0 015.9-2.32h9.49A9.09 9.09 0 01137 81.32a5.91 5.91 0 01-1.12.08zM63.2 130.91v-4.61a9.09 9.09 0 0118.07-1.3 7.08 7.08 0 01.08 1.22v9.49A9.09 9.09 0 0163.29 137a6 6 0 01-.08-1.12v-5z"></path>
+        </svg>
+      );
+    }
   }
 }
 export function PlayPauseIcon(arg) {
@@ -216,7 +398,7 @@ export function PlayPauseIcon(arg) {
         <svg
           xmlns="http://www.w3.org/2000/svg"
           data-name="Layer 1"
-          viewBox="0 0 354 356"
+          viewBox="0 0 350 356"
           className="PlayPauseIcon"
         >
           <path d="M321.2 161.16L49.31 4.19C34.39-4.44 22 1.47 20.24 17.21c-.12 1.25-.24 2.55-.24 3.93v314c0 18.61 13.17 26.23 29.31 16.91L316 198l5.19-3c16.13-9.28 16.13-24.52 0-33.85z"></path>
@@ -273,10 +455,8 @@ export function NextIcon() {
     < svg
       className="nextIcon"
       xmlns="http://www.w3.org/2000/svg"
-      width="354.098"
-      height="356.443"
       data-name="Layer 1"
-      viewBox="0 0 354.098 356.443"
+      viewBox="0 0 320 354"
     >
       <path d="M334.145 161.458l-.004-.004L166.653 4.488c-9.19-8.636-16.83-2.717-17.905 13.014-.075 1.256-.15 2.553-.15 3.933v93.588L30.653 4.488c-9.19-8.637-16.831-2.718-17.905 13.013-.075 1.256-.15 2.553-.15 3.933V335.41c0 18.607 8.116 26.227 18.055 16.905l117.945-110.558v93.653c0 18.607 8.116 26.227 18.055 16.905L330.948 198.31l3.196-3c9.938-9.286 9.938-24.528 0-33.852z"></path>
     </svg>
@@ -342,51 +522,59 @@ export function DirectionIcon() {
 }
 export function ColorIcon() {
 
-  if (state.colorChanged) {
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="354.098"
-        height="356.443"
-        data-name="Layer 1"
-        viewBox="0 0 354.098 356.443"
-        className="ColorChangedIcon"
-      >
-        <circle cx="177.098" cy="178.403" r="159"></circle>
-      </svg>
-    );
-  } else {
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        data-name="Layer 1"
-        viewBox="0 0 354 356"
-        className="ColorIcon"
-      >
-        <circle cx="177.098" cy="178.403" r="159"></circle>
-      </svg>
-    );
-  }
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="354.098"
+      height="356.443"
+      data-name="Layer 1"
+      viewBox="0 0 354.098 356.443"
+      className="ColorIcon"
+    >
+      <path
+        fill="#53cb26"
+        d="M140.837 333.181c-48.124-4.61-110.933-65.878-117.617-114.732-.563-4.237.773-8.076 2.466-11.846 16.811-37.436 51.738-59.764 92.783-58.668 19.801.529 37.286 7.811 52.337 20.727 2.384 2.046 4.792 4.167 5.936 7.27.096.502.042.991-.149 1.464-.892 1.442-2.35 2.025-3.852 2.586-25.173 9.398-42.075 27.357-51.579 51.954-12.821 33.181-7.254 63.979 14.193 92.145 2.136 2.806 5.448 4.996 5.483 9.1z"
+      ></path>
+      <path
+        fill="#fd4f45"
+        d="M176.077 177.193c.164-.196.245-.421.245-.676.1-.222.201-.444.3-.667 2.27-1.831 5.095-2.456 7.712-3.527 35.592-14.568 56.44-40.531 60.706-79.043 2.37-21.397-3.077-41.009-14.651-59.048-1.383-2.155-3.673-4.11-2.662-7.205 47.31 9.643 97.886 67.044 106.38 120.737-1.453 12.226-9.339 20.959-16.984 29.43-35.609 39.456-97.975 41.923-136.999 5.758-1.395-1.293-2.782-2.593-3.624-4.346a3.235 3.235 0 01-.423-1.414z"
+      ></path>
+      <path
+        fill="#fed002"
+        d="M176.323 176.517C121.03 128.248 47.71 148.328 23.22 218.447 5.444 168.858 29.37 90.373 71.886 58.806c10.012-4.313 20.323-2.751 30.269-.518 41.82 9.387 67.596 35.272 77.278 76.976 2.678 11.534 2.394 23.247.375 34.906-.415 2.395-1.192 4.601-3.271 6.107l-.215.24z"
+      ></path>
+      <path
+        fill="#fea302"
+        d="M176.538 176.277c15.214-55.094-29.095-125.37-104.651-117.471C107.19 22.62 181.756 7.415 227.728 27.028c38.652 56.193 18.524 122.688-44.79 147.82-2.006.796-4.262.967-6.401 1.429z"
+      ></path>
+      <path
+        fill="#149df7"
+        d="M140.837 333.181c-48.849-54.818-31.14-133.207 35.24-155.988l.362.257c1.635 3.944.066 7.846-.331 11.708-2.707 26.28 4.544 49.538 21.421 69.671 19.351 23.084 44.537 33.627 74.46 33.4 3.974-.03 7.846-1.013 11.803-1.199 1.744-.082 3.512-.414 4.778 1.255-30.461 35.656-105.552 56.444-147.734 40.897z"
+      ></path>
+      <path
+        fill="#bb5fd3"
+        d="M288.571 292.284c-73.82 7.852-125.362-43.533-113.068-112.746.129-.729.615-1.394.935-2.088 46.083 45.928 109.547 32.189 138.659-.903 7.523-8.551 12.736-19.133 19.01-28.782 9.495 55.941-5.062 104.31-45.537 144.519z"
+      ></path>
+    </svg>
+  );
 }
 const BarIcon = styled.svg`
-    position: absolute;
-    top: 50%;
-    left: 0px;
-    transform: translate(30%, -50%);
-    height: 14px;
-    fill: ${props => props.colorfill};
-    stroke: ${props => props.colorstroke};
-    cursor: pointer;
-    stroke-width: 1px;
+        position: absolute;
+        top: 50%;
+        left: 0px;
+        transform: translate(30%, -50%);
+        height: 14px;
+        fill: ${props => props.colorfill};
+        stroke: ${props => props.colorstroke};
+        cursor: pointer;
+        stroke-width: 1px;
 
-    &:hover{
-      opacity: 50%;
-      pointer-events: painted;
+        &:hover{
+          opacity: 50%;
+        pointer-events: painted;
     }
-`
+        `
 export function SearchBarIcon() {
-  const snap = useSnapshot(state);
-
   if (cloud.chatMode) {
     //CD
     return <BarIcon
@@ -412,28 +600,98 @@ export function SearchBarIcon() {
 
 }
 const Clear = styled.svg`
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translate(50%, -50%);
-    height: 14px;
-    fill: ${props => props.theme.panelColor};
-    cursor: pointer;
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translate(50%, -50%);
+        height: 14px;
+        fill: ${props => props.theme.panelColor};
+        cursor: pointer;
 
-    &:hover{
-      opacity: 50%;
-      pointer-events: painted;
+        &:hover{
+          opacity: 50%;
+        pointer-events: painted;
     }
-`
+        `
 export function ClearIcon() {
 
   return (
     <Clear viewBox="0 0 52.98 52.98">
-      <path d="M44.37 7.6a26 26 0 100 36.77 26 26 0 000-36.77zm-8.13 28.64a2 2 0 01-2.83 0L26 28.82l-7.78 7.77a2 2 0 11-2.83-2.82L23.16 26l-7.42-7.43a2 2 0 112.82-2.82L26 23.16l7.07-7.07a2 2 0 012.83 2.83L28.82 26l7.42 7.42a2 2 0 010 2.82z"></path>
+      <path vectorEffect="non-scaling-stroke" d="M44.37 7.6a26 26 0 100 36.77 26 26 0 000-36.77zm-8.13 28.64a2 2 0 01-2.83 0L26 28.82l-7.78 7.77a2 2 0 11-2.83-2.82L23.16 26l-7.42-7.43a2 2 0 112.82-2.82L26 23.16l7.07-7.07a2 2 0 012.83 2.83L28.82 26l7.42 7.42a2 2 0 010 2.82z"></path>
     </Clear>
   )
 }
-
+export function ConfirmIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="354.098"
+      height="356.443"
+      data-name="Layer 1"
+      viewBox="0 0 354.098 356.443"
+      className="ConfirmIcon"
+    >
+      <path d="M330.876 104.177c25.193-25.193-11.011-61.396-35.715-36.692L139.897 223.734c-5.182 5.184-13.663 5.184-18.847 0l-61.671-61.671c-27.158-27.158-62.38 6.105-34.244 34.242l97.386 97.386c5.182 5.184 13.663 5.184 18.847 0l27.646-27.646c5.182-5.184 13.663-13.663 18.847-18.847l143.015-143.021z"></path>
+    </svg>
+  );
+}
+export function ResetIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="354.098"
+      height="356.443"
+      data-name="Layer 1"
+      viewBox="0 0 354.098 356.443"
+      className="ResetIcon"
+    >
+      <path d="M81.376 87.591l-1.16-.794-1.502 2.17V59.473c0-5.863-4.766-10.618-10.643-10.618h-14.9c-5.879 0-10.643 4.755-10.643 10.618v87.077c0 5.863 4.764 10.618 10.643 10.618h87.273c5.877 0 10.643-4.755 10.643-10.618v-14.867c0-5.865-4.766-10.618-10.643-10.618h-32.121c7.935-9.16 18.635-17.79 27.199-22.167 4.256-2.124 8.515-4.247 12.506-5.574 3.991-1.593 8.247-2.654 12.506-3.451 5.321-1.062 12.238-1.593 17.827-1.593 49.491 0 90.999 40.881 90.999 91.053 0 .796-.531 8.76-1.064 13.007-2.396 15.398-8.78 32.124-22.351 48.05-9.845 11.416-29.534 24.689-47.629 28.14-12.238 2.389-18.358 11.947-18.358 21.238 0 11.151 8.513 21.238 21.019 21.238 4.79 0 13.305-2.654 17.561-3.982 19.424-6.105 39.114-16.46 58.005-36.901 16.497-18.05 25.278-36.634 30.333-54.952 2.396-8.494 3.726-18.316 4.79-26.812v-17.52c0-9.293-4.79-28.671-7.449-35.575-23.683-64.24-79.292-89.461-125.858-89.461-8.78 0-17.827.531-26.077 2.389-6.385 1.327-12.772 3.185-19.157 5.309-17.012 6.031-35.53 17.128-51.752 34.091h.002z"></path>
+    </svg>
+  );
+}
+export function GyroIcon() {
+  const snap = useSnapshot(state);
+  if (!snap.gyro) {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="354.098"
+        height="356.443"
+        data-name="Layer 1"
+        viewBox="0 0 354.098 356.443"
+        className="GyroIcon"
+      >
+        <path d="M203.636 306.313c-62.321 12.999-124.61-20.511-148.082-79.689A130.334 130.334 0 0185.78 84.91l-2.779 18.738c-1.006 6.793 3.686 13.116 10.477 14.123.619.091 1.233.139 1.836.139 6.062 0 11.374-4.439 12.286-10.615l7.308-49.322a12.446 12.446 0 00-2.314-9.238 12.425 12.425 0 00-8.165-4.89l-49.314-7.29c-6.78-1.009-13.122 3.689-14.12 10.485-1.006 6.793 3.689 13.116 10.482 14.12l20.11 2.974C24.906 107.019 8.276 174.926 32.43 235.796c23.905 60.276 81.623 98.186 144.269 98.186a156.8 156.8 0 0032.012-3.318c6.724-1.404 11.037-7.989 9.636-14.713-1.404-6.724-7.994-11.045-14.715-9.636l.004-.003zm99.081-10.749l-20.008-2.963a155.138 155.138 0 0039.046-171.609C293.805 50.576 219.68 10.67 145.499 26.134c-6.724 1.401-11.04 7.987-9.638 14.71 1.396 6.718 7.955 11.04 14.713 9.638 62.297-12.975 124.583 20.529 148.062 79.682a130.362 130.362 0 01-30.223 141.755l2.789-18.842c1.009-6.793-3.686-13.116-10.477-14.123-6.82-1.017-13.122 3.686-14.123 10.477l-7.308 49.308a12.436 12.436 0 002.312 9.233 12.413 12.413 0 008.165 4.89l49.303 7.301c.619.091 1.233.139 1.836.139 6.062 0 11.374-4.439 12.286-10.615 1.006-6.793-3.681-13.116-10.477-14.12l-.002-.002z"></path>
+        <path
+          fill="none"
+          stroke="#000"
+          strokeMiterlimit="10"
+          strokeWidth="23"
+          d="M196.267 266.903h-56.563c-13.375 0-22.887-10.843-21.245-24.218l16.277-132.563c1.642-13.375 13.817-24.218 27.192-24.218h56.563c13.375 0 22.887 10.843 21.245 24.218l-16.277 132.563c-1.642 13.375-13.817 24.218-27.192 24.218z"
+        ></path>
+      </svg>
+    );
+  } else {
+    return (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="354.098"
+        height="356.443"
+        data-name="Layer 1"
+        viewBox="0 0 354.098 356.443"
+        className="GyroIcon"
+      >
+        <path d="M203.636 306.313c-62.321 12.999-124.61-20.511-148.082-79.689A130.334 130.334 0 0185.78 84.91l-2.779 18.738c-1.006 6.793 3.686 13.116 10.477 14.123.619.091 1.233.139 1.836.139 6.062 0 11.374-4.439 12.286-10.615l7.308-49.322a12.446 12.446 0 00-2.314-9.238 12.425 12.425 0 00-8.165-4.89l-49.314-7.29c-6.78-1.009-13.122 3.689-14.12 10.485-1.006 6.793 3.689 13.116 10.482 14.12l20.11 2.974C24.906 107.019 8.276 174.926 32.43 235.796c23.905 60.276 81.623 98.186 144.269 98.186a156.8 156.8 0 0032.012-3.318c6.724-1.404 11.037-7.989 9.636-14.713-1.404-6.724-7.994-11.045-14.715-9.636l.004-.003zm99.081-10.749l-20.008-2.963a155.138 155.138 0 0039.046-171.609C293.805 50.576 219.68 10.67 145.499 26.134c-6.724 1.401-11.04 7.987-9.638 14.71 1.396 6.718 7.955 11.04 14.713 9.638 62.297-12.975 124.583 20.529 148.062 79.682a130.362 130.362 0 01-30.223 141.755l2.789-18.842c1.009-6.793-3.686-13.116-10.477-14.123-6.82-1.017-13.122 3.686-14.123 10.477l-7.308 49.308a12.436 12.436 0 002.312 9.233 12.413 12.413 0 008.165 4.89l49.303 7.301c.619.091 1.233.139 1.836.139 6.062 0 11.374-4.439 12.286-10.615 1.006-6.793-3.681-13.116-10.477-14.12l-.002-.002z"></path>
+        <path
+          stroke="#000"
+          strokeMiterlimit="10"
+          strokeWidth="23"
+          d="M196.267 266.903h-56.563c-13.375 0-22.887-10.843-21.245-24.218l16.277-132.563c1.642-13.375 13.817-24.218 27.192-24.218h56.563c13.375 0 22.887 10.843 21.245 24.218l-16.277 132.563c-1.642 13.375-13.817 24.218-27.192 24.218z"
+        ></path>
+      </svg>
+    );
+  }
+}
 export function ContrastLogo() {
   return (
     <svg
@@ -447,19 +705,18 @@ export function ContrastLogo() {
     </svg>
   );
 }
-
 const Eko = styled.svg`
-      fill: ${props => props.theme.LiHover};
-      width: 45vw;
-      height: auto;
-      transform: translateZ(300px);
-      align-self: flex-end;
-      display: block;
-      transition: 2.3s;
-      -webkit-filter: drop-shadow( 1px 1px 10px ${props => props.theme.LiHover});
-      filter: drop-shadow( 1px 1px 10px ${props => props.theme.LiHover});
-      /* filter: blur(30px); */
-`
+        fill: ${props => props.theme.LiHover};
+        width: 45vw;
+        height: auto;
+        transform: translateZ(300px);
+        align-self: flex-end;
+        display: block;
+        transition: 2.3s;
+        -webkit-filter: drop-shadow( 1px 1px 10px ${props => props.theme.LiHover});
+        filter: drop-shadow( 1px 1px 10px ${props => props.theme.LiHover});
+        /* filter: blur(30px); */
+        `
 export function EkoThumb() {
   return (
     <Eko
@@ -473,7 +730,6 @@ export function EkoThumb() {
     </Eko>
   );
 }
-
 export function OldCD() {
   return (
     <svg
@@ -551,34 +807,33 @@ export function OldCD() {
     </svg>
   );
 }
-
 let bw;
 const ProgramLogo = styled.svg`
-      fill: ${props => bw ? props.theme.bwElement : 'inherit'};
-      height: ${props => props.size || '30px'};
-`
+        fill: ${props => bw ? props.theme.bwElement : 'inherit'};
+        height: ${props => props.size || '30px'};
+        `
 const ProgramTray = styled.div`
-backdrop-filter: blur(var(--blur));
--webkit-backdrop-filter: blur(var(--blur));
-border-radius: 12px;
-display: flex;
-flex-direction: row;
-justify-content: flex-start;
-height: min-content;
-flex-wrap: wrap;
-/* overflow-y: scroll; */
-overflow-x: visible;
-padding: 10px;
+        backdrop-filter: blur(var(--blur));
+        -webkit-backdrop-filter: blur(var(--blur));
+        border-radius: 12px;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        height: min-content;
+        flex-wrap: wrap;
+        /* overflow-y: scroll; */
+        overflow-x: visible;
+        padding: 10px;
 
-  & svg{
-      width: auto;
-      overflow: visible;
-      margin: 5px 5px;
-      -webkit-filter: drop-shadow( 0px 1px 1px  #0D0D0D);
-      filter: drop-shadow( 0px 1px 1px  #0D0D0D);
+        & svg{
+          width: auto;
+        overflow: visible;
+        margin: 5px 5px;
+        -webkit-filter: drop-shadow( 0px 1px 1px  #0D0D0D);
+        filter: drop-shadow( 0px 1px 1px  #0D0D0D);
     
   }
-`
+        `
 export function Program({ program, size }) {
   let programObject = {
     ableton: (
@@ -1066,7 +1321,7 @@ export function Program({ program, size }) {
   };
 
   return (
-    <ProgramTray>
+    <ProgramTray className='Program'>
       {program.map((one, key) => (
         <React.Fragment key={key}>
           {programObject[`${one}`] && programObject[`${one}`]}
@@ -1096,18 +1351,18 @@ export function Links({ link }) {
     }</>)
 }
 const Head = styled.div`
-      pointer-events: none;
-      position: absolute;
-      display: flex;
-      align-items: center;
-      z-index: 4000;
-      height: var(--panelHeight);
-      width: fit-content;
-      margin-top: 20px;
-      margin-left: calc(var(--panelWidth) + var(--headOffset));
+        pointer-events: none;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        z-index: 4000;
+        height: var(--panelHeight);
+        width: fit-content;
+        margin-top: 20px;
+        margin-left: calc(var(--panelWidth) + var(--headOffset));
 
-    & h1{
-      text-shadow: 9px 4px 13px  ${props => props.theme.sky};
+        & h1{
+          text-shadow: 9px 4px 13px  ${props => props.theme.sky};
         justify-self: flex-start;
         position: absolute;
         font-size: 14vw;
@@ -1125,39 +1380,40 @@ const Head = styled.div`
         -ms-user-select: none;
         user-select: none;
     }
-    @media only screen and (min-width: 1366px) {
-  h1 {
-    font-size: 12vw;
+
+        @media only screen and (min-width: 1366px) {
+          h1 {
+          font-size: 12vw;
   }
 }
-    & svg{
-      /* -webkit-filter: drop-shadow( 9px 4px 1px  ${props => props.theme.sky});
-      filter: drop-shadow( 9px 4px 1px  ${props => props.theme.sky}); */
-      fill: transparent !important;
-      stroke:  ${props => props.theme.panelColor} !important;
-      stroke-width: 1px;
-      position: absolute;
-      /* width: 35vw;
-      height: auto; */
-      height: 300px;
-      width: auto;
-      overflow: visible;
-      margin: 20px 20px;
+        & svg{
+          /* -webkit-filter: drop-shadow( 9px 4px 1px  ${props => props.theme.sky});
+          filter: drop-shadow( 9px 4px 1px  ${props => props.theme.sky}); */
+          fill: transparent !important;
+        stroke:  ${props => props.theme.panelColor} !important;
+        stroke-width: 1px;
+        position: absolute;
+        /* width: 35vw;
+        height: auto; */
+        height: 300px;
+        width: auto;
+        overflow: visible;
+        margin: 20px 20px;
     }
-     .HomeCD{
-      padding: 0 !important;
-      height: auto !important;
-      width: 641.75px !important;
-      stroke: ${props => props.theme.panelColor} !important;
-      fill: none !important;
-      margin-top: 288px !important;
-      margin-left: calc(-1 * var(--panelWidth) + 15px) !important;
+        .HomeCD{
+          padding: 0 !important;
+        height: auto !important;
+        width: 641.75px !important;
+        stroke: ${props => props.theme.panelColor} !important;
+        fill: none !important;
+        margin-top: 288px !important;
+        margin-left: calc(-1 * var(--panelWidth) + 15px) !important;
     }
-    .swamilogo{
-      height: 200px;
-      width: auto;
+        .swamilogo{
+          height: 200px;
+        width: auto;
     }
-`
+        `
 export function Header(id) {
   const snap = useSnapshot(state);
   const nodeRef = useRef(null);

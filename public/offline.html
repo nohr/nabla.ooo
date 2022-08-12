@@ -28,9 +28,9 @@
 <head>
     <meta charset="utf-8" />
     <link rel="icon" type="image/png" href="./images/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="theme-color" content="#C1C2C2" media="(prefers-color-scheme: light)">
-    <meta name="theme-color" content="#0D0D0D" media="(prefers-color-scheme: dark)">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+    <meta id="theme-color" name="theme-color" content="#C1C2C2">
+    <meta id="theme-color" name="theme-color" content="#0D0D0D" media="(prefers-color-scheme: dark)">
     <meta name="description" content="Hompage of Nabla Ltd." />
     <link rel="manifest" href="./manifest.json" />
     <link rel="apple-touch-icon" href="./images/logo1024.png" />
@@ -72,7 +72,7 @@
             top: 80px;
             left: 80px;
             border-radius: 50%;
-            box-shadow: 0 1.8px 0 0 #E3D0CA;
+            box-shadow: 0 1.8px 0 0 hsl(205, 31%, 70%);
             transform-origin: 20px 20.9px;
         }
 
@@ -96,25 +96,14 @@
             transform-origin: 0 0;
         }
 
-        .canvasSpinner {
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 200px;
-            height: 200px;
-            display: inline-block;
-            overflow: hidden;
-            background: none;
-        }
-
         .gugmu9vdpaw p {
             position: absolute;
-            top: 45%;
+            top: 50%;
             left: 50%;
             transform: translate(-50%, -55%);
-            color: #E3D0CA;
-            text-shadow: 0 1px 1 1 #E3D0CA;
-            font-size: 12px;
+            color: hsl(205, 31%, 70%);
+            text-shadow: 0 1px 1 1 hsl(205, 31%, 70%);
+            font-size: 18px;
         }
     </style>
 </head>

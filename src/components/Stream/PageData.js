@@ -73,9 +73,10 @@ const ImgGrid = ({ work }) => {
     }
   }
 
+  const clip = useSnapshot(cloud);
   return (
     <TrayWrapper>
-      <InfoCard>
+      <InfoCard width={clip.sectors.length > 1 ? '100%' : '100ch !important'}>
         {/* {work.link && <Links link={work.link} />} */}
         {work.program && <Program size={'40px'} program={work.program} />}
         <Scroller animation='none'>
@@ -174,7 +175,7 @@ resize: horizontal;
 const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width:100%;
+  width: 100%;
   height:min-content;
   flex-wrap: nowrap;
   color: ${props => props.theme.panelColor};
@@ -210,7 +211,7 @@ const TextWrapper = styled.div`
 }
 
 & p {
-  /* width: 60ch; */
+  /* width: ${props => props.width}; */
   display: inline;
   padding: 0% 3px;
   background-color: ${props => props.theme.layerBG};

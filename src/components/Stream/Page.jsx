@@ -20,12 +20,13 @@ export function Page(id) {
   useDocumentTitle(id.title);
   const { query } = useSearchBox();
   const clip = useSnapshot(cloud);
+  const snap = useSnapshot(state);
   let opacity = query.length > 0 ? "0" : "1";
   let pointerEvents = query.length ? "none" : "all";
   let transition = query.length ? "0.3s" : "unset";
   let margin =
-    cloud.sectors.length > 0
-      ? state.direction
+    clip.sectors.length > 0
+      ? snap.direction
         ? `padding-top: 300px !important; `
         : `padding-left: 300px !important; `
       : ``;
@@ -278,7 +279,7 @@ export const Container = styled.div`
   overflow: ${(props) => props.overflow};
   -webkit-overflow-scrolling: touch;
   height: 100%;
-  width: 100%;
+  width: 100vw;
   padding: 20px 15px 20px 20px;
   font-size: 14px;
   color: ${(props) => props.theme.panelColor};
@@ -286,6 +287,186 @@ export const Container = styled.div`
   pointer-events: ${(props) => props.pointerEvents};
   opacity: ${(props) => props.opacity};
 
+  &.hom {
+    pointer-events: none;
+    width: 100vw;
+    align-items: flex-end !important;
+
+    .preview {
+      /* display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 25% 75%; */
+      display: flex;
+      flex-direction: column;
+      height: 20vh;
+      border: 1px solid ${(props) => props.theme.panelColor};
+      border-radius: 40px;
+      box-shadow: none;
+      /* background-color: ${(props) => props.theme.backdrop} !important; */
+      background-color: transparent;
+      /* height: 30vh !important; */
+      position: unset !important;
+      width: fit-content !important;
+      justify-content: space-around;
+      margin: 20px !important;
+      opacity: 1;
+      padding: 5px 10px;
+      pointer-events: none;
+
+      & .icons {
+        backdrop-filter: blur(30px);
+        border-radius: 40px;
+        flex-wrap: wrap;
+        flex-direction: row-reverse;
+        padding: 10px 10px;
+        /* width: 90% !important; */
+        justify-content: space-around !important;
+        margin: 0 auto;
+
+        & .both {
+          display: flex;
+          flex-direction: row-reverse;
+          column-gap: 10px !important;
+          align-items: center;
+        }
+      }
+
+      & .icons .Program {
+        flex-wrap: nowrap !important;
+        padding: 0;
+        & svg {
+          margin: 0;
+          height: 30px;
+        }
+      }
+      h3 {
+        margin: 0;
+        white-space: nowrap;
+        font-size: 20px;
+        @media all and (min-width: 50px) {
+          body {
+            font-size: 0.4em;
+          }
+        }
+        @media all and (min-width: 100px) {
+          body {
+            font-size: 0.3em;
+          }
+        }
+        @media all and (min-width: 200px) {
+          body {
+            font-size: 0.6em;
+          }
+        }
+        @media all and (min-width: 300px) {
+          body {
+            font-size: 0.8em;
+          }
+        }
+        @media all and (min-width: 400px) {
+          body {
+            font-size: 1em;
+          }
+        }
+        @media all and (min-width: 500px) {
+          body {
+            font-size: 1.2em;
+          }
+        }
+        @media all and (min-width: 600px) {
+          body {
+            font-size: 1.4em;
+          }
+        }
+        @media all and (min-width: 700px) {
+          body {
+            font-size: 1.6em;
+          }
+        }
+        @media all and (min-width: 800px) {
+          body {
+            font-size: 1.8em;
+          }
+        }
+        @media all and (min-width: 900px) {
+          body {
+            font-size: 2em;
+          }
+        }
+        @media all and (min-width: 1000px) {
+          body {
+            font-size: 2.2em;
+          }
+        }
+        @media all and (min-width: 1100px) {
+          body {
+            font-size: 2.4em;
+          }
+        }
+        @media all and (min-width: 1200px) {
+          body {
+            font-size: 2.6em;
+          }
+        }
+        @media all and (min-width: 1300px) {
+          body {
+            font-size: 2.8em;
+          }
+        }
+        @media all and (min-width: 1400px) {
+          body {
+            font-size: 3em;
+          }
+        }
+        @media all and (min-width: 1500px) {
+          body {
+            font-size: 3.2em;
+          }
+        }
+        @media all and (min-width: 1500px) {
+          body {
+            font-size: 3.4em;
+          }
+        }
+        @media all and (min-width: 1600px) {
+          body {
+            font-size: 3.6em;
+          }
+        }
+        @media all and (min-width: 1700px) {
+          body {
+            font-size: 3.8em;
+          }
+        }
+      }
+
+      & .Scroller {
+        text-indent: 20px;
+        border-radius: 0 0 40px 40px;
+        overflow-y: hidden !important;
+        mask-image: -webkit-gradient(
+          linear,
+          left top,
+          left bottom,
+          from(rgba(0, 0, 0, 3)),
+          to(rgba(0, 0, 0, 0))
+        );
+        -webkit-mask-image: -webkit-gradient(
+          linear,
+          left top,
+          left bottom,
+          from(rgba(0, 0, 0, 3)),
+          to(rgba(0, 0, 0, 0))
+        );
+      }
+    }
+  }
+
+  &.stats {
+    position: absolute;
+    right: 0;
+    z-index: 6000;
+  }
   & .backdrop {
     cursor: alias;
     position: fixed;

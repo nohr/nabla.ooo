@@ -1,31 +1,79 @@
-import React from 'react'
-import CanvasComp from './components/Canvas/Canvas'
+import React, { useRef, useState, useEffect } from 'react'
+import Composition from './components/Canvas/Composition'
 import UI from './components/UI/UI'
-import { state } from './components/UI/state'
+import { cloud, state } from './components/UI/state'
 import { getGPUTier } from 'detect-gpu';
+import { useSnapshot } from 'valtio';
 
 // Search Imports
 import { history } from 'instantsearch.js/es/lib/routers';
 import { InstantSearch } from 'react-instantsearch-hooks-web';
 import algoliasearch from "algoliasearch"
 
+//Audio Imports
+import useSound from "use-sound"
+import sound1 from "./components/Sounds/select.mp3"
+import sound2 from "./components/Sounds/open.mp3"
+import sound3 from "./components/Sounds/close.mp3"
+import sound4 from "./components/Sounds/confirm.mp3"
+
+// Get Accelerometer data
+let retry = false;
+function requestPermission() {
+  DeviceMotionEvent.requestPermission().then(response => {
+    if (response === 'granted') {
+      window.addEventListener('deviceorientation', (event) => {
+        if (window.matchMedia("(orientation: portrait)").matches) {
+          cloud.leftright = Math.floor(event.gamma / 6);
+          cloud.frontback = (Math.floor(event.beta / 8) - 6);
+        }
+        if (window.matchMedia("(orientation: landscape)").matches) {
+          cloud.leftright = Math.floor(event.beta / 6);
+          cloud.frontback = (Math.floor(event.gamma / 8) + 6);
+        }
+      });
+    } else {
+      console.log("ttrun off");
+    }
+    console.log(response);
+  });
+  console.log(state.gyro);
+};
+
+export function getGyro(gyro) {
+  if (gyro) {
+    requestPermission();
+  } else {
+    state.gyro = false;
+    return;
+  }
+
+};
 
 //App 
 function App() {
-  const startTime = performance.now();
-  // GPU
-  (async () => {
-    const gpuTier = await getGPUTier();
-    // if (state.cached) {
+  const nabla = useRef(null);
+  const snap = useSnapshot(state);
+  const clip = useSnapshot(cloud);
+  const [selectRate, setSelectRate] = useState(1)
+  const [select] = useSound(sound1, { soundEnabled: !snap.muted, playbackRate: clip.selectRate });
+  const [confirm] = useSound(sound4, { soundEnabled: !snap.muted });
+  const [open] = useSound(sound2, { soundEnabled: !snap.muted });
+  const [close] = useSound(sound3, { soundEnabled: !snap.muted });
+  const x = window.matchMedia("(max-width: 760px)");
+  cloud.mobile = x.matches;
 
-    // } else {
-    if (gpuTier.tier >= 3 || gpuTier.isMobile === true) {
-      //TODO: change to false for live build
-      state.canvasPaused = false;
-    }
-    console.log(gpuTier);
-    // }
-  })();
+  // GPU
+  useEffect(() => {
+    (async () => {
+      const gpuTier = await getGPUTier();
+      console.log(gpuTier);
+      if (gpuTier.tier < 3) {
+        state.canvasPaused = true;
+      }
+    })();
+  }, [])
+
 
   // Search
   const searchClient = algoliasearch('QYRMFVSZ3U', 'a5bc9e2f6d2b720f636a828233179a8f');
@@ -59,15 +107,24 @@ function App() {
     },
   };
 
-  const duration = performance.now() - startTime;
-  console.log(`App took ${duration}ms`);
+  useEffect(() => {
+    if (clip.mobile) {
+      if (snap.gyro) {
+        window.addEventListener("click", getGyro(true));
+      }
+    }
+    return () => {
+      window.removeEventListener("click", getGyro(true));
+    }
+  }, []);
+
   return (
     <InstantSearch
       searchClient={searchClient}
       indexName="projects"
       routing={routing}>
-      <UI />
-      <CanvasComp />
+      <UI setSelectRate={setSelectRate} nabla={nabla} select={select} confirm={confirm} open={open} close={close} />
+      <Composition setSelectRate={setSelectRate} nabla={nabla} select={select} confirm={confirm} />
     </InstantSearch>
   );
 }

@@ -12,8 +12,109 @@ import { useNavigate } from "react-router-dom"
 import { getDownloadURL, ref } from "firebase/storage"
 import { storage } from "../.."
 
-function Options() {
-    const { clear } = useSearchBox();
+function LoadSong(song) {
+    // const audio = useRef();
+    // const currentSong = audio.current;
+    let currentSong;
+    currentSong = document.querySelectorAll('audio')[0];
+
+    getDownloadURL(ref(storage, `gs://nabla7.appspot.com/assets/songs/${song.name}.mp3`))
+        .then((url) => {
+            cloud.songs[state.songIndex].url = url;
+            currentSong.setAttribute('src', url);
+            cloud.playMusic = true;
+            currentSong.play();
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+}
+
+export function ToggleMusic() {
+    // const audio = useRef();
+    // const currentSong = audio.current;
+    let currentSong;
+    currentSong = document.querySelectorAll('audio')[0];
+    if (!cloud.songs[state.songIndex].url) {
+        LoadSong(cloud.songs[state.songIndex]);
+    } else {
+        if (cloud.playMusic === false) {
+            cloud.playMusic = true;
+            currentSong.play();
+        } else if (cloud.playMusic === true) {
+            cloud.playMusic = false;
+            currentSong.pause();
+        }
+    }
+    currentSong.onended = () => NextSong();
+}
+
+export function NextSong() {
+    // const audio = useRef();
+    // const currentSong = audio.current;
+    let currentSong;
+    currentSong = document.querySelectorAll('audio')[0];
+
+    cloud.playMusic = false;
+    currentSong.pause();
+    console.log(state.songIndex);
+
+    if (state.songIndex < cloud.songs.length - 1) {
+        state.songIndex += 1;
+    } else {
+        state.songIndex = 0;
+    }
+    if (!cloud.songs[state.songIndex].url) {
+        LoadSong(cloud.songs[state.songIndex]);
+    } else {
+        currentSong.setAttribute('src', cloud.songs[state.songIndex].url);
+        currentSong.play();
+    }
+
+}
+
+//DISPLAY
+//Toggle Theme
+export const toggleTheme = () => {
+    state.themeChanged = true;
+    if (state.theme === "dark") {
+        document.getElementById("theme-color").setAttribute("media", "");
+        document.getElementById("theme-color").setAttribute("content", "#C1C2C2");
+        state.theme = "light";
+    } else {
+        document.getElementById("theme-color").setAttribute("media", "");
+        document.getElementById("theme-color").setAttribute("content", "#0D0D0D");
+        state.theme = "dark";
+    };
+
+    // TODO: fix third auto option
+    // if (state.auto) {
+    //     state.auto = false;
+    //     state.themeChanged = true;
+    //     state.theme = "light";
+    // } else if (!state.auto) {
+    //     if (state.theme === "light") {
+    //         state.theme = "dark";
+    //     } else if (state.theme === "dark") {
+    //         // Auto
+    //         state.auto = true;
+    //         state.themeChanged = false;
+    //         // window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ?
+    //         //     (state.theme = "dark") : (state.theme = "light")
+    //         // state.theme === 'light' ? (state.theme = "light") : (state.theme = "dark");
+    //     }
+    // }
+    // console.log(state.theme, state.auto);
+}
+
+export function OpenWheel() {
+    // navigate('/');
+    state.colorWheel = true;
+    state.isOpt = false;
+    state.isPro = false;
+}
+
+function Options({ setSong, select }) {
     const navigate = useNavigate();
     const opt = useRef(null);
     const audio = useRef();
@@ -23,37 +124,10 @@ function Options() {
     let optLink = document.querySelector(".optLink")
     if (cloud.selectedImg) { optLink.classList.remove("folderActive") }
 
+
     //Audio configured in UI.js
     // Toggle Music
     const currentSong = audio.current;
-
-    function loadSong(song) {
-        getDownloadURL(ref(storage, `gs://nabla7.appspot.com/assets/songs/${song.name}.mp3`))
-            .then((url) => {
-                cloud.songs[state.songIndex].url = url;
-                currentSong.setAttribute('src', url);
-                cloud.playMusic = true;
-                currentSong.play();
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }
-
-    function toggleMusic() {
-
-        if (!cloud.songs[state.songIndex].url) {
-            loadSong(cloud.songs[state.songIndex]);
-        } else {
-            if (cloud.playMusic === false) {
-                cloud.playMusic = true;
-                currentSong.play();
-            } else if (cloud.playMusic === true) {
-                cloud.playMusic = false;
-                currentSong.pause();
-            }
-        }
-    }
 
     useEffect(() => {
         if (currentSong) {
@@ -61,37 +135,29 @@ function Options() {
                 cloud.playMusic = true;
             })
             currentSong.addEventListener("pause", () => {
+                select();
                 cloud.playMusic = false;
             })
         }
-    }, [cloud.playMusic, state.songIndex])
+    }, [cloud.playMusic, state.songIndex, select])
 
-    function NextSong() {
-        cloud.playMusic = false;
-        currentSong.pause();
-        console.log(state.songIndex);
 
-        if (state.songIndex < clip.songs.length - 1) {
-            state.songIndex += 1;
-        } else {
-            state.songIndex = 0;
+    //Toggles Panel Direction
+    function toggleDirection() {
+        if (snap.direction) {
+            //Row Direction
+            state.direction = false;
+
+        } else if (!snap.direction) {
+            //Column Direction
+            state.direction = true;
         }
-        if (!cloud.songs[state.songIndex].url) {
-            loadSong(cloud.songs[state.songIndex]);
-        } else {
-            currentSong.setAttribute('src', cloud.songs[state.songIndex].url);
-            currentSong.play();
-        }
+        select();
     }
-    //DISPLAY
-    //Toggle Theme
-    const toggleTheme = () => {
-        state.themeChanged = true;
-        state.theme === "light" ? state.theme = "dark" : state.theme = "light";
-    }
+
     // Toggle Canvas Visibility
-    let canvas;
-    function toggleCanvas() {
+    function ToggleCanvas() {
+        let canvas;
         canvas = document.getElementsByTagName("canvas")[0];
 
         if (canvas) {
@@ -100,9 +166,9 @@ function Options() {
                 state.canvasVisible = true;
                 canvas.style.display = "block";
                 if (!snap.canvasPaused) {
-                    state.canvasPaused = true
+                    state.canvasPaused = false;
                 } else if (snap.canvasPaused) {
-                    state.canvasPaused = true
+                    state.canvasPaused = true;
                 }
             } else if (snap.canvasVisible) {
                 //Hide Canvas
@@ -116,7 +182,9 @@ function Options() {
                 }
             }
         }
+        select();
     }
+
     //Pause Canvas Animation
     function togglePause() {
         if (!state.canvasPaused) {
@@ -129,28 +197,8 @@ function Options() {
             state.canvasPaused = false;
             state.autoRotateSpeed = 0.09;
         }
+        select();
     }
-    //Toggles Panel Direction
-    function toggleDirection() {
-        if (state.direction) {
-            //Row Direction
-            state.direction = false;
-
-        } else if (!state.direction) {
-            //Column Direction
-            state.direction = true;
-        }
-        getPos()
-    }
-
-    function openWheel() {
-        clear();
-        // navigate('/');
-        state.colorWheel = true;
-        state.isOpt = false;
-        state.isPro = false;
-    }
-
     //offset and direction of panel from nav and projects
     let vWidth = useWindowDimensions().width;
     let vHeight = useWindowDimensions().height;
@@ -282,11 +330,19 @@ function Options() {
                         onMouseEnter={() => { document.getElementById("audiohead").style.width = headwidth.first.max }}
                         onMouseLeave={() => { document.getElementById("audiohead").style.width = headwidth.first.min }}
                     >
-                        <Folder id="muteunmute" className="li"><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
+                        <Folder id="muteunmute" className="li"
+                            onClick={() => {
+                                select();
+                                snap.muted ? state.muted = false : state.muted = true;
+                            }} ><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
                         <Folder id="playstop" className="li"
-                            onClick={() => toggleMusic()}
-                        ><PlayPauseIcon arg={1} />{cloud.playMusic ? "Music" : "Music"}</Folder>
-                        <Folder onClick={() => NextSong()} id="Next" className="li"><NextIcon /> Next</Folder>
+                            onClick={() => ToggleMusic()}
+                        ><PlayPauseIcon arg={1} />{!clip.playMusic ? "Music" : "Pause"}</Folder>
+                        <Folder onClick={() => {
+                            select();
+                            NextSong();
+                            setSong(`${cloud.songs[state.songIndex].artist} - ${cloud.songs[state.songIndex].name}`);
+                        }} id="Next" className="li"><NextIcon /> Next</Folder>
                     </div>
                     <p style={secondHeader}
                         id="displayhead"
@@ -296,10 +352,10 @@ function Options() {
                         onMouseLeave={() => { document.getElementById("displayhead").style.width = headwidth.second.min }}
                     >
                         {state.canvasVisible &&
-                            <Folder onClick={() => togglePause()} width={snap.direction ? "80%" : "60%"} className="li w"><PlayPauseIcon arg={2} />{snap.canvasPaused ? "Play" : "Pause"}</Folder>}
-                        <Folder onClick={() => toggleCanvas()} className="li w"><ShowHideIcon />{snap.canvasVisible ? "Hide" : "Show"}</Folder>
-                        <Folder onClick={() => toggleTheme()} className="li w"><ModeIcon /><span>{snap.theme === "light" ? "Dark" : "Light"}</span></Folder>
-                        <Folder ref={colorLink} onClick={() => openWheel()} className="li w"><ColorIcon />{!snap.colorWheel ? "Color" : "Choose"}</Folder>
+                            <Folder onClick={() => { togglePause(); select(); }} width={snap.direction ? "80%" : "60%"} className="li w"><PlayPauseIcon arg={2} />{snap.canvasPaused ? "Play" : "Pause"}</Folder>}
+                        <Folder onClick={() => { ToggleCanvas(); select(); }} className="li w"><ShowHideIcon />{snap.canvasVisible ? "Hide" : "Show"}</Folder>
+                        <Folder onClick={() => { toggleTheme(); select(); }} className="li w"><ModeIcon /><span>{snap.theme === "light" ? "Dark" : "Light"}</span></Folder>
+                        <Folder ref={colorLink} onClick={() => { OpenWheel(); select(); }} className="li w"><ColorIcon />{!snap.colorWheel ? "Color" : "Choose"}</Folder>
                         <Folder id="rowcolumn" onClick={() => toggleDirection()} className="li w"><DirectionIcon />{snap.direction ? "Column" : "Row"}</Folder>
                     </div>
                     {snap.isPro}
@@ -408,7 +464,7 @@ const Option = styled.div`
     stroke-width: 12px !important;
   }
   
-  .nextIcon, .modeIcon, .muteIcon, .ShowHideIcon, .ColorIcon{
+  .nextIcon, .modeIcon, .muteIcon, .ShowHideIcon{
     position: absolute;
     right: 6px;
     width: 10px;
@@ -418,6 +474,18 @@ const Option = styled.div`
     top: 50%;
     transform: translateY(-50%);
   }
+
+  .ColorIcon{
+    position: absolute;
+    right: 6px;
+    width: 10px;
+    stroke: transparent !important;
+    overflow: visible;
+    align-self: left;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
    .ColorChangedIcon {
     position: absolute;
     right: 6px;
