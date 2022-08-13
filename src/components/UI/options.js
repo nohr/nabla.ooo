@@ -79,11 +79,11 @@ export const toggleTheme = () => {
     state.themeChanged = true;
     if (state.theme === "dark") {
         document.getElementById("theme-color").setAttribute("media", "");
-        document.getElementById("theme-color").setAttribute("content", "#C1C2C2");
+        document.getElementById("theme-color").setAttribute("content", state.light.sky);
         state.theme = "light";
     } else {
         document.getElementById("theme-color").setAttribute("media", "");
-        document.getElementById("theme-color").setAttribute("content", "#0D0D0D");
+        document.getElementById("theme-color").setAttribute("content", state.dark.sky);
         state.theme = "dark";
     };
 
@@ -353,7 +353,7 @@ function Options({ setSong, select }) {
                     >
                         {state.canvasVisible &&
                             <Folder onClick={() => { togglePause(); select(); }} width={snap.direction ? "80%" : "60%"} className="li w"><PlayPauseIcon arg={2} />{snap.canvasPaused ? "Play" : "Pause"}</Folder>}
-                        <Folder onClick={() => { ToggleCanvas(); select(); }} className="li w"><ShowHideIcon />{snap.canvasVisible ? "Hide" : "Show"}</Folder>
+                        <Folder onClick={() => { ToggleCanvas(); select(); }} className="li w"><ShowHideIcon n={0} />{snap.canvasVisible ? "Hide" : "Show"}</Folder>
                         <Folder onClick={() => { toggleTheme(); select(); }} className="li w"><ModeIcon /><span>{snap.theme === "light" ? "Dark" : "Light"}</span></Folder>
                         <Folder ref={colorLink} onClick={() => { OpenWheel(); select(); }} className="li w"><ColorIcon />{!snap.colorWheel ? "Color" : "Choose"}</Folder>
                         <Folder id="rowcolumn" onClick={() => toggleDirection()} className="li w"><DirectionIcon />{snap.direction ? "Column" : "Row"}</Folder>

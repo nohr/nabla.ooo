@@ -15,13 +15,14 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     containerWidth: 0,
     themeChanged: false,
     colorChanged: false,
-    sfxVolume: 0.7,
     modalPosition: { x: 0, y: 0 },
     descPosition: { x: 0, y: 0 },
     // Mobile
     modal: false,
     gyro: false,
+    hideNav: false,
     // Audio
+    sfxVolume: 2,
     muted: false,
     songIndex: 0,
     // Panel
@@ -48,7 +49,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     CDRotationX: 0.002,
     CDRotationY: 0.002,
     CDRotationZ: 0.0001,
-    cameraPosition: [-20, 6, -1],
+    cameraPosition: [-20, 10, -1],
     //Theme
     auto: false,
     theme: "light",
@@ -65,18 +66,18 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
         layerBG: '#ffffff20',
         bwElement: '#000',
         //Canvas
-        sky: "#BFBFBF",
-        fog: "hsl(360, 0%, 72%)",
+        sky: "#ffffff",
+        fog: "#ffffff",
         CD: "hsla(14, 31%, 84%, 1)",
         CDHover: "#0A0A0A",
         CDRough: 0,
         Surface: "hsla(205, 100%, 80%, 1)",
         SurfaceRough: 0,
-        spotlight: "hsl(360, 0%, 72%)",
+        spotlight: "#ffffff",
         spotIntensity: 0.6,
         ambIntensity: 0.3,
         rectIntensity: 2,
-        noise: 0.12,
+        noise: 0.25,
     },
     dark: {
         //UI
@@ -87,12 +88,12 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
         LiHover: "hsla(205, 31%, 70%, 0.67)",
         LiActiveBackground: "#ebebeb67",
         blend: "plus-lighter",
-        backdrop: "#0D0D0D98",
+        backdrop: "#00000098",
         layerBG: '#00000020',
         bwElement: '#fff',
         //Canvas
-        sky: "#0D0D0D",
-        fog: "#0D0D0D",
+        sky: "#000000",
+        fog: "#000",
         CD: "#0A0A0A",
         CDHover: "hsla(205, 31%, 70%, 1)",
         CDRough: .1389,
@@ -102,7 +103,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
         spotIntensity: 0.5,
         ambIntensity: 0.8,
         rectIntensity: 0.5,
-        noise: 0.045,
+        noise: 0.24,
     }
 };
 
@@ -134,6 +135,7 @@ export const cloud = proxy({
     playRate: 0.75,
     resetRate: (Math.random() * (1.15 - 0.15) + 0.15),
     selectRate: (Math.random() * (1.15 - 0.85) + 0.85),
+    // Audio
     songs: [{
         name: 'tardigrade',
         artist: 'nohri',

@@ -49,7 +49,7 @@ function UI({ select, confirm, open, close, nabla, quote, text, setText }) {
   const [color, setColor] = useState(parseColor(firstColor));
   const [song, setSong] = useState(`${clip.songs[state.songIndex].artist} - ${cloud.songs[state.songIndex].name}`);
 
-  const [dong] = useSound(home, { volume: 1.1, soundEnabled: !snap.muted, playbackRate: clip.playRate, interrupt: false });
+  const [dong] = useSound(home, { volume: snap.sfxVolume, soundEnabled: !snap.muted, playbackRate: clip.playRate, interrupt: false });
 
   const [reset] = useSound(sound5, { soundEnabled: !snap.muted, playbackRate: clip.resetRate });
 
@@ -91,7 +91,7 @@ function UI({ select, confirm, open, close, nabla, quote, text, setText }) {
     return () => {
       title = null;
     }
-  }, [snap.songIndex]);
+  }, [snap.songIndex, snap.colorChanged]);
 
   // Manage modals
   useEffect(() => {

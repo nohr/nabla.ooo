@@ -24,6 +24,9 @@ root.render(<Router><App tab="home" /></Router>);
 
 reportWebVitals();
 
+const x = window.matchMedia("(max-width: 760px)");
+cloud.mobile = x.matches;
+
 const firebaseConfig = {
   apiKey: "AIzaSyCEs-MUh6kHufZ5aKwGV1shjq-t85PhYFk",
   authDomain: "nabla7.firebaseapp.com",
@@ -116,20 +119,22 @@ function Theme() {
   // Theme to prefrence and listen for changes if no cache
   if (state.cached) {
     document.getElementById("theme-color").setAttribute("media", "");
-    document.getElementById("theme-color").setAttribute("content", (state.theme === "light") ? "#C1C2C2" : "#0D0D0D");
+    document.getElementById("theme-color").setAttribute("content", (state.theme === "light") ? state.light.sky : (state.dark.sky));
   } else {
     if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      document.getElementById("theme-color").setAttribute("content", "#0D0D0D");
+      document.getElementById("theme-color").setAttribute("media", "");
+      document.getElementById("theme-color").setAttribute("content", state.dark.sky);
       state.theme = "dark";
     } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
-      document.getElementById("theme-color").setAttribute("content", "#C1C2C2");
+      document.getElementById("theme-color").setAttribute("media", "");
+      document.getElementById("theme-color").setAttribute("content", state.light.sky);
       state.theme = "light";
     }
   }
 
   // Themelistener
   window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
-    document.getElementById("theme-color").setAttribute("content", (!e.matches) ? "#C1C2C2" : "#0D0D0D");
+    document.getElementById("theme-color").setAttribute("content", (!e.matches) ? state.light.sky : state.dark.sky);
     return e.matches ? (state.theme = "dark") : (state.theme = "light");
   })
 }

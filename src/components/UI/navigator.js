@@ -10,6 +10,7 @@ import { SvgNabla, Spinner, Arrow, SideArrow, Grabber, characters } from "./svg"
 import { Search } from "./search"
 import { useSearchBox } from "react-instantsearch-hooks-web"
 import Scrambler from 'scrambling-text';
+import { newQuote } from "../.."
 
 //Audio Imports
 // import useSound from "use-sound"
@@ -42,15 +43,13 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle }) {
   const nav = useRef(null);
 
   // Text Scramble
-  const [text, setText] = useState(state.quotes);
+  const [text, setText] = useState("");
   const quote = useRef(new Scrambler());
-
   useEffect(() => {
-    if (quote.current) {
-      // console.log(quote.current);
-      (!clip.UILoading && !clip.CanvasLoading) && quote.current.scramble(text, setText, { characters: characters });
-    }
-  }, []);
+    newQuote().then(() => {
+      quote.current.scramble(state.quotes, setText, { characters: characters });
+    });
+  }, [snap.quotes]);
 
   // Glow
   let pro;
@@ -109,7 +108,7 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle }) {
       <Nav ref={nav} className="Panel nav">
         <div className="header">
           <SvgNabla nabla={nabla} dong={dong} clear={clear} />
-          <div className="quote w">{`${text}`}</div>
+          <div className="quote w">{text}</div>
         </div>
         {navigator.onLine && <Search />}
         <div className="grid">
@@ -145,7 +144,11 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle }) {
           className="song" style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true }} tabIndex="0">
           {song}
         </Song>
-        {(clip.UILoading || clip.CanvasLoading) ? <Spinner /> : (!snap.colorWheel && <Grabber nav={nav} reset={reset} handle={handle} />)}
+        {/* {(clip.UILoading || clip.CanvasLoading) ? <Spinner /> : */}
+        {/* {(!snap.colorWheel && */}
+        <Grabber nav={nav} reset={reset} handle={handle} />
+        {/* )} */}
+        {/* } */}
       </Nav>
     </Draggable>
   )
@@ -218,6 +221,12 @@ const Nav = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  @media only screen and (max-width: 768px) {
+    &{
+      display:  none;
+    }
+  }
 
   .grid{
     display: grid;

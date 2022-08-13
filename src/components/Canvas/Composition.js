@@ -3,7 +3,7 @@ import "../../App.css"
 import { cloud, state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import { CD } from './CD'
-import { Node } from './Nodes'
+import { Node, Nodes } from './Nodes'
 import useWindowDimensions from '../UI/window'
 import * as THREE from 'three'
 import { Canvas, useFrame } from '@react-three/fiber'
@@ -12,7 +12,7 @@ import { useTexture, MeshReflectorMaterial, softShadows, PerspectiveCamera, Orbi
 import { EffectComposer, Noise } from '@react-three/postprocessing'
 // import { ShaderMaterial } from 'three'
 import { Debug, Physics, usePlane, useSphere } from '@react-three/cannon';
-import { useHits, useSearchBox } from 'react-instantsearch-hooks-web'
+import { useHits, useInfiniteHits, useSearchBox } from 'react-instantsearch-hooks-web'
 import { useState } from 'react'
 
 // Spinner
@@ -39,6 +39,7 @@ const Spinner = () => {
 softShadows();
 
 function Wall() {
+  const snap = useSnapshot(state);
   return (
     <>
       <mesh
@@ -49,7 +50,7 @@ function Wall() {
           args={[70, 35]}
         />
         <meshPhongMaterial
-          transparent opacity={0}
+          color={snap.theme === 'light' ? snap.light.sky : snap.dark.sky}
         />
       </mesh>
       <mesh
@@ -60,7 +61,7 @@ function Wall() {
           args={[70, 35]}
         />
         <meshPhongMaterial
-          transparent opacity={0}
+          color={snap.theme === 'light' ? snap.light.sky : snap.dark.sky}
         />
       </mesh>
       <mesh
@@ -71,7 +72,7 @@ function Wall() {
           args={[70, 35]}
         />
         <meshPhongMaterial
-          transparent opacity={0}
+          color={snap.theme === 'light' ? snap.light.sky : snap.dark.sky}
         />
       </mesh>
       <mesh
@@ -82,15 +83,15 @@ function Wall() {
           args={[70, 35]}
         />
         <meshPhongMaterial
-          transparent opacity={0}
+          color={snap.theme === 'light' ? snap.light.sky : snap.dark.sky}
         />
       </mesh>
     </>
   )
 }
 
-function Floor(props) {
-  const [ref, api] = usePlane(() => ({ rotation: [Math.PI / 2, 0, 0], position: [0, 0, 0], ...props }));
+function Floor() {
+  const [ref, api] = usePlane(() => ({ rotation: [-Math.PI / 2, 0, 0], position: [0, 0, 0] }));
   // console.log(api.collisionResponse);
   const snap = useSnapshot(state);
   const textures = useTexture([
@@ -110,7 +111,7 @@ function Floor(props) {
   }, [textures]);
   return (
     <mesh
-      rotation={[Math.PI / 2, 0, 0]}
+      rotation={[-Math.PI / 2, 0, 0]}
       position={[0, 0, 0]}
       ref={ref}
     >
@@ -179,20 +180,20 @@ function Bounds() {
     /></>
 }
 
-function Nodes({ ...props }) {
+// function Nodes({ ...props }) {
+//   return <>
+//     {props.hits.map((hit, index) => (
+//       <Node hit={hit} key={index} index={index} {...props} />
+//     ))}
+//   </>
 
-  let hits = [];
-  useEffect(() => {
-    hits = props.hits;
-  }, [props.hits])
-
-  props.hits.map((hit, index) => (
-    <Node hit={hit} hits={hits} key={index} {...props} />
-  ));
-}
+// }
 
 export const target = [0, 6, 3];
 
+const transformItems = (items) => {
+  return items.filter(item => item.images && ({ ...item }));
+};
 // Composition
 function Composition({ select, confirm, nabla, setSelectRate }) {
   const { height, width } = useWindowDimensions();
@@ -201,8 +202,7 @@ function Composition({ select, confirm, nabla, setSelectRate }) {
   const [selected, setSelected] = useState([]);
   const camera = useRef(null);
   const { query, clear } = useSearchBox();
-  const { hits } = useHits();
-
+  const { hits } = useInfiniteHits({ transformItems });
   // Handle deselection
   useEffect(() => {
     if (nabla.current) {
@@ -246,7 +246,6 @@ function Composition({ select, confirm, nabla, setSelectRate }) {
     }
   }, [])
 
-
   return (
     <Canvas
       shadows
@@ -254,7 +253,7 @@ function Composition({ select, confirm, nabla, setSelectRate }) {
       gl={{ alpha: true, stencil: false, depth: true, antialias: false, physicallyCorrectLight: true }}
       className='r3fCanvas' frameloop={clip.mobile ? "always" : snap.canvasPaused ? "demand" : "always"} onLoad={() => cloud.CanvasLoading = false} >
       <PerspectiveCamera makeDefault ref={camera} target={clip.mobile ? clip.target : [0, 2, 0]} position={clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition} rotation={clip.mobile ? clip.mobileCameraRotation : undefined} far={80} near={.1} fov={clip.mobile ? 25 : 20} aspect={width / height} />
-      <fog attach="fog" args={[snap.theme === 'light' ? clip.mobile ? "#E2E2E2" : snap.light.fog : clip.mobile ? "#404040" : snap.dark.fog, 10, clip.mobile ? snap.theme === 'light' ? 60 : 60 : 40]} />
+      <fog attach="fog" args={[snap.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, clip.mobile ? snap.theme === 'light' ? 60 : 40 : 30]} />
       <Suspense fallback={<Spinner />}>
         <spotLight
           intensity={snap.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}
@@ -275,26 +274,31 @@ function Composition({ select, confirm, nabla, setSelectRate }) {
           gravity={[clip.leftright, -9.8, clip.frontback]}
           isPaused={state.canvasPaused}
         >
-          <Debug color={cloud.opt ? "white" : "black"} scale={1.04} >
-            <group position-y={0}>
-              <Wall />
-              <Floor />
-              {clip.mobile ?
-                <>
-                  {/* TODO: Switch to null when something else is tapped */}
-                  <Select onChange={setSelected}>
-                    <Nodes setSelectRate={setSelectRate} select={select} confirm={confirm} hits={hits} clear={clear} />
-                  </Select>
-                  <Bounds />
-                  <ContactShadows frames={1} position={[0, -0.5, 0]} scale={10} opacity={0.4} far={1} blur={2} />
-                  <CD rotation={[Math.PI / -1.5, 0, 0]} />
-                </> : <CD rotation={[-Math.PI / 2, Math.PI / 2, Math.PI / 2]} />}
-            </group>
-          </Debug>
+          {/* <Debug color={cloud.opt ? "white" : "black"} scale={1.04} > */}
+          <group position-y={0}>
+            <Wall />
+            <Floor />
+            {clip.mobile ?
+              <>
+                {/* TODO: Switch to null when something else is tapped */}
+                <Select onChange={setSelected}>
+                  <Nodes select={select} confirm={confirm} hits={hits} clear={clear} />
+                </Select>
+                <Bounds />
+                <ContactShadows frames={1} position={[0, -0.5, 0]} scale={10} opacity={0.4} far={1} blur={2} />
+                {/* <CD rotation={[Math.PI / -1.5, 0, 0]} /> */}
+              </> : <CD rotation={[-Math.PI / 2, Math.PI / 2, Math.PI / 2]} />}
+          </group>
+          {/* </Debug> */}
         </Physics>
-        {(clip.mobile ? false : snap.canvasPaused) &&
+        {
+          // (clip.mobile ? false : snap.canvasPaused) &&
           <EffectComposer>
-            <Noise opacity={snap.theme === 'light' ? snap.light.noise : snap.dark.noise} />
+            <Noise
+              opacity={snap.theme === 'light' ? clip.mobile ? 0.8 : snap.light.noise : clip.mobile ? 0.3 : snap.dark.noise}
+              // blendFunction={B.ADD}
+              premultiply={(state.theme === "light")}
+            />
           </EffectComposer>
         }
         <OrbitControls
@@ -318,7 +322,7 @@ function Composition({ select, confirm, nabla, setSelectRate }) {
           maxPolarAngle={clip.mobile ? Math.PI / 2 : Math.PI / 2}
           autoRotate={!clip.mobile}
           autoRotateSpeed={clip.mobile ? 0 :
-            clip.UILoading ? -5 : 1
+            clip.UILoading ? 50 : -1
           }
           minDistance={20}
           maxDistance={clip.mobile ? 50 : 36}

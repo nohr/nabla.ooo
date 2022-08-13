@@ -33,6 +33,7 @@ export const Folder = styled.div`
                }
    }
 
+
   &.circleButton{
     border-radius: 50% !important;
     width: 50px !important;
@@ -68,12 +69,6 @@ export const Folder = styled.div`
     transition: 0.3s;
 
   }
-
-    @keyframes flashConfirm {
-  to {
-    visibility: hidden;
-  }
-}
   .nextIcon, .modeIcon, .muteIcon, .ShowHideIcon, .ColorIcon{
     fill: ${props => props.theme.panelColor};
     overflow: visible;
@@ -112,19 +107,6 @@ export const Wheel = styled.div`
   border-width: 0px !important;
   }
 
-  .spectrum-ColorLoupe_c818a8.is-open_c818a8{
-    opacity: 0 !important;
-  }
-  .spectrum-ColorWheel_31462a .spectrum-ColorWheel-handle_31462a{
-    height: 120px;
-    width: 120px;
-    border-color: ${props => props.theme.panelColor};
-    background-color:  ${props => props.theme.panelColor};
-  }
-  .spectrum-ColorHandle-color_5a9f41{
-    border-color: ${props => props.theme.panelColor};
-    background-color:  ${props => props.theme.panelColor} !important;
-  }
 `
 export const GlobalStyle = createGlobalStyle`
     //App
@@ -186,7 +168,7 @@ export const GlobalStyle = createGlobalStyle`
       /* animation: pulseItem 2s infinite; */
     }
 
-
+// animation keyframes
     @keyframes pulseItem {
 	0% {
 		text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
@@ -208,6 +190,11 @@ export const GlobalStyle = createGlobalStyle`
       -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
       -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
 	}
+}
+    @keyframes flashConfirm {
+  to {
+    visibility: hidden;
+  }
 }
 
     //Links
@@ -332,4 +319,18 @@ a.active:not(.nablaWrapper){
 .spectrum-ColorWheel-gradient_31462a:after{
   border-color: ${props => props.theme.panelColor};
 }
+
+  .spectrum-ColorLoupe_c818a8.is-open_c818a8{
+    opacity: 0 !important;
+  }
+  .spectrum-ColorWheel_31462a .spectrum-ColorWheel-handle_31462a{
+    height: 120px;
+    width: 120px;
+    border-color: ${props => props.theme.panelColor} !important;
+    background-color:  ${props => props.theme.panelColor} !important;
+  }
+  .spectrum-ColorHandle-color_5a9f41{
+    border-color: ${props => props.theme.panelColor} !important;
+    background-color:  ${props => props.theme.panelColor} !important;
+  }
 `

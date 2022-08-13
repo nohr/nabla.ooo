@@ -9,6 +9,7 @@ import { Folder } from "./style";
 import { target } from "../Canvas/Composition";
 import { db, GetQuotes, newQuote } from "../..";
 import { toggleTheme } from "./options";
+import { offset } from "./mobileNavigator";
 
 let taps = 0;
 let factor = 4;
@@ -19,6 +20,7 @@ export const characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'
 export function SvgNabla({ quote, clear, dong, nabla, setColor, color, text, setText }) {
   const svg = useRef(null);
   const clip = useSnapshot(cloud);
+  const snap = useSnapshot(state);
 
   function getRandom(max, min) {
     return Math.floor(Math.random() * (max - min) + min);
@@ -100,21 +102,24 @@ export function SvgNabla({ quote, clear, dong, nabla, setColor, color, text, set
             // console.log(color);
           }, speed);
           setTimeout(() => clearInterval(loop), time);
-          setTimeout(() => talking = false, time);
+          setTimeout(() => { talking = false; cloud.UILoading = false; }, time);
           console.log(taps, amount, speed, time, clip.hue);
         }
         taps = 0;
       }, required);
-
     }
   };
 
   return (
     <Homer className="nablaWrapper" to="/"
+      style={{ backgroundColor: snap.drag ? props => props.theme.panelColor : "transparent" }}
       ref={nabla}
       onClick={() => handleClick()}
+      onMouseDown={() => !talking && activeTap()}
+      onMouseUp={() => !talking && unActiveTap()}
       onTouchStart={() => !talking && activeTap()}
-      onTouchEnd={() => !talking && unActiveTap()}>
+      onTouchEnd={() => !talking && unActiveTap()}
+    >
       <svg
         ref={svg}
         xmlns="http://www.w3.org/2000/svg"
@@ -206,7 +211,7 @@ export function Spinner() {
     </svg>
   );
 }
-export function Grabber({ handle, options, reset, navWrap, nav, setModal }) {
+export function Grabber({ handle, resetButton, reset, navWrap, nav, setModal }) {
   const grab = useRef(null);
   const clip = useSnapshot(cloud);
   const snap = useSnapshot(state);
@@ -216,7 +221,7 @@ export function Grabber({ handle, options, reset, navWrap, nav, setModal }) {
       state.draged = true;
       navWrap.current.style.overFlowX = 'visible';
       // navWrap.current.setAttribute("style", "transition: 0s !important;");
-      handle.current.setAttribute("style", "fill-opacity: 100% !important; stroke-width: 0px !important; transition: 0s !important; cursor:grab !important;");
+      handle.current.setAttribute("style", `fill-opacity: 100% !important; stroke-width: 0px !important; transition: 0s !important; cursor:grab !important;`);
     } else if (e.type === "mouseenter" || e.type === "touchstart") {
       handle.current.setAttribute("style", "fill-opacity: 20% !important; stroke-width: 1px !important; transition: 0.3s !important; stroke-opacity: 50%; cursor:grab !important;");
     } else if (e.type === "mouseleave" || e.type === "touchend") {
@@ -252,6 +257,22 @@ export function Grabber({ handle, options, reset, navWrap, nav, setModal }) {
   return (
     <Draggable bounds={clip.mobile ? ".mobileNavWrap" : "body"} nodeRef={grab} onDrag={onControlledDrag} axis="x" position={clip.mobile ? snap.grabberPosition : { x: 0, y: 0 }}>
       <div ref={grab} className='GrabberWrap'>
+        {/* MOBILE HIDER */}
+        {snap.hideNav && !snap.draged && clip.mobile &&
+          <Folder
+            ref={resetButton}
+            onTouchEnd={() => {
+              reset();
+              navWrap.current.style.transition = "1.3s";
+              state.mobileNavPosition = { x: 0, y: (offset + 15) };
+              setTimeout(() => {
+                navWrap.current.style.transition = "0.1s";
+              }, "1300");
+              state.hideNav = false;
+              state.draged = false;
+            }}
+            className={`li resetPos w`}>{clip.mobile ? <ShowHideIcon n={1} /> : <ResetIcon />}
+          </Folder>}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="grabber"
@@ -266,7 +287,7 @@ export function Grabber({ handle, options, reset, navWrap, nav, setModal }) {
             <circle vectorEffect="non-scaling-stroke" cx="39.5" cy="12.5" r="3.18"></circle>
           </g>
         </svg>
-        {(!clip.mobile && (snap.draged)) &&
+        {(!clip.mobile && snap.draged) &&
           <Folder
             onTouchEnd={() => {
               setModal(false);
@@ -292,6 +313,8 @@ export function Grabber({ handle, options, reset, navWrap, nav, setModal }) {
               reset();
               nav.current.style.transition = "1.3s";
               state.navPosition = { x: 0, y: 0 };
+              state.proPosition = { x: 0, y: 0 };
+              state.optPosition = { x: 0, y: 0 };
               state.draged = false;
               setTimeout(() => {
                 nav.current.style.transition = "0.1s";
@@ -462,30 +485,84 @@ export function NextIcon() {
     </svg>
   );
 }
-export function ShowHideIcon() {
-  if (state.canvasVisible === true) {
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        data-name="Layer 1"
-        viewBox="0 0 354 356"
-        className="ShowHideIcon"
-      >
-        <path d="M325 98a16.09 16.09 0 0125.88 19.14 60.45 60.45 0 01-4.18 5l-3.92 4.11c-.72.73-1.48 1.48-2.26 2.25l-5.08 4.81c-.9.83-1.82 1.68-2.78 2.54l-6 5.26-6.5 5.42-6.93 5.47c-4.71 3.64-9.62 7.23-14.59 10.62-38.05 25.93-79.09 41.55-121.69 41.55S93.31 188.53 55.26 162.6a329.68 329.68 0 01-28-21.52l-6-5.27c-1-.86-1.88-1.7-2.78-2.54l-5.08-4.81-4.32-4.37a75.43 75.43 0 01-6-7A16.09 16.09 0 0129 98a42.29 42.29 0 003 3.58l3.16 3.22 3.93 3.75c.71.66 1.45 1.35 2.22 2l4.9 4.35c.86.75 1.75 1.51 2.65 2.28l5.65 4.69 3 2.38 6.19 4.76c3.16 2.38 6.41 4.71 9.69 6.95 33.15 22.59 68.29 36 103.56 36s70.41-13.37 103.56-36c3.29-2.24 6.53-4.57 9.69-6.94l6.19-4.77c1-.79 2-1.59 3-2.38l5.65-4.68 5.17-4.49 4.6-4.18 3.93-3.76 3.16-3.22A41.49 41.49 0 00325 98z"></path>
-        <path d="M150.16 177.26a12.09 12.09 0 016 14.69l-.64 1.51-32.18 64.38a12.07 12.07 0 01-22.23-9.28l.63-1.52L134 182.66a12.08 12.08 0 0116.16-5.4zm69 4l.83 1.41L252.13 247a12.07 12.07 0 01-20.76 12.22l-.84-1.42-32.19-64.38A12.07 12.07 0 01218 179.87zM72.82 147.33A12.07 12.07 0 0174 163.05l-1.17 1.36-48.29 48.28A12.08 12.08 0 016.29 197l1.17-1.35 48.29-48.28a12.07 12.07 0 0117.07 0zm224-1.16l1.36 1.17 48.28 48.28a12.07 12.07 0 01-15.71 18.24l-1.36-1.17-48.28-48.28a12.07 12.07 0 0115.71-18.24z"></path>
-      </svg>
-    );
-  } else if (state.canvasVisible === false) {
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        data-name="Layer 1"
-        viewBox="0 0 354 356"
-        className="ShowHideIcon"
-      >
-        <path d="M177 315.41c-37.68 0-71.1-12.77-100.33-31.74C48.07 265.15 23.61 240.82 3 217a11.76 11.76 0 010-15.47c22.8-26.33 52.81-53.23 85.91-72.14 27.87-15.87 58-26.26 88.08-26.26s60.26 10.39 88.13 26.26c33 19 63.11 45.88 85.89 72.2A11.77 11.77 0 01351 217c-20.65 23.81-45.1 48.2-73.63 66.66-29.22 19-62.65 31.74-100.39 31.74zm0-162.73a56.62 56.62 0 11-56.58 56.59A56.63 56.63 0 01177 152.68zm94.85 8.78a106.75 106.75 0 01-1.68 98.78c21-14.58 39.81-32.65 56.26-50.91a332.79 332.79 0 00-54.58-47.87zM83.88 260.24a106.21 106.21 0 01-1.68-98.78 332.87 332.87 0 00-54.59 47.87c16.45 18.26 35.23 36.33 56.26 50.91zm151.5-109.36a82.58 82.58 0 1024.19 58.39 82.31 82.31 0 00-24.19-58.39zm-31.4-23a12.08 12.08 0 01-6-14.68l.64-1.51 32.18-64.38a12.07 12.07 0 0122.2 9.24l-.63 1.51-32.19 64.38a12.07 12.07 0 01-16.18 5.4zm-68.94-4l-.84-1.42-32.2-64.4a12.07 12.07 0 0120.76-12.21l.84 1.42 32.19 64.38a12.08 12.08 0 01-19.67 13.59zm146.28 33.91a12.07 12.07 0 01-1.17-15.72l1.17-1.35 48.29-48.28a12.07 12.07 0 0118.24 15.71l-1.17 1.36-48.29 48.28a12.06 12.06 0 01-17.07 0zm-224 1.17L56 157.77 7.7 109.49a12.07 12.07 0 0115.71-18.24l1.36 1.17 48.29 48.28a12.07 12.07 0 01-15.72 18.24z"></path>
-      </svg>
-    );
+export function ShowHideIcon({ n }) {
+  const snap = useSnapshot(state);
+  if (n === 0) {
+    if (snap.canvasVisible === true) {
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          data-name="Layer 1"
+          viewBox="0 0 354 356"
+          className="ShowHideIcon"
+        >
+          <path d="M325 98a16.09 16.09 0 0125.88 19.14 60.45 60.45 0 01-4.18 5l-3.92 4.11c-.72.73-1.48 1.48-2.26 2.25l-5.08 4.81c-.9.83-1.82 1.68-2.78 2.54l-6 5.26-6.5 5.42-6.93 5.47c-4.71 3.64-9.62 7.23-14.59 10.62-38.05 25.93-79.09 41.55-121.69 41.55S93.31 188.53 55.26 162.6a329.68 329.68 0 01-28-21.52l-6-5.27c-1-.86-1.88-1.7-2.78-2.54l-5.08-4.81-4.32-4.37a75.43 75.43 0 01-6-7A16.09 16.09 0 0129 98a42.29 42.29 0 003 3.58l3.16 3.22 3.93 3.75c.71.66 1.45 1.35 2.22 2l4.9 4.35c.86.75 1.75 1.51 2.65 2.28l5.65 4.69 3 2.38 6.19 4.76c3.16 2.38 6.41 4.71 9.69 6.95 33.15 22.59 68.29 36 103.56 36s70.41-13.37 103.56-36c3.29-2.24 6.53-4.57 9.69-6.94l6.19-4.77c1-.79 2-1.59 3-2.38l5.65-4.68 5.17-4.49 4.6-4.18 3.93-3.76 3.16-3.22A41.49 41.49 0 00325 98z"></path>
+          <path d="M150.16 177.26a12.09 12.09 0 016 14.69l-.64 1.51-32.18 64.38a12.07 12.07 0 01-22.23-9.28l.63-1.52L134 182.66a12.08 12.08 0 0116.16-5.4zm69 4l.83 1.41L252.13 247a12.07 12.07 0 01-20.76 12.22l-.84-1.42-32.19-64.38A12.07 12.07 0 01218 179.87zM72.82 147.33A12.07 12.07 0 0174 163.05l-1.17 1.36-48.29 48.28A12.08 12.08 0 016.29 197l1.17-1.35 48.29-48.28a12.07 12.07 0 0117.07 0zm224-1.16l1.36 1.17 48.28 48.28a12.07 12.07 0 01-15.71 18.24l-1.36-1.17-48.28-48.28a12.07 12.07 0 0115.71-18.24z"></path>
+        </svg>
+      );
+    } else if (snap.canvasVisible === false) {
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          data-name="Layer 1"
+          viewBox="0 0 354 356"
+          className="ShowHideIcon"
+        >
+          <path d="M177 315.41c-37.68 0-71.1-12.77-100.33-31.74C48.07 265.15 23.61 240.82 3 217a11.76 11.76 0 010-15.47c22.8-26.33 52.81-53.23 85.91-72.14 27.87-15.87 58-26.26 88.08-26.26s60.26 10.39 88.13 26.26c33 19 63.11 45.88 85.89 72.2A11.77 11.77 0 01351 217c-20.65 23.81-45.1 48.2-73.63 66.66-29.22 19-62.65 31.74-100.39 31.74zm0-162.73a56.62 56.62 0 11-56.58 56.59A56.63 56.63 0 01177 152.68zm94.85 8.78a106.75 106.75 0 01-1.68 98.78c21-14.58 39.81-32.65 56.26-50.91a332.79 332.79 0 00-54.58-47.87zM83.88 260.24a106.21 106.21 0 01-1.68-98.78 332.87 332.87 0 00-54.59 47.87c16.45 18.26 35.23 36.33 56.26 50.91zm151.5-109.36a82.58 82.58 0 1024.19 58.39 82.31 82.31 0 00-24.19-58.39zm-31.4-23a12.08 12.08 0 01-6-14.68l.64-1.51 32.18-64.38a12.07 12.07 0 0122.2 9.24l-.63 1.51-32.19 64.38a12.07 12.07 0 01-16.18 5.4zm-68.94-4l-.84-1.42-32.2-64.4a12.07 12.07 0 0120.76-12.21l.84 1.42 32.19 64.38a12.08 12.08 0 01-19.67 13.59zm146.28 33.91a12.07 12.07 0 01-1.17-15.72l1.17-1.35 48.29-48.28a12.07 12.07 0 0118.24 15.71l-1.17 1.36-48.29 48.28a12.06 12.06 0 01-17.07 0zm-224 1.17L56 157.77 7.7 109.49a12.07 12.07 0 0115.71-18.24l1.36 1.17 48.29 48.28a12.07 12.07 0 01-15.72 18.24z"></path>
+        </svg>
+      );
+    }
+  } else if (n === 1) {
+    if (!snap.hideNav) {
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          data-name="Layer 1"
+          viewBox="0 0 354 356"
+          className="ShowHideIcon"
+        >
+          <path d="M325 98a16.09 16.09 0 0125.88 19.14 60.45 60.45 0 01-4.18 5l-3.92 4.11c-.72.73-1.48 1.48-2.26 2.25l-5.08 4.81c-.9.83-1.82 1.68-2.78 2.54l-6 5.26-6.5 5.42-6.93 5.47c-4.71 3.64-9.62 7.23-14.59 10.62-38.05 25.93-79.09 41.55-121.69 41.55S93.31 188.53 55.26 162.6a329.68 329.68 0 01-28-21.52l-6-5.27c-1-.86-1.88-1.7-2.78-2.54l-5.08-4.81-4.32-4.37a75.43 75.43 0 01-6-7A16.09 16.09 0 0129 98a42.29 42.29 0 003 3.58l3.16 3.22 3.93 3.75c.71.66 1.45 1.35 2.22 2l4.9 4.35c.86.75 1.75 1.51 2.65 2.28l5.65 4.69 3 2.38 6.19 4.76c3.16 2.38 6.41 4.71 9.69 6.95 33.15 22.59 68.29 36 103.56 36s70.41-13.37 103.56-36c3.29-2.24 6.53-4.57 9.69-6.94l6.19-4.77c1-.79 2-1.59 3-2.38l5.65-4.68 5.17-4.49 4.6-4.18 3.93-3.76 3.16-3.22A41.49 41.49 0 00325 98z"></path>
+          <path d="M150.16 177.26a12.09 12.09 0 016 14.69l-.64 1.51-32.18 64.38a12.07 12.07 0 01-22.23-9.28l.63-1.52L134 182.66a12.08 12.08 0 0116.16-5.4zm69 4l.83 1.41L252.13 247a12.07 12.07 0 01-20.76 12.22l-.84-1.42-32.19-64.38A12.07 12.07 0 01218 179.87zM72.82 147.33A12.07 12.07 0 0174 163.05l-1.17 1.36-48.29 48.28A12.08 12.08 0 016.29 197l1.17-1.35 48.29-48.28a12.07 12.07 0 0117.07 0zm224-1.16l1.36 1.17 48.28 48.28a12.07 12.07 0 01-15.71 18.24l-1.36-1.17-48.28-48.28a12.07 12.07 0 0115.71-18.24z"></path>
+        </svg>
+      );
+    } else if (snap.hideNav) {
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          data-name="Layer 1"
+          viewBox="0 0 354 356"
+          className="ShowHideIcon"
+        >
+          <path d="M177 315.41c-37.68 0-71.1-12.77-100.33-31.74C48.07 265.15 23.61 240.82 3 217a11.76 11.76 0 010-15.47c22.8-26.33 52.81-53.23 85.91-72.14 27.87-15.87 58-26.26 88.08-26.26s60.26 10.39 88.13 26.26c33 19 63.11 45.88 85.89 72.2A11.77 11.77 0 01351 217c-20.65 23.81-45.1 48.2-73.63 66.66-29.22 19-62.65 31.74-100.39 31.74zm0-162.73a56.62 56.62 0 11-56.58 56.59A56.63 56.63 0 01177 152.68zm94.85 8.78a106.75 106.75 0 01-1.68 98.78c21-14.58 39.81-32.65 56.26-50.91a332.79 332.79 0 00-54.58-47.87zM83.88 260.24a106.21 106.21 0 01-1.68-98.78 332.87 332.87 0 00-54.59 47.87c16.45 18.26 35.23 36.33 56.26 50.91zm151.5-109.36a82.58 82.58 0 1024.19 58.39 82.31 82.31 0 00-24.19-58.39zm-31.4-23a12.08 12.08 0 01-6-14.68l.64-1.51 32.18-64.38a12.07 12.07 0 0122.2 9.24l-.63 1.51-32.19 64.38a12.07 12.07 0 01-16.18 5.4zm-68.94-4l-.84-1.42-32.2-64.4a12.07 12.07 0 0120.76-12.21l.84 1.42 32.19 64.38a12.08 12.08 0 01-19.67 13.59zm146.28 33.91a12.07 12.07 0 01-1.17-15.72l1.17-1.35 48.29-48.28a12.07 12.07 0 0118.24 15.71l-1.17 1.36-48.29 48.28a12.06 12.06 0 01-17.07 0zm-224 1.17L56 157.77 7.7 109.49a12.07 12.07 0 0115.71-18.24l1.36 1.17 48.29 48.28a12.07 12.07 0 01-15.72 18.24z"></path>
+        </svg>
+      );
+    }
+  } else if (n === 2) {
+    if (snap.draged) {
+      return (
+        <Caret
+          focusable="false"
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+          transform="rotate(90)"
+          style={{ height: "40px", transform: "scaleY(-1)" }}
+        >
+          <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
+        </Caret>
+      );
+    } else if (!snap.draged) {
+      return (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          data-name="Layer 1"
+          viewBox="0 0 354 356"
+          className="ShowHideIcon"
+        >
+          <path d="M325 98a16.09 16.09 0 0125.88 19.14 60.45 60.45 0 01-4.18 5l-3.92 4.11c-.72.73-1.48 1.48-2.26 2.25l-5.08 4.81c-.9.83-1.82 1.68-2.78 2.54l-6 5.26-6.5 5.42-6.93 5.47c-4.71 3.64-9.62 7.23-14.59 10.62-38.05 25.93-79.09 41.55-121.69 41.55S93.31 188.53 55.26 162.6a329.68 329.68 0 01-28-21.52l-6-5.27c-1-.86-1.88-1.7-2.78-2.54l-5.08-4.81-4.32-4.37a75.43 75.43 0 01-6-7A16.09 16.09 0 0129 98a42.29 42.29 0 003 3.58l3.16 3.22 3.93 3.75c.71.66 1.45 1.35 2.22 2l4.9 4.35c.86.75 1.75 1.51 2.65 2.28l5.65 4.69 3 2.38 6.19 4.76c3.16 2.38 6.41 4.71 9.69 6.95 33.15 22.59 68.29 36 103.56 36s70.41-13.37 103.56-36c3.29-2.24 6.53-4.57 9.69-6.94l6.19-4.77c1-.79 2-1.59 3-2.38l5.65-4.68 5.17-4.49 4.6-4.18 3.93-3.76 3.16-3.22A41.49 41.49 0 00325 98z"></path>
+          <path d="M150.16 177.26a12.09 12.09 0 016 14.69l-.64 1.51-32.18 64.38a12.07 12.07 0 01-22.23-9.28l.63-1.52L134 182.66a12.08 12.08 0 0116.16-5.4zm69 4l.83 1.41L252.13 247a12.07 12.07 0 01-20.76 12.22l-.84-1.42-32.19-64.38A12.07 12.07 0 01218 179.87zM72.82 147.33A12.07 12.07 0 0174 163.05l-1.17 1.36-48.29 48.28A12.08 12.08 0 016.29 197l1.17-1.35 48.29-48.28a12.07 12.07 0 0117.07 0zm224-1.16l1.36 1.17 48.28 48.28a12.07 12.07 0 01-15.71 18.24l-1.36-1.17-48.28-48.28a12.07 12.07 0 0115.71-18.24z"></path>
+        </svg>
+      );
+    }
   }
 }
 export function DirectionIcon() {

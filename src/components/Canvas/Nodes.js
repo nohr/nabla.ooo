@@ -9,10 +9,23 @@ import { cloud, state } from '../UI/state';
 import { target } from './Composition';
 
 
-function Cover({ img, select, confirm, clear, hit, hits, Ref, api, ...props }) {
-    let cover = useTexture(img);
-    const snap = useSnapshot(state);
+function Cover({ select, confirm, clear, hit, hits, index, ...props }) {
+    const types = new Map([["jpg", "img"], ["jpeg", "img"], ["png", "img"], ["gif", "img"], ["mp4", "video"], ["svg", "svg"]]);
+    const link = new URL(hit.images[0]);
+    const extension = link.pathname.split(".");
+    const element = types.get(extension[extension.length - 1].toLowerCase());
+    const cover = useTexture(element === "img" ? hit.images[0] : hit.poster);
     const selected = useSelect();
+    const [Ref, api] = useSphere(() => ({ mass: 10, position: [Math.floor(Math.random() * -2), (index + 5), Math.floor(Math.random() * -3)], args: selected[0] ? [3] : [1], ...props }));
+
+    if (Ref && selected[0] && (selected[0].id === Ref.current.id)) {
+        cloud.preview = [hit];
+    }
+    if (!selected[0]) {
+        cloud.preview = [];
+        // cloud.target = target;
+    }
+
     const material = new THREE.MeshPhysicalMaterial({
         // wireframe: true,
         color: state.theme === 'light' ? state.light.CD : state.dark.CD,
@@ -24,13 +37,17 @@ function Cover({ img, select, confirm, clear, hit, hits, Ref, api, ...props }) {
         transmission: 0.89,
     })
 
-    if (Ref.current && selected[0] && (selected[0].id === Ref.current.id)) {
-        cloud.preview = [hit];
-    }
-    if (!selected[0]) {
-        cloud.preview = [];
-        // cloud.target = target;
-    }
+    // Handle node select
+    const pos = useRef([0, 0, 0]);
+
+    useFrame(() => {
+        if (Ref && selected[0] && (selected[0].id === Ref.current.id)) {
+            const unsubscribe = api.position.subscribe((v) => (pos.current = v));
+            cloud.target = pos.current;
+            return unsubscribe;
+        }
+    });
+
     return (
         <mesh
             {...props}
@@ -38,86 +55,57 @@ function Cover({ img, select, confirm, clear, hit, hits, Ref, api, ...props }) {
             receiveShadow
             ref={Ref}
             onClick={() => {
+
                 if (Ref.current && selected[0] && (selected[0].id === Ref.current.id)) {
-                    // cloud.selected = false;
                     clear();
                     confirm();
                 } else {
-                    // cloud.selected = true;
                     select();
                 }
             }}
         >
             <sphereGeometry
-                args={[Ref.current && selected[0] && (selected[0].id === Ref.current.id) ? 3 : 1, 40, 40]} />
+                args={[Ref && selected[0] && (selected[0].id === Ref.current.id) ? 3 : 1, 40, 40]} />
             <meshPhysicalMaterial map={cover} reflectivity={1} clearcoat={0.8} metalness={0.2} />
         </mesh>
     )
 }
 
-function VideoMaterial({ img, hit, Ref, frames }) {
-    let cover = useTexture(img);
-    const selected = useSelect();
-    // TODO: fix autoplay
-    // const [video] = useState(() => {
-    //   const vid = document.createElement("video");
-    //   vid.src = frames;
-    //   vid.crossOrigin = "Anonymous";
-    //   vid.loop = true;
-    //   vid.autoplay = true;
-    //   // vid.play();
-    //   return vid;
-    // });
-    // Ref.
+// function VideoMaterial({ img, Ref, frames }) {
+//     let cover = useTexture(img);
+//     const selected = useSelect();
+//     // TODO: fix autoplay
+//     // const [video] = useState(() => {
+//     //   const vid = document.createElement("video");
+//     //   vid.src = frames;
+//     //   vid.crossOrigin = "Anonymous";
+//     //   vid.loop = true;
+//     //   vid.autoplay = true;
+//     //   // vid.play();
+//     //   return vid;
+//     // });
+//     // Ref.
 
-    return (
-        <mesh
-            castShadow
-            receiveShadow
-            ref={Ref}
-        >
-            <sphereGeometry
-                args={[1, 40, 40]} />
-            {/* <videoTexture args={[video]} /> */}
-            <meshStandardMaterial map={cover} />
-        </mesh>
-    )
-}
+//     return (
+//         <mesh
+//             castShadow
+//             receiveShadow
+//             ref={Ref}
+//         >
+//             <sphereGeometry
+//                 args={[1, 40, 40]} />
+//             {/* <videoTexture args={[video]} /> */}
+//             <meshStandardMaterial map={cover} />
+//         </mesh>
+//     )
+// }
 
-export function Node({ hit, ...props }) {
-    const selected = useSelect();
-    const [Ref, api] = useSphere(() => ({ mass: Math.floor(Math.random() * 10), position: [Math.floor(Math.random() * 3), (0 + 6), Math.floor(Math.random() * -3)], args: selected[0] ? [3] : [1] }));
+export function Nodes({ ...props }) {
 
-
-    useEffect(() => {
-        console.log(props.hits);
-    }, [props.hits])
-
-    // Handle node physics
-    const pos = useRef([0, 0, 0]);
-
-    useFrame(() => {
-        if (Ref && selected[0] && (selected[0].id === Ref.current.id)) {
-            // console.log(api);
-            const unsubscribe = api.position.subscribe((v) => (pos.current = v));
-            cloud.target = pos.current;
-            return unsubscribe;
-        }
-    });
-
-    let images = hit.images;
-    let poster = hit.poster;
-
-    console.log(hit, ...props);
+    return <>
+        {props.hits.map((hit, index) => (
+            <Cover hit={hit} key={index} index={index}{...props} />))}
+    </>
 
 
-    if (images) {
-        // Get enxtentions of files
-        const types = new Map([["jpg", "img"], ["jpeg", "img"], ["png", "img"], ["gif", "img"], ["mp4", "video"], ["svg", "svg"]]);
-        const link = new URL(images[0]);
-        const extension = link.pathname.split(".");
-        const element = types.get(extension[extension.length - 1].toLowerCase());
-
-        return <Cover img={element === "img" ? images[0] : poster} {...props} />
-    }
 }

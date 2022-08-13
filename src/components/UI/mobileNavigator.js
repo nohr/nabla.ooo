@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { characters, ClearIcon, ColorIcon, ConfirmIcon, Grabber, GyroIcon, ModeIcon, MuteIcon, NextIcon, PlayPauseIcon, ResetIcon, SvgNabla } from './svg';
+import { Arrow, characters, ClearIcon, ColorIcon, ConfirmIcon, Grabber, GyroIcon, ModeIcon, MuteIcon, NextIcon, PlayPauseIcon, ResetIcon, ShowHideIcon, SvgNabla } from './svg';
 import styled from 'styled-components';
 import { useSnapshot } from 'valtio';
 import { cloud, state } from './state';
@@ -12,8 +12,9 @@ import { Stats } from '@react-three/drei';
 import Scrambler from 'scrambling-text';
 import { db, GetQuotes, newQuote } from '../..';
 import { getGyro } from '../../App';
+import useWindowDimensions from '../UI/window'
 
-const offset = 70;
+export const offset = 70;
 function Search({
     Bar, options,
     refine, clear, navWrap,
@@ -117,7 +118,7 @@ function Search({
     </Draggable>
 }
 
-function Options({ search, reset, navWrap, handle, setSong, modal, select, setColorWheel, setModal }) {
+function Options({ search, resetButton, reset, navWrap, handle, setSong, modal, select, setColorWheel, setModal }) {
     const snap = useSnapshot(state);
     const clip = useSnapshot(cloud);
     const carousel = useRef(null);
@@ -126,6 +127,7 @@ function Options({ search, reset, navWrap, handle, setSong, modal, select, setCo
         if (!snap.draged) {
             state.mobileNavPosition.y = state.mobileNavPosition.y + offset;
         }
+
         cloud.opt = true;
         return () => {
             cloud.opt = false;
@@ -164,11 +166,16 @@ function Options({ search, reset, navWrap, handle, setSong, modal, select, setCo
             <div style={{ pointerEvents: hidden ? "none" : "all", backgroundColor: hidden ? snap.theme === 'light' ? snap.light.LiHover : snap.dark.LiHover : "transparent", opacity: hidden ? 0.6 : 1 }} className='carousel'
                 onTouchMove={() => {
                     setHidden(true);
-                    handle.current.setAttribute("style", "fill-opacity: 100% !important; stroke-width: 0px !important; transition: 0s !important; cursor:grab !important;");
+                    handle.current.style.animation = "flashConfirm 0.6s steps(5, start) infinite";
+                    handle.current.setAttribute(`style`, `
+                    animation: none !important;
+                    fill-opacity: 100% !important; stroke-width: 0px !important; transition: 0s !important;`);
                 }}
                 onTouchEnd={() => {
                     setHidden(false);
-                    handle.current.setAttribute("style", "fill-opacity: 0% !important; stroke-width: 1px !important; transition: 0.3s; cursor:grab;");
+                    handle.current.style.animation = "none";
+                    handle.current.setAttribute(`style`,
+                        `fill-opacity: 0% !important; stroke-width: 1px !important; transition: 0.3s;`);
                 }}
             >
                 {/* MUTE */}
@@ -195,25 +202,34 @@ function Options({ search, reset, navWrap, handle, setSong, modal, select, setCo
                     }} id="Next" className="li"><NextIcon />
                 </Folder>
                 {/* RESET */}
-                {snap.draged &&
-                    <Folder
-                        onTouchEnd={() => {
-                            setModal(false);
-                            cloud.resetRate = (Math.random() * (0.85 - 0.65) + 0.65);
-                            reset();
-                            navWrap.current.style.transition = "1.3s";
+                <Folder
+                    ref={resetButton}
+                    onTouchEnd={() => {
+                        setModal(false);
+                        cloud.resetRate = (Math.random() * (0.85 - 0.65) + 0.65);
+                        reset();
+                        navWrap.current.style.transition = "1.3s";
+                        if (snap.draged) {
+                            state.hideNav = false;
                             state.searchPosition = { x: 0, y: 0 };
                             state.optionsPosition = { x: 0, y: 0 };
                             state.grabberPosition = { x: 0, y: 0 };
-                            state.mobileNavPosition = { x: 0, y: offset * 2 };
-                            state.draged = false;
-                            setTimeout(() => {
-                                navWrap.current.style.transition = "0.1s";
-                                console.log("transition returned");
-                            }, "1300");
-                        }}
-                        className="li resetPos w">{clip.mobile ? "reset" : <ResetIcon />}
-                    </Folder>}
+                            state.mobileNavPosition = { x: 0, y: (offset * 2) };
+                        } else {
+                            state.hideNav = true;
+                            state.mobileNavPosition = {
+                                x: 0, y: search ? 15 : (-offset + 15)
+                            };
+                        }
+                        state.draged = false;
+                        setTimeout(() => {
+                            navWrap.current.style.transition = "0.1s";
+                            console.log("transition returned");
+                        }, "1300");
+                    }}
+                    className={`li resetPos w`}>
+                    <ShowHideIcon n={2} />
+                </Folder>
                 {/* THEME */}
                 <Folder
                     // style={{ marginTop: "20px", marginBottom: "4px" }}
@@ -242,7 +258,6 @@ function Options({ search, reset, navWrap, handle, setSong, modal, select, setCo
                 </Folder>
                 {cloud.playMusic}
             </div>
-            <Stats showPanel={0} className="stats" />
         </OptionsWrapper>
     </Draggable>
 }
@@ -254,6 +269,7 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
     const navWrap = useRef(null);
     const Bar = useRef(null);
     const wheel = useRef(null);
+    const resetButton = useRef(null);
     const [modal, setModal] = useState(false);
     const [offset, setOffset] = useState('-80px');
     let currentSong;
@@ -262,17 +278,13 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
     let options = (modal && modal.indexOf("options") > -1);
 
     // Text Scramble
-    const [text, setText] = useState(snap.quotes);
+    const [text, setText] = useState("");
     const quote = useRef(new Scrambler());
     useEffect(() => {
         newQuote().then(() => {
             quote.current.scramble(state.quotes, setText, { characters: characters });
         });
-    }, []);
-
-    useEffect(() => {
-        console.log(snap.mobileNavPosition.y);
-    })
+    }, [snap.quotes]);
 
     function toggleModal(link) {
         let index;
@@ -334,6 +346,8 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
     };
 
     const onControlledStop = (e, position) => {
+        let { x, y } = position;
+        console.log(y);
         state.drag = false;
     };
 
@@ -393,7 +407,7 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
                             </NavButton>}
                         </div>
                         {/* OPTIONS  */}
-                        {options && <Options search={search} handle={handle} reset={reset} navWrap={navWrap} setModal={setModal} setSong={setSong} select={select} modal={modal}
+                        {options && <Options search={search} handle={handle} resetButton={resetButton} reset={reset} navWrap={navWrap} setModal={setModal} setSong={setSong} select={select} modal={modal}
                             colorWheel={colorWheel}
                             setColorWheel={setColorWheel} />}
                         {/* QUOTE */}
@@ -401,12 +415,11 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
                             {(!clip.CanvasLoading) ? <div >{`${text}`}</div> : <div style={{ opacity: 0 }}>love</div>}
                         </div>
                         {/* GRABBER */}
-                        {(!clip.CanvasLoading) && <Grabber setModal={setModal} navWrap={navWrap} reset={reset} options={options} handle={handle} />}
+                        {(!clip.CanvasLoading) && <Grabber resetButton={resetButton} setModal={setModal} navWrap={navWrap} reset={reset} options={options} handle={handle} />}
                     </MobileNav>}
                     {/* ColorWheel */}
                     <Wheel
                         style={{ overflowX: "hidden" }}
-                        // backdrop="backdrop-filter: blur(4px);"
                         opacity={colorWheel ? "1" : "0"}
                         pointerEvents={colorWheel ? "all" : "none"}
                         transition={colorWheel ? "0.3s" : "0s"}
@@ -440,6 +453,7 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
             <audio >
                 <source src={null}></source>
             </audio>
+            <Stats showPanel={0} className="stats" />
         </>
     )
 }
@@ -497,8 +511,9 @@ transition: 0.9s;
     transform: translateX(-50%);
     z-index: 500;
     display: flex;
-    flex-direction: row;
+    flex-direction: column !important;
     align-items: center;
+    margin-top: 10px;
   }
 
       .mainRow{
@@ -695,7 +710,7 @@ user-select: all !important;
 -moz-user-select: all !important;
 -webkit-user-select: all !important;
 -webkit-user-drag: auto !important ;
-    margin:  10px 0;
+    margin:  20px 0 0px 0;
     overflow: visible !important;
     height: 50px !important;
     width: fit-content;
@@ -714,6 +729,10 @@ user-select: all !important;
         width: 40px;
         padding: 2px;
         /* margin: 0 20px; */
+
+        &:hover{
+            border-color:  ${props => props.theme.textHover};
+        }
 
         & svg{
             width: 24px !important;

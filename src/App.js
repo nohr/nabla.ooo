@@ -1,4 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
+import './App.css'
 import Composition from './components/Canvas/Composition'
 import UI from './components/UI/UI'
 import { cloud, state } from './components/UI/state'
@@ -7,7 +8,7 @@ import { useSnapshot } from 'valtio';
 
 // Search Imports
 import { history } from 'instantsearch.js/es/lib/routers';
-import { InstantSearch } from 'react-instantsearch-hooks-web';
+import { Configure, InstantSearch } from 'react-instantsearch-hooks-web';
 import algoliasearch from "algoliasearch"
 
 //Audio Imports
@@ -18,7 +19,6 @@ import sound3 from "./components/Sounds/close.mp3"
 import sound4 from "./components/Sounds/confirm.mp3"
 
 // Get Accelerometer data
-let retry = false;
 function requestPermission() {
   DeviceMotionEvent.requestPermission().then(response => {
     if (response === 'granted') {
@@ -56,12 +56,10 @@ function App() {
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
   const [selectRate, setSelectRate] = useState(1)
-  const [select] = useSound(sound1, { soundEnabled: !snap.muted, playbackRate: clip.selectRate });
-  const [confirm] = useSound(sound4, { soundEnabled: !snap.muted });
-  const [open] = useSound(sound2, { soundEnabled: !snap.muted });
-  const [close] = useSound(sound3, { soundEnabled: !snap.muted });
-  const x = window.matchMedia("(max-width: 760px)");
-  cloud.mobile = x.matches;
+  const [select] = useSound(sound1, { volume: snap.sfxVolume, soundEnabled: !snap.muted, playbackRate: clip.selectRate });
+  const [confirm] = useSound(sound4, { volume: snap.sfxVolume, soundEnabled: !snap.muted });
+  const [open] = useSound(sound2, { volume: snap.sfxVolume, soundEnabled: !snap.muted });
+  const [close] = useSound(sound3, { volume: snap.sfxVolume, soundEnabled: !snap.muted });
 
   // GPU
   useEffect(() => {
@@ -122,7 +120,9 @@ function App() {
     <InstantSearch
       searchClient={searchClient}
       indexName="projects"
+
       routing={routing}>
+      <Configure hitsPerPage={200} />
       <UI setSelectRate={setSelectRate} nabla={nabla} select={select} confirm={confirm} open={open} close={close} />
       <Composition setSelectRate={setSelectRate} nabla={nabla} select={select} confirm={confirm} />
     </InstantSearch>
