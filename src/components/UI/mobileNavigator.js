@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { Arrow, characters, ClearIcon, ColorIcon, ConfirmIcon, Grabber, GyroIcon, ModeIcon, MuteIcon, NextIcon, PlayPauseIcon, ResetIcon, ShowHideIcon, SvgNabla } from './svg';
+import { ClearIcon, ColorIcon, ConfirmIcon, GyroIcon, ModeIcon, MuteIcon, NextIcon, PlayPauseIcon, ResetIcon, ShowHideIcon } from './svg';
+import { HomeButton, characters } from './homeButton';
+import { Grabber } from './grabber';
 import styled from 'styled-components';
 import { useSnapshot } from 'valtio';
 import { cloud, state } from './state';
@@ -10,9 +12,8 @@ import { ColorWheel } from '@react-spectrum/color';
 import Draggable from 'react-draggable';
 import { Stats } from '@react-three/drei';
 import Scrambler from 'scrambling-text';
-import { db, GetQuotes, newQuote } from '../..';
+import { newQuote } from '../..';
 import { getGyro } from '../../App';
-import useWindowDimensions from '../UI/window'
 
 export const offset = 70;
 function Search({
@@ -21,6 +22,7 @@ function Search({
     query, setModal, select, reset, modal }) {
     const searchWrap = useRef(null);
     const snap = useSnapshot(state);
+    const clip = useSnapshot(cloud);
 
     function handleChange(e) {
         if (e.target.value) {
@@ -33,7 +35,7 @@ function Search({
     useEffect(() => {
         Bar.current.focus();
         if (navWrap.current) { navWrap.current.style.overflowX = "clip" };
-        if (!snap.draged) {
+        if (!clip.dragged) {
             state.mobileNavPosition.y = state.mobileNavPosition.y + (offset);
         } else {
             // state.searchPosition.x = 0;
@@ -42,7 +44,7 @@ function Search({
             // state.optionsPosition = { x: 0, y: 0 };
             // state.grabberPosition = { x: 0, y: 0 };
             state.mobileNavPosition = { x: 0, y: options ? (offset * 2) : offset };
-            state.draged = false;
+            cloud.dragged = false;
             setTimeout(() => {
                 navWrap.current.style.transition = "0.1s";
             }, "1300");
@@ -69,7 +71,7 @@ function Search({
                 Bar.current.removeEventListener("keydown", handleKeyPress);
             }
             if (navWrap.current) { navWrap.current.style.overflowX = "visible" };
-            if (!snap.draged) {
+            if (!clip.dragged) {
                 state.mobileNavPosition.y = state.mobileNavPosition.y - offset;
             }
         }
@@ -91,7 +93,7 @@ function Search({
                     navWrap.current.style.overflowX = "clip";
                     navWrap.current.style.transition = "1.3s";
                     state.mobileNavPosition = { x: 0, y: options ? (offset * 2) : offset };
-                    state.draged = false;
+                    cloud.dragged = false;
                     setTimeout(() => {
                         navWrap.current.style.transition = "0.1s";
                     }, "1300");
@@ -124,28 +126,38 @@ function Options({ search, resetButton, reset, navWrap, handle, setSong, modal, 
     const carousel = useRef(null);
 
     useEffect(() => {
-        if (!snap.draged) {
+        if (!clip.dragged) {
             state.mobileNavPosition.y = state.mobileNavPosition.y + offset;
         }
 
         cloud.opt = true;
         return () => {
             cloud.opt = false;
-            if (!snap.draged) {
+            if (!clip.dragged) {
                 state.mobileNavPosition.y = state.mobileNavPosition.y - offset;
             }
         }
     }, [])
 
+    // Rotate reset button
+    useEffect(() => {
+        const rad = Math.atan(state.grabberPosition.x / -state.mobileNavPosition.y);
+        const deg = rad * (180 / Math.PI);
+        if (cloud.dragged) {
+            resetButton.current.style.transform = `rotate(${rad}rad)`;
+        }
+        console.log(state.mobileNavPosition);
+    }, [state.grabberPosition])
+
     const onControlledDrag = (e, position) => {
         // let { x, y } = position;
-        state.drag = true;
+        cloud.drag = true;
     };
 
     const onControlledStop = (e, position) => {
         let { x, y } = position;
         state.searchPosition = { x, y: 0 };
-        state.drag = false;
+        cloud.drag = false;
     };
 
     let hide = false;
@@ -166,14 +178,12 @@ function Options({ search, resetButton, reset, navWrap, handle, setSong, modal, 
             <div style={{ pointerEvents: hidden ? "none" : "all", backgroundColor: hidden ? snap.theme === 'light' ? snap.light.LiHover : snap.dark.LiHover : "transparent", opacity: hidden ? 0.6 : 1 }} className='carousel'
                 onTouchMove={() => {
                     setHidden(true);
-                    handle.current.style.animation = "flashConfirm 0.6s steps(5, start) infinite";
                     handle.current.setAttribute(`style`, `
                     animation: none !important;
                     fill-opacity: 100% !important; stroke-width: 0px !important; transition: 0s !important;`);
                 }}
                 onTouchEnd={() => {
                     setHidden(false);
-                    handle.current.style.animation = "none";
                     handle.current.setAttribute(`style`,
                         `fill-opacity: 0% !important; stroke-width: 1px !important; transition: 0.3s;`);
                 }}
@@ -209,7 +219,7 @@ function Options({ search, resetButton, reset, navWrap, handle, setSong, modal, 
                         cloud.resetRate = (Math.random() * (0.85 - 0.65) + 0.65);
                         reset();
                         navWrap.current.style.transition = "1.3s";
-                        if (snap.draged) {
+                        if (clip.dragged) {
                             state.hideNav = false;
                             state.searchPosition = { x: 0, y: 0 };
                             state.optionsPosition = { x: 0, y: 0 };
@@ -221,7 +231,7 @@ function Options({ search, resetButton, reset, navWrap, handle, setSong, modal, 
                                 x: 0, y: search ? 15 : (-offset + 15)
                             };
                         }
-                        state.draged = false;
+                        cloud.dragged = false;
                         setTimeout(() => {
                             navWrap.current.style.transition = "0.1s";
                             console.log("transition returned");
@@ -272,6 +282,7 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
     const resetButton = useRef(null);
     const [modal, setModal] = useState(false);
     const [offset, setOffset] = useState('-80px');
+    const [changing, setChanging] = useState(false);
     let currentSong;
     currentSong = document.querySelectorAll('audio')[0];
     let search = (modal && modal.indexOf("search") > -1);
@@ -281,9 +292,7 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
     const [text, setText] = useState("");
     const quote = useRef(new Scrambler());
     useEffect(() => {
-        newQuote().then(() => {
-            quote.current.scramble(state.quotes, setText, { characters: characters });
-        });
+        newQuote().then(() => quote.current.scramble(state.quotes, setText, { characters: characters }));
     }, [snap.quotes]);
 
     function toggleModal(link) {
@@ -340,15 +349,15 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
     }, [clip.playMusic, snap.songIndex]);
 
     const onControlledDrag = (e, position) => {
+        cloud.drag = true;
         let { x, y } = position;
-        state.mobileNavPosition = { x: 0, y };
-        state.drag = true;
+        state.mobileNavPosition.y = y;
     };
 
     const onControlledStop = (e, position) => {
+        cloud.drag = false;
         let { x, y } = position;
-        console.log(y);
-        state.drag = false;
+
     };
 
     useEffect(() => {
@@ -366,7 +375,7 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
                 onDrag={onControlledDrag} >
                 <NavWrapper className='mobileNavWrap' ref={navWrap} onTouchStart={() => cloud.selected = false}>
                     {/* Reset */}
-                    {colorWheel && <Folder
+                    {!changing && colorWheel && <Folder
                         border="border: 1px solid;"
                         onTouchEnd={() => {
                             cloud.resetRate = (Math.random() * (0.85 - 0.65) + 0.65);
@@ -398,7 +407,7 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
                                 {svg["search"]}
                             </NavButton>}
                             {/* Home Button */}
-                            <SvgNabla text={text} setText={setText} quote={quote} setColor={setColor} color={color} nabla={nabla} dong={dong} clear={clear} />
+                            <HomeButton text={text} setText={setText} quote={quote} setColor={setColor} color={color} nabla={nabla} dong={dong} clear={clear} />
                             {/* Options Button */}
                             {(!clip.CanvasLoading) && <NavButton
                                 className={`${options && "active"} li w`}
@@ -424,7 +433,9 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
                         pointerEvents={colorWheel ? "all" : "none"}
                         transition={colorWheel ? "0.3s" : "0s"}
                         ref={wheel}
+                        onTouchStart={() => setChanging(true)}
                         onTouchEnd={() => {
+                            setChanging(false);
                             state.colorChanged = true;
                         }}
                     >
@@ -437,7 +448,7 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
                         />
                     </Wheel>
                     {/* Confirm */}
-                    {colorWheel && <Folder
+                    {!changing && colorWheel && <Folder
                         border="border: 1px solid;"
                         onTouchEnd={() => {
                             confirm();
@@ -486,7 +497,7 @@ height: max-content;
 `
 const MobileNav = styled.div`
 transition: 0.9s;
-  height: 100%;
+  height: 70px;
   width: 100%;
   color:${props => props.theme.panelColor};
  display: flex;
@@ -506,14 +517,7 @@ transition: 0.9s;
 
   & .GrabberWrap{
     pointer-events: all !important;
-    top: 0;
-    position: absolute;
-    transform: translateX(-50%);
-    z-index: 500;
-    display: flex;
-    flex-direction: column !important;
-    align-items: center;
-    margin-top: 10px;
+    margin: 10px 0 0 0 !important;
   }
 
       .mainRow{
@@ -531,8 +535,6 @@ transition: 0.9s;
   .nablaWrapper{
     pointer-events: all !important;
     margin: 0 auto;
-    overflow: clip;
-    transform:scale(1.1);
     width: 120px !important;
     padding:0;
       border: 1px solid ${props => props.theme.panelColor};
@@ -568,8 +570,8 @@ display: flex;
 flex-direction: column;
 justify-content: space-around;
 align-items:center ;
-height: 70px;
-width: 70px;
+height: 66px;
+width: 66px;
 font-size: 10px;
 padding: 7px;
 border-radius: 50% !important;
@@ -719,6 +721,7 @@ user-select: all !important;
     gap: 40px;
 
   & .li, & .folder{
+    transform: rotateZ('90');
         backdrop-filter: blur(3px);
       border: 1px solid ${props => props.theme.panelColor};
       border-radius: 50%;
@@ -739,15 +742,20 @@ user-select: all !important;
         }
         &.MuteIcon svg{
             width: 16px !important;
-            /* height: auto; */
+            fill: transparent;
+            stroke: ${props => props.theme.panelColor};
         }
         & .nextIcon{
             width: 16px !important;
             height: auto;
+            fill: transparent;
+            stroke: ${props => props.theme.panelColor};
         }
         & .PlayPauseIcon{
             width: 16px !important;
             height: auto;
+            fill: transparent;
+            stroke: ${props => props.theme.panelColor};
         }
         & .GyroIcon{
             fill: ${props => props.theme.panelColor};
@@ -756,11 +764,12 @@ user-select: all !important;
             }
         }
         & .modeIcon{
+            stroke: ${props => props.theme.panelColor};
+            fill: transparent !important;
             height: 20px !important;
         }
     }
   }
-
 `
 const svg = {
     search: (

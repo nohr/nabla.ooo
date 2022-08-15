@@ -7,9 +7,7 @@ import { getGPUTier } from 'detect-gpu';
 import { useSnapshot } from 'valtio';
 
 // Search Imports
-import { history } from 'instantsearch.js/es/lib/routers';
-import { Configure, InstantSearch } from 'react-instantsearch-hooks-web';
-import algoliasearch from "algoliasearch"
+import { useSearchBox, useInfiniteHits } from 'react-instantsearch-hooks-web'
 
 //Audio Imports
 import useSound from "use-sound"
@@ -33,11 +31,11 @@ function requestPermission() {
         }
       });
     } else {
-      console.log("ttrun off");
+      // console.log("ttrun off");
     }
-    console.log(response);
+    // console.log(response);
   });
-  console.log(state.gyro);
+  // console.log(state.gyro);
 };
 
 export function getGyro(gyro) {
@@ -50,11 +48,17 @@ export function getGyro(gyro) {
 
 };
 
+const transformItems = (items) => {
+  return items.filter(item => item.images && ({ ...item }));
+};
+
 //App 
 function App() {
   const nabla = useRef(null);
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
+  const { query, clear } = useSearchBox();
+  const { hits } = useInfiniteHits({ transformItems });
   const [selectRate, setSelectRate] = useState(1)
   const [select] = useSound(sound1, { volume: snap.sfxVolume, soundEnabled: !snap.muted, playbackRate: clip.selectRate });
   const [confirm] = useSound(sound4, { volume: snap.sfxVolume, soundEnabled: !snap.muted });
@@ -72,39 +76,6 @@ function App() {
     })();
   }, [])
 
-
-  // Search
-  const searchClient = algoliasearch('QYRMFVSZ3U', 'a5bc9e2f6d2b720f636a828233179a8f');
-  const indexName = 'projects';
-  const routing = {
-    router: history(),
-    stateMapping: {
-      stateToRoute(uiState) {
-        const indexUiState = uiState[indexName];
-        return {
-          query: indexUiState.query,
-          // categories: indexUiState.menu?.categories,
-          // brand: indexUiState.refinementList?.refinementList.brand,
-          // page: indexUiState.page,
-        };
-      },
-      routeToState(routeState) {
-        return {
-          [indexName]: {
-            query: routeState.query,
-            // menu: {
-            //   categories: routeState.categories,
-            // },
-            // refinementList: {
-            //   brand: routeState.brand,
-            // },
-            // page: routeState.page,
-          },
-        };
-      },
-    },
-  };
-
   useEffect(() => {
     if (clip.mobile) {
       if (snap.gyro) {
@@ -115,18 +86,12 @@ function App() {
       window.removeEventListener("click", getGyro(true));
     }
   }, []);
+  // cloud.CanvasLoading = false;
 
-  return (
-    <InstantSearch
-      searchClient={searchClient}
-      indexName="projects"
-
-      routing={routing}>
-      <Configure hitsPerPage={200} />
-      <UI setSelectRate={setSelectRate} nabla={nabla} select={select} confirm={confirm} open={open} close={close} />
-      <Composition setSelectRate={setSelectRate} nabla={nabla} select={select} confirm={confirm} />
-    </InstantSearch>
-  );
+  return <>
+    <UI setSelectRate={setSelectRate} nabla={nabla} select={select} confirm={confirm} open={open} close={close} />
+    <Composition query={query} hits={hits} clear={clear} setSelectRate={setSelectRate} nabla={nabla} select={select} confirm={confirm} />
+  </>
 }
 
 export default App;

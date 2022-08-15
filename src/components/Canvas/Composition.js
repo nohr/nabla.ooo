@@ -1,19 +1,16 @@
-import React, { memo, Suspense, useEffect, useLayoutEffect, useRef } from 'react'
+import React, { useState, Suspense, useEffect, useLayoutEffect, useRef } from 'react'
 import "../../App.css"
 import { cloud, state } from '../UI/state'
 import { useSnapshot } from 'valtio'
 import { CD } from './CD'
-import { Node, Nodes } from './Nodes'
-import useWindowDimensions from '../UI/window'
+import { Nodes } from './Nodes'
 import * as THREE from 'three'
 import { Canvas, useFrame } from '@react-three/fiber'
-import { RepeatWrapping } from 'three'
 import { useTexture, MeshReflectorMaterial, softShadows, PerspectiveCamera, OrbitControls, Html, useProgress, ContactShadows, Select, useSelect } from '@react-three/drei'
 import { EffectComposer, Noise } from '@react-three/postprocessing'
 // import { ShaderMaterial } from 'three'
-import { Debug, Physics, usePlane, useSphere } from '@react-three/cannon';
-import { useHits, useInfiniteHits, useSearchBox } from 'react-instantsearch-hooks-web'
-import { useState } from 'react'
+import { Debug, Physics, usePlane } from '@react-three/cannon';
+import { Router } from 'wouter'
 
 // Spinner
 const Spinner = () => {
@@ -25,7 +22,7 @@ const Spinner = () => {
     return () => {
       cloud.CanvasLoading = false;
     }
-  }, [])
+  })
 
   return (
     <Html fullscreen>
@@ -91,8 +88,6 @@ function Wall() {
 }
 
 function Floor() {
-  const [ref, api] = usePlane(() => ({ rotation: [-Math.PI / 2, 0, 0], position: [0, 0, 0] }));
-  // console.log(api.collisionResponse);
   const snap = useSnapshot(state);
   const textures = useTexture([
     "/images/reflector/Ice_OCC.jpg",
@@ -109,19 +104,13 @@ function Floor() {
       )
     );
   }, [textures]);
-  return (
-    <mesh
-      rotation={[-Math.PI / 2, 0, 0]}
-      position={[0, 0, 0]}
-      ref={ref}
-    >
-      <planeGeometry
-        args={[70, 70]}
-      />
+
+  function Reflector() {
+    return (
       <MeshReflectorMaterial
         side={THREE.DoubleSide}
         resolution={1024}
-        mirror={0.15}
+        mirror={state.theme === "light" ? 0.15 : 0.28}
         blur={[250, 250]}
         mixBlur={14}
         distortion={0}
@@ -139,9 +128,32 @@ function Floor() {
         normalScale={[1, 1]}
         envMapIntensity={1}
         bumpMap={height}
+      />)
+  }
+
+  const [ref, api] = usePlane(() => ({ rotation: [-Math.PI / 2, 0, 0], position: [0, 0, 0] }));
+  const collision = useRef(null);
+  useEffect(() => {
+    console.log(api);
+  }, [])
+
+  // useFrame(() => {
+  //   console.log(collision.current);
+  //   const unsubscribe = api.collisionResponse.subscribe((v) => collision.current = v);
+  //   return unsubscribe;
+  // });
+  return <Suspense fallback={<Spinner />}>
+    <mesh
+      rotation={[-Math.PI / 2, 0, 0]}
+      position={[0, 0, 0]}
+      ref={ref}
+    >
+      <planeGeometry
+        args={[70, 70]}
       />
+      <Reflector />
     </mesh>
-  );
+  </Suspense>
 }
 
 function Bounds() {
@@ -180,44 +192,28 @@ function Bounds() {
     /></>
 }
 
-// function Nodes({ ...props }) {
-//   return <>
-//     {props.hits.map((hit, index) => (
-//       <Node hit={hit} key={index} index={index} {...props} />
-//     ))}
-//   </>
-
-// }
-
-export const target = [0, 6, 3];
-
-const transformItems = (items) => {
-  return items.filter(item => item.images && ({ ...item }));
-};
 // Composition
-function Composition({ select, confirm, nabla, setSelectRate }) {
-  const { height, width } = useWindowDimensions();
+function Composition({ select, confirm, query, hits, clear, nabla }) {
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
   const [selected, setSelected] = useState([]);
+  const [target, setTarget] = useState([0, 6, 3]);
   const camera = useRef(null);
-  const { query, clear } = useSearchBox();
-  const { hits } = useInfiniteHits({ transformItems });
   // Handle deselection
-  useEffect(() => {
-    if (nabla.current) {
-      nabla.current.addEventListener("click", () => {
-        setSelected([]);
-        console.log(selected);
-      });
-    }
+  // useEffect(() => {
+  //   if (nabla.current) {
+  //     nabla.current.addEventListener("click", () => {
+  //       setSelected([]);
+  //       console.log(selected);
+  //     });
+  //   }
 
-    // return () => {
-    //   if (nabla.current) {
-    //     nabla.current.removeEventListener("click", () => setSelected({}));
-    //   }
-    // }
-  }, [])
+  //   // return () => {
+  //   //   if (nabla.current) {
+  //   //     nabla.current.removeEventListener("click", () => setSelected({}));
+  //   //   }
+  //   // }
+  // }, [])
 
   // Toggle Canvas Visibility
   let canvas;
@@ -244,93 +240,104 @@ function Composition({ select, confirm, nabla, setSelectRate }) {
         }
       }
     }
+    // canvas.addEventListener(
+    //   'webglcontextlost',
+    //   function (event) {
+    //     event.preventDefault();
+    //     setTimeout(function () {
+    //       renderer.forceContextRestore();
+    //     }, 1);
+    //   },
+    //   false
+    // );
+  }, [])
+
+  useEffect(() => {
+    console.log("render");
   }, [])
 
   return (
     <Canvas
-      shadows
-      dpr={1.5} onCreated={(state) => (state.gl.toneMappingExposure = 1.5)}
+      dpr={[1, 2]}
       gl={{ alpha: true, stencil: false, depth: true, antialias: false, physicallyCorrectLight: true }}
-      className='r3fCanvas' frameloop={clip.mobile ? "always" : snap.canvasPaused ? "demand" : "always"} onLoad={() => cloud.CanvasLoading = false} >
-      <PerspectiveCamera makeDefault ref={camera} target={clip.mobile ? clip.target : [0, 2, 0]} position={clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition} rotation={clip.mobile ? clip.mobileCameraRotation : undefined} far={80} near={.1} fov={clip.mobile ? 25 : 20} aspect={width / height} />
-      <fog attach="fog" args={[snap.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, clip.mobile ? snap.theme === 'light' ? 60 : 40 : 30]} />
-      <Suspense fallback={<Spinner />}>
-        <spotLight
-          intensity={snap.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}
-          decay={2}
-          angle={Math.PI / 2}
-          color={snap.theme === 'light' ? snap.light.spotlight : snap.dark.spotlight}
-          position={[90, 60, -50]}
-        />
-        <rectAreaLight
-          intensity={snap.theme === 'light' ? snap.light.rectIntensity : snap.dark.rectIntensity}
-          args={[(snap.theme === 'light' ? snap.light.panelColor : snap.dark.panelColor), 20, 20, 20]}
-          position={[0, -1, 0]}
-          rotation-x={Math.PI / 2}
-        />
-        <ambientLight intensity={snap.theme === 'light' ? snap.light.ambIntensity : snap.dark.ambIntensity} />
-
-        <Physics
-          gravity={[clip.leftright, -9.8, clip.frontback]}
-          isPaused={state.canvasPaused}
-        >
-          {/* <Debug color={cloud.opt ? "white" : "black"} scale={1.04} > */}
-          <group position-y={0}>
-            <Wall />
-            <Floor />
-            {clip.mobile ?
-              <>
-                {/* TODO: Switch to null when something else is tapped */}
-                <Select onChange={setSelected}>
-                  <Nodes select={select} confirm={confirm} hits={hits} clear={clear} />
-                </Select>
-                <Bounds />
-                <ContactShadows frames={1} position={[0, -0.5, 0]} scale={10} opacity={0.4} far={1} blur={2} />
-                {/* <CD rotation={[Math.PI / -1.5, 0, 0]} /> */}
-              </> : <CD rotation={[-Math.PI / 2, Math.PI / 2, Math.PI / 2]} />}
-          </group>
-          {/* </Debug> */}
-        </Physics>
-        {
-          // (clip.mobile ? false : snap.canvasPaused) &&
+      className='r3fCanvas' frameloop={clip.mobile ? "always" : snap.canvasPaused ? "demand" : "always"}  >
+      {/* CAMERA */}
+      <PerspectiveCamera makeDefault ref={camera} target={clip.mobile ? clip.target : [0, 2, 0]} zoom={1
+        // + (snap.grabberPosition.x / 30)
+      } position={clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition} rotation={clip.mobile ? clip.mobileCameraRotation : undefined} far={80} near={.1} fov={clip.mobile ? 25 : 20} />
+      {/* FOG */}
+      <fog attach="fog" args={[snap.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, clip.mobile ? snap.theme === 'light' ? 60 : 50 : 30]} />
+      {/* SPOTLIGHT */}
+      <spotLight intensity={snap.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}
+        decay={2}
+        angle={Math.PI / 2}
+        color={snap.theme === 'light' ? snap.light.spotlight : snap.dark.spotlight}
+        position={[90, 60, -50]} />
+      {/* RECT LIGHT */}
+      <rectAreaLight intensity={snap.theme === 'light' ? snap.light.rectIntensity : snap.dark.rectIntensity}
+        args={[(snap.theme === 'light' ? snap.light.panelColor : snap.dark.panelColor), 20, 20, 20]} position={[0, -1, 0]} rotation-x={-Math.PI / 2} />
+      {/* AMBIENT LIGHT */}
+      <ambientLight intensity={snap.theme === 'light' ? snap.light.ambIntensity : snap.dark.ambIntensity} />
+      <Physics
+        gravity={[clip.leftright, -9.8, clip.frontback]}
+        isPaused={snap.canvasPaused}>
+        {!clip.mobile && <Wall />}
+        <Floor />
+        {clip.mobile ?
+          <Router path="/">
+            <Suspense fallback={<Spinner />}>
+              <Select onChange={setSelected}>
+                <Nodes select={select} confirm={confirm} hits={hits} clear={clear} />
+              </Select>
+            </Suspense>
+            <Bounds />
+            <ContactShadows frames={1} position={[0, -0.5, 0]} scale={10} opacity={0.4} far={1} blur={2} />
+            {/* <CD position={[0, 10, -20]} rotation={[Math.PI / -2.5, 0, 0]} /> */}
+          </Router> : <CD rotation={[-Math.PI / 2, Math.PI / 2, Math.PI / 2]} />}
+      </Physics>
+      {/* <Suspense fallback={<Spinner />}>
+        {!clip.mobile &&
           <EffectComposer>
             <Noise
-              opacity={snap.theme === 'light' ? clip.mobile ? 0.8 : snap.light.noise : clip.mobile ? 0.3 : snap.dark.noise}
-              // blendFunction={B.ADD}
-              premultiply={(state.theme === "light")}
+              opacity={snap.theme === 'light' ? clip.mobile ? 1.5 : snap.light.noise : clip.mobile ? 0.3 : snap.dark.noise}
+            // premultiply={(state.theme === "light")}
             />
           </EffectComposer>
         }
-        <OrbitControls
-          target={clip.mobile ? clip.target : [0, 2, 0]}
-          onEnd={(e) => {
-            if (clip.mobile) {
-              let camera = e.target.object;
-              cloud.mobileCameraPosition = camera.position;
-              cloud.frontback = 0;
-              cloud.leftright = 0;
-            }
-          }}
-          touches={{
-            ONE: selected[0] ? THREE.TOUCH.ROTATE : THREE.TOUCH.PAN,
-            TWO: THREE.TOUCH.DOLLY_ROTATE
-          }}
-          enablePan={clip.mobile}
-          enableDamping
-          dampingFactor={1.8}
-          minPolarAngle={clip.mobile ? -3 : Math.PI / 3}
-          maxPolarAngle={clip.mobile ? Math.PI / 2 : Math.PI / 2}
-          autoRotate={!clip.mobile}
-          autoRotateSpeed={clip.mobile ? 0 :
-            clip.UILoading ? 50 : -1
+      </Suspense> */}
+      <OrbitControls
+        target={clip.mobile ? clip.target : [0, 2, 0]}
+        onEnd={(e) => {
+          if (clip.mobile) {
+            let camera = e.target.object;
+            // if (!selected[0]) { cloud.target = camera.target; }
+            // console.log(camera.target);
+            cloud.frontback = 0;
+            cloud.leftright = 0;
           }
-          minDistance={20}
-          maxDistance={clip.mobile ? 50 : 36}
-          enabled={clip.mobile ? true : !snap.canvasPaused}
-        />
-      </Suspense>
-    </Canvas>
+        }}
+        touches={{
+          ONE:
+            selected[0] ? THREE.TOUCH.ROTATE :
+              THREE.TOUCH.PAN,
+          TWO: THREE.TOUCH.DOLLY_ROTATE
+        }}
+        enablePan={clip.mobile}
+        enableDamping
+        dampingFactor={1.8}
+        minPolarAngle={clip.mobile ? -3 : Math.PI / 3}
+        maxPolarAngle={clip.mobile ? Math.PI / 2 : Math.PI / 2}
+        autoRotate={!clip.mobile}
+        autoRotateSpeed={clip.UILoading ? -5 : 1}
+        minDistance={20}
+        maxDistance={clip.mobile ? 40 : 36}
+        enabled={clip.mobile ? !clip.drag : !snap.canvasPaused}
+      />
+    </Canvas >
   );
 }
 
-export default memo(Composition);
+export default Composition
+
+
+  // < Debug color = { "light"} scale = { 1.03} >

@@ -37,6 +37,31 @@ let darkSurface;
 let cd;
 let fogLight = "hsl(360, 0%, 72%)"
 
+export function toHslString(color) {
+  string = `hsl(${color}, 100%, 20%)`
+  darkString = `hsl(${color}, 41%, 74%)`
+  stringAlpha = `hsla(${color}, 100%, 20%, 0.67)`
+  darkStringAlpha = `hsla(${color}, 51%, 64%, 0.67)`
+  surface = `hsla(${color}, 100%, 80%, 1)`;
+  darkSurface = `hsla(${color}, 15%, 40%, 1)`;
+  cd = `hsla(${(color)}, 31%, 84%, 1)`;
+  state.hue = color;
+
+  if (state.theme === 'light' && state.colorChanged) {
+    state.light.panelColor = string;
+    state.light.placeholder = string;
+    state.light.LiHover = stringAlpha;
+    state.light.CD = cd;
+    state.light.Surface = surface;
+    state.light.spotlight = fogLight;
+  } else if (state.theme === 'dark' && state.colorChanged) {
+    state.dark.panelColor = darkString;
+    state.dark.placeholder = darkString;
+    state.dark.LiHover = darkStringAlpha;
+    state.dark.Surface = darkSurface;
+    state.dark.spotlight = darkString;
+  }
+}
 //UI -- Parent Component
 function UI({ select, confirm, open, close, nabla, quote, text, setText }) {
   const [colorWheel, setColorWheel] = useState(false);
@@ -53,78 +78,9 @@ function UI({ select, confirm, open, close, nabla, quote, text, setText }) {
 
   const [reset] = useSound(sound5, { soundEnabled: !snap.muted, playbackRate: clip.resetRate });
 
-  function toHslString(color) {
-    string = `hsl(${color}, 100%, 28%)`
-    darkString = `hsl(${color}, 31%, 64%)`
-    stringAlpha = `hsla(${color}, 100%, 28%, 0.67)`
-    darkStringAlpha = `hsla(${color}, 51%, 64%, 0.67)`
-    surface = `hsla(${color}, 100%, 80%, 1)`;
-    darkSurface = `hsla(${color}, 15%, 50%, 1)`;
-    cd = `hsla(${(color)}, 31%, 84%, 1)`;
-    cloud.hue = color;
 
-    if (snap.theme === 'light' && snap.colorChanged) {
-      state.light.panelColor = string;
-      state.light.placeholder = string;
-      state.light.LiHover = stringAlpha;
-      state.light.CD = cd;
-      state.light.Surface = surface;
-      state.light.spotlight = fogLight;
-    } else if (snap.theme === 'dark' && snap.colorChanged) {
-      state.dark.panelColor = darkString;
-      state.dark.placeholder = darkString;
-      state.dark.LiHover = darkStringAlpha;
-      state.dark.Surface = darkSurface;
-      state.dark.spotlight = darkString;
-    }
-  }
 
   snap.colorChanged && toHslString(color.hue);
-
-  let title;
-  // CircleType
-  useEffect(() => {
-    title = document.querySelector(".song");
-    if (title) {
-      title = new CircleType(title).radius(clip.mobile ? 170 : 128);
-    }
-    return () => {
-      title = null;
-    }
-  }, [snap.songIndex, snap.colorChanged]);
-
-  // Manage modals
-  useEffect(() => {
-    function handleKeyPress(e) {
-      // esc to clear modal
-      if (e.key === "Escape") {
-        cloud.selectedDesc = null;
-        cloud.selectedImg = null;
-        return;
-      }
-
-      // Next
-      if (e.key === "ArrowRight") {
-        Next()
-        return;
-      }
-
-      // Prev
-      if (e.key === "ArrowLeft") {
-        Prev()
-        return;
-      }
-      // Do nothing when these are pressed
-      if (e.key === "Enter" || e.key === "Shift" || e.key === "Meta" || e.key === "CapsLock" || e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "Alt") {
-        return;
-      }
-    }
-
-    window.addEventListener("keyup", handleKeyPress);
-    return () => {
-      window.removeEventListener("keyup", handleKeyPress);
-    }
-  });
 
   // PANELS
   //Toggle Projects panel
@@ -180,6 +136,10 @@ function UI({ select, confirm, open, close, nabla, quote, text, setText }) {
       }
     }
   }, [snap.isOpt, snap.colorWheel]);
+
+  useEffect(() => {
+    cloud.UILoading = false;
+  }, [])
 
   return (
     <>

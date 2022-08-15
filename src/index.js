@@ -18,9 +18,55 @@ import {
 } from 'react-router-dom'
 import { getStorage } from "firebase/storage";
 
+// Search Imports
+import { history } from 'instantsearch.js/es/lib/routers';
+import { Configure, InstantSearch } from 'react-instantsearch-hooks-web';
+import algoliasearch from "algoliasearch"
+
 const container = document.getElementById("root");
 const root = createRoot(container);
-root.render(<Router><App tab="home" /></Router>);
+
+// Search
+const searchClient = algoliasearch('QYRMFVSZ3U', 'a5bc9e2f6d2b720f636a828233179a8f');
+const indexName = 'projects';
+const routing = {
+  router: history(),
+  stateMapping: {
+    stateToRoute(uiState) {
+      const indexUiState = uiState[indexName];
+      return {
+        query: indexUiState.query,
+        // categories: indexUiState.menu?.categories,
+        // brand: indexUiState.refinementList?.refinementList.brand,
+        // page: indexUiState.page,
+      };
+    },
+    routeToState(routeState) {
+      return {
+        [indexName]: {
+          query: routeState.query,
+          // menu: {
+          //   categories: routeState.categories,
+          // },
+          // refinementList: {
+          //   brand: routeState.brand,
+          // },
+          // page: routeState.page,
+        },
+      };
+    },
+  },
+};
+
+root.render(
+  <InstantSearch
+    searchClient={searchClient}
+    indexName="projects"
+
+    routing={routing}>
+    <Configure hitsPerPage={200} />
+    <Router><App tab="home" /></Router>
+  </InstantSearch >);
 
 reportWebVitals();
 
@@ -68,7 +114,7 @@ export async function GetWorks(db) {
   }
 
 }
-GetWorks(db)
+GetWorks(db);
 
 async function GetBlog(db) {
   cloud.UILoading = true;
@@ -79,7 +125,6 @@ async function GetBlog(db) {
   cloud.UILoading = false;
 }
 export async function GetQuotes(db) {
-  cloud.UILoading = true;
   if (navigator.onLine) {
     const siteRef = collection(db, "siteinfo");
     const siteinfoSnapshot = await getDocs(siteRef);
@@ -88,10 +133,13 @@ export async function GetQuotes(db) {
     const random = Math.floor(Math.random() * quotes.length);
     return quotes[random];
   }
-  cloud.UILoading = false;
 }
 export async function newQuote() {
-  GetQuotes(db).then(res => state.quotes = res);
+  cloud.UILoading = true;
+  GetQuotes(db).then(res => {
+    state.quotes = res;
+    cloud.UILoading = false;
+  });
 }
 
 export async function GetSectors(db, work) {
@@ -111,7 +159,6 @@ export async function GetStore() {
   state.store = storeSnapshot.docs.map(doc => doc.data());
   cloud.UILoading = false;
 }
-GetStore();
 
 // Themes
 

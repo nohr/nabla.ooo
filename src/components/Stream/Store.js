@@ -7,10 +7,11 @@ import Tilty from 'react-tilty';
 import { DiagonalArrow, EkoThumb, Header } from "../UI/svg";
 import { state } from "../UI/state";
 import { useSnapshot } from "valtio";
+import { GetStore } from "../..";
 
 function Store(props) {
   const snap = useSnapshot(state)
-
+  GetStore();
   return (<>
     <Header id={"store"} />
     <Container overflow='hidden' className="container"

@@ -31,6 +31,47 @@ export function Page(id) {
         : `padding-left: 300px !important; `
       : ``;
 
+  // Manage modals
+  useEffect(() => {
+    function handleKeyPress(e) {
+      // esc to clear modal
+      if (e.key === "Escape") {
+        cloud.selectedDesc = null;
+        cloud.selectedImg = null;
+        return;
+      }
+
+      // Next
+      if (e.key === "ArrowRight") {
+        Next();
+        return;
+      }
+
+      // Prev
+      if (e.key === "ArrowLeft") {
+        Prev();
+        return;
+      }
+      // Do nothing when these are pressed
+      if (
+        e.key === "Enter" ||
+        e.key === "Shift" ||
+        e.key === "Meta" ||
+        e.key === "CapsLock" ||
+        e.key === "ArrowUp" ||
+        e.key === "ArrowDown" ||
+        e.key === "Alt"
+      ) {
+        return;
+      }
+    }
+
+    window.addEventListener("keyup", handleKeyPress);
+    return () => {
+      window.removeEventListener("keyup", handleKeyPress);
+    };
+  });
+
   //Toggle active panel buttons
   useEffect(() => {});
   if (id.id === "Home") {
@@ -84,7 +125,7 @@ export function Page(id) {
           opacity={opacity}
           pointerEvents={pointerEvents}
           transition={transition}
-          margin={margin}
+          margin={!clip.mobile ? margin : `padding-top: 100px !important; `}
         >
           <PageData id={id.id} />
           {clip.selectedImg ? <Modal /> : null}
@@ -299,7 +340,8 @@ export const Container = styled.div`
       display: flex;
       flex-direction: column;
       height: 20vh;
-      border: 1px solid ${(props) => props.theme.panelColor};
+      border: 1px solid ${(props) => props.theme.textHover};
+      color: ${(props) => props.theme.textHover};
       border-radius: 40px;
       box-shadow: none;
       /* background-color: ${(props) => props.theme.backdrop} !important; */
@@ -310,15 +352,16 @@ export const Container = styled.div`
       justify-content: space-around;
       margin: 20px !important;
       opacity: 1;
-      padding: 5px 10px;
+      padding: 10px;
       pointer-events: none;
+      backdrop-filter: blur(10px);
 
       & .icons {
         backdrop-filter: blur(30px);
         border-radius: 40px;
         flex-wrap: wrap;
         flex-direction: row-reverse;
-        padding: 10px 10px;
+        padding: 10px 20px;
         /* width: 90% !important; */
         justify-content: space-around !important;
         margin: 0 auto;
@@ -398,50 +441,10 @@ export const Container = styled.div`
             font-size: 2.2em;
           }
         }
-        @media all and (min-width: 1100px) {
-          body {
-            font-size: 2.4em;
-          }
-        }
-        @media all and (min-width: 1200px) {
-          body {
-            font-size: 2.6em;
-          }
-        }
-        @media all and (min-width: 1300px) {
-          body {
-            font-size: 2.8em;
-          }
-        }
-        @media all and (min-width: 1400px) {
-          body {
-            font-size: 3em;
-          }
-        }
-        @media all and (min-width: 1500px) {
-          body {
-            font-size: 3.2em;
-          }
-        }
-        @media all and (min-width: 1500px) {
-          body {
-            font-size: 3.4em;
-          }
-        }
-        @media all and (min-width: 1600px) {
-          body {
-            font-size: 3.6em;
-          }
-        }
-        @media all and (min-width: 1700px) {
-          body {
-            font-size: 3.8em;
-          }
-        }
       }
 
       & .Scroller {
-        text-indent: 20px;
+        text-indent: 10px;
         border-radius: 0 0 40px 40px;
         overflow-y: hidden !important;
         mask-image: -webkit-gradient(
@@ -475,7 +478,7 @@ export const Container = styled.div`
     left: 0;
     width: 100%;
     height: 100%;
-    background: ${(props) => props.theme.backdrop};
+    background: ${(props) => props.theme.backdrop} !important;
     display: flex;
     justify-content: center;
   }
@@ -497,13 +500,14 @@ export const Container = styled.div`
     -webkit-user-select: none;
     -ms-user-select: none;
     resize: both;
-
-    @media only screen and (max-width: 768px) {
-      max-width: 80%;
-      max-height: 100%;
-    }
   }
 
+  @media screen and (max-width: 768px) {
+    & .backdrop video {
+      max-width: 75%;
+      max-height: 80% !important;
+    }
+  }
   & .backdrop .description {
     border: 1px solid ${(props) => props.theme.panelColor};
     border-radius: 10px;

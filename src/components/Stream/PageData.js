@@ -253,7 +253,11 @@ const TrayWrapper = styled.div`
   height: 80% !important;
     padding:0 20px 20px 20px ;
     gap: 10px;
-  
+    @media screen and (max-width: 768px) {
+      & {
+        height: 50%;
+      }
+  }
 `
 const ImgWrapper = styled.div`
     width: 100%;
@@ -265,6 +269,11 @@ const ImgWrapper = styled.div`
     flex-wrap: nowrap;
     gap: 20px;
     padding-bottom: 5px;
+        @media screen and (max-width: 768px) {
+      & {
+        height: 50%;
+      }
+  }
 
     .img-thumb, video{
       border-radius: 5px;
@@ -281,6 +290,12 @@ const ImgWrapper = styled.div`
       pointer-events: all;
       filter: grayscale(0);
       transition: 0.3s;
+      
+      @media screen and (max-width: 768px) {
+      & {
+        padding: 0 80px;
+      }
+  }
 
       &:hover{
       cursor: pointer;

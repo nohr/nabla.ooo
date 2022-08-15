@@ -1,7 +1,9 @@
 
+import { useFrame } from '@react-three/fiber';
 import React, { useRef } from 'react';
 import * as THREE from "three";
-import { state } from '../UI/state';
+import { useSnapshot } from 'valtio';
+import { cloud, state } from '../UI/state';
 
 function Ball(props) {
   const material = new THREE.MeshPhysicalMaterial({
@@ -39,22 +41,28 @@ function Ball(props) {
 }
 
 export function CD({ ...props }) {
-  const group = useRef()
-  // useFrame(() => {
-  //   if (!state.canvasPaused) {
-  //     group.current.rotation.y += cloud.loading ? .009 : state.CDRotationX;
-  //     group.current.rotation.y += cloud.loading ? .009 : state.CDRotationY;
-  //   }
-  // });
+  const cd = useRef();
+  const clip = useSnapshot(cloud);
+
+  useFrame(() => {
+    if (clip.mobile) {
+      if (clip.talking) {
+        // console.log(cd.current);
+        cd.current.rotation.y += 0.05;
+      } else {
+        cd.current.rotation.x = Math.PI / -2.5;
+        cd.current.rotation.y = 0;
+        cd.current.rotation.z = 0;
+      }
+    }
+  });
 
   return (
-    <group ref={group} position={[0, 1.5, 0]} dispose={null}
+    <group ref={cd} position={[0, 1.5, 0]} scale={.01} dispose={null}
       {...props} receiveShadow castShadow >
-      <group position={[0, 0, 0]} scale={.01}>
-        <Ball position={[5.28, 0, -265.23]} />
-        <Ball position={[306.5, 0, 134.46]} />
-        <Ball position={[-296.7, 0, 134.46]} />
-      </group>
+      <Ball position={[5.28, 0, -265.23]} />
+      <Ball position={[306.5, 0, 134.46]} />
+      <Ball position={[-296.7, 0, 134.46]} />
     </group>
   )
 }

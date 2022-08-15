@@ -6,11 +6,14 @@ import { Folder } from "./style"
 import styled from "styled-components"
 import { NavLink } from "react-router-dom"
 import Draggable from "react-draggable"
-import { SvgNabla, Spinner, Arrow, SideArrow, Grabber, characters } from "./svg"
+import { HomeButton, characters } from './homeButton';
+import { Arrow, SideArrow } from "./svg"
+import { Grabber } from "./grabber"
 import { Search } from "./search"
 import { useSearchBox } from "react-instantsearch-hooks-web"
 import Scrambler from 'scrambling-text';
 import { newQuote } from "../.."
+import CircleType from "circletype"
 
 //Audio Imports
 // import useSound from "use-sound"
@@ -83,19 +86,33 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle }) {
     };
   }, []);
 
+  let title;
+  // CircleType
+  useEffect(() => {
+    title = document.querySelector(".song");
+    if (title) {
+      title = new CircleType(title).radius(clip.mobile ? 170 : 128);
+    }
+    return () => {
+      title = null;
+    }
+  }, [snap.songIndex, snap.colorChanged]);
+
+
   const onControlledDrag = (e, position) => {
     let { x, y } = position;
     state.proPosition = { x, y };
     state.optPosition = { x, y };
-    state.drag = true;
-    state.draged = true;
+    state.wheelPosition = { x, y };
+    cloud.drag = true;
+    cloud.dragged = true;
     nav.current.classList.add("glow");
   };
 
   const onControlledStop = (e, position) => {
     let { x, y } = position;
     state.navPosition = { x, y };
-    state.drag = false;
+    cloud.drag = false;
   }
 
 
@@ -107,7 +124,7 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle }) {
       onDrag={onControlledDrag} >
       <Nav ref={nav} className="Panel nav">
         <div className="header">
-          <SvgNabla nabla={nabla} dong={dong} clear={clear} />
+          <HomeButton nabla={nabla} dong={dong} clear={clear} />
           <div className="quote w">{text}</div>
         </div>
         {navigator.onLine && <Search />}

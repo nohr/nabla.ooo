@@ -13,8 +13,6 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     statement: null,
     //UI
     containerWidth: 0,
-    themeChanged: false,
-    colorChanged: false,
     modalPosition: { x: 0, y: 0 },
     descPosition: { x: 0, y: 0 },
     // Mobile
@@ -30,14 +28,14 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     isPro: false,
     isOpt: false,
     colorWheel: false,
-    drag: false,
-    draged: false,
+    dragged: false,
     prtSwitched: false,
     setSwitched: false,
     direction: true,
     navPosition: { x: 0, y: 0 },
     proPosition: { x: 0, y: 0 },
     optPosition: { x: 0, y: 0 },
+    wheelPosition: { x: 0, y: 0 },
     mobileNavPosition: { x: 0, y: 0 },
     searchPosition: { x: 0, y: 0 },
     grabberPosition: { x: 0, y: 0 },
@@ -49,20 +47,23 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     CDRotationX: 0.002,
     CDRotationY: 0.002,
     CDRotationZ: 0.0001,
-    cameraPosition: [-20, 10, -1],
+    cameraPosition: [-20, 5, -1],
     //Theme
     auto: false,
+    themeChanged: false,
+    colorChanged: false,
+    hue: 205,
     theme: "light",
     light: {
         //UI
         panelColor: "hsl(205, 100%, 28%)",
-        textHover: "#F3E8EE",
+        textHover: "#EBEBEB",
         placeholder: "hsl(205, 100%, 28%)",
         link: "hsl(205, 100%, 28%)",
         LiHover: "hsla(205, 100%, 28%, 0.67)",
         LiActiveBackground: "#5e5e5e67",
         blend: "plus-lighter",
-        backdrop: "#BFBFBF98",
+        backdrop: "#FFFFFFd7",
         layerBG: '#ffffff20',
         bwElement: '#000',
         //Canvas
@@ -82,13 +83,13 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     dark: {
         //UI
         panelColor: "hsl(205, 31%, 70%)",
-        textHover: "#F3E8EE",
+        textHover: "#EBEBEB",
         placeholder: "hsl(205, 31%, 70%)",
         link: "#C6182A",
         LiHover: "hsla(205, 31%, 70%, 0.67)",
         LiActiveBackground: "#ebebeb67",
         blend: "plus-lighter",
-        backdrop: "#00000098",
+        backdrop: "#000000d7",
         layerBG: '#00000020',
         bwElement: '#fff',
         //Canvas
@@ -122,8 +123,8 @@ export const cloud = proxy({
     sectors: [],
     projects: [],
     //UI
+    talking: false,
     UILoading: true,
-    hue: 205,
     mobile: false,
     preview: [],
     selected: [],
@@ -131,11 +132,14 @@ export const cloud = proxy({
     selectedImg: null,
     selectedDesc: null,
     chatMode: false,
+    // Panel
+    drag: false,
+    // Audio
     playMusic: false,
     playRate: 0.75,
-    resetRate: (Math.random() * (1.15 - 0.15) + 0.15),
+    resetRate: (Math.random() * (1.15 - 0.30) + 0.30),
     selectRate: (Math.random() * (1.15 - 0.85) + 0.85),
-    // Audio
+    // selectRate: 0.85,
     songs: [{
         name: 'tardigrade',
         artist: 'nohri',

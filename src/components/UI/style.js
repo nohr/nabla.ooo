@@ -33,7 +33,6 @@ export const Folder = styled.div`
                }
    }
 
-
   &.circleButton{
     border-radius: 50% !important;
     width: 50px !important;
@@ -50,7 +49,8 @@ export const Folder = styled.div`
     filter: drop-shadow(1px 1px 6px ${props => props.theme.LiHover});
     text-align: center;
     & svg{
-    animation: flashConfirm 0.6s steps(5, start) infinite;
+    animation: flashConfirm 1s steps(5, start) infinite;
+    animation-delay: 3s;
     -webkit-filter:none;
     filter:none ;
     fill: #ebebeb;
@@ -72,6 +72,9 @@ export const Folder = styled.div`
   .nextIcon, .modeIcon, .muteIcon, .ShowHideIcon, .ColorIcon{
     fill: ${props => props.theme.panelColor};
     overflow: visible;
+  }
+  .modeIcon{
+    stroke-width: 1px !important;
   }
   .ConfirmIcon,  .ResetIcon{
     height: 80%;
