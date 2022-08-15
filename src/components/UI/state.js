@@ -9,6 +9,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     projectClients: [],
     mediums: [],
     by: [],
+    quotes: "",
     statement: null,
     //UI
     containerWidth: 0,
@@ -121,7 +122,6 @@ export const cloud = proxy({
     clients: [],
     sectors: [],
     projects: [],
-    quotes: "",
     //UI
     talking: false,
     UILoading: true,
