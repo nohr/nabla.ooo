@@ -45,11 +45,11 @@ export function Grabber({ handle, resetButton, reset, navWrap, nav, setModal }) 
         let { x, y } = position;
         state.searchPosition = { x: (x / - 1.7), y: 0 };
         state.optionsPosition = { x: (x * 1.4), y: 0 };
-        state.grabberPosition = { x, y };
+        state.grabberPosition = { x: x, y: 0 };
     }
 
     return (
-        <Draggable bounds={clip.mobile ? ".mobileNavWrap" : "body"} nodeRef={grab} onDrag={clip.mobile ? onControlledDrag : () => false} axis="none" position={clip.mobile ? { x: snap.grabberPosition.x, y: 0 } : { x: 0, y: 0 }}>
+        <Draggable bounds={clip.mobile ? ".mobileNavWrap" : "body"} nodeRef={grab} onDrag={clip.mobile ? onControlledDrag : () => false} axis="none" position={clip.mobile ? snap.grabberPosition : { x: 0, y: 0 }}>
             <div ref={grab} className='GrabberWrap'>
                 {/* MOBILE HIDER */}
                 {snap.hideNav && !clip.dragged && clip.mobile ?

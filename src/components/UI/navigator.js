@@ -105,7 +105,7 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle }) {
     state.optPosition = { x, y };
     state.wheelPosition = { x, y };
     cloud.drag = true;
-    cloud.dragged = true;
+    state.dragged = true;
     nav.current.classList.add("glow");
   };
 
