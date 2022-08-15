@@ -89,7 +89,7 @@ function Projects({ select }) {
   return (
     <Draggable nodeRef={pro} position={snap.proPosition} positionOffset={offset} onStart={() => false} >
       <Project hide={hide} layout={layout} top={top} ref={pro}
-        className={state.drag ? "Panel pro glow" : "Panel pro"}
+        className={clip.drag ? "Panel pro glow" : "Panel pro"}
       >
         <p style={firstHeader}
           id="selfhead"
