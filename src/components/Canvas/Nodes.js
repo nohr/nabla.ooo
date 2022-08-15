@@ -14,8 +14,8 @@ function Node({ select, confirm, clear, hit, index, ...props }) {
     const element = types.get(extension[extension.length - 1].toLowerCase());
     const cover = useTexture(element === "img" ? hit.images[0] : hit.poster);
 
-    const selected = useSelect();
     // Handle node select
+    const selected = useSelect();
     const pos = useRef([0, 0, 0]);
     const [Ref, api] = useSphere(() => ({ mass: 10, position: [Math.floor(Math.random() * -2), (index + 5), Math.floor(Math.random() * -3)], args: selected[0] ? [3] : [1], ...props }));
 

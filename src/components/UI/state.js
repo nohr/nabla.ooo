@@ -9,7 +9,6 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     projectClients: [],
     mediums: [],
     by: [],
-    quotes: "",
     statement: null,
     //UI
     containerWidth: 0,
@@ -122,6 +121,7 @@ export const cloud = proxy({
     clients: [],
     sectors: [],
     projects: [],
+    quotes: "",
     //UI
     talking: false,
     UILoading: true,
@@ -154,7 +154,7 @@ export const cloud = proxy({
     frontback: 0,
     // Canvas
     CanvasLoading: true,
-    target: [0, 6, 3],
+    target: [0, 4, 3],
     selected: false,
     prevMat: null,
     mobileCameraPosition: [0, 20, 25],

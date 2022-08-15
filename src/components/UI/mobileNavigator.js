@@ -292,8 +292,8 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
     const [text, setText] = useState("");
     const quote = useRef(new Scrambler());
     useEffect(() => {
-        newQuote().then(() => quote.current.scramble(state.quotes, setText, { characters: characters }));
-    }, [snap.quotes]);
+        newQuote().then(() => quote.current.scramble(cloud.quotes, setText, { characters: characters }));
+    }, [clip.quotes]);
 
     function toggleModal(link) {
         let index;

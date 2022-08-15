@@ -50,9 +50,9 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle }) {
   const quote = useRef(new Scrambler());
   useEffect(() => {
     newQuote().then(() => {
-      quote.current.scramble(state.quotes, setText, { characters: characters });
+      quote.current.scramble(cloud.quotes, setText, { characters: characters });
     });
-  }, [snap.quotes]);
+  }, [clip.quotes]);
 
   // Glow
   let pro;

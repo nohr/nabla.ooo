@@ -12,6 +12,7 @@ import { useSearchBox, useInfiniteHits } from 'react-instantsearch-hooks-web'
 //Audio Imports
 import useSound from "use-sound"
 import sound1 from "./components/Sounds/select.mp3"
+import sound5 from "./components/Sounds/select2.mp3"
 import sound2 from "./components/Sounds/open.mp3"
 import sound3 from "./components/Sounds/close.mp3"
 import sound4 from "./components/Sounds/confirm.mp3"
@@ -61,6 +62,7 @@ function App() {
   const { hits } = useInfiniteHits({ transformItems });
   const [selectRate, setSelectRate] = useState(1)
   const [select] = useSound(sound1, { volume: snap.sfxVolume, soundEnabled: !snap.muted, playbackRate: clip.selectRate });
+  const [select2] = useSound(sound5, { volume: snap.sfxVolume, soundEnabled: !snap.muted, playbackRate: clip.selectRate });
   const [confirm] = useSound(sound4, { volume: snap.sfxVolume, soundEnabled: !snap.muted });
   const [open] = useSound(sound2, { volume: snap.sfxVolume, soundEnabled: !snap.muted });
   const [close] = useSound(sound3, { volume: snap.sfxVolume, soundEnabled: !snap.muted });
@@ -90,7 +92,7 @@ function App() {
 
   return <>
     <UI setSelectRate={setSelectRate} nabla={nabla} select={select} confirm={confirm} open={open} close={close} />
-    <Composition query={query} hits={hits} clear={clear} setSelectRate={setSelectRate} nabla={nabla} select={select} confirm={confirm} />
+    <Composition snap={snap} clip={clip} query={query} hits={hits} clear={clear} setSelectRate={setSelectRate} nabla={nabla} select={select2} confirm={confirm} />
   </>
 }
 

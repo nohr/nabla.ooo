@@ -192,6 +192,23 @@ function Bounds() {
     /></>
 }
 
+function Lights() {
+  const snap = useSnapshot(state);
+  return <>
+    {/* SPOTLIGHT */}
+    <spotLight intensity={snap.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}
+      decay={2}
+      angle={Math.PI / 2}
+      color={snap.theme === 'light' ? snap.light.spotlight : snap.dark.spotlight}
+      position={[90, 60, -50]} />
+    {/* RECT LIGHT */}
+    <rectAreaLight intensity={snap.theme === 'light' ? snap.light.rectIntensity : snap.dark.rectIntensity}
+      args={[(snap.theme === 'light' ? snap.light.panelColor : snap.dark.panelColor), 20, 20, 20]} position={[0, -1, 0]} rotation-x={-Math.PI / 2} />
+    {/* AMBIENT LIGHT */}
+    <ambientLight intensity={snap.theme === 'light' ? snap.light.ambIntensity : snap.dark.ambIntensity} />
+  </>
+}
+
 // Composition
 function Composition({ select, confirm, query, hits, clear, nabla }) {
   const snap = useSnapshot(state);
@@ -267,17 +284,7 @@ function Composition({ select, confirm, query, hits, clear, nabla }) {
       } position={clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition} rotation={clip.mobile ? clip.mobileCameraRotation : undefined} far={80} near={.1} fov={clip.mobile ? 25 : 20} />
       {/* FOG */}
       <fog attach="fog" args={[snap.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, clip.mobile ? snap.theme === 'light' ? 60 : 50 : 30]} />
-      {/* SPOTLIGHT */}
-      <spotLight intensity={snap.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}
-        decay={2}
-        angle={Math.PI / 2}
-        color={snap.theme === 'light' ? snap.light.spotlight : snap.dark.spotlight}
-        position={[90, 60, -50]} />
-      {/* RECT LIGHT */}
-      <rectAreaLight intensity={snap.theme === 'light' ? snap.light.rectIntensity : snap.dark.rectIntensity}
-        args={[(snap.theme === 'light' ? snap.light.panelColor : snap.dark.panelColor), 20, 20, 20]} position={[0, -1, 0]} rotation-x={-Math.PI / 2} />
-      {/* AMBIENT LIGHT */}
-      <ambientLight intensity={snap.theme === 'light' ? snap.light.ambIntensity : snap.dark.ambIntensity} />
+      <Lights />
       <Physics
         gravity={[clip.leftright, -9.8, clip.frontback]}
         isPaused={snap.canvasPaused}>
@@ -291,7 +298,7 @@ function Composition({ select, confirm, query, hits, clear, nabla }) {
               </Select>
             </Suspense>
             <Bounds />
-            <ContactShadows frames={1} position={[0, -0.5, 0]} scale={10} opacity={0.4} far={1} blur={2} />
+            {/* <ContactShadows frames={1} position={[0, -0.5, 0]} scale={10} opacity={0.4} far={1} blur={2} /> */}
             {/* <CD position={[0, 10, -20]} rotation={[Math.PI / -2.5, 0, 0]} /> */}
           </Router> : <CD rotation={[-Math.PI / 2, Math.PI / 2, Math.PI / 2]} />}
       </Physics>
