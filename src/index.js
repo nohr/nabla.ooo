@@ -137,7 +137,7 @@ export async function GetQuotes(db) {
 export async function newQuote() {
   cloud.UILoading = true;
   GetQuotes(db).then(res => {
-    cloud.quotes = res;
+    state.quotes = res;
     cloud.UILoading = false;
   });
 }
