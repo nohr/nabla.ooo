@@ -11,6 +11,7 @@ import { EffectComposer, Noise } from '@react-three/postprocessing'
 // import { ShaderMaterial } from 'three'
 import { Debug, Physics, usePlane } from '@react-three/cannon';
 import { Router } from 'wouter'
+import { useInfiniteHits } from 'react-instantsearch-hooks-web'
 
 // Spinner
 const Spinner = () => {
@@ -119,7 +120,7 @@ function Floor() {
         maxDepthThreshold={1.1}
         depthScale={2}
         depthToBlurRatioBias={0.2}
-        color={snap.theme === 'light' ? snap.light.Surface : snap.dark.Surface}
+        color={snap.theme === 'light' ? state.light.Surface : state.dark.Surface}
         metalness={0}
         roughness={snap.theme === 'light' ? snap.light.SurfaceRough : snap.dark.SurfaceRough}
         roughnessMap={roughness}
@@ -209,13 +210,23 @@ function Lights() {
   </>
 }
 
+const transformItems = (items) => { return items.filter(item => item.images && ({ ...item })); };
 // Composition
-function Composition({ select, confirm, query, hits, clear, nabla }) {
+function Composition({ select, confirm, query, clear }) {
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
   const [selected, setSelected] = useState([]);
   const [target, setTarget] = useState([0, 6, 3]);
   const camera = useRef(null);
+  const { hits } = useInfiniteHits({ transformItems });
+
+  useEffect(() => {
+    for (let i = hits.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [hits[i], hits[j]] = [hits[j], hits[i]];
+    }
+  }, [])
+
   // Handle deselection
   // useEffect(() => {
   //   if (nabla.current) {
@@ -269,9 +280,7 @@ function Composition({ select, confirm, query, hits, clear, nabla }) {
     // );
   }, [])
 
-  useEffect(() => {
-    console.log("render");
-  }, [])
+  console.log("render");
 
   return (
     <Canvas

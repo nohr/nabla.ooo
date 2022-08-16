@@ -11,9 +11,8 @@ let talking = false;
 
 // Text scrambler
 export const characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '.', '!', '?', ' ', ' ', ' ', ' ', ' '];
-export function HomeButton({ quote, clear, dong, nabla, setColor, color, text, setText }) {
+export function HomeButton({ quote, clear, query, dong, nabla, setColor, color, text, setText }) {
     const svg = useRef(null);
-    const clip = useSnapshot(cloud);
     const snap = useSnapshot(state);
 
     function getRandom(max, min) {
@@ -34,7 +33,7 @@ export function HomeButton({ quote, clear, dong, nabla, setColor, color, text, s
             cloud.mobileCameraPosition = [0, 20, 25];
             // cloud.mobileCameraRotation = [0, 0, 0];
             // cloud.mobileCameraQuaternion = [0, 0, 0];
-            cloud.selected = false;
+            // cloud.selected = false;
         }
         nabla.current && nabla.current.setAttribute("style", `
         background-color: transparent !important;
@@ -74,7 +73,7 @@ export function HomeButton({ quote, clear, dong, nabla, setColor, color, text, s
         if (!talking) {
             cloud.playRate = (Math.random() * (0.45 - 0.15) + 0.15).toFixed(2);
             cloud.selected = false;
-            clear();
+            if (query.length > 0) { clear(); };
             dong();
             taps += 1;
             setTimeout(() => {
@@ -83,24 +82,21 @@ export function HomeButton({ quote, clear, dong, nabla, setColor, color, text, s
                     talking = true;
                     cloud.talking = true;
                     // TODO: Trigger smile animation
-                    newQuote().then(() => {
-                        quote.current.scramble(state.quotes, setText, { characters: characters });
-                    });
+                    newQuote().then(() => { quote.current.scramble(state.quotes, setText, { characters: characters }); });
                     // console.log(snap.quotes.split(' ').length);
                     const loop = setInterval(() => {
                         // toggleTheme();
                         // document.getElementById("theme-color").style.transition = cloud.playRate * 500;
-                        state.hue += (taps * factor);
-                        console.log(state.hue += (taps * factor));
-                        (state.hue < 360) ? toHslString(state.hue) : toHslString(0);
+                        // state.hue += (taps * factor);
+                        // console.log(state.hue += (taps * factor));
+                        // (state.hue < 360) ? toHslString(state.hue) : toHslString(0);
                         cloud.playRate = (Math.random() * (0.70 - 0.50) + 0.55).toFixed(2);
                         dong();
                         activeTap();
                         // setColor(color.hue + 10);
                         // console.log(color);
                     }, speed);
-                    setTimeout(() => clearInterval(loop), time);
-                    setTimeout(() => { talking = false; cloud.talking = false; cloud.UILoading = false; }, time);
+                    setTimeout(() => { clearInterval(loop); talking = false; cloud.talking = false; cloud.UILoading = false; }, time);
                     console.log(taps, amount, speed, time, state.hue);
                 }
                 taps = 0;

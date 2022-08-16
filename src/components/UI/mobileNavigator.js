@@ -350,6 +350,7 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
 
     const onControlledDrag = (e, position) => {
         cloud.drag = true;
+        state.dragged = true;
         let { x, y } = position;
         state.mobileNavPosition.y = y;
     };
@@ -407,7 +408,7 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
                                 {svg["search"]}
                             </NavButton>}
                             {/* Home Button */}
-                            <HomeButton text={text} setText={setText} quote={quote} setColor={setColor} color={color} nabla={nabla} dong={dong} clear={clear} />
+                            <HomeButton text={text} setText={setText} quote={quote} setColor={setColor} color={color} nabla={nabla} dong={dong} clear={clear} query={query} />
                             {/* Options Button */}
                             {(!clip.CanvasLoading) && <NavButton
                                 className={`${options && "active"} li w`}

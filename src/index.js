@@ -64,7 +64,7 @@ root.render(
     indexName="projects"
 
     routing={routing}>
-    <Configure hitsPerPage={200} />
+    <Configure hitsPerPage={50} />
     <Router><App tab="home" /></Router>
   </InstantSearch >);
 

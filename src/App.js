@@ -7,7 +7,7 @@ import { getGPUTier } from 'detect-gpu';
 import { useSnapshot } from 'valtio';
 
 // Search Imports
-import { useSearchBox, useInfiniteHits } from 'react-instantsearch-hooks-web'
+import { useSearchBox } from 'react-instantsearch-hooks-web'
 
 //Audio Imports
 import useSound from "use-sound"
@@ -46,20 +46,13 @@ export function getGyro(gyro) {
     state.gyro = false;
     return;
   }
-
-};
-
-const transformItems = (items) => {
-  return items.filter(item => item.images && ({ ...item }));
 };
 
 //App 
 function App() {
-  const nabla = useRef(null);
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
   const { query, clear } = useSearchBox();
-  const { hits } = useInfiniteHits({ transformItems });
   const [selectRate, setSelectRate] = useState(1)
   const [select] = useSound(sound1, { volume: snap.sfxVolume, soundEnabled: !snap.muted, playbackRate: clip.selectRate });
   const [select2] = useSound(sound5, { volume: snap.sfxVolume, soundEnabled: !snap.muted, playbackRate: clip.selectRate });
@@ -91,8 +84,8 @@ function App() {
   // cloud.CanvasLoading = false;
 
   return <>
-    <UI setSelectRate={setSelectRate} nabla={nabla} select={select} confirm={confirm} open={open} close={close} />
-    <Composition snap={snap} clip={clip} query={query} hits={hits} clear={clear} setSelectRate={setSelectRate} nabla={nabla} select={select2} confirm={confirm} />
+    <UI setSelectRate={setSelectRate} select={select} confirm={confirm} open={open} close={close} />
+    <Composition query={query} clear={clear} select={select2} confirm={confirm} />
   </>
 }
 

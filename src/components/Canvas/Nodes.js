@@ -60,6 +60,7 @@ function Node({ select, confirm, clear, hit, index, ...props }) {
                     clear();
                     confirm();
                 } else {
+                    cloud.preview = [hit];
                     console.log();
                     // Ref.current.scale.set([1, 1, 1]);
                     select();

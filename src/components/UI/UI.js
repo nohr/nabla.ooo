@@ -63,12 +63,13 @@ export function toHslString(color) {
   }
 }
 //UI -- Parent Component
-function UI({ select, confirm, open, close, nabla, quote, text, setText }) {
+function UI({ select, confirm, open, close, quote, text, setText }) {
   const [colorWheel, setColorWheel] = useState(false);
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
   const wheel = useRef();
   const handle = useRef();
+  const nabla = useRef(null);
   const { query, refine, clear } = useSearchBox();
   snap.cached ? (snap.theme === 'light' ? firstColor = snap.light.panelColor : firstColor = snap.dark.panelColor) : (snap.theme === 'light' ? firstColor = 'hsl(205, 100%, 28%)' : firstColor = 'hsl(205, 31%, 64%)');
   const [color, setColor] = useState(parseColor(firstColor));

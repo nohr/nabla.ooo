@@ -42,7 +42,7 @@ export function resetWheel() {
 function Navigator({ nabla, dong, confirm, select, reset, song, handle }) {
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
-  const { clear } = useSearchBox();
+  const { query, clear } = useSearchBox();
   const nav = useRef(null);
 
   // Text Scramble
@@ -124,7 +124,7 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle }) {
       onDrag={onControlledDrag} >
       <Nav ref={nav} className="Panel nav">
         <div className="header">
-          <HomeButton nabla={nabla} dong={dong} clear={clear} />
+          <HomeButton nabla={nabla} dong={dong} clear={clear} query={query} />
           <div className="quote w">{text}</div>
         </div>
         {navigator.onLine && <Search />}
