@@ -1,9 +1,9 @@
 import React from "react";
 import '../../../App.css'
 import { Container } from "./Page";
-import { cloud } from "../../common/state";
+import { cloud } from "../../utils/state";
 import { useSnapshot } from "valtio";
-import { Program } from "../../common/svg";
+import { Program } from "../../utils/svg";
 import { CreatorMedal, InfoBox, Scroller } from "./Results";
 
 function Home() {

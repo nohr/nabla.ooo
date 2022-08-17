@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from "react"
-import { cloud, state } from "../common/state"
+import { cloud, state } from "../utils/state"
 import styled from "styled-components"
 import { NavLink } from "react-router-dom"
 import { useSnapshot } from "valtio"
-import { activeTap, characters, handleClick, newQuote, unActiveTap } from "../common/utils"
+import { activeTap, characters, handleClick, newQuote, unActiveTap } from "../utils/common"
 import Scrambler from "scrambling-text"
 import Draggable from "react-draggable"
 

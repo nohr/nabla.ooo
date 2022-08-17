@@ -4,10 +4,10 @@ import { Container } from "./Page";
 import { HashLink } from "react-router-hash-link";
 import styled from "styled-components";
 import Tilty from 'react-tilty';
-import { DiagonalArrow, EkoThumb, Header } from "../../common/svg";
-import { state } from "../../common/state";
+import { DiagonalArrow, EkoThumb, Header } from "../../utils/svg";
+import { state } from "../../utils/state";
 import { useSnapshot } from "valtio";
-import { GetStore } from "../../common/utils";
+import { GetStore } from "../../utils/common";
 
 function Store(props) {
   const snap = useSnapshot(state)

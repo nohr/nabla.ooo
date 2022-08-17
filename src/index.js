@@ -5,8 +5,8 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from 'react-router-dom'
 import { Configure, InstantSearch } from 'react-instantsearch-hooks-web';
-import { GetWorks, routing, searchClient, Theme } from "./components/common/utils";
-import { cloud } from "./components/common/state";
+import { GetWorks, routing, searchClient, Theme } from "./components/utils/common";
+import { cloud } from "./components/utils/state";
 
 const container = document.getElementById("root");
 const root = createRoot(container);

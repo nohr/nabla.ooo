@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { state, cloud } from "../../common/state";
+import { state, cloud } from "../../utils/state";
 import { useSnapshot } from "valtio";
 import styled from "styled-components"
-import { Header, Program } from "../../common/svg";
+import { Header, Program } from "../../utils/svg";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 // Search Imports
 import { useHits, useRefinementList } from 'react-instantsearch-hooks-web';
 import { useSearchBox } from "react-instantsearch-hooks-web";
-import { useDocumentTitle } from "../../common/utils";
+import { useDocumentTitle } from "../../utils/common";
 
 
 export function CreatorMedal({ name }) {

@@ -1,9 +1,9 @@
 import React, { useRef, useEffect } from 'react'
-import { ClearIcon } from '../common/svg';
+import { ClearIcon } from '../utils/svg';
 import styled from 'styled-components';
 import { useSnapshot } from 'valtio';
-import { cloud, state } from '../common/state';
-import { Folder, offset } from '../common/utils';
+import { cloud, state } from '../utils/state';
+import { Folder, offset } from '../utils/common';
 import Draggable from 'react-draggable';
 import { } from './mobileNavigator';
 

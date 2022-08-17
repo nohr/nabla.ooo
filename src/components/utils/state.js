@@ -1,5 +1,5 @@
 import { proxy, subscribe } from "valtio"
-import { GetQuotes, originalColors, target } from "./utils";
+import { GetQuotes, originalColors, target } from "./common";
 
 const storedStateString = localStorage.getItem('state');
 const initialState = storedStateString ? JSON.parse(storedStateString) : {

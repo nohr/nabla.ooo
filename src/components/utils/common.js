@@ -860,12 +860,12 @@ export function toggleModal(link, modal, setModal, setOffset, open, close) {
         }
     };
 };
-export function resetPos(setModal, reset, search, navWrap, clip) {
+export function resetPos(setModal, reset, search, navWrap, snap) {
     setModal(false);
     cloud.resetRate = Math.random() * (0.85 - 0.65) + 0.65;
     reset();
     navWrap.current.style.transition = "1.3s";
-    if (clip.dragged) {
+    if (snap.dragged) {
         state.hideNav = false;
         state.searchPosition = { x: 0, y: 0 };
         state.optionsPosition = { x: 0, y: 0 };
@@ -875,10 +875,10 @@ export function resetPos(setModal, reset, search, navWrap, clip) {
         state.hideNav = true;
         state.mobileNavPosition = {
             x: 0,
-            y: search ? 10 : -offset,
+            y: search ? 0 : -offset,
         };
     }
-    cloud.dragged = false;
+    state.dragged = false;
     setTimeout(() => {
         navWrap.current.style.transition = "0.1s";
         console.log("transition returned");

@@ -1,8 +1,8 @@
 //UI -- Parent Component
 import React, { useEffect, useState, useRef, memo } from "react"
-import { state, cloud } from "../common/state"
+import { state, cloud } from "../utils/state"
 import { useSnapshot } from "valtio"
-import { GlobalStyle, Wheel } from "../common/utils"
+import { GlobalStyle, Wheel } from "../utils/common"
 import Navigator from "./navigator"
 import Projects from "./projects"
 import Options from "./options"

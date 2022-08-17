@@ -1,12 +1,12 @@
 //Options -- Child of Panel
 import React, { useEffect, useRef } from "react"
-import { cloud, state } from "../common/state"
+import { cloud, state } from "../utils/state"
 import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
-import { Folder } from "../common/utils"
+import { Folder } from "../utils/common"
 import styled from "styled-components"
-import { ColorIcon, DirectionIcon, ModeIcon, MuteIcon, NextIcon, PlayPauseIcon, ShowHideIcon } from "../common/svg"
-import { useWindowDimensions, getPosOpt, NextSong, OpenWheel, ToggleMusic, togglePause, toggleTheme } from "../common/utils"
+import { ColorIcon, DirectionIcon, ModeIcon, MuteIcon, NextIcon, PlayPauseIcon, ShowHideIcon } from "../utils/svg"
+import { useWindowDimensions, getPosOpt, NextSong, OpenWheel, ToggleMusic, togglePause, toggleTheme } from "../utils/common"
 
 function Options({ setSong, select }) {
     const opt = useRef(null);

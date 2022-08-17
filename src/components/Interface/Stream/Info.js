@@ -4,7 +4,7 @@ import { Container } from "./Page";
 // import { state } from '../UI/state'
 // import { useSnapshot } from 'valtio'
 import styled from "styled-components"
-import { Header, OldCD } from "../../common/svg";
+import { Header, OldCD } from "../../utils/svg";
 import { CreatorMedal } from "./Results";
 
 // const ContactForm = () => {

@@ -243,7 +243,6 @@ export function NextIcon() {
 }
 export function ShowHideIcon({ n }) {
   const snap = useSnapshot(state);
-  const clip = useSnapshot(cloud);
   if (n === 0) {
     if (snap.canvasVisible === true) {
       return (
@@ -295,7 +294,7 @@ export function ShowHideIcon({ n }) {
       );
     }
   } else if (n === 2) {
-    if (clip.dragged) {
+    if (snap.dragged) {
       return (
         <Caret
           focusable="false"
@@ -307,7 +306,7 @@ export function ShowHideIcon({ n }) {
           <path d="M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z"></path>
         </Caret>
       );
-    } else if (!clip.dragged) {
+    } else if (!snap.dragged) {
       return (
         <svg
           xmlns="http://www.w3.org/2000/svg"

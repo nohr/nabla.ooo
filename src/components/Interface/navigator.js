@@ -1,8 +1,8 @@
 //Navigator -- Child of <UI />
 import React, { useEffect, useRef, useState } from "react"
-import { cloud, state } from "../common/state"
-import { Song, closeWheel, resetWheel, Folder } from "../common/utils"
-import { Arrow, SideArrow, SearchBarIcon, ClearIcon } from "../common/svg"
+import { cloud, state } from "../utils/state"
+import { Song, closeWheel, resetWheel, Folder } from "../utils/common"
+import { Arrow, SideArrow, SearchBarIcon, ClearIcon } from "../utils/svg"
 import { useSnapshot } from "valtio"
 import styled from "styled-components"
 import { NavLink } from "react-router-dom"

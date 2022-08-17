@@ -1,11 +1,11 @@
 //Projects -- Child of Panel
 import { useRef } from "react"
-import { cloud, state } from "../common/state"
+import { cloud, state } from "../utils/state"
 import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
 import { NavLink } from "react-router-dom"
 import styled from "styled-components"
-import { getPosPro, useWindowDimensions } from "../common/utils"
+import { getPosPro, useWindowDimensions } from "../utils/common"
 
 function Projects({ select }) {
   const pro = useRef(null);

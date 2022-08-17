@@ -6,7 +6,7 @@ import React, { useEffect, useRef } from 'react';
 import * as THREE from "three";
 import { useSnapshot } from 'valtio';
 import { useLocation } from 'wouter';
-import { cloud, state } from '../common/state';
+import { cloud, state } from '../utils/state';
 
 function Node({ select, confirm, clear, hit, index, ...props }) {
     const snap = useSnapshot(state);

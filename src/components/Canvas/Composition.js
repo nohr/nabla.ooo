@@ -1,6 +1,6 @@
 import React, { useState, Suspense, useEffect, useLayoutEffect, useRef } from 'react'
 import "../../App.css"
-import { cloud, state } from '../common/state'
+import { cloud, state } from '../utils/state'
 import { useSnapshot } from 'valtio'
 import { CD } from './CD'
 import { Nodes } from './Nodes'
@@ -12,7 +12,7 @@ import { EffectComposer, Noise } from '@react-three/postprocessing'
 import { Debug, Physics, usePlane } from '@react-three/cannon';
 import { Router } from 'wouter'
 import { useInfiniteHits } from 'react-instantsearch-hooks-web'
-import { transformItems } from '../common/utils'
+import { transformItems } from '../utils/common'
 
 // Spinner
 const Spinner = () => {

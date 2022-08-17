@@ -7,10 +7,10 @@ import {
   NextIcon,
   PlayPauseIcon,
   ShowHideIcon,
-} from "../common/svg";
+} from "../utils/svg";
 import styled from "styled-components";
 import { useSnapshot } from "valtio";
-import { cloud, state } from "../common/state";
+import { cloud, state } from "../utils/state";
 import {
   Folder,
   offset,
@@ -19,7 +19,7 @@ import {
   toggleTheme,
   getGyro,
   resetPos,
-} from "../common/utils";
+} from "../utils/common";
 import Draggable from "react-draggable";
 import { Stats } from "@react-three/drei";
 
@@ -40,14 +40,14 @@ export function Options({
   const carousel = useRef(null);
 
   useEffect(() => {
-    if (!clip.dragged) {
+    if (!snap.dragged) {
       state.mobileNavPosition.y = state.mobileNavPosition.y + offset;
     }
 
     cloud.opt = true;
     return () => {
       cloud.opt = false;
-      if (!clip.dragged) {
+      if (!snap.dragged) {
         state.mobileNavPosition.y = state.mobileNavPosition.y - offset;
       }
     };
@@ -57,7 +57,7 @@ export function Options({
   useEffect(() => {
     const rad = Math.atan(state.grabberPosition.x / -state.mobileNavPosition.y);
     const deg = rad * (180 / Math.PI);
-    if (cloud.dragged) {
+    if (snap.dragged) {
       resetButton.current.style.transform = `rotate(${deg}deg)`;
     }
   }, [state.grabberPosition]);
@@ -159,7 +159,7 @@ export function Options({
             <Folder
               ref={resetButton}
               onTouchEnd={() =>
-                resetPos(setModal, reset, search, navWrap, clip)
+                resetPos(setModal, reset, search, navWrap, snap)
               }
               className={`li resetPos w`}
             >

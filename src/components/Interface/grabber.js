@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 import Draggable from "react-draggable";
 import { useSnapshot } from "valtio";
-import { cloud, state } from "../common/state";
-import { Folder, offset } from "../common/utils";
-import { ResetIcon, ShowHideIcon } from "../common/svg";
+import { cloud, state } from "../utils/state";
+import { Folder, offset } from "../utils/common";
+import { ResetIcon, ShowHideIcon } from "../utils/svg";
 
 export function Grabber({ handle, reset, navWrap, nav, setModal }) {
     const grab = useRef(null);
@@ -12,7 +12,7 @@ export function Grabber({ handle, reset, navWrap, nav, setModal }) {
 
     function handleEvent(e) {
         if (e.type === "mousedown" || e.type === "touchmove") {
-            cloud.dragged = true;
+            state.dragged = true;
             navWrap.current.style.overFlowX = 'visible';
             // navWrap.current.setAttribute("style", "transition: 0s !important;");
             handle.current.setAttribute("style", `fill-opacity: 100% !important; stroke-width: 0px !important; transition: 0s !important; cursor:grab !important;`);
@@ -51,7 +51,7 @@ export function Grabber({ handle, reset, navWrap, nav, setModal }) {
         <Draggable bounds={clip.mobile ? ".mobileNavWrap" : "body"} nodeRef={grab} onDrag={clip.mobile ? onControlledDrag : () => false} axis="none" position={clip.mobile ? snap.grabberPosition : { x: 0, y: 0 }}>
             <div ref={grab} className='GrabberWrap'>
                 {/* MOBILE HIDER */}
-                {snap.hideNav && !clip.dragged && clip.mobile ?
+                {snap.hideNav && !snap.dragged && clip.mobile ?
                     <Folder
                         onTouchEnd={() => {
                             reset();
@@ -61,7 +61,7 @@ export function Grabber({ handle, reset, navWrap, nav, setModal }) {
                                 navWrap.current.style.transition = "0.1s";
                             }, "1300");
                             state.hideNav = false;
-                            cloud.dragged = false;
+                            state.dragged = false;
                         }}
                         className={`li resetPos w`}>{clip.mobile ? <ShowHideIcon n={1} /> : <ResetIcon />}
                     </Folder> :
@@ -81,23 +81,6 @@ export function Grabber({ handle, reset, navWrap, nav, setModal }) {
                     </svg>}
                 {(!clip.mobile && snap.dragged) &&
                     <Folder
-                        onTouchEnd={() => {
-                            setModal(false);
-                            cloud.resetRate = (Math.random() * (0.85 - 0.65) + 0.65);
-                            reset();
-                            grab.current.style.transition = "1.3s";
-                            navWrap.current.style.transition = "1.3s";
-                            state.searchPosition = { x: 0, y: 0 };
-                            state.optionsPosition = { x: 0, y: 0 };
-                            state.grabberPosition = { x: 0, y: 0 };
-                            state.mobileNavPosition = { x: 0, y: 0 };
-                            cloud.dragged = false;
-                            setTimeout(() => {
-                                navWrap.current.style.transition = "0.1s";
-                                grab.current.style.transition = "1.3s";
-                                console.log("transition returned");
-                            }, "1300");
-                        }}
                         onClick={() => {
                             state.isOpt = false;
                             state.isPro = false;
@@ -107,7 +90,7 @@ export function Grabber({ handle, reset, navWrap, nav, setModal }) {
                             state.navPosition = { x: 0, y: 0 };
                             state.proPosition = { x: 0, y: 0 };
                             state.optPosition = { x: 0, y: 0 };
-                            cloud.dragged = false;
+                            state.dragged = false;
                             setTimeout(() => {
                                 nav.current.style.transition = "0.1s";
                                 console.log("transition returned");

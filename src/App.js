@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './App.css'
-import { cloud, state } from './components/common/state'
-import { getGyro, newQuote, toHslString, originalColors, useWindowDimensions } from './components/common/utils'
+import { cloud, state } from './components/utils/state'
+import { getGyro, newQuote, toHslString, originalColors, useWindowDimensions } from './components/utils/common'
 import { useSnapshot } from 'valtio';
 import Interface from './components/Interface/Interface';
 import Composition from './components/Canvas/Composition'

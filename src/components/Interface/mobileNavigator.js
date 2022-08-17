@@ -1,10 +1,10 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { useSnapshot } from 'valtio';
-import { cloud, state } from '../common/state';
-import { Folder, Wheel, resetWheel, toggleModal, Song } from '../common/utils';
+import { cloud, state } from '../utils/state';
+import { Folder, Wheel, resetWheel, toggleModal, Song } from '../utils/common';
 import { Search } from './mobileSearch';
 import { Options } from './mobileOptions';
-import { ConfirmIcon, ResetIcon } from '../common/svg';
+import { ConfirmIcon, ResetIcon } from '../utils/svg';
 import { HomeButton, Quote } from './homeButton';
 import { Grabber } from './grabber';
 import styled from 'styled-components';
