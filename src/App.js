@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './App.css'
 import { cloud, state } from './components/common/state'
-import { getGyro, newQuote, toHslString, originalColors } from './components/common/utils'
+import { getGyro, newQuote, toHslString, originalColors, useWindowDimensions } from './components/common/utils'
 import { useSnapshot } from 'valtio';
 import Interface from './components/Interface/Interface';
 import Composition from './components/Canvas/Composition'
@@ -32,6 +32,8 @@ function App() {
   const [close] = useSound(sound3, { volume: snap.sfxVolume, soundEnabled: !snap.muted });
   snap.cached ? (snap.theme === 'light' ? firstColor = snap.light.panelColor : firstColor = snap.dark.panelColor) : (snap.theme === 'light' ? firstColor = originalColors.light.panelColor : firstColor = originalColors.dark.panelColor);
   const [color, setColor] = useState(parseColor(firstColor));
+  let vWidth = useWindowDimensions().width;
+  let vHeight = useWindowDimensions().height;
 
   useEffect(() => {
     state.hue = color.hue;
@@ -72,7 +74,7 @@ function App() {
 
   return <>
     <Interface color={color} setColor={setColor} firstColor={firstColor} select={select} confirm={confirm} open={open} close={close} useSound={useSound} />
-    <Composition query={query} clear={clear} select={select2} confirm={confirm} />
+    <Composition vWidth={vWidth} vHeight={vHeight} query={query} clear={clear} select={select2} confirm={confirm} />
   </>
 }
 

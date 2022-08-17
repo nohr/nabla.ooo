@@ -1,12 +1,15 @@
 import { useSphere } from '@react-three/cannon';
 import { useSelect, useTexture } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
 // import { invalidate, useFrame } from '@react-three/fiber';
 import React, { useEffect, useRef } from 'react';
 import * as THREE from "three";
+import { useSnapshot } from 'valtio';
 import { useLocation } from 'wouter';
 import { cloud, state } from '../common/state';
 
 function Node({ select, confirm, clear, hit, index, ...props }) {
+    const snap = useSnapshot(state);
     const [location, setLocation] = useLocation();
     const types = new Map([["jpg", "img"], ["jpeg", "img"], ["png", "img"], ["gif", "img"], ["mp4", "video"], ["svg", "svg"]]);
     const link = new URL(hit.images[0]);
@@ -15,20 +18,21 @@ function Node({ select, confirm, clear, hit, index, ...props }) {
     const cover = useTexture(element === "img" ? hit.images[0] : hit.poster);
 
     // Handle node select
-    const selected = useSelect();
     const pos = useRef([0, 0, 0]);
+    const selected = useSelect();
     const [Ref, api] = useSphere(() => ({ mass: 10, position: [Math.floor(Math.random() * -2), (index + 5), Math.floor(Math.random() * -3)], args: selected[0] ? [3] : [1], ...props }));
 
-    // useFrame(() => {
-    //     if (Ref && selected[0] && (selected[0].id === Ref.current.id)) {
-    //         // TODO fix this
-    //         // cloud.target = pos.current;
-    //         const unsubscribe = api.position.subscribe((v) => {
-    //             pos.current = v;
-    //         });
-    //         return unsubscribe;
-    //     }
-    // });
+    useFrame(state => {
+        if (Ref && selected[0] && (selected[0].id === Ref.current.id)) {
+            // TODO fix this
+            // state.camera. (pos.current);
+            const unsubscribe = api.position.subscribe((v) => {
+                pos.current = v;
+            });
+            return unsubscribe;
+        }
+        state.camera.zoom = 1 + (snap.grabberPosition.x / 300);
+    });
 
     if (Ref && selected[0] && (selected[0].id === Ref.current.id)) {
         cloud.preview = [hit];

@@ -12,7 +12,7 @@ import { EffectComposer, Noise } from '@react-three/postprocessing'
 import { Debug, Physics, usePlane } from '@react-three/cannon';
 import { Router } from 'wouter'
 import { useInfiniteHits } from 'react-instantsearch-hooks-web'
-import { transformItems, useWindowDimensions } from '../common/utils'
+import { transformItems } from '../common/utils'
 
 // Spinner
 const Spinner = () => {
@@ -120,7 +120,7 @@ function Floor() {
 
   function Reflector() {
     return <MeshReflectorMaterial
-      debug={1}
+      debug={2}
       side={THREE.DoubleSide}
       resolution={1024}
       mirror={state.theme === "light" ? 0.15 : 0.28}
@@ -212,7 +212,7 @@ function Lights() {
 }
 
 // Composition
-function Composition({ select, confirm, query, clear }) {
+function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
   const [selected, setSelected] = useState([]);
@@ -280,9 +280,7 @@ function Composition({ select, confirm, query, clear }) {
     // );
   }, [])
 
-  let vWidth = useWindowDimensions().width;
-  let vHeight = useWindowDimensions().height;
-  console.log("render");
+
   useEffect(() => {
     cloud.CanvasLoading = false;
 
@@ -294,12 +292,12 @@ function Composition({ select, confirm, query, clear }) {
   return (
     <Canvas dpr={[1, 2]} gl={{ alpha: true, stencil: false, depth: true, antialias: false, physicallyCorrectLight: true }} className='r3fCanvas' frameloop={clip.mobile ? "always" : snap.canvasPaused ? "demand" : "always"}>
       {/* CAMERA */}
-      <PerspectiveCamera makeDefault ref={camera} target={clip.mobile ? clip.target : [0, 2, 0]} zoom={1
-        // + (snap.grabberPosition.x / 30)
-      } position={clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition} far={80} near={.1} fov={clip.mobile ? 30 : 20} aspect={vWidth / vHeight} />
-      {/* FOG */}
-      <fog attach="fog" args={[snap.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, clip.mobile ? snap.theme === 'light' ? 45 : 50 : 30]} />
-      <Lights />
+      <Suspense fallback={<Spinner />}>
+        <PerspectiveCamera makeDefault ref={camera} target={clip.mobile ? clip.target : [0, 2, 0]} zoom={1} position={clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition} far={80} near={.1} fov={clip.mobile ? 30 : 20} aspect={vWidth / vHeight} />
+        {/* FOG */}
+        <fog attach="fog" args={[snap.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, clip.mobile ? snap.theme === 'light' ? 45 : 50 : 30]} />
+        <Lights />
+      </Suspense>
       <Physics
         gravity={[clip.leftright, -9.8, clip.frontback]}
         isPaused={snap.canvasPaused}>
