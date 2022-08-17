@@ -25,13 +25,16 @@ function Node({ select, confirm, clear, hit, index, ...props }) {
     useFrame(state => {
         if (Ref && selected[0] && (selected[0].id === Ref.current.id)) {
             // TODO fix this
-            // state.camera. (pos.current);
+            // state.camera.lookAt(pos.current);
+            // state.camera.position.lerp(vec.set(xPosition, Position, Position), .01);
+            // state.camera.updateProjectionMatrix();
             const unsubscribe = api.position.subscribe((v) => {
                 pos.current = v;
             });
             return unsubscribe;
         }
-        state.camera.zoom = 1 + (snap.grabberPosition.x / 300);
+        state.camera.zoom = 1 - (snap.grabberPosition.x / 300);
+        return null;
     });
 
     if (Ref && selected[0] && (selected[0].id === Ref.current.id)) {
