@@ -55,7 +55,9 @@ export function Options({
 
   // Rotate reset button
   useEffect(() => {
-    const rad = Math.atan(state.grabberPosition.x / -state.mobileNavPosition.y);
+    const rad = Math.atan(
+      state.grabberPosition.x / (-state.mobileNavPosition.y + (offset - 20))
+    );
     const deg = rad * (180 / Math.PI);
     if (snap.dragged) {
       resetButton.current.style.transform = `rotate(${deg}deg)`;
