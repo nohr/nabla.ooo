@@ -88,7 +88,7 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
                                     refine={refine} clear={clear}
                                     setModal={setModal} select={select} modal={modal} />}
                                 {/* Song Title */}
-                                <Song position={`position: unset; margin: 5px 0 10px 0 !important;`}
+                                <Song position={`position: unset; margin: 8px 0 7px 0 !important;`}
                                     style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} tabIndex="0">
                                     {song}
                                 </Song>

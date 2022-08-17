@@ -80,7 +80,7 @@ export function Search({
                     navWrap.current.style.overflowX = "clip";
                     navWrap.current.style.transition = "1.3s";
                     state.mobileNavPosition = { x: 0, y: options ? (offset * 2) : offset };
-                    cloud.dragged = false;
+                    // cloud.dragged = false;
                     setTimeout(() => {
                         navWrap.current.style.transition = "0.1s";
                     }, "1300");

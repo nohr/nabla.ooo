@@ -79,7 +79,7 @@ export function Grabber({ handle, reset, navWrap, nav, setModal }) {
                             <circle vectorEffect="non-scaling-stroke" cx="39.5" cy="12.5" r="3.18"></circle>
                         </g>
                     </svg>}
-                {(!clip.mobile && clip.dragged) &&
+                {(!clip.mobile && snap.dragged) &&
                     <Folder
                         onTouchEnd={() => {
                             setModal(false);
