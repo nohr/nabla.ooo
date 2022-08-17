@@ -1,11 +1,11 @@
 import React from "react";
-import '../../App.css'
+import '../../../App.css'
 import { Container } from "./Page";
 // import { state } from '../UI/state'
 // import { useSnapshot } from 'valtio'
 import styled from "styled-components"
-import { Header, OldCD } from "../UI/svg";
-import { AA, BySign, CreatorMedal } from "../UI/search";
+import { Header, OldCD } from "../../common/svg";
+import { CreatorMedal } from "./Results";
 
 // const ContactForm = () => {
 //   const [status, setStatus] = useState("Send");

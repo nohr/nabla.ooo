@@ -1,11 +1,11 @@
 import React, { useRef, memo } from 'react'
-import { GetSectors, db } from '../..'
-import { cloud } from '../UI/state'
+import { cloud } from '../../common/state'
+import { Links, Program } from '../../common/svg'
+import { GetSectors } from '../../common/utils'
 import { useSnapshot } from 'valtio'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
-import { CreatorMedal, Scroller } from '../UI/search'
-import { Links, Program } from '../UI/svg'
+import { CreatorMedal, Scroller } from './Results'
 
 const ImgGrid = ({ work }) => {
   const refWrapper = useRef(null);
@@ -96,7 +96,7 @@ const ImgGrid = ({ work }) => {
 
 function PageData({ id }, setSelectedImg) {
   const clip = useSnapshot(cloud);
-  GetSectors(db, id);
+  GetSectors(id);
 
   const makeLot = (work) => {
     let lot = (

@@ -2,9 +2,9 @@ import React from 'react'
 import { Container } from "./Page";
 // import { useSnapshot } from 'valtio'
 // import { state } from '../UI/state'
-import { ContrastLogo } from "../UI/svg";
+import { ContrastLogo } from "../../common/svg";
 import styled from 'styled-components';
-import useDocumentTitle from '../UI/documentTitle';
+import { useDocumentTitle } from '../../common/utils';
 
 const ContrastWrap = styled.div`
     text-align: center;

@@ -1,111 +1,15 @@
-import { useRef, useState, useEffect } from "react";
-import { state, cloud } from "./state";
+import { useState } from "react";
+import { state, cloud } from "../../common/state";
 import { useSnapshot } from "valtio";
 import styled from "styled-components"
-import { SearchBarIcon, ClearIcon, Header, Program } from "./svg";
+import { Header, Program } from "../../common/svg";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
-import useDocumentTitle from "./documentTitle";
 // Search Imports
 import { useHits, useRefinementList } from 'react-instantsearch-hooks-web';
 import { useSearchBox } from "react-instantsearch-hooks-web";
+import { useDocumentTitle } from "../../common/utils";
 
-// Search
-export function Search() {
-  const { query, refine, clear } = useSearchBox();
-  const [placeholder, setPlaceholder] = useState("Search (alt + z)")
-  const Bar = useRef(null);
-
-  useEffect(() => {
-    let keys = {};
-
-    function handleClick(e) {
-      if (Bar.current === document.activeElement) {
-        setPlaceholder("Cancel (esc)")
-        return;
-      } else {
-        setPlaceholder("Search (alt + z)")
-        return;
-      }
-    }
-
-    function handleKeyPress(e) {
-      // esc to clear search and blur input
-      if (e.key === "Escape") {
-        refine('');
-        Bar.current.blur();
-        setPlaceholder("Search (alt + z)")
-        return;
-      }
-      // Do nothing when these are pressed
-      if (e.key === "Enter" || e.key === "Shift" || e.key === "CapsLock" || e.key === "ArrowUp" || e.key === "ArrowLeft" || e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === "Alt") {
-        return;
-      }
-    }
-
-    function handleCommandPress(e) {
-      // Alt + f to focus search
-      let { keyCode, type } = e || Event;
-      const isKeyDown = (type === "keydown");
-      keys[keyCode] = isKeyDown;
-      if (isKeyDown && (e.altKey === true) && keys[90]) {
-        e.preventDefault();
-        keys = {};
-        Bar.current.focus();
-        setPlaceholder("Cancel (esc)")
-      } else {
-        return;
-      }
-    }
-    if (Bar.current) {
-      Bar.current.addEventListener("keydown", handleKeyPress);
-    }
-    window.addEventListener("click", handleClick);
-    window.addEventListener("keydown", handleCommandPress);
-
-    return () => {
-      if (Bar.current) {
-        Bar.current.removeEventListener("keydown", handleKeyPress);
-      }
-      window.removeEventListener("click", handleClick);
-      window.removeEventListener("keydown", handleCommandPress);
-    }
-  }, [query, refine])
-
-  function handleChange(e) {
-    if (e.target.value) {
-      !state.colorWheel && refine(e.target.value);
-    } else {
-      refine('');
-    }
-  };
-
-  return (
-    <SearchWrapper id="search">
-      <SearchBar
-        placeholder={placeholder}
-        type="text"
-        value={query}
-        onChange={(e) => handleChange(e)}
-        ref={Bar}
-      >
-      </SearchBar>
-      {cloud.chatMode}
-      <SearchBarIcon />
-      {query.length > 0 &&
-        <div
-          onClick={
-            () => {
-              refine('')
-              Bar.current.focus()
-            }
-          }
-          id="clearIcon"
-        >
-          <ClearIcon />
-        </div>}
-    </SearchWrapper>)
-}
 
 export function CreatorMedal({ name }) {
   if (name) {
@@ -118,7 +22,6 @@ export function CreatorMedal({ name }) {
 
 export function Results({ select }) {
   const snap = useSnapshot(state);
-  const clip = useSnapshot(cloud);
   const { query, refine } = useSearchBox();
   useDocumentTitle(`${query} - Search Results`);
   const [active, setActive] = useState(false);
@@ -401,81 +304,6 @@ export function Results({ select }) {
   }
 }
 
-export const SearchWrapper = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  width: 96%;
-  margin: 0 auto 0 auto;
-`
-export const SearchBar = styled.input`
-  border: none !important;
-  width: 100%;
-  margin: 3px 0;
-  display: flex;
-  border-radius: 25px;
-  background-color: transparent;
-  box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-  -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
-  -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
-  color:  ${props => props.theme.panelColor};
-  padding: 2px 19px 2px 19px;
-  user-select: text;
-  -moz-user-select: text;
-  -webkit-user-select: text;
-  font-size: 13px;
-  cursor: pointer;
-
-  @media only screen and (max-width: 768px) {
-  padding: 6px 19px 6px 20px;
-  outline: 1px solid ${props => props.theme.panelColor};
-  font-size: 18px;
-  }
-
-  &::placeholder{
-    color: ${props => props.theme.panelColor};
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    user-select: none; /* Standard */
-  }
-
-  &:hover::placeholder{
-    color: ${props => props.theme.textHover};
-    transition: 0.3s;
-  }
-  &:hover{
-    color: ${props => props.theme.textHover};
-    background-color:${props => props.theme.LiHover};
-    outline: 1px solid ${props => props.theme.textHover};
-    box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-    -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
-    -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
-    transition: 0.3s;
-  }
-  &:focus::placeholder{
-    color: ${props => props.theme.textHover};
-    transition: 0.3s;
-  }
-  &:focus{
-    color: ${props => props.theme.textHover};
-    background-color:${props => props.theme.LiHover};
-    outline: 1px solid ${props => props.theme.textHover};
-    box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
-    -webkit-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
-    -moz-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
-    transition: 0.3s;
-  }
-
-  &:focus ~ #searchIcon, &:hover ~ #searchIcon{
-    fill: ${props => props.theme.textHover} !important;
-    transition: 0.3s;
-  }
-  &:focus ~ #clearIcon svg, &:hover ~ #clearIcon svg{
-    fill: ${props => props.theme.textHover} !important;
-    transition: 0.3s;
-  } 
-`
 const Overlay = styled.div`
   display: flex;
   opacity: ${props => props.opacity};

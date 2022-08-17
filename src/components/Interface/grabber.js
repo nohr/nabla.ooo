@@ -1,12 +1,11 @@
 import React, { useRef } from "react";
 import Draggable from "react-draggable";
 import { useSnapshot } from "valtio";
-import { cloud, state } from "./state";
-import { Folder } from "./style";
-import { ResetIcon, ShowHideIcon } from "./svg";
-import { offset } from "./mobileNavigator";
+import { cloud, state } from "../common/state";
+import { Folder, offset } from "../common/utils";
+import { ResetIcon, ShowHideIcon } from "../common/svg";
 
-export function Grabber({ handle, resetButton, reset, navWrap, nav, setModal }) {
+export function Grabber({ handle, reset, navWrap, nav, setModal }) {
     const grab = useRef(null);
     const clip = useSnapshot(cloud);
     const snap = useSnapshot(state);
@@ -57,7 +56,7 @@ export function Grabber({ handle, resetButton, reset, navWrap, nav, setModal }) 
                         onTouchEnd={() => {
                             reset();
                             navWrap.current.style.transition = "1.3s";
-                            state.mobileNavPosition = { x: 0, y: (offset + 15) };
+                            state.mobileNavPosition = { x: 0, y: 0 };
                             setTimeout(() => {
                                 navWrap.current.style.transition = "0.1s";
                             }, "1300");

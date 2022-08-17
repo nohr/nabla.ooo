@@ -1,13 +1,12 @@
 import React, { useRef, useEffect, memo } from "react";
-import { cloud, state } from "../UI/state";
+import { cloud, state } from "../../common/state";
 import { useSnapshot } from "valtio";
 import styled from "styled-components";
-import "../../App.css";
+import "../../../App.css";
 import Draggable from "react-draggable";
 import { motion } from "framer-motion";
 import PageData from "./PageData";
-import useDocumentTitle from "../UI/documentTitle";
-import { Header } from "../UI/svg";
+import { Header } from "../../common/svg";
 import Info from "./Info";
 import Store from "./Store";
 import Blog from "./Blog";
@@ -15,6 +14,7 @@ import Contrast from "./Contrast";
 import Home from "./Home";
 import NotFound from "./NotFound";
 import { useSearchBox } from "react-instantsearch-hooks-web";
+import { useDocumentTitle } from "../../common/utils";
 
 export function Page(id) {
   useDocumentTitle(id.title);

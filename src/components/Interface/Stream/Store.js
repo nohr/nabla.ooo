@@ -1,13 +1,13 @@
 import React from "react";
-import "../../App.css";
+import "../../../App.css";
 import { Container } from "./Page";
 import { HashLink } from "react-router-hash-link";
 import styled from "styled-components";
 import Tilty from 'react-tilty';
-import { DiagonalArrow, EkoThumb, Header } from "../UI/svg";
-import { state } from "../UI/state";
+import { DiagonalArrow, EkoThumb, Header } from "../../common/svg";
+import { state } from "../../common/state";
 import { useSnapshot } from "valtio";
-import { GetStore } from "../..";
+import { GetStore } from "../../common/utils";
 
 function Store(props) {
   const snap = useSnapshot(state)

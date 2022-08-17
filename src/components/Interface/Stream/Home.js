@@ -1,10 +1,10 @@
 import React from "react";
-import '../../App.css'
+import '../../../App.css'
 import { Container } from "./Page";
-import { cloud } from "../UI/state";
+import { cloud } from "../../common/state";
 import { useSnapshot } from "valtio";
-import { CreatorMedal, InfoBox, Scroller } from "../UI/search";
-import { Program } from "../UI/svg";
+import { Program } from "../../common/svg";
+import { CreatorMedal, InfoBox, Scroller } from "./Results";
 
 function Home() {
     const clip = useSnapshot(cloud);

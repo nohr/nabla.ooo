@@ -1,7 +1,7 @@
 import React from "react";
-import '../../App.css'
+import '../../../App.css'
 import { Container } from "./Page";
-import { Header } from "../UI/svg";
+import { Header } from "../../common/svg";
 
 const NotFound = (props) => {
     return (

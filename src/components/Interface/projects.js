@@ -1,12 +1,11 @@
 //Projects -- Child of Panel
 import { useRef } from "react"
-import { cloud, state } from "./state"
-import useWindowDimensions from "./window"
+import { cloud, state } from "../common/state"
 import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
 import { NavLink } from "react-router-dom"
 import styled from "styled-components"
-import { useEffect } from "react"
+import { getPosPro, useWindowDimensions } from "../common/utils"
 
 function Projects({ select }) {
   const pro = useRef(null);
@@ -16,58 +15,7 @@ function Projects({ select }) {
   // offset and direction of panel from nav
   let vWidth = useWindowDimensions().width;
   let vHeight = useWindowDimensions().height;
-  function getPos() {
-    const left1 = { x: -state.navWidth + state.dist, y: 0 };
-    const right1 = { x: state.navWidth - (state.dist), y: 0 };
-    const up1 = { x: 0, y: (-state.navWidth) - (-state.dist) };
-    const down1 = { x: 0, y: state.navWidth - state.dist };
-    // const 
-
-    if ((((state.direction ? vWidth : vHeight) - state.navWidth) - (state.dist * 2)) < (state.direction ? state.proPosition.x : state.proPosition.y)) {
-      //goes over the right side
-      //fix this
-      if (!state.prtSwitched) {
-        if (state.prtSwitched) {
-          state.prtSwitched = true;
-          console.log("my left");
-          return snap.direction ? left1 : up1
-        } else {
-          state.prtSwitched = true;
-          return snap.direction ? left1 : up1
-        }
-      } else {
-        if (state.prtSwitched) {
-          state.prtSwitched = true;
-          return snap.direction ? left1 : up1
-        } else {
-          state.prtSwitched = true;
-          return snap.direction ? left1 : up1
-        }
-      }
-    } else if (!state.isPro) {
-      return { x: 0, y: 0 }
-    } else {
-      //is normal
-      if (!state.prtSwitched) {
-        if (state.prtSwitched) {
-          state.prtSwitched = false;
-          return snap.direction ? right1 : down1
-        } else {
-          state.prtSwitched = false;
-          return snap.direction ? right1 : down1
-        }
-      } else {
-        if (state.prtSwitched) {
-          state.prtSwitched = false;
-          return snap.direction ? right1 : down1
-        } else {
-          state.prtSwitched = false;
-          return snap.direction ? right1 : down1
-        }
-      }
-    }
-  }
-  const offset = getPos();
+  const offset = getPosPro(snap, vWidth, vHeight);
   const firstStyle = snap.direction ? { height: "75px" } : { height: "87px" };
   const secondStyle = snap.direction ? { height: "133px" } : { height: "161px" };
   const layout = snap.direction ? !state.prtSwitched ? "grid-template-rows: 10% 0.9fr 10% 1.5fr; padding-left: 45px;padding-right: 40px;" : "grid-template-rows: 10% 1fr 10% 1fr; padding-left: 40px;padding-right: 45px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 12% 1fr; padding: 80px 12px 26px;";

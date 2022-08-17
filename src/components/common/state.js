@@ -1,4 +1,5 @@
 import { proxy, subscribe } from "valtio"
+import { GetQuotes, originalColors, target } from "./utils";
 
 const storedStateString = localStorage.getItem('state');
 const initialState = storedStateString ? JSON.parse(storedStateString) : {
@@ -9,7 +10,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     projectClients: [],
     mediums: [],
     by: [],
-    quotes: "",
+    quotes: '',
     statement: null,
     //UI
     containerWidth: 0,
@@ -56,11 +57,11 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     theme: "light",
     light: {
         //UI
-        panelColor: "hsl(205, 100%, 28%)",
+        panelColor: originalColors.light.panelColor,
         textHover: "#EBEBEB",
-        placeholder: "hsl(205, 100%, 28%)",
-        link: "hsl(205, 100%, 28%)",
-        LiHover: "hsla(205, 100%, 28%, 0.67)",
+        placeholder: originalColors.light.panelColor,
+        link: originalColors.light.panelColor,
+        LiHover: originalColors.light.LiHover,
         LiActiveBackground: "#5e5e5e67",
         blend: "plus-lighter",
         backdrop: "#FFFFFFd7",
@@ -69,10 +70,10 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
         //Canvas
         sky: "#ffffff",
         fog: "#ffffff",
-        CD: "hsla(14, 31%, 84%, 1)",
+        CD: originalColors.light.CD,
         CDHover: "#0A0A0A",
         CDRough: 0,
-        Surface: "hsla(205, 100%, 80%, 1)",
+        Surface: originalColors.light.Surface,
         SurfaceRough: 0,
         spotlight: "#ffffff",
         spotIntensity: 0.6,
@@ -82,11 +83,11 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     },
     dark: {
         //UI
-        panelColor: "hsl(205, 31%, 70%)",
+        panelColor: originalColors.dark.panelColor,
         textHover: "#EBEBEB",
-        placeholder: "hsl(205, 31%, 70%)",
+        placeholder: originalColors.dark.panelColor,
         link: "#C6182A",
-        LiHover: "hsla(205, 31%, 70%, 0.67)",
+        LiHover: originalColors.dark.LiHover,
         LiActiveBackground: "#ebebeb67",
         blend: "plus-lighter",
         backdrop: "#000000d7",
@@ -98,9 +99,9 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
         CD: "#0A0A0A",
         CDHover: "hsla(205, 31%, 70%, 1)",
         CDRough: .1389,
-        Surface: "hsla(205, 15%, 50%, 1)",
+        Surface: originalColors.dark.Surface,
         SurfaceRough: 30,
-        spotlight: "hsla(205, 31%, 70%, 1)",
+        spotlight: originalColors.dark.spotlight,
         spotIntensity: 0.5,
         ambIntensity: 0.8,
         rectIntensity: 0.5,
@@ -123,9 +124,7 @@ export const cloud = proxy({
     sectors: [],
     projects: [],
     //UI
-    talking: false,
     UILoading: true,
-    mobile: false,
     preview: [],
     selected: [],
     work: null,
@@ -133,6 +132,7 @@ export const cloud = proxy({
     selectedDesc: null,
     chatMode: false,
     // Panel
+    talking: false,
     drag: false,
     // Audio
     playMusic: false,
@@ -154,13 +154,14 @@ export const cloud = proxy({
     frontback: 0,
     // Canvas
     CanvasLoading: true,
-    target: [0, 4, 3],
+    target: target,
     selected: false,
     prevMat: null,
     mobileCameraPosition: [0, 20, 25],
     mobileCameraRotation: [0, 0, 0],
     mobileCameraQuaternion: [0, 0, 0],
     // Mobile
+    mobile: window.matchMedia("(max-width: 768px)").matches,
     orientation: true,
     opt: false,
 })

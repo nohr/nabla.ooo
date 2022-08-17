@@ -1,10 +1,10 @@
 import { useSphere } from '@react-three/cannon';
 import { useSelect, useTexture } from '@react-three/drei';
-import { invalidate, useFrame } from '@react-three/fiber';
-import React, { useRef } from 'react';
+// import { invalidate, useFrame } from '@react-three/fiber';
+import React, { useEffect, useRef } from 'react';
 import * as THREE from "three";
 import { useLocation } from 'wouter';
-import { cloud, state } from '../UI/state';
+import { cloud, state } from '../common/state';
 
 function Node({ select, confirm, clear, hit, index, ...props }) {
     const [location, setLocation] = useLocation();
@@ -105,6 +105,9 @@ function Node({ select, confirm, clear, hit, index, ...props }) {
 // }
 
 export function Nodes({ ...props }) {
+    useEffect(() => {
+        cloud.CanvasLoading = false;
+    }, []);
 
     return <>
         {props.hits.map((hit, index) => (

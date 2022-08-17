@@ -1,58 +1,20 @@
 //Navigator -- Child of <UI />
 import React, { useEffect, useRef, useState } from "react"
-import { cloud, state } from "./state"
+import { cloud, state } from "../common/state"
+import { Song, closeWheel, resetWheel, Folder } from "../common/utils"
+import { Arrow, SideArrow, SearchBarIcon, ClearIcon } from "../common/svg"
 import { useSnapshot } from "valtio"
-import { Folder } from "./style"
 import styled from "styled-components"
 import { NavLink } from "react-router-dom"
 import Draggable from "react-draggable"
-import { HomeButton, characters } from './homeButton';
-import { Arrow, SideArrow } from "./svg"
+import { HomeButton, Quote } from './homeButton';
 import { Grabber } from "./grabber"
-import { Search } from "./search"
-import { useSearchBox } from "react-instantsearch-hooks-web"
-import Scrambler from 'scrambling-text';
-import { newQuote } from "../.."
 import CircleType from "circletype"
 
-//Audio Imports
-// import useSound from "use-sound"
-// import sound3 from "../Sounds/close.mp3"
-export function closeWheel() {
-  state.colorWheel = false;
-}
-export function resetWheel() {
-  state.colorWheel = false;
-  if (state.theme === 'light') {
-    state.light.panelColor = 'hsl(205, 100%, 28%)';
-    state.light.placeholder = 'hsl(205, 100%, 28%)';
-    state.light.LiHover = "hsla(205, 100%, 28%, 0.67)";
-    state.light.CD = "hsla(14, 31%, 84%, 1)";
-    state.light.Surface = "hsla(205, 100%, 80%, 1)";
-    state.light.spotlight = "hsl(360, 0%, 72%)";
-  } else if (state.theme === 'dark') {
-    state.dark.panelColor = "hsl(205, 31%, 70%)";
-    state.dark.placeholder = "hsl(205, 31%, 70%)";
-    state.dark.LiHover = "hsla(205, 31%, 70%, 0.67)";
-    state.dark.Surface = "hsla(205, 15%, 50%, 1)";
-    state.dark.spotlight = "hsla(205, 31%, 70%, 1)";
-  }
-  state.colorChanged = false;
-}
-function Navigator({ nabla, dong, confirm, select, reset, song, handle }) {
+function Navigator({ nabla, dong, confirm, select, reset, song, handle, query, clear, refine, text, setText }) {
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
-  const { query, clear } = useSearchBox();
   const nav = useRef(null);
-
-  // Text Scramble
-  const [text, setText] = useState("");
-  const quote = useRef(new Scrambler());
-  useEffect(() => {
-    newQuote().then(() => {
-      quote.current.scramble(state.quotes, setText, { characters: characters });
-    });
-  }, [snap.quotes]);
 
   // Glow
   let pro;
@@ -115,7 +77,6 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle }) {
     cloud.drag = false;
   }
 
-
   return (
     //NAV
     <Draggable nodeRef={nav} handle=".grabber" bounds="body"
@@ -125,9 +86,9 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle }) {
       <Nav ref={nav} className="Panel nav">
         <div className="header">
           <HomeButton nabla={nabla} dong={dong} clear={clear} query={query} />
-          <div className="quote w">{text}</div>
+          {<Quote text={text} setText={setText} />}
         </div>
-        {navigator.onLine && <Search />}
+        {navigator.onLine && <Search query={query} clear={clear} refine={refine} />}
         <div className="grid">
           {!snap.colorWheel &&
             <>
@@ -171,63 +132,104 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle }) {
   )
 }
 
-export default Navigator
 
-export const Homer = styled(NavLink)`
-  height: fit-content;
-  width: 70%;
-  display: flex;
-  justify-content: center;
-  margin: 9px 0 2px 0;
-  padding-top: 5px;
-  padding-bottom: 3px;
-  border-radius: 120px;
-  overflow: visible;
-  background-color: transparent !important;
-  -webkit-box-shadow: none !important;
-  -moz-box-shadow: none !important;
-  box-shadow: none !important;
-  user-select:none ;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -webkit-user-drag: none;
+function Search({ query, refine, clear }) {
+  const Bar = useRef(null);
+  const [placeholder, setPlaceholder] = useState("Search (alt + z)");
 
-  & svg{
-    ${props => props.fill}
-    align-self:center;
-    fill: ${props => props.theme.panelColor};
-    color: ${props => props.theme.panelColor};
-    transition: 2.3s;
-    pointer-events: none;
-  }
+  useEffect(() => {
+    let keys = {};
 
-  &:hover{
-    background-color: ${props => props.theme.LiHover} !important;
-    -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    transition: 0.6s;
+    function handleClick() {
+      if (Bar.current === document.activeElement) {
+        setPlaceholder("Cancel (esc)")
+        return;
+      } else {
+        setPlaceholder("Search (alt + z)")
+        return;
+      }
+    }
 
-  }
+    function handleKeyPress(e) {
+      // esc to clear search and blur input
+      if (e.key === "Escape") {
+        clear();
+        Bar.current.blur();
+        setPlaceholder("Search (alt + z)")
+        return;
+      }
+      // Do nothing when these are pressed
+      if (e.key === "Enter" || e.key === "Shift" || e.key === "CapsLock" || e.key === "ArrowUp" || e.key === "ArrowLeft" || e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === "Alt") {
+        return;
+      }
+    }
 
-  @media only screen and (min-width: 768px) {
-    &:hover {
-    background-color: ${props => props.theme.LiHover} !important;
-    -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    transition: 0.6s;
-  }
-      &:hover > svg{
-    fill: ${props => props.theme.textHover};
-    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
-    filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
-    transition: 1.0s;
-  }
+    function handleCommandPress(e) {
+      // Alt + f to focus search
+      let { keyCode, type } = e || Event;
+      const isKeyDown = (type === "keydown");
+      keys[keyCode] = isKeyDown;
+      if (isKeyDown && (e.altKey === true) && keys[90]) {
+        e.preventDefault();
+        keys = {};
+        Bar.current.focus();
+        setPlaceholder("Cancel (esc)")
+      } else {
+        return;
+      }
+    }
+    if (Bar.current) {
+      Bar.current.addEventListener("keydown", handleKeyPress);
+    }
+    window.addEventListener("click", handleClick);
+    window.addEventListener("keydown", handleCommandPress);
+
+    return () => {
+      if (Bar.current) {
+        Bar.current.removeEventListener("keydown", handleKeyPress);
+      }
+      window.removeEventListener("click", handleClick);
+      window.removeEventListener("keydown", handleCommandPress);
+    }
+  }, [query, refine])
+
+  function handleChange(e) {
+    if (e.target.value) {
+      !state.colorWheel && refine(e.target.value);
+    } else {
+      clear();
+    }
+  };
+
+  return (
+    <SearchWrapper id="search">
+      <SearchBar
+        placeholder={placeholder}
+        type="text"
+        value={query}
+        onChange={(e) => handleChange(e)}
+        ref={Bar}
+      >
+      </SearchBar>
+      {cloud.chatMode}
+      <SearchBarIcon />
+      {query.length > 0 &&
+        <div
+          onClick={
+            () => {
+              clear()
+              Bar.current.focus()
+            }
+          }
+          id="clearIcon"
+        >
+          <ClearIcon />
+        </div>}
+    </SearchWrapper>)
 }
 
-`
+export default Navigator
+
 const Nav = styled.div`
   padding: 0em 42.5px 30px 42.5px;
   position: absolute;
@@ -456,38 +458,78 @@ const Nav = styled.div`
     left: 48%;
   }
 `
-export const Song = styled.p`
-    position: absolute;
-     top: 3%;
-    /* margin: 0 auto; */
-    ${props => props.position}
-    margin: 0;
-    /* transform: translate(-30%, 0%) !important; */
-    border: none;
-    white-space: nowrap;
-    /* pointer-events: none;
-    opacity: 0; */
-    animation: flash 2s infinite;
-    transition: 1.3s;
-    cursor: pointer;
-    -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-  
-  @keyframes flash {
-	0% {
-		color: ${props => props.theme.panelColor};
-	}
+const SearchWrapper = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 96%;
+  margin: 0 auto 0 auto;
+`
+const SearchBar = styled.input`
+  border: none !important;
+  width: 100%;
+  margin: 3px 0;
+  display: flex;
+  border-radius: 25px;
+  background-color: transparent;
+  box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+  -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
+  -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
+  color:  ${props => props.theme.panelColor};
+  padding: 2px 19px 2px 19px;
+  user-select: text;
+  -moz-user-select: text;
+  -webkit-user-select: text;
+  font-size: 13px;
+  cursor: pointer;
 
-	70% {
-		color: ${props => props.theme.sky};
-    -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
-    filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
-	}
+  @media only screen and (max-width: 768px) {
+  padding: 6px 19px 6px 20px;
+  outline: 1px solid ${props => props.theme.panelColor};
+  font-size: 18px;
+  }
 
-	100% {
-		color: ${props => props.theme.panelColor};
-	}
-}
+  &::placeholder{
+    color: ${props => props.theme.panelColor};
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+  }
+
+  &:hover::placeholder{
+    color: ${props => props.theme.textHover};
+    transition: 0.3s;
+  }
+  &:hover{
+    color: ${props => props.theme.textHover};
+    background-color:${props => props.theme.LiHover};
+    outline: 1px solid ${props => props.theme.textHover};
+    box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+    -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
+    -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
+    transition: 0.3s;
+  }
+  &:focus::placeholder{
+    color: ${props => props.theme.textHover};
+    transition: 0.3s;
+  }
+  &:focus{
+    color: ${props => props.theme.textHover};
+    background-color:${props => props.theme.LiHover};
+    outline: 1px solid ${props => props.theme.textHover};
+    box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
+    -webkit-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
+    -moz-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
+    transition: 0.3s;
+  }
+
+  &:focus ~ #searchIcon, &:hover ~ #searchIcon{
+    fill: ${props => props.theme.textHover} !important;
+    transition: 0.3s;
+  }
+  &:focus ~ #clearIcon svg, &:hover ~ #clearIcon svg{
+    fill: ${props => props.theme.textHover} !important;
+    transition: 0.3s;
+  } 
 `

@@ -1,10 +1,12 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.css'
-import Composition from './components/Canvas/Composition'
-import UI from './components/UI/UI'
-import { cloud, state } from './components/UI/state'
-import { getGPUTier } from 'detect-gpu';
+import { cloud, state } from './components/common/state'
+import { getGyro, newQuote, toHslString, originalColors } from './components/common/utils'
 import { useSnapshot } from 'valtio';
+import Interface from './components/Interface/Interface';
+import Composition from './components/Canvas/Composition'
+import { getGPUTier } from 'detect-gpu';
+import { parseColor } from '@react-stately/color';
 
 // Search Imports
 import { useSearchBox } from 'react-instantsearch-hooks-web'
@@ -17,48 +19,33 @@ import sound2 from "./components/Sounds/open.mp3"
 import sound3 from "./components/Sounds/close.mp3"
 import sound4 from "./components/Sounds/confirm.mp3"
 
-// Get Accelerometer data
-function requestPermission() {
-  DeviceMotionEvent.requestPermission().then(response => {
-    if (response === 'granted') {
-      window.addEventListener('deviceorientation', (event) => {
-        if (window.matchMedia("(orientation: portrait)").matches) {
-          cloud.leftright = Math.floor(event.gamma / 6);
-          cloud.frontback = (Math.floor(event.beta / 8) - 6);
-        }
-        if (window.matchMedia("(orientation: landscape)").matches) {
-          cloud.leftright = Math.floor(event.beta / 6);
-          cloud.frontback = (Math.floor(event.gamma / 8) + 6);
-        }
-      });
-    } else {
-      // console.log("ttrun off");
-    }
-    // console.log(response);
-  });
-  // console.log(state.gyro);
-};
-
-export function getGyro(gyro) {
-  if (gyro) {
-    requestPermission();
-  } else {
-    state.gyro = false;
-    return;
-  }
-};
-
+let firstColor;
 //App 
 function App() {
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
   const { query, clear } = useSearchBox();
-  const [selectRate, setSelectRate] = useState(1)
   const [select] = useSound(sound1, { volume: snap.sfxVolume, soundEnabled: !snap.muted, playbackRate: clip.selectRate });
   const [select2] = useSound(sound5, { volume: snap.sfxVolume, soundEnabled: !snap.muted, playbackRate: clip.selectRate });
   const [confirm] = useSound(sound4, { volume: snap.sfxVolume, soundEnabled: !snap.muted });
   const [open] = useSound(sound2, { volume: snap.sfxVolume, soundEnabled: !snap.muted });
   const [close] = useSound(sound3, { volume: snap.sfxVolume, soundEnabled: !snap.muted });
+  snap.cached ? (snap.theme === 'light' ? firstColor = snap.light.panelColor : firstColor = snap.dark.panelColor) : (snap.theme === 'light' ? firstColor = originalColors.light.panelColor : firstColor = originalColors.dark.panelColor);
+  const [color, setColor] = useState(parseColor(firstColor));
+
+  useEffect(() => {
+    state.hue = color.hue;
+  }, [color])
+
+  useEffect(() => {
+    toHslString(snap.hue);
+  }, [snap.hue])
+
+
+
+  useEffect(() => {
+    newQuote();
+  }, [])
 
   // GPU
   useEffect(() => {
@@ -78,13 +65,13 @@ function App() {
       }
     }
     return () => {
-      window.removeEventListener("click", getGyro(true));
+      window.removeEventListener("click", getGyro(false));
     }
   }, []);
   // cloud.CanvasLoading = false;
 
   return <>
-    <UI setSelectRate={setSelectRate} select={select} confirm={confirm} open={open} close={close} />
+    <Interface color={color} setColor={setColor} firstColor={firstColor} select={select} confirm={confirm} open={open} close={close} useSound={useSound} />
     <Composition query={query} clear={clear} select={select2} confirm={confirm} />
   </>
 }

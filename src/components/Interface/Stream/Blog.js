@@ -1,9 +1,9 @@
 import React from 'react'
 import { Container } from "./Page";
 import { useSnapshot } from 'valtio'
-import { state } from '../UI/state'
+import { state } from '../../common/state'
 import styled from 'styled-components'
-import { Header } from "../UI/svg";
+import { Header } from "../../common/svg";
 
 const BlogWrap = styled.div`
     width: 600px;

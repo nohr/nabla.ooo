@@ -1,121 +1,14 @@
 //Options -- Child of Panel
 import React, { useEffect, useRef } from "react"
-import { cloud, state } from "./state"
+import { cloud, state } from "../common/state"
 import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
-import { Folder } from "./style"
+import { Folder } from "../common/utils"
 import styled from "styled-components"
-import useWindowDimensions from "./window"
-import { ColorIcon, DirectionIcon, ModeIcon, MuteIcon, NextIcon, PlayPauseIcon, ShowHideIcon } from "./svg"
-import { useSearchBox } from "react-instantsearch-hooks-web"
-import { useNavigate } from "react-router-dom"
-import { getDownloadURL, ref } from "firebase/storage"
-import { storage } from "../.."
-
-function LoadSong(song) {
-    // const audio = useRef();
-    // const currentSong = audio.current;
-    let currentSong;
-    currentSong = document.querySelectorAll('audio')[0];
-
-    getDownloadURL(ref(storage, `gs://nabla7.appspot.com/assets/songs/${song.name}.mp3`))
-        .then((url) => {
-            cloud.songs[state.songIndex].url = url;
-            currentSong.setAttribute('src', url);
-            cloud.playMusic = true;
-            currentSong.play();
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-}
-
-export function ToggleMusic() {
-    // const audio = useRef();
-    // const currentSong = audio.current;
-    let currentSong;
-    currentSong = document.querySelectorAll('audio')[0];
-    if (!cloud.songs[state.songIndex].url) {
-        LoadSong(cloud.songs[state.songIndex]);
-    } else {
-        if (cloud.playMusic === false) {
-            cloud.playMusic = true;
-            currentSong.play();
-        } else if (cloud.playMusic === true) {
-            cloud.playMusic = false;
-            currentSong.pause();
-        }
-    }
-    currentSong.onended = () => NextSong();
-}
-
-export function NextSong() {
-    // const audio = useRef();
-    // const currentSong = audio.current;
-    let currentSong;
-    currentSong = document.querySelectorAll('audio')[0];
-
-    cloud.playMusic = false;
-    currentSong.pause();
-    console.log(state.songIndex);
-
-    if (state.songIndex < cloud.songs.length - 1) {
-        state.songIndex += 1;
-    } else {
-        state.songIndex = 0;
-    }
-    if (!cloud.songs[state.songIndex].url) {
-        LoadSong(cloud.songs[state.songIndex]);
-    } else {
-        currentSong.setAttribute('src', cloud.songs[state.songIndex].url);
-        currentSong.play();
-    }
-
-}
-
-//DISPLAY
-//Toggle Theme
-export const toggleTheme = () => {
-    state.themeChanged = true;
-    if (state.theme === "dark") {
-        document.getElementById("theme-color").setAttribute("media", "");
-        document.getElementById("theme-color").setAttribute("content", state.light.sky);
-        state.theme = "light";
-    } else {
-        document.getElementById("theme-color").setAttribute("media", "");
-        document.getElementById("theme-color").setAttribute("content", state.dark.sky);
-        state.theme = "dark";
-    };
-
-    // TODO: fix third auto option
-    // if (state.auto) {
-    //     state.auto = false;
-    //     state.themeChanged = true;
-    //     state.theme = "light";
-    // } else if (!state.auto) {
-    //     if (state.theme === "light") {
-    //         state.theme = "dark";
-    //     } else if (state.theme === "dark") {
-    //         // Auto
-    //         state.auto = true;
-    //         state.themeChanged = false;
-    //         // window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ?
-    //         //     (state.theme = "dark") : (state.theme = "light")
-    //         // state.theme === 'light' ? (state.theme = "light") : (state.theme = "dark");
-    //     }
-    // }
-    // console.log(state.theme, state.auto);
-}
-
-export function OpenWheel() {
-    // navigate('/');
-    state.colorWheel = true;
-    state.isOpt = false;
-    state.isPro = false;
-}
+import { ColorIcon, DirectionIcon, ModeIcon, MuteIcon, NextIcon, PlayPauseIcon, ShowHideIcon } from "../common/svg"
+import { useWindowDimensions, getPosOpt, NextSong, OpenWheel, ToggleMusic, togglePause, toggleTheme } from "../common/utils"
 
 function Options({ setSong, select }) {
-    const navigate = useNavigate();
     const opt = useRef(null);
     const audio = useRef();
     const colorLink = useRef(null)
@@ -124,8 +17,6 @@ function Options({ setSong, select }) {
     let optLink = document.querySelector(".optLink")
     if (cloud.selectedImg) { optLink.classList.remove("folderActive") }
 
-
-    //Audio configured in UI.js
     // Toggle Music
     const currentSong = audio.current;
 
@@ -140,7 +31,6 @@ function Options({ setSong, select }) {
             })
         }
     }, [cloud.playMusic, state.songIndex, select])
-
 
     //Toggles Panel Direction
     function toggleDirection() {
@@ -183,119 +73,10 @@ function Options({ setSong, select }) {
         }
     }
 
-    //Pause Canvas Animation
-    function togglePause() {
-        if (!state.canvasPaused) {
-            //Pause Canvas
-            state.canvasPaused = true;
-            state.autoRotateSpeed = 0;
-
-        } else if (state.canvasPaused) {
-            //Play Canvas
-            state.canvasPaused = false;
-            state.autoRotateSpeed = 0.09;
-        }
-    }
-    //offset and direction of panel from nav and projects
     let vWidth = useWindowDimensions().width;
     let vHeight = useWindowDimensions().height;
 
-    function getPos() {
-        const left1 = { x: -state.navWidth + state.dist, y: 0 };
-        const left2 = { x: (state.navWidth * -2) - (state.dist * -2), y: 0 };
-        const right1 = { x: state.navWidth - (state.dist), y: 0 };
-        const right2 = { x: (state.navWidth * 2) - (state.dist * 2), y: 0 };
-        const up1 = { x: 0, y: (-state.navWidth) - (-state.dist) }
-        const up2 = { x: 0, y: (state.navWidth * -2) - (state.dist * -2) }
-        const down1 = { x: 0, y: state.navWidth - state.dist };
-        const down2 = { x: 0, y: (state.navWidth * 2) - (state.dist * 2) };
-
-        //Row
-        if (((state.direction ? vWidth : vHeight) - (state.navWidth * 2) - state.dist + 30) < (state.direction ? state.optPosition.x : state.optPosition.y) && state.isOpt) {
-            //goes over the right side
-            if (state.setSwitched) {
-                state.setSwitched = true;
-                if (!state.prtSwitched) {
-                    if (state.isPro) {
-                        console.log("1");
-                        return state.direction ? left1 : up1;
-                    } else {
-                        state.setSwitched = true;
-                        console.log("2");
-                        return state.direction ? right1 : down1;
-                    }
-                } else {
-                    if (state.isPro) {
-                        console.log("3");
-                        return state.direction ? left2 : up2;
-                    } else {
-                        state.setSwitched = true;
-                        console.log("4");
-                        return state.direction ? left1 : up1;
-                    }
-                }
-            } else {
-                state.setSwitched = true;
-                if (!state.prtSwitched) {
-                    if (state.isPro) {
-                        state.setSwitched = true;
-                        console.log("5");
-                        return state.direction ? left1 : up1;
-                    } else {
-                        state.setSwitched = true;
-                        console.log("6");
-                        return state.direction ? right1 : down1;
-                    }
-                } else {
-                    if (state.isPro) {
-                        console.log("7");
-                        return state.direction ? left2 : up2;
-                    } else {
-                        state.setSwitched = true;
-                        console.log("8");
-                        return state.direction ? left1 : up1;
-                    }
-                }
-            }
-        } else if (!state.isOpt) {
-            return { x: 0, y: 0 }
-        } else {
-            //is normal
-            if (state.setSwitched) {
-                state.setSwitched = false;
-                if (!state.prtSwitched) {
-                    state.setSwitched = false;
-                    if (state.isPro) {
-                        return state.direction ? left1 : up1;
-                    } else {
-                        return state.direction ? left2 : up2;
-                    }
-                } else {
-                    if (state.isPro) {
-                        return state.direction ? right1 : down1;
-                    } else {
-                        return state.direction ? right2 : down2;
-                    }
-                }
-            } else {
-                if (!state.prtSwitched) {
-                    if (state.isPro) {
-                        return state.direction ? right2 : down2;
-                    } else {
-                        return state.direction ? right1 : down1;
-                    }
-                } else {
-                    if (state.isPro) {
-                        return state.direction ? left2 : up2;
-                    } else {
-                        return state.direction ? left1 : up1;
-                    }
-                }
-            }
-        }
-    }
-
-    const offset = getPos();
+    const offset = getPosOpt(snap, vWidth, vHeight);
     const firstStyle = snap.direction ? { height: "75px" } : { height: "87px" };
     const secondStyle = snap.direction ? { height: "133px" } : { height: "161px" };
     const layout = snap.direction ? "grid-template-rows: 10% 1fr 10% 1fr; padding-left: 45px;padding-right: 40px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 15% 1fr; padding: 80px 12px 26px;";

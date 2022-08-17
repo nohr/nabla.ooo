@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import React, { useRef } from 'react';
 import * as THREE from "three";
 import { useSnapshot } from 'valtio';
-import { cloud, state } from '../UI/state';
+import { cloud, state } from '../common/state';
 
 function Ball(props) {
   const material = new THREE.MeshPhysicalMaterial({
