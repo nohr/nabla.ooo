@@ -40,15 +40,23 @@ export function Quote({ text, setText }) {
   const quote = useRef(null);
   const scramble = useRef(new Scrambler());
   const snap = useSnapshot(state);
+  const clip = useSnapshot(cloud);
   useEffect(() => {
     !cloud.CanvasLoading && newQuote().then(() => scramble.current.scramble(state.quotes, setText, { characters: characters }));
   }, [snap.quotes]);
 
-  return <Draggable nodeRef={quote} bounds=".mobileNav" position={snap.grabberPosition} axis="x">
+  if (clip.mobile) {
+      return <Draggable nodeRef={ quote} bounds=".mobileNav" position={snap.grabberPosition} axis="x">
     <div className="quote w">
       <div>{text}</div>
     </div >
   </Draggable>
+  } else {
+    return <div className="quote w">
+      <div>{text}</div>
+    </div >
+  }
+
 }
 
 const Homer = styled(NavLink)`

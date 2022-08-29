@@ -261,6 +261,7 @@ const Nav = styled.div`
     margin: 2px 0 16px;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
+    column-gap: 5px;
   }
     .header {
       height: 128px;
@@ -279,7 +280,7 @@ const Nav = styled.div`
     white-space: nowrap;
       text-indent: 0 !important;
       padding: 4px 0 4px;
-      font-size: 11px;
+      font-size: 10px;
       height: 20.5px !important;
     -webkit-user-select: none;
       -moz-user-select: none;

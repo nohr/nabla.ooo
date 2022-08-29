@@ -28,12 +28,12 @@ function Node({ select, confirm, clear, hit, index, ...props }) {
             // state.camera.lookAt(pos.current);
             // state.camera.position.lerp(vec.set(xPosition, Position, Position), .01);
             // state.camera.updateProjectionMatrix();
+        state.camera.zoom = 1 - (snap.grabberPosition.x / 300);
             const unsubscribe = api.position.subscribe((v) => {
                 pos.current = v;
             });
             return unsubscribe;
         }
-        state.camera.zoom = 1 - (snap.grabberPosition.x / 300);
         return null;
     });
 

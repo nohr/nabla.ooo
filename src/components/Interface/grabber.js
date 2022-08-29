@@ -49,19 +49,10 @@ export function Grabber({ handle, reset, navWrap, nav, resetButton }) {
 
       // Rotate reset button
   useEffect(() => {
-    let rad;
+    let rad = clip.mobile ? Math.atan(state.grabberPosition.x / (-state.grabberPosition.y + (offset - 20))) :  Math.atan(state.navPosition.x / (-state.navPosition.y + (offset - 20)));
 
-    if (clip.mobile) {
-        origin = state.grabberPosition;
-    } else {
-        origin = state.navPosition;
-    }
-
-    rad = Math.atan(
-        origin.x / (-origin.y + (offset - 20))
-      );
     const deg = rad * (180 / Math.PI);
-    if (snap.dragged) {
+    if (snap.dragged && resetButton.current) {
       resetButton.current.style.transform = `rotate(${deg}deg)`;
     }
   }, [state.grabberPosition, state.navPosition]);
