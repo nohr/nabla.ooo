@@ -328,7 +328,7 @@ const Nav = styled.div`
     /* transform: translate(-50%, 0); */
     stroke: ${props => props.theme.panelColor};
     fill: ${props => props.theme.panelColor};
-    fill-opacity: 0% !important; 
+    fill-opacity: 100% !important; 
     stroke-width: 1px !important;
     transition: 1.3s;
   }

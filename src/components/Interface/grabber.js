@@ -25,7 +25,7 @@ export function Grabber({ handle, reset, navWrap, nav, resetButton }) {
 
     function release() {
         if (handle.current !== undefined && handle.current !== null) {
-            handle.current.setAttribute("style", "fill-opacity: 0% !important; stroke-width: 1px !important; transition: 0.3s; cursor:grab;");
+            handle.current.setAttribute("style", "fill-opacity: 100% !important; stroke-width: 1px !important; transition: 0.3s; cursor:grab;");
             // document.getElementsByClassName("Panel").classList.remove("grabbing")
         }
     }
