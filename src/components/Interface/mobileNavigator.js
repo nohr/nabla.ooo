@@ -11,14 +11,13 @@ import styled from 'styled-components';
 import { ColorWheel } from '@react-spectrum/color';
 import Draggable from 'react-draggable';
 
-function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, color, setColor, setSong, song, setColorWheel, colorWheel, query, refine, clear, handle, text, setText }) {
+function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, color, setColor, setSong, song, setColorWheel, colorWheel, query, refine, clear, handle, text, setText, resetButton }) {
     const snap = useSnapshot(state);
     const clip = useSnapshot(cloud);
     const nav = useRef(null);
     const navWrap = useRef(null);
     const Bar = useRef(null);
     const wheel = useRef(null);
-    const resetButton = useRef(null);
     const [modal, setModal] = useState(false);
     const [offset, setOffset] = useState('-80px');
     const [changing, setChanging] = useState(false);

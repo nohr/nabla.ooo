@@ -26,6 +26,7 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
   const wheel = useRef();
   const handle = useRef();
   const nabla = useRef(null);
+  const resetButton = useRef(null);
   const { query, refine, clear } = useSearchBox();
   const [song, setSong] = useState(`${clip.songs[state.songIndex].artist} - ${cloud.songs[state.songIndex].name}`);
   const [text, setText] = useState(state.quotes);
@@ -133,6 +134,7 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
           setColor={setColor}
           text={text}
           setText={setText}
+          resetButton={resetButton}
         />
         : <>
           <Navigator
@@ -147,7 +149,9 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
             clear={clear}
             handle={handle}
             text={text}
-            setText={setText} />
+            setText={setText} 
+            resetButton={resetButton}
+            />
           <Projects select={select} />
           <Options
             colorWheel={colorWheel}

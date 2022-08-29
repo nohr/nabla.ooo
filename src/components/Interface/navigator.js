@@ -11,10 +11,11 @@ import { HomeButton, Quote } from './homeButton';
 import { Grabber } from "./grabber"
 import CircleType from "circletype"
 
-function Navigator({ nabla, dong, confirm, select, reset, song, handle, query, clear, refine, text, setText }) {
+function Navigator({ nabla, dong, confirm, select, reset, song, handle, query, clear, refine, text, setText, resetButton }) {
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
   const nav = useRef(null);
+  const [focused, setFocused] = useState(false);
 
   // Glow
   let pro;
@@ -51,11 +52,13 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle, query, c
   let title;
   // CircleType
   useEffect(() => {
-    title = document.querySelector(".song");
+    title = document.querySelector(".bend");
     if (title) {
       title = new CircleType(title).radius(clip.mobile ? 170 : 128);
+      title.dir(-1);
     }
     return () => {
+      title.destroy();
       title = null;
     }
   }, [snap.songIndex, snap.colorChanged]);
@@ -84,11 +87,12 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle, query, c
       onStop={onControlledStop}
       onDrag={onControlledDrag} >
       <Nav ref={nav} className="Panel nav">
-        <div className="header">
+        <div className="header"
+        style={ focused ? {borderBottomColor:"#EBEBEB"} : null}>
           <HomeButton nabla={nabla} dong={dong} clear={clear} query={query} />
-          {<Quote text={text} setText={setText} />}
+        {navigator.onLine && <Search query={query} clear={clear} refine={refine} setFocused={setFocused} />}
         </div>
-        {navigator.onLine && <Search query={query} clear={clear} refine={refine} />}
+          {<Quote text={text} setText={setText} />}
         <div className="grid">
           {!snap.colorWheel &&
             <>
@@ -119,12 +123,12 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle, query, c
           {clip.playMusic}
         </div>
         <Song position={` left: 48%;`}
-          className="song" style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true }} tabIndex="0">
+          className="bend song" style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true }} tabIndex="0">
           {song}
         </Song>
         {/* {(clip.UILoading || clip.CanvasLoading) ? <Spinner /> : */}
         {/* {(!snap.colorWheel && */}
-        <Grabber nav={nav} reset={reset} handle={handle} />
+        <Grabber nav={nav} reset={reset} handle={handle} resetButton={resetButton} />
         {/* )} */}
         {/* } */}
       </Nav>
@@ -133,19 +137,21 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle, query, c
 }
 
 
-function Search({ query, refine, clear }) {
-  const Bar = useRef(null);
+function Search({ query, refine, clear, setFocused }) {
   const [placeholder, setPlaceholder] = useState("Search (alt + z)");
+  const Bar = useRef(null);
 
   useEffect(() => {
     let keys = {};
 
     function handleClick() {
       if (Bar.current === document.activeElement) {
-        setPlaceholder("Cancel (esc)")
+        setPlaceholder("Cancel (esc)");
+        setFocused(true);
         return;
       } else {
-        setPlaceholder("Search (alt + z)")
+        setPlaceholder("Search (alt + z)");
+        setFocused(false);
         return;
       }
     }
@@ -156,6 +162,7 @@ function Search({ query, refine, clear }) {
         clear();
         Bar.current.blur();
         setPlaceholder("Search (alt + z)")
+        // setFocused(false);
         return;
       }
       // Do nothing when these are pressed
@@ -174,6 +181,7 @@ function Search({ query, refine, clear }) {
         keys = {};
         Bar.current.focus();
         setPlaceholder("Cancel (esc)")
+        setFocused(true);
       } else {
         return;
       }
@@ -231,7 +239,7 @@ function Search({ query, refine, clear }) {
 export default Navigator
 
 const Nav = styled.div`
-  padding: 0em 42.5px 30px 42.5px;
+  padding: 0em 32.5px 20px 32.5px;
   position: absolute;
   left: var(--edge);
   top: var(--edge);
@@ -239,7 +247,7 @@ const Nav = styled.div`
   text-indent: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
 
   @media only screen and (max-width: 768px) {
     &{
@@ -250,28 +258,29 @@ const Nav = styled.div`
   .grid{
     display: grid;
     justify-items: center;
-    padding-top: 10px;
-    gap: 5px;
+    margin: 2px 0 16px;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
   }
     .header {
+      height: 128px;
         border-bottom: 1px solid ${props => props.theme.panelColor};
         margin: 0 0 8px 0;
-        padding: 10px 0px 5px;
+        padding: 10px 0px 10px;
         display: flex;
         align-items: center;
-        justify-content: center;
+        justify-content: space-between;
         flex-direction: column;
         flex-wrap: nowrap;
     }
 
     .quote{
+      text-align: center;
     white-space: nowrap;
       text-indent: 0 !important;
       padding: 4px 0 4px;
-      font-size: 10px;
-      height: 19.5px !important;
+      font-size: 11px;
+      height: 20.5px !important;
     -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
@@ -303,15 +312,20 @@ const Nav = styled.div`
     transform: translate(-50%, 0);
   }
 
-
+  & .GrabberWrap{
+    /* position: relative; */
+    display: flex;
+    justify-content: center;
+  }
   & .grabber{  
     cursor: grab;
     width: 50px;
     position: absolute;
+    bottom: -15px;
     z-index: 500;
-    left: 50%;
-    top: 10px;
-    transform: translate(-50%, 0);
+    /* left: 50%; */
+    /* top: 10px; */
+    /* transform: translate(-50%, 0); */
     stroke: ${props => props.theme.panelColor};
     fill: ${props => props.theme.panelColor};
     fill-opacity: 0% !important; 
@@ -321,7 +335,8 @@ const Nav = styled.div`
 
   & .resetPos{
     position: absolute;
-    right: 40px;
+    bottom: 137px;
+    right: 20px;
     width: 20px;
     height: 20px;
 

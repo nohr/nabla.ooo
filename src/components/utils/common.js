@@ -120,6 +120,13 @@ export const Song = styled.p`
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
+
+    @media only screen and (min-width: 768px) {
+        & {
+            bottom: 10px;
+            top: unset;
+        }
+    }
   
   @keyframes flash {
 	0% {

@@ -46,20 +46,21 @@ export function Quote({ text, setText }) {
 
   return <Draggable nodeRef={quote} bounds=".mobileNav" position={snap.grabberPosition} axis="x">
     <div className="quote w">
-      <div >{text}</div>
+      <div>{text}</div>
     </div >
   </Draggable>
 }
 
 const Homer = styled(NavLink)`
-  height: fit-content;
-  width: 70%;
+  height: 55px;
+  width: 126px;
   display: flex;
   justify-content: center;
-  margin: 9px 0 2px 0;
+  margin: 10px 0 0px 0;
   padding-top: 5px;
   padding-bottom: 3px;
-  border-radius: 120px;
+  border-radius: 75% 75% 50px 50px;
+  border: 1px solid ${props => props.theme.panelColor};
   overflow: visible;
   background-color: transparent !important;
   -webkit-box-shadow: none !important;

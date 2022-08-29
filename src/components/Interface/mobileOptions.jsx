@@ -36,7 +36,6 @@ export function Options({
   setModal,
 }) {
   const snap = useSnapshot(state);
-  const clip = useSnapshot(cloud);
   const carousel = useRef(null);
 
   useEffect(() => {
@@ -52,17 +51,6 @@ export function Options({
       }
     };
   }, []);
-
-  // Rotate reset button
-  useEffect(() => {
-    const rad = Math.atan(
-      state.grabberPosition.x / (-state.mobileNavPosition.y + (offset - 20))
-    );
-    const deg = rad * (180 / Math.PI);
-    if (snap.dragged) {
-      resetButton.current.style.transform = `rotate(${deg}deg)`;
-    }
-  }, [state.grabberPosition]);
 
   const onControlledDrag = (e, position) => {
     // let { x, y } = position;

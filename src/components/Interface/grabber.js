@@ -1,11 +1,11 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Draggable from "react-draggable";
 import { useSnapshot } from "valtio";
 import { cloud, state } from "../utils/state";
 import { Folder, offset } from "../utils/common";
 import { ResetIcon, ShowHideIcon } from "../utils/svg";
 
-export function Grabber({ handle, reset, navWrap, nav, setModal }) {
+export function Grabber({ handle, reset, navWrap, nav, resetButton }) {
     const grab = useRef(null);
     const clip = useSnapshot(cloud);
     const snap = useSnapshot(state);
@@ -47,6 +47,25 @@ export function Grabber({ handle, reset, navWrap, nav, setModal }) {
         state.grabberPosition = { x: x, y: 0 };
     }
 
+      // Rotate reset button
+  useEffect(() => {
+    let rad;
+
+    if (clip.mobile) {
+        origin = state.grabberPosition;
+    } else {
+        origin = state.navPosition;
+    }
+
+    rad = Math.atan(
+        origin.x / (-origin.y + (offset - 20))
+      );
+    const deg = rad * (180 / Math.PI);
+    if (snap.dragged) {
+      resetButton.current.style.transform = `rotate(${deg}deg)`;
+    }
+  }, [state.grabberPosition, state.navPosition]);
+
     return (
         <Draggable bounds={clip.mobile ? ".mobileNavWrap" : "body"} nodeRef={grab} onDrag={clip.mobile ? onControlledDrag : () => false} axis="none" position={clip.mobile ? snap.grabberPosition : { x: 0, y: 0 }}>
             <div ref={grab} className='GrabberWrap'>
@@ -81,6 +100,7 @@ export function Grabber({ handle, reset, navWrap, nav, setModal }) {
                     </svg>}
                 {(!clip.mobile && snap.dragged) &&
                     <Folder
+                    ref={resetButton}
                         onClick={() => {
                             state.isOpt = false;
                             state.isPro = false;
@@ -95,7 +115,7 @@ export function Grabber({ handle, reset, navWrap, nav, setModal }) {
                                 nav.current.style.transition = "0.1s";
                                 console.log("transition returned");
                             }, "1300");
-                        }} className="li resetPos w">{clip.mobile ? "reset" : <ResetIcon />}
+                        }} className="li resetPos w">{clip.mobile ? "reset" : <ShowHideIcon n={2} />}
                     </Folder>}
             </div>
         </Draggable>
