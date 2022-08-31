@@ -135,9 +135,9 @@ export default memo(PageData)
 const Sector = styled.div`
 /* border: solid 1px; */
 /* border-color: ${props => props.theme.panelColor}; */
-border-radius: 10px;
+/* border-radius: 10px; */
 display: flex;
-height: 650px !important;
+min-height: 650px !important;
 flex-direction: column;
 row-gap: 30px;
 padding: 0px;
@@ -148,7 +148,7 @@ transition:0s !important;
 resize: horizontal;
 
     @media screen and (max-width: 768px) {
-      border: none;
+      height: 100%;
       row-gap: 0px;
   }
 
@@ -249,23 +249,22 @@ const TextWrapper = styled.div`
 
 `
 const TrayWrapper = styled.div`
-  overflow-x: scroll;
+  /* overflow-x: scroll; */
+    /* overflow-y: hidden; */
   display: grid;
-  grid-template-columns: 240px 15%;    
+  grid-template-columns: 240px 1fr;    
   grid-template-rows: 100%;
   flex-direction: row;
   flex-wrap: nowrap;
   width: 100%;
-  height: 100%;
+  height: 70%;
     /* padding: 0 20px 20px 20px; */
     gap: 10px;
         margin-bottom: 1px;
 
-
     @media screen and (max-width: 768px) {
-      & {
-        flex-direction: column-reverse;
-      }
+  grid-template-rows: 200px 1fr;    
+  grid-template-columns: 100%;
   }
 
     ::-webkit-scrollbar {
@@ -290,20 +289,17 @@ const TrayWrapper = styled.div`
 const ImgWrapper = styled.div`
     position: relative;
     height: 100%;
+    width: 100%;
     display: flex;
-    /* overflow-x: scroll; */
     /* overflow-y: hidden; */
+    overflow-x: scroll;
     flex-direction: row;
     flex-wrap: nowrap;
     gap: 20px;
     padding-bottom: 5px;
 
-    /* @media screen and (min-width:768px) {
-      padding-left: 300px;
-    } */
     @media screen and (max-width: 768px) {
       & {
-        height: 50%;
       }
   }
 
@@ -451,7 +447,7 @@ const InfoCard = styled.div`
 
     @media screen and (max-width:768px) {
       width: 100% !important;
-      height: 40%;
+      /* height: 40%; */
     }
     
     & {

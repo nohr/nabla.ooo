@@ -13,6 +13,7 @@ import { useSearchBox } from "react-instantsearch-hooks-web"
 // Audio
 import home from "../Sounds/home.mp3"
 import sound5 from "../Sounds/reset.mp3"
+import { Results } from "./Stream/Results"
 
 function Interface({ color, setColor, useSound, select, confirm, open, close }) {
   const [colorWheel, setColorWheel] = useState(false);
@@ -139,6 +140,8 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
         setColorWheel={setColorWheel}
       />
     }
+    <Results
+      select={select} />
     <Routes>
       <Route path="/" element={<Page title={"Nabla"} id={"Home"} />} />
       <Route path="/store" element={<Page title={"Nabla Store"} id={"Store"} />} />

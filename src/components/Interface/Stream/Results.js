@@ -784,6 +784,10 @@ border: 1px solid  ${props => props.theme.backdrop};
         -webkit-mask-image: ${props => props.mask} !important;
         mask-image: ${props => props.mask} !important;
 
+ @media screen and (max-width: 768px) {
+    border: 1px solid  ${props => props.theme.panelColor} !important;
+    color: ${props => props.theme.panelColor} !important;
+  }
         & .icons{
           display: flex;
           flex-direction: row;

@@ -148,7 +148,7 @@ export function Options({
             {/* RESET */}
             <Folder
               ref={resetButton}
-              onTouchEnd={() =>
+              onTouchStart={() =>
                 resetPos(setModal, reset, search, navWrap, snap)
               }
               className={`li resetPos w`}
@@ -194,7 +194,7 @@ export function Options({
           </div>
         </OptionsWrapper>
       </Draggable>
-      <Stats showPanel={0} className="stats" />
+      {/* <Stats showPanel={0} className="stats" /> */}
     </>
   );
 }

@@ -1153,7 +1153,7 @@ const Head = styled.div`
         margin-left: calc(var(--panelWidth) + var(--headOffset));
 
         & h1{
-          text-shadow: 9px 4px 13px  ${props => props.theme.sky};
+          /* text-shadow: 9px 4px 13px  ${props => props.theme.sky}; */
         justify-self: flex-start;
         position: absolute;
         font-size: 14vw;

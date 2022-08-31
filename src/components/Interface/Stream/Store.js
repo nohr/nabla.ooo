@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../../../App.css";
 import { Container } from "./Page";
 import { HashLink } from "react-router-hash-link";
 import styled from "styled-components";
 import Tilty from 'react-tilty';
 import { DiagonalArrow, EkoThumb, Header } from "../../utils/svg";
-import { state } from "../../utils/state";
+import { cloud, state } from "../../utils/state";
 import { useSnapshot } from "valtio";
 import { GetStore } from "../../utils/common";
 
 function Store(props) {
-  const snap = useSnapshot(state)
-  GetStore();
+  const snap = useSnapshot(state);
+  // cloud.UILoading = false;
+  useEffect(() => {
+    GetStore();
+  }, [snap.store])
+
   return (<>
     <Header id={"store"} />
     <Container overflow='hidden' className="container"

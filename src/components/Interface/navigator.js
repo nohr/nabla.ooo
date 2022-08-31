@@ -2,7 +2,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import Projects from "./projects"
 import Options from "./options"
-import { Results } from "./Stream/Results"
 import { cloud, state } from "../utils/state"
 import { Song, closeWheel, resetWheel, Folder, Wheel, toHslString } from "../utils/common"
 import { Arrow, SideArrow, SearchBarIcon, ClearIcon } from "../utils/svg"
@@ -65,19 +64,18 @@ function Navigator({ nabla, dong, confirm, select, reset, song, setSong, handle,
     };
   }, []);
 
-  let title;
   // CircleType
+  let bent;
+  const title = useRef();
   useEffect(() => {
-    title = document.querySelector(".bend");
     if (title) {
-      title = new CircleType(title).radius(140);
-      // title.dir(-1);
+      if (bent) {
+        bent.destroy();
+      } else {
+        bent = new CircleType(title.current).radius(140);
+      }
     }
-    return () => {
-      title.destroy();
-      title = null;
-    }
-  }, [state.songIndex, snap.colorChanged]);
+  }, [song, snap.theme, snap.hue]);
 
 
   const onControlledDrag = (e, position) => {
@@ -152,7 +150,7 @@ function Navigator({ nabla, dong, confirm, select, reset, song, setSong, handle,
             {/* force reload */}
             {clip.playMusic}
           </div>
-          <Song position={` left: 48%;`}
+          <Song ref={title} position={` left: 48%;`}
             className="bend song" style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true }} tabIndex="0">
             {song}
           </Song>
@@ -175,8 +173,6 @@ function Navigator({ nabla, dong, confirm, select, reset, song, setSong, handle,
         colorWheel={colorWheel}
         setColorWheel={setColorWheel}
         setSong={setSong}
-        select={select} />
-      <Results
         select={select} />
       <Draggable position={snap.navPosition}>
         <Wheel
@@ -351,7 +347,6 @@ const Nav = styled.div`
       -ms-user-select: none;
       user-select: none;
     }
-
 
     & .li{
     width: 80%;

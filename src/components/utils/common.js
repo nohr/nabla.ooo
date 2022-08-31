@@ -42,19 +42,21 @@ export const Folder = styled.div`
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
-            backdrop-filter: blur(3px);
-            border: 1px solid ${props => props.theme.panelColor};
+            backdrop-filter: blur(30px) !important;
+            /* border: 1px solid ${props => props.theme.panelColor}; */
             border-radius: 50%;
             justify-content: center;
             display:flex;
             height: 50px;
-            flex-direction: column;
-            padding: 2px;
             width: 50px;
+            flex-direction: column;
+            /* padding: 2px; */
 
             & svg{
-            width: 24px !important;
-               }
+                stroke:  ${props => props.theme.panelColor};
+            width: 28px !important;
+            stroke-width: 3px;
+            }
    }
 
   &.circleButton{
@@ -585,6 +587,9 @@ export function Theme() {
 };
 export const toggleTheme = () => {
     state.themeChanged = true;
+    if (state.monochrome) {
+        toHslString(state.hue);
+    }
     if (state.theme === "dark") {
         document.getElementById("theme-color").setAttribute("media", "");
         document.getElementById("theme-color").setAttribute("content", state.light.sky);
