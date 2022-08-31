@@ -7,7 +7,6 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     store: [],
     blog: [],
     projectNames: [],
-    projectClients: [],
     mediums: [],
     by: [],
     quotes: '',
@@ -54,6 +53,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     themeChanged: false,
     colorChanged: false,
     hue: 205,
+    monochrome: false,
     theme: "light",
     light: {
         //UI
@@ -119,6 +119,7 @@ subscribe(state, () => {
 // Short-term State
 export const cloud = proxy({
     // Firebase
+    projectClients: [],
     selfs: [],
     clients: [],
     sectors: [],

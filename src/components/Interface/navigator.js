@@ -1,21 +1,37 @@
 //Navigator -- Child of <UI />
 import React, { useEffect, useRef, useState } from "react"
+import Projects from "./projects"
+import Options from "./options"
+import { Results } from "./Stream/Results"
 import { cloud, state } from "../utils/state"
-import { Song, closeWheel, resetWheel, Folder } from "../utils/common"
+import { Song, closeWheel, resetWheel, Folder, Wheel, toHslString } from "../utils/common"
 import { Arrow, SideArrow, SearchBarIcon, ClearIcon } from "../utils/svg"
 import { useSnapshot } from "valtio"
 import styled from "styled-components"
 import { NavLink } from "react-router-dom"
 import Draggable from "react-draggable"
 import { HomeButton, Quote } from './homeButton';
-import { Grabber } from "./grabber"
+import { Grabber, ResetPosButton } from "./grabber"
 import CircleType from "circletype"
+import { ColorWheel } from '@react-spectrum/color';
 
-function Navigator({ nabla, dong, confirm, select, reset, song, handle, query, clear, refine, text, setText, resetButton }) {
+function Navigator({ nabla, dong, confirm, select, reset, song, setSong, handle, query, clear, refine, text, setText, resetButton, colorWheel, setColorWheel, color, setColor, open, close }) {
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
   const nav = useRef(null);
+  const wheel = useRef();
   const [focused, setFocused] = useState(false);
+
+  const headwidth = {
+    first: {
+      max: snap.direction ? "100%" : "100%",
+      min: snap.direction ? "62%" : "62%",
+    },
+    second: {
+      max: snap.direction ? "62%" : "100%",
+      min: snap.direction ? "110%" : "62%",
+    },
+  };
 
   // Glow
   let pro;
@@ -54,14 +70,14 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle, query, c
   useEffect(() => {
     title = document.querySelector(".bend");
     if (title) {
-      title = new CircleType(title).radius(clip.mobile ? 170 : 128);
-      title.dir(-1);
+      title = new CircleType(title).radius(140);
+      // title.dir(-1);
     }
     return () => {
       title.destroy();
       title = null;
     }
-  }, [snap.songIndex, snap.colorChanged]);
+  }, [state.songIndex, snap.colorChanged]);
 
 
   const onControlledDrag = (e, position) => {
@@ -80,34 +96,42 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle, query, c
     cloud.drag = false;
   }
 
-  return (
-    //NAV
+  return (<>
     <Draggable nodeRef={nav} handle=".grabber" bounds="body"
       position={state.navPosition}
       onStop={onControlledStop}
       onDrag={onControlledDrag} >
       <Nav ref={nav} className="Panel nav">
-        <div className="header"
-        style={ focused ? {borderBottomColor:"#EBEBEB"} : null}>
+        <Header style={focused ? { borderBottomColor: "#EBEBEB" } : null}
+          width={(snap.isOpt || snap.isPro) ? "100%" : "90%"}
+        >
           <HomeButton nabla={nabla} dong={dong} clear={clear} query={query} />
-        {navigator.onLine && <Search query={query} clear={clear} refine={refine} setFocused={setFocused} />}
-        </div>
           {<Quote text={text} setText={setText} />}
+        </Header>
         <div className="grid">
+          {navigator.onLine && <Search query={query} clear={clear} refine={refine} setFocused={setFocused} />}
+          <div className="iconTray">
+            <ResetPosButton
+              resetButton={resetButton}
+              reset={reset}
+              nav={nav} />
+          </div>
           {!snap.colorWheel &&
             <>
               <NavLink onClick={() => { clear(); select(); }} className="li w" to="/info">
                 Info
               </NavLink>
-              <NavLink onClick={() => { clear(); select(); }} className="li w" to="/store">
+              <NavLink onClick={() => { clear(); select(); }} className="li w3" to="/store">
                 Store
               </NavLink >
-              <Folder className="li folder proLink" tabIndex={-1}
+              <Folder className={`li folder proLink ${state.isPro ? "folderActive" : null}`} tabIndex={-1}
+                style={{ justifySelf: "flex-end" }}
               >
                 Projects
                 {snap.isPro ? <SideArrow /> : <Arrow />}
               </Folder>
-              <Folder className="li folder optLink" tabIndex={-1}
+              <Folder className={`li folder optLink ${state.isOpt ? "folderActive" : null}`} tabIndex={-1}
+                style={{ justifySelf: "flex-start" }}
               >
                 Options
                 {snap.isOpt ? <SideArrow /> : <Arrow />}
@@ -115,6 +139,8 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle, query, c
             </>}
           {snap.colorWheel &&
             <>
+              <Folder onClick={() => { state.monochrome = !state.monochrome; select(); }} className={`li w mono ${snap.monochrome ? "glow" : null}`} style={{ color: snap.monochrome ? snap.theme == 'light' ? snap.light.sky : snap.dark.sky : null }}
+              >Monochrome</Folder>
               <Folder onClick={() => { closeWheel(); confirm(); }} className="li w Color">Confirm</Folder>
               <Folder onClick={() => { resetWheel(); reset(); }} className="li w Reset">Reset</Folder>
             </>
@@ -128,17 +154,49 @@ function Navigator({ nabla, dong, confirm, select, reset, song, handle, query, c
         </Song>
         {/* {(clip.UILoading || clip.CanvasLoading) ? <Spinner /> : */}
         {/* {(!snap.colorWheel && */}
-        <Grabber nav={nav} reset={reset} handle={handle} resetButton={resetButton} />
+        <Grabber nav={nav} reset={reset} handle={handle} />
         {/* )} */}
         {/* } */}
       </Nav>
     </Draggable>
+    <Projects
+      open={open}
+      close={close}
+      headwidth={headwidth}
+      select={select} />
+    <Options
+      open={open}
+      close={close}
+      headwidth={headwidth}
+      colorWheel={colorWheel}
+      setColorWheel={setColorWheel}
+      setSong={setSong}
+      select={select} />
+    <Results
+      select={select} />
+    <Draggable position={snap.navPosition}>
+      <Wheel
+        opacity={snap.colorWheel ? "1" : "0"}
+        pointerEvents={snap.colorWheel ? "all" : "none"}
+        transition={snap.colorWheel ? "0.3s" : "0s"}
+        ref={wheel}
+        onClick={() => { state.colorChanged = true; }}
+      >
+        {!snap.monochrome && <ColorWheel
+          size={"310px"}
+          borderColor={`${props => props.theme.panelColor}`}
+          value={color}
+          onChange={setColor}
+          onChangeEnd={setColor} />}
+      </Wheel>
+    </Draggable>
+  </>
   )
 }
 
 
 function Search({ query, refine, clear, setFocused }) {
-  const [placeholder, setPlaceholder] = useState("Search (alt + z)");
+  const [placeholder, setPlaceholder] = useState("(alt + z)");
   const Bar = useRef(null);
 
   useEffect(() => {
@@ -146,11 +204,11 @@ function Search({ query, refine, clear, setFocused }) {
 
     function handleClick() {
       if (Bar.current === document.activeElement) {
-        setPlaceholder("Cancel (esc)");
+        setPlaceholder("(esc)");
         setFocused(true);
         return;
       } else {
-        setPlaceholder("Search (alt + z)");
+        setPlaceholder("(alt + z)");
         setFocused(false);
         return;
       }
@@ -161,7 +219,7 @@ function Search({ query, refine, clear, setFocused }) {
       if (e.key === "Escape") {
         clear();
         Bar.current.blur();
-        setPlaceholder("Search (alt + z)")
+        setPlaceholder("(alt + z)")
         // setFocused(false);
         return;
       }
@@ -180,7 +238,7 @@ function Search({ query, refine, clear, setFocused }) {
         e.preventDefault();
         keys = {};
         Bar.current.focus();
-        setPlaceholder("Cancel (esc)")
+        setPlaceholder("(esc)")
         setFocused(true);
       } else {
         return;
@@ -210,7 +268,7 @@ function Search({ query, refine, clear, setFocused }) {
   };
 
   return (
-    <SearchWrapper id="search">
+    <SearchWrapper>
       <SearchBar
         placeholder={placeholder}
         type="text"
@@ -239,7 +297,7 @@ function Search({ query, refine, clear, setFocused }) {
 export default Navigator
 
 const Nav = styled.div`
-  padding: 0em 32.5px 20px 32.5px;
+  padding: 0 0 20px 0;
   position: absolute;
   left: var(--edge);
   top: var(--edge);
@@ -248,33 +306,32 @@ const Nav = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-
-  @media only screen and (max-width: 768px) {
-    &{
-      display:  none;
-    }
-  }
+  align-items: center;
 
   .grid{
+    position: relative;
+    padding: 0 15px;
     display: grid;
     justify-items: center;
-    margin: 2px 0 16px;
+    margin: 2px 0 10px;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
-    column-gap: 5px;
-  }
-    .header {
-      height: 128px;
-        border-bottom: 1px solid ${props => props.theme.panelColor};
-        margin: 0 0 8px 0;
-        padding: 10px 0px 10px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        flex-direction: column;
-        flex-wrap: nowrap;
+    /* column-gap: 5px; */
+    row-gap: 5px;
+
+    & .folder{
+      margin: 2px 8px !important;
+      width: 65%;
     }
 
+    & .iconTray{
+      width: 90%;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      column-gap: 10px;
+    }
+  }
     .quote{
       text-align: center;
     white-space: nowrap;
@@ -290,7 +347,7 @@ const Nav = styled.div`
 
 
     & .li{
-    width: 85%;
+    width: 80%;
     align-self: center;
     transition: 0.3s;
     -webkit-user-select: none;
@@ -314,15 +371,17 @@ const Nav = styled.div`
   }
 
   & .GrabberWrap{
-    /* position: relative; */
     display: flex;
     justify-content: center;
+    pointer-events: none;
   }
-  & .grabber{  
+
+  & .grabber{
+    pointer-events: all;
     cursor: grab;
     width: 50px;
     position: absolute;
-    bottom: -15px;
+    bottom: -20px;
     z-index: 500;
     /* left: 50%; */
     /* top: 10px; */
@@ -335,22 +394,22 @@ const Nav = styled.div`
   }
 
   & .resetPos{
-    position: absolute;
-    bottom: 137px;
-    right: 20px;
+    border-radius: 50%;
     width: 20px;
     height: 20px;
+    border-color:  ${props => props.theme.panelColor};
+    /* background-color: ${props => props.theme.LiHover}; */
+
+    & svg path{
+      fill:  ${props => props.theme.panelColor};
+    }
 
     &:hover{
-      border-color:${props => props.theme.textHover};
+      border-color: ${props => props.theme.sky};
     }
 
-    &:hover > .ResetIcon{
-      fill: ${props => props.theme.textHover};
-    }
-
-    & .ResetIcon{
-      fill: ${props => props.theme.panelColor};
+    &:hover >  svg path{
+      fill: ${props => props.theme.LiActiveBackground} !important;
     }
   }
 
@@ -471,41 +530,55 @@ const Nav = styled.div`
   }
 
   & .song{
+    position: absolute;
+    top: 06px;
     left: 48%;
   }
 `
+const Header = styled.div`
+      height: 130px;
+      width: ${props => props.width};
+        border-bottom: 1px solid ${props => props.theme.panelColor};
+        margin: 0 0 8px 0;
+        padding: 25px 0px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        row-gap: 2px !important;
+        flex-direction: column;
+        flex-wrap: nowrap;
+`
 const SearchWrapper = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  width: 96%;
-  margin: 0 auto 0 auto;
+position: relative;
+width: 100%;
 `
 const SearchBar = styled.input`
   border: none !important;
   width: 100%;
-  margin: 3px 0;
+  height: 25px;
+  /* margin: 3px 0; */
   display: flex;
-  border-radius: 25px;
+  border-radius: 250px 250px 500px 500px;
   background-color: transparent;
   box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
   -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
   -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
   color:  ${props => props.theme.panelColor};
-  padding: 2px 19px 2px 19px;
+  padding: 2px 25px 2px 25px;
   user-select: text;
   -moz-user-select: text;
   -webkit-user-select: text;
   font-size: 13px;
   cursor: pointer;
 
-  @media only screen and (max-width: 768px) {
-  padding: 6px 19px 6px 20px;
-  outline: 1px solid ${props => props.theme.panelColor};
-  font-size: 18px;
+  #searchIcon{
+    position: absolute;
+    top: 0 !important;
+    left: 0 !important;
   }
 
   &::placeholder{
+    text-align: center;
     color: ${props => props.theme.panelColor};
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
@@ -549,3 +622,33 @@ const SearchBar = styled.input`
     transition: 0.3s;
   } 
 `
+export const BarIcon = styled.svg`
+        position: absolute;
+        top: 50%;
+        left: 8px;
+        transform: translateY( -50%);
+        height: 12px;
+        fill: ${props => props.colorfill};
+        stroke: ${props => props.colorstroke};
+        cursor: pointer;
+        stroke-width: 1px;
+
+        &:hover{
+          opacity: 50%;
+        pointer-events: painted;
+    }
+        `
+export const Clear = styled.svg`
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translate(50%, -50%);
+        height: 14px;
+        fill: ${props => props.theme.panelColor};
+        cursor: pointer;
+
+        &:hover{
+          opacity: 50%;
+        pointer-events: painted;
+    }
+        `

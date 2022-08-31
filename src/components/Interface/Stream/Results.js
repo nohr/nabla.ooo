@@ -320,6 +320,10 @@ const Overlay = styled.div`
   padding: 20px;
   font-size: 14px;
   color: ${props => props.theme.panelColor};
+
+    @media screen and (max-width:768px) {
+      display: none;
+    }
 `
 const SideGroup = styled.div`
   height: 100%;

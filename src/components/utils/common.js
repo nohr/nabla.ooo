@@ -1,10 +1,11 @@
 //utils.js - global helper functions
 import { useRef, useState, useEffect } from 'react';
-import { initializeApp } from "firebase/app"
+import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, orderBy, where, query } from "firebase/firestore/lite";
 import { getStorage, getDownloadURL, ref } from "firebase/storage";
-import algoliasearch from "algoliasearch"
-import { history } from 'instantsearch.js/es/lib/routers'; import styled, { createGlobalStyle } from "styled-components"
+import algoliasearch from "algoliasearch";
+import { history } from 'instantsearch.js/es/lib/routers';
+import styled, { createGlobalStyle } from "styled-components";
 import { state, cloud } from "./state";
 
 // CANVAS
@@ -23,7 +24,20 @@ export const Folder = styled.div`
   border-color: ${props => props.theme.panelColor};
    ${props => props.border};
 
+   &.mono{
+    width: 60% !important;
+    grid-area: 3/ 1/span 1/ span 2;
+    text-align: center;
+     color: ${props => props.theme.bwElement};
+     border: 1px solid ${props => props.theme.bwElement};
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
+   }
+
    &.resetPos{
+    pointer-events: all;
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
@@ -104,7 +118,7 @@ export const Folder = styled.div`
 `
 export const Song = styled.p`
     position: absolute;
-     top: 3%;
+     top: 6px;
     /* margin: 0 auto; */
     ${props => props.position}
     margin: 0;
@@ -210,7 +224,12 @@ export const GlobalStyle = createGlobalStyle`
       color: ${props => props.theme.panelColor};
       border-radius: 185px;
       overflow: hidden;
+      
+      & .li{
+        border-radius: 250px 250px 500px 500px;
+      }
     }
+
     .glow{
       fill: ${props => props.theme.panelColor} !important;
       background-color: ${props => props.theme.panelColor} !important;
@@ -383,6 +402,12 @@ a.active:not(.nablaWrapper){
     width: 120px;
     border-color: ${props => props.theme.panelColor} !important;
     background-color:  ${props => props.theme.panelColor} !important;
+     @media screen and (min-width:768px) {
+        &{
+             height: 50px;
+            width: 50px;
+        }
+    }
   }
   .spectrum-ColorHandle-color_5a9f41{
     border-color: ${props => props.theme.panelColor} !important;
@@ -461,13 +486,23 @@ let cd;
 let fogLight = "hsl(360, 0%, 72%)";
 
 export function toHslString(color) {
-    string = `hsl(${color}, 100%, 20%)`
-    darkString = `hsl(${color}, 41%, 74%)`
-    stringAlpha = `hsla(${color}, 100%, 20%, 0.67)`
-    darkStringAlpha = `hsla(${color}, 51%, 64%, 0.67)`
-    surface = `hsla(${color}, 100%, 80%, 1)`;
-    darkSurface = `hsla(${color}, 15%, 40%, 1)`;
-    cd = `hsla(${color}, 31%, 84%, 1)`;
+    if (state.monochrome) {
+        string = `hsl(0, 0%, 0%)`
+        darkString = `hsl(0, 100%, 100%)`
+        stringAlpha = `hsla(0, 100%, 0%, 0.67)`
+        darkStringAlpha = `hsla(0, 100%, 100%, 0.45)`
+        surface = `#fafafa`;
+        darkSurface = `#7a7a7a`;
+        cd = `hsla(0, 100%, 100%, 1)`;
+    } else {
+        string = `hsl(${color}, 100%, 20%)`
+        darkString = `hsl(${color}, 41%, 74%)`
+        stringAlpha = `hsla(${color}, 100%, 20%, 0.67)`
+        darkStringAlpha = `hsla(${color}, 51%, 64%, 0.67)`
+        surface = `hsla(${color}, 100%, 80%, 1)`;
+        darkSurface = `hsla(${color}, 15%, 40%, 1)`;
+        cd = `hsla(${color}, 31%, 84%, 1)`;
+    }
 
     if (state.theme === 'light') {
         state.light.panelColor = string;
@@ -504,6 +539,8 @@ export function closeWheel() {
 };
 export function resetWheel() {
     state.colorWheel = false;
+    state.monochrome = false;
+    state.hue = 205;
     if (state.theme === 'light') {
         state.light.panelColor = originalColors.light.panelColor;
         state.light.placeholder = originalColors.light.panelColor;
@@ -965,7 +1002,7 @@ export async function GetWorks() {
 
         const projectClientsRef = query(colRef, orderBy("name", "asc"), where("name", "!=", null))
         const projectClientsSnapshot = await getDocs(projectClientsRef);
-        state.projectClients = projectClientsSnapshot.docs.map(doc => doc.data());
+        cloud.projectClients = projectClientsSnapshot.docs.map(doc => doc.data());
 
         cloud.UILoading = false;
     } else {
@@ -991,6 +1028,7 @@ export async function newQuote() {
 export async function GetSectors(id) {
     cloud.UILoading = true;
     const sectorRef = collection(db, "portfolio");
+    // TODO: update to look for generated LOT #
     const sectors = query(sectorRef, orderBy("projectYear", "desc"), where("at", "==", `${id}`));
     const sectorSnapshot = await getDocs(sectors);
     cloud.sectors = sectorSnapshot.docs.map(doc => doc.data());

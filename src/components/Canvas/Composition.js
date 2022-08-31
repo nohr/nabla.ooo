@@ -317,7 +317,7 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
             {/* <CD position={[0, 10, -20]} rotation={[Math.PI / -2.5, 0, 0]} /> */}
           </Router> : <CD rotation={[-Math.PI / 2, Math.PI / 2, Math.PI / 2]} />}
       </Physics>
-      <Suspense fallback={<Spinner />}>
+      {/* <Suspense fallback={<Spinner />}>
         {
           !clip.mobile &&
           <EffectComposer>
@@ -327,7 +327,7 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
             />
           </EffectComposer>
         }
-      </Suspense>
+      </Suspense> */}
       <OrbitControls
         target={clip.mobile ? clip.target : [0, 2, 0]}
         onEnd={(e) => {

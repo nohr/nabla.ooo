@@ -46,11 +46,11 @@ export function Quote({ text, setText }) {
   }, [snap.quotes]);
 
   if (clip.mobile) {
-      return <Draggable nodeRef={ quote} bounds=".mobileNav" position={snap.grabberPosition} axis="x">
-    <div className="quote w">
-      <div>{text}</div>
-    </div >
-  </Draggable>
+    return <Draggable nodeRef={quote} bounds=".mobileNav" position={snap.grabberPosition} axis="x">
+      <div className="quote w">
+        <div>{text}</div>
+      </div >
+    </Draggable>
   } else {
     return <div className="quote w">
       <div>{text}</div>
@@ -60,11 +60,11 @@ export function Quote({ text, setText }) {
 }
 
 const Homer = styled(NavLink)`
-  height: 55px;
-  width: 126px;
+  height: 70px;
+  width: 130px;
   display: flex;
   justify-content: center;
-  margin: 10px 0 0px 0;
+  /* margin: 10px 0 0px 0; */
   padding-top: 5px;
   padding-bottom: 3px;
   border-radius: 75% 75% 50px 50px;

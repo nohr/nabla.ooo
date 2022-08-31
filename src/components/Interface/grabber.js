@@ -5,7 +5,7 @@ import { cloud, state } from "../utils/state";
 import { Folder, offset } from "../utils/common";
 import { ResetIcon, ShowHideIcon } from "../utils/svg";
 
-export function Grabber({ handle, reset, navWrap, nav, resetButton }) {
+export function Grabber({ handle, reset, navWrap }) {
     const grab = useRef(null);
     const clip = useSnapshot(cloud);
     const snap = useSnapshot(state);
@@ -47,20 +47,10 @@ export function Grabber({ handle, reset, navWrap, nav, resetButton }) {
         state.grabberPosition = { x: x, y: 0 };
     }
 
-      // Rotate reset button
-  useEffect(() => {
-    let rad = clip.mobile ? Math.atan(state.grabberPosition.x / (-state.grabberPosition.y + (offset - 20))) :  Math.atan(state.navPosition.x / (-state.navPosition.y + (offset - 20)));
-
-    const deg = rad * (180 / Math.PI);
-    if (snap.dragged && resetButton.current) {
-      resetButton.current.style.transform = `rotate(${deg}deg)`;
-    }
-  }, [state.grabberPosition, state.navPosition]);
-
     return (
         <Draggable bounds={clip.mobile ? ".mobileNavWrap" : "body"} nodeRef={grab} onDrag={clip.mobile ? onControlledDrag : () => false} axis="none" position={clip.mobile ? snap.grabberPosition : { x: 0, y: 0 }}>
             <div ref={grab} className='GrabberWrap'>
-                {/* MOBILE HIDER */}
+                {/* MOBILE Shower */}
                 {snap.hideNav && !snap.dragged && clip.mobile ?
                     <Folder
                         onTouchEnd={() => {
@@ -89,26 +79,46 @@ export function Grabber({ handle, reset, navWrap, nav, resetButton }) {
                             <circle vectorEffect="non-scaling-stroke" cx="39.5" cy="12.5" r="3.18"></circle>
                         </g>
                     </svg>}
-                {(!clip.mobile && snap.dragged) &&
-                    <Folder
-                    ref={resetButton}
-                        onClick={() => {
-                            state.isOpt = false;
-                            state.isPro = false;
-                            cloud.resetRate = (Math.random() * (0.85 - 0.65) + 0.65);
-                            reset();
-                            nav.current.style.transition = "1.3s";
-                            state.navPosition = { x: 0, y: 0 };
-                            state.proPosition = { x: 0, y: 0 };
-                            state.optPosition = { x: 0, y: 0 };
-                            state.dragged = false;
-                            setTimeout(() => {
-                                nav.current.style.transition = "0.1s";
-                                console.log("transition returned");
-                            }, "1300");
-                        }} className="li resetPos w">{clip.mobile ? "reset" : <ShowHideIcon n={2} />}
-                    </Folder>}
             </div>
         </Draggable>
     );
+}
+
+export function Rotate(resetButton, clip, snap) {
+    let rad = clip.mobile ? -Math.atan(state.grabberPosition.x / (-state.grabberPosition.y + (offset - 20))) : Math.atan((state.navPosition.x + 50) / (-state.navPosition.y + (offset - 150)));
+
+    const deg = rad * (180 / Math.PI);
+    if (snap.dragged && resetButton.current) {
+        resetButton.current.style.transform = `rotate(${deg}deg)`;
+    }
+}
+export function ResetPosButton({ resetButton, reset, nav }) {
+    const clip = useSnapshot(cloud);
+    const snap = useSnapshot(state);
+
+    // Rotate reset button
+    useEffect(() => {
+        Rotate(resetButton, clip, snap);
+    }, [state.grabberPosition, state.navPosition]);
+
+    if (!clip.mobile && snap.dragged) {
+        return <Folder
+            ref={resetButton}
+            onClick={() => {
+                state.isOpt = false;
+                state.isPro = false;
+                cloud.resetRate = (Math.random() * (0.85 - 0.65) + 0.65);
+                reset();
+                nav.current.style.transition = "1.3s";
+                state.navPosition = { x: 0, y: 0 };
+                state.proPosition = { x: 0, y: 0 };
+                state.optPosition = { x: 0, y: 0 };
+                state.dragged = false;
+                setTimeout(() => {
+                    nav.current.style.transition = "0.1s";
+                    console.log("transition returned");
+                }, "1300");
+            }} className="li resetPos w">{clip.mobile ? "reset" : <ShowHideIcon n={2} />}
+        </Folder>
+    }
 }

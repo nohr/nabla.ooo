@@ -1,5 +1,5 @@
 //Projects -- Child of Panel
-import { useRef } from "react"
+import { useEffect, useRef } from "react"
 import { cloud, state } from "../utils/state"
 import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom"
 import styled from "styled-components"
 import { getPosPro, useWindowDimensions } from "../utils/common"
 
-function Projects({ select }) {
+function Projects({ headwidth, select, open, close }) {
   const pro = useRef(null);
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
@@ -21,18 +21,21 @@ function Projects({ select }) {
   const layout = snap.direction ? !state.prtSwitched ? "grid-template-rows: 10% 0.9fr 10% 1.5fr; padding-left: 45px;padding-right: 40px;" : "grid-template-rows: 10% 1fr 10% 1fr; padding-left: 40px;padding-right: 45px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 12% 1fr; padding: 80px 12px 26px;";
   const top = snap.direction ? "padding-top: 7px;" : snap.prtSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
   const firstHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
-  const secondHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
+  const secondHeader = snap.direction ? { width: "110%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
   const hide = snap.isPro ? "opacity: 1; pointer-events: all; transition: 0.2s; " : "opacity: 0; pointer-events: none; transition: 0s;";
-  const headwidth = {
-    first: {
-      max: snap.direction ? "100%" : "100%",
-      min: snap.direction ? "62%" : "62%",
-    },
-    second: {
-      max: snap.direction ? "100%" : "100%",
-      min: snap.direction ? "62%" : "62%",
-    },
-  }
+
+  useEffect(() => {
+    !snap.isPro ? close() : open();
+  }, [snap.isPro])
+
+
+  useEffect(() => {
+    if (snap.isOpt && snap.direction) {
+      document.getElementById("clienthead").style.width = '123%';
+    } else {
+      document.getElementById("clienthead").style.width = headwidth.second.min;
+    }
+  }, [state.isOpt])
 
   return (
     <Draggable nodeRef={pro} position={snap.proPosition} positionOffset={offset} onStart={() => false} >
@@ -55,7 +58,7 @@ function Projects({ select }) {
         >Client</p>
         <div className="client" style={secondStyle}
           onMouseEnter={() => { document.getElementById("clienthead").style.width = headwidth.second.max }}
-          onMouseLeave={() => { document.getElementById("clienthead").style.width = headwidth.second.min }}
+          onMouseLeave={() => { document.getElementById("clienthead").style.width = !snap.isOpt ? headwidth.second.min : !snap.direction ? headwidth.second.min : '123%' }}
         >
           {clip.clients && clip.clients.map((work) => (
             <NavLink onClick={select} style={snap.direction ? { width: '70%' } : { width: '100%' }} className="li w" to={`/${work.id}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
@@ -143,7 +146,7 @@ const Project = styled.div`
 
   #selfhead, #clienthead{
         text-transform: uppercase !important;
-        font-size: 1vh !important;
+        font-size: 10px !important;
         padding-bottom: 6px;
   
         @media screen and (min-height: 1087px) and (max-height:1300px) {

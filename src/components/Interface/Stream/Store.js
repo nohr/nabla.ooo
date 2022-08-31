@@ -77,7 +77,7 @@ const StoreItem = styled.div`
       display: grid;
       grid-template-rows: 70% 30%;
       justify-items: center;
-      padding: 50px 0 0;
+      /* padding: 50px 0 0; */
       box-shadow: 0 8px 32px 0 ${props => props.theme.LiHover};
       -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
       -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
@@ -160,7 +160,7 @@ const StoreItem = styled.div`
       transition: 0.6s;
       text-align: center;
       padding: 1px 9px;
-      width: 40%;
+      width: 25%;
       font-size: 13px;
       font-style: normal !important;
       font-weight: 800;

@@ -73,10 +73,10 @@ const ImgGrid = ({ work }) => {
     }
   }
 
-  const clip = useSnapshot(cloud);
+  // const clip = useSnapshot(cloud);
   return (
     <TrayWrapper>
-      <InfoCard width={clip.sectors.length > 1 ? '100%' : '100ch !important'}>
+      <InfoCard>
         {/* {work.link && <Links link={work.link} />} */}
         {work.program && <Program size={'40px'} program={work.program} />}
         <Scroller animation='none'>
@@ -112,8 +112,6 @@ function PageData({ id }, setSelectedImg) {
   return <>
     {clip.sectors.map((work) => (
       <Sector
-        width={clip.sectors.length > 1 ? '49%' : '100%'}
-        height={clip.sectors.length > 1 ? '90% !important' : '100%'}
         key={`${Math.random()}`} id={work.projectName.replace(/\s+/g, '')} className="sector">
         <TextWrapper key={`${Math.random()}`} className="textWrapper">
           <div>
@@ -135,33 +133,38 @@ function PageData({ id }, setSelectedImg) {
 export default memo(PageData)
 
 const Sector = styled.div`
-border: solid 1px;
-border-color: ${props => props.theme.panelColor};
+/* border: solid 1px; */
+/* border-color: ${props => props.theme.panelColor}; */
 border-radius: 10px;
 display: flex;
-width: ${props => props.width};
-height: ${props => props.height};
-flex-direction:column;
-padding: 10px 0px 0px 0px;
+height: 650px !important;
+flex-direction: column;
+row-gap: 30px;
+padding: 0px;
 justify-content: space-around;
 position: relative;
 overflow: hidden;
 transition:0s !important;
 resize: horizontal;
 
+    @media screen and (max-width: 768px) {
+      border: none;
+      row-gap: 0px;
+  }
+
 & .lot{
   color: ${props => props.theme.panelColor};
   transition: 1.3s;
 }
-    @media screen and (max-width: 1440px) {
+    @media screen and (min-width: 1440px) {
       & {
-        width: 80%;
+        /* width: 80%; */
         height: 80%;
       }
   }
   @media screen and (max-width: 940px) {
       & {
-        width: 100%;
+        /* width: 100%; */
         height: 100%;
       }
   }
@@ -246,30 +249,59 @@ const TextWrapper = styled.div`
 
 `
 const TrayWrapper = styled.div`
-  display: flex;
-  flex-direction: column-reverse;
+  overflow-x: scroll;
+  display: grid;
+  grid-template-columns: 240px 15%;    
+  grid-template-rows: 100%;
+  flex-direction: row;
   flex-wrap: nowrap;
   width: 100%;
-  height: 80% !important;
-    padding:0 20px 20px 20px ;
+  height: 100%;
+    /* padding: 0 20px 20px 20px; */
     gap: 10px;
+        margin-bottom: 1px;
+
+
     @media screen and (max-width: 768px) {
       & {
-        height: 50%;
+        flex-direction: column-reverse;
       }
   }
+
+    ::-webkit-scrollbar {
+      -webkit-appearance: none;
+      height: 5px;
+      position: absolute;
+    }
+    ::-webkit-scrollbar-thumb {
+      outline: 1px solid ${props => props.theme.panelColor};
+      border-radius: 4px;
+      background-color: transparent;
+      transition: 0.3s;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: ${props => props.theme.panelColor};
+          box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+          transition: 0.3s;
+    }
 `
 const ImgWrapper = styled.div`
-    width: 100%;
+    position: relative;
     height: 100%;
     display: flex;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    /* overflow-x: scroll; */
+    /* overflow-y: hidden; */
     flex-direction: row;
     flex-wrap: nowrap;
     gap: 20px;
     padding-bottom: 5px;
-        @media screen and (max-width: 768px) {
+
+    /* @media screen and (min-width:768px) {
+      padding-left: 300px;
+    } */
+    @media screen and (max-width: 768px) {
       & {
         height: 50%;
       }
@@ -291,17 +323,18 @@ const ImgWrapper = styled.div`
       filter: grayscale(0);
       transition: 0.3s;
       
-      @media screen and (max-width: 768px) {
+    @media screen and (max-width: 768px) {
       & {
         padding: 0 80px;
       }
-  }
+    }
 
-      &:hover{
+    &:hover{
       cursor: pointer;
       border-radius: 50%;
       }
     }
+
     .img-thumb:hover {
       filter: grayscale(1) !important;
     }
@@ -367,7 +400,7 @@ const ImgWrapper = styled.div`
     width: auto !important;
     }
     video:hover, .landscape:hover{
-      transition:0.3s;
+      transition: 0.3s;
       cursor: pointer;
       border: solid 1px;
       border-color: ${props => props.theme.panelColor};
@@ -399,24 +432,32 @@ const ImgWrapper = styled.div`
     }
 `
 const InfoCard = styled.div`
+    row-gap: 10px;
     display: flex;
     overflow-y: scroll;
     flex-direction: column;
     white-space: break-spaces;
-    line-height: 25px;   
-    height: 40%;
-    width: 100%;
-    padding-left: 0px;
-    margin-left: 1px;
+    line-height: 20px;   
+    height: 100%;
+    width: 240px !important;
     text-align: justify;
     border: 1px solid  ${props => props.theme.backdrop};
-      backdrop-filter: blur(var(--blur));
-      -webkit-backdrop-filter: blur(var(--blur));
+    backdrop-filter: blur(var(--blur));
+    -webkit-backdrop-filter: blur(var(--blur));
 
+    /* @media screen and (min-width:768px) {
+      position: absolute;
+    } */
+
+    @media screen and (max-width:768px) {
+      width: 100% !important;
+      height: 40%;
+    }
+    
     & {
       padding: 10px;
       border-radius: 10px;
-      display: inline;
+      /* display: inline; */
       background-color: ${props => props.theme.layerBG};
       /* text-indent: 3em; */
 

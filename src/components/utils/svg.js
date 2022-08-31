@@ -4,6 +4,7 @@ import { useSearchBox } from "react-instantsearch-hooks-web"
 import Draggable from "react-draggable";
 import { useSnapshot } from "valtio"
 import styled from "styled-components"
+import { BarIcon, Clear } from "../Interface/navigator";
 
 const Caret = styled.svg`
   fill: ${props => props.theme.panelColor};
@@ -391,22 +392,7 @@ export function ColorIcon() {
     </svg>
   );
 }
-const BarIcon = styled.svg`
-        position: absolute;
-        top: 50%;
-        left: 0px;
-        transform: translate(30%, -50%);
-        height: 14px;
-        fill: ${props => props.colorfill};
-        stroke: ${props => props.colorstroke};
-        cursor: pointer;
-        stroke-width: 1px;
 
-        &:hover{
-          opacity: 50%;
-        pointer-events: painted;
-    }
-        `
 export function SearchBarIcon() {
   if (cloud.chatMode) {
     //CD
@@ -432,22 +418,7 @@ export function SearchBarIcon() {
 
 
 }
-const Clear = styled.svg`
-        position: absolute;
-        top: 50%;
-        right: 10px;
-        transform: translate(50%, -50%);
-        height: 14px;
-        fill: ${props => props.theme.panelColor};
-        cursor: pointer;
-
-        &:hover{
-          opacity: 50%;
-        pointer-events: painted;
-    }
-        `
 export function ClearIcon() {
-
   return (
     <Clear viewBox="0 0 52.98 52.98">
       <path vectorEffect="non-scaling-stroke" d="M44.37 7.6a26 26 0 100 36.77 26 26 0 000-36.77zm-8.13 28.64a2 2 0 01-2.83 0L26 28.82l-7.78 7.77a2 2 0 11-2.83-2.82L23.16 26l-7.42-7.43a2 2 0 112.82-2.82L26 23.16l7.07-7.07a2 2 0 012.83 2.83L28.82 26l7.42 7.42a2 2 0 010 2.82z"></path>

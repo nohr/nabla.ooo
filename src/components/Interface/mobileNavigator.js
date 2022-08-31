@@ -6,7 +6,7 @@ import { Search } from './mobileSearch';
 import { Options } from './mobileOptions';
 import { ConfirmIcon, ResetIcon } from '../utils/svg';
 import { HomeButton, Quote } from './homeButton';
-import { Grabber } from './grabber';
+import { Grabber, Rotate } from './grabber';
 import styled from 'styled-components';
 import { ColorWheel } from '@react-spectrum/color';
 import Draggable from 'react-draggable';
@@ -62,6 +62,12 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
         }
     });
 
+
+    // Rotate reset button
+    useEffect(() => {
+        Rotate(resetButton, clip, snap);
+    }, [state.grabberPosition, state.navPosition]);
+
     return (
         <>
             <Draggable nodeRef={navWrap} handle=".GrabberWrap" bounds=".container" position={snap.mobileNavPosition} axis="y" onStop={onControlledStop} onDrag={onControlledDrag} >
@@ -111,11 +117,11 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
                                 {options && <Options search={search} handle={handle} resetButton={resetButton} reset={reset} navWrap={navWrap} setModal={setModal} setSong={setSong} select={select} modal={modal} colorWheel={colorWheel} setColorWheel={setColorWheel} />}
                             </>}
                         {/* QUOTE */}
-                        {(!clip.CanvasLoading && !clip.UILoading) && <Quote text={text} setText={setText} />}
+                        {(!colorWheel && !clip.CanvasLoading && !clip.UILoading) && <Quote text={text} setText={setText} />}
                         {/* GRABBER */}
-                        {(!clip.CanvasLoading) && <Grabber resetButton={resetButton} setModal={setModal} navWrap={navWrap} reset={reset} options={options} handle={handle} />}
+                        {(!colorWheel && !clip.CanvasLoading) && <Grabber resetButton={resetButton} setModal={setModal} navWrap={navWrap} reset={reset} options={options} handle={handle} />}
                         {/* ColorWheel */}
-                        <Wheel
+                        {!state.monochrome && <Wheel
                             style={{ overflowX: "hidden" }}
                             opacity={colorWheel ? "1" : "0"}
                             pointerEvents={colorWheel ? "all" : "none"}
@@ -134,7 +140,15 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
                                 onChange={setColor}
                                 onChangeEnd={setColor}
                             />
-                        </Wheel>
+                        </Wheel>}
+                        {/* Mono */}
+                        {!changing && colorWheel && <Folder onTouchEnd={() => { state.monochrome = !state.monochrome; select(); }} className={`li w mono ${snap.monochrome ? "glow" : null}`}
+                            style={{
+                                color: snap.monochrome ? snap.theme == 'light' ? snap.light.sky : snap.dark.sky : null,
+                                position: "absolute", bottom: "-60px", height: "30px", pointerEvents: "all", display: "flex",
+                                justifyContent: "center"
+                            }}
+                        >Monochrome</Folder>}
                         {/* Confirm */}
                         {!changing && colorWheel && <Folder
                             border="border: 1px solid;"
@@ -144,8 +158,7 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
                                 setColorWheel(false);
                             }} className="circleButton color li w"
                             style={{ position: "fixed", right: "6vw", pointerEvents: "all" }}
-                        ><ConfirmIcon /></Folder>
-                        }
+                        ><ConfirmIcon /></Folder>}
                     </MobileNav>
                 </NavWrapper >
             </Draggable >
@@ -193,6 +206,7 @@ transition: 0.9s;
   flex-direction: column;
 
   & .grabber{
+    pointer-events: all;
     cursor: grab;
     width: 100px;
     stroke: ${props => props.theme.panelColor};
@@ -203,7 +217,7 @@ transition: 0.9s;
   }
 
   & .GrabberWrap{
-    pointer-events: all !important;
+    pointer-events: none !important;
     margin: 10px 0 0 0 !important;
   }
 

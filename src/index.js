@@ -22,7 +22,4 @@ root.render(
 
 reportWebVitals();
 Theme();
-
-if (!cloud.mobile) {
-  GetWorks();
-}
+GetWorks();

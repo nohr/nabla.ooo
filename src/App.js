@@ -36,16 +36,6 @@ function App() {
   let vHeight = useWindowDimensions().height;
 
   useEffect(() => {
-    state.hue = color.hue;
-  }, [color])
-
-  useEffect(() => {
-    toHslString(snap.hue);
-  }, [snap.hue])
-
-
-
-  useEffect(() => {
     newQuote();
   }, [])
 

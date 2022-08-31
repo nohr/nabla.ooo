@@ -8,7 +8,7 @@ import styled from "styled-components"
 import { ColorIcon, DirectionIcon, ModeIcon, MuteIcon, NextIcon, PlayPauseIcon, ShowHideIcon } from "../utils/svg"
 import { useWindowDimensions, getPosOpt, NextSong, OpenWheel, ToggleMusic, togglePause, toggleTheme } from "../utils/common"
 
-function Options({ setSong, select }) {
+function Options({ setSong, select, headwidth, open, close }) {
     const opt = useRef(null);
     const audio = useRef();
     const colorLink = useRef(null)
@@ -26,11 +26,10 @@ function Options({ setSong, select }) {
                 cloud.playMusic = true;
             })
             currentSong.addEventListener("pause", () => {
-                select();
                 cloud.playMusic = false;
             })
         }
-    }, [cloud.playMusic, state.songIndex, select])
+    }, [cloud.playMusic, state.songIndex])
 
     //Toggles Panel Direction
     function toggleDirection() {
@@ -82,19 +81,12 @@ function Options({ setSong, select }) {
     const layout = snap.direction ? "grid-template-rows: 10% 1fr 10% 1fr; padding-left: 45px;padding-right: 40px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 15% 1fr; padding: 80px 12px 26px;";
     const top = snap.direction ? "padding-top: 7px;" : snap.setSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
     const firstHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
-    const secondHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
+    const secondHeader = snap.direction ? { width: "110%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
     const hide = snap.isOpt ? "opacity: 1; pointer-events: all; transition: 0.4s; " : "opacity: 0; pointer-events: none; transition: 0s;";
-    const headwidth = {
-        first: {
-            max: snap.direction ? "100%" : "100%",
-            min: snap.direction ? "62%" : "62%",
-        },
-        second: {
-            max: snap.direction ? "100%" : "100%",
-            min: snap.direction ? "62%" : "62%",
-        },
-    }
 
+    useEffect(() => {
+        !snap.isOpt ? close() : open();
+    }, [snap.isOpt])
     return (
         <>
             <Draggable nodeRef={opt} position={snap.optPosition} positionOffset={offset} onStart={() => false}>
@@ -178,7 +170,7 @@ const Option = styled.div`
 
        #audiohead, #displayhead{
         text-transform: uppercase !important;
-        font-size: 1vh !important;
+        font-size: 10px !important;
         padding-bottom: 6px;
 
         @media screen and (min-height: 1087px) and (max-height:1300px) {
@@ -199,12 +191,11 @@ const Option = styled.div`
     margin: 0 auto 4px auto;
     position: relative;
     height: fit-content;
-    /* padding-top: 1px; */
     padding-right: 7px;
     transition: 0.3s;
 
     & svg{
-        left: 7px !important;
+        left: 10px !important;
         right: unset !important;
     }
   }
