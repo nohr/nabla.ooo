@@ -142,9 +142,9 @@ export const cloud = proxy({
     selectRate: (Math.random() * (1.15 - 0.85) + 0.85),
     // selectRate: 0.85,
     songs: [{
-        name: 'tardigrade',
+        name: 'cemetery d1',
         artist: 'nohri',
-        tempo: 120,
+        tempo: 113,
     }, {
         name: 'covenant',
         artist: 'nohri',
