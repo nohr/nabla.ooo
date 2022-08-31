@@ -75,7 +75,7 @@ function Navigator({ nabla, dong, confirm, select, reset, song, setSong, handle,
         bent = new CircleType(title.current).radius(140);
       }
     }
-  }, [song, snap.theme, snap.hue]);
+  }, [song]);
 
 
   const onControlledDrag = (e, position) => {

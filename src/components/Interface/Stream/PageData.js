@@ -252,7 +252,7 @@ const TrayWrapper = styled.div`
   /* overflow-x: scroll; */
     /* overflow-y: hidden; */
   display: grid;
-  grid-template-columns: 240px 1fr;    
+  grid-template-columns: 50ch 1fr;    
   grid-template-rows: 100%;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -435,7 +435,7 @@ const InfoCard = styled.div`
     white-space: break-spaces;
     line-height: 20px;   
     height: 100%;
-    width: 240px !important;
+    width: 100% !important;
     text-align: justify;
     border: 1px solid  ${props => props.theme.backdrop};
     backdrop-filter: blur(var(--blur));
