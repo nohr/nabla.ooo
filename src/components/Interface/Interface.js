@@ -145,7 +145,7 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
       <Route path="/blog" element={<Page title={"Nabla Blog"} id={"Blog"} />} />
       <Route path="/info" element={<Page title={"Nabla Info"} id={"Info"} />} />
       <Route path="/contrast" element={<Page title={"Contrast"} id={"Contrast"} />} />
-      {clip.projectClients.map((work) => (
+      {clip.projectGroups.map((work) => (
         <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`Nabla`} id={`${work.id}`} />} />
       ))}
       <Route path="*" element={<Page title={"Nabla not found"} id={"NotFound"} />} />

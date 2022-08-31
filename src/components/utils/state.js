@@ -119,7 +119,7 @@ subscribe(state, () => {
 // Short-term State
 export const cloud = proxy({
     // Firebase
-    projectClients: [],
+    projectGroups: [],
     selfs: [],
     clients: [],
     sectors: [],

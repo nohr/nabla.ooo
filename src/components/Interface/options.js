@@ -87,6 +87,14 @@ function Options({ setSong, select, headwidth, open, close }) {
     useEffect(() => {
         !snap.isOpt ? close() : open();
     }, [snap.isOpt])
+
+    useEffect(() => {
+        if (snap.isPro && snap.direction) {
+            document.getElementById("displayhead").style.width = '123%';
+        } else {
+            document.getElementById("displayhead").style.width = headwidth.second.min;
+        }
+    }, [state.isPro])
     return (
         <>
             <Draggable nodeRef={opt} position={snap.optPosition} positionOffset={offset} onStart={() => false}>
@@ -104,7 +112,7 @@ function Options({ setSong, select, headwidth, open, close }) {
                     <p style={secondHeader} id="displayhead">Display</p>
                     <div className="display" style={secondStyle}
                         onMouseEnter={() => { document.getElementById("displayhead").style.width = headwidth.second.max }}
-                        onMouseLeave={() => { document.getElementById("displayhead").style.width = headwidth.second.min }}
+                        onMouseLeave={() => { document.getElementById("displayhead").style.width = !snap.isPro ? headwidth.second.min : !snap.direction ? headwidth.second.min : '123%' }}
                     >
                         {state.canvasVisible &&
                             <Folder onClick={() => { togglePause(); select(); }} width={snap.direction ? "80%" : "60%"} className="li w"><PlayPauseIcon arg={2} />{snap.canvasPaused ? "Play" : "Pause"}</Folder>}

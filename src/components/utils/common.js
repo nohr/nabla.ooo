@@ -231,6 +231,9 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     .glow{
+        & *{
+            opacity: 0;
+        }
       fill: ${props => props.theme.panelColor} !important;
       background-color: ${props => props.theme.panelColor} !important;
       /* color: ${props => props.theme.bwElement} !important; */
@@ -1000,9 +1003,9 @@ export async function GetWorks() {
         cloud.selfs = selfsSnapshot.docs.map(doc => doc.data());
         cloud.clients = clientsSnapshot.docs.map(doc => doc.data());
 
-        const projectClientsRef = query(colRef, orderBy("name", "asc"), where("name", "!=", null))
-        const projectClientsSnapshot = await getDocs(projectClientsRef);
-        cloud.projectClients = projectClientsSnapshot.docs.map(doc => doc.data());
+        const projectGroupsRef = query(colRef, orderBy("name", "asc"), where("name", "!=", null))
+        const projectGroupsSnapshot = await getDocs(projectGroupsRef);
+        cloud.projectGroups = projectGroupsSnapshot.docs.map(doc => doc.data());
 
         cloud.UILoading = false;
     } else {
