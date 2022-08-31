@@ -149,7 +149,11 @@ export const cloud = proxy({
         name: 'covenant',
         artist: 'nohri',
         tempo: 135,
-    }],
+    }, {
+        name: 'silly!',
+        artist: 'nohri',
+        tempo: 160,
+    },],
     // Accelerometer
     leftright: 0,
     frontback: 0,
