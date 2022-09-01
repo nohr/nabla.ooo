@@ -1152,6 +1152,10 @@ const Head = styled.div`
         margin-top: 20px;
         margin-left: calc(var(--panelWidth) + var(--headOffset));
 
+        @media only screen and (max-width: 768px) {
+          margin-left: 0;
+        }
+
         & h1{
           /* text-shadow: 9px 4px 13px  ${props => props.theme.sky}; */
         justify-self: flex-start;
@@ -1170,13 +1174,22 @@ const Head = styled.div`
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
-    }
+      }
 
-        @media only screen and (min-width: 1366px) {
+        @media only screen and (max-width: 768px) {
           h1 {
-          font-size: 12vw;
-  }
-}
+            font-size: 12vw;
+          }
+          .HomeCD{
+            margin-left: 0px !important;
+          }
+        }
+
+        @media only screen and (min-width: 768px) {
+          .HomeCD{
+        margin-left: calc(-1 * var(--panelWidth) + 15px) !important;
+          }
+        }
         & svg{
           /* -webkit-filter: drop-shadow( 9px 4px 1px  ${props => props.theme.sky});
           filter: drop-shadow( 9px 4px 1px  ${props => props.theme.sky}); */
@@ -1198,7 +1211,6 @@ const Head = styled.div`
         stroke: ${props => props.theme.panelColor} !important;
         fill: none !important;
         margin-top: 288px !important;
-        margin-left: calc(-1 * var(--panelWidth) + 15px) !important;
     }
         .swamilogo{
           height: 200px;

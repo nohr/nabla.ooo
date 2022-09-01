@@ -23,6 +23,7 @@ export const Folder = styled.div`
   align-items: center;
   border-color: ${props => props.theme.panelColor};
    ${props => props.border};
+   backdrop-filter: blur(30px) !important;
 
    &.mono{
     width: 60% !important;
@@ -42,7 +43,6 @@ export const Folder = styled.div`
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
-            backdrop-filter: blur(30px) !important;
             /* border: 1px solid ${props => props.theme.panelColor}; */
             border-radius: 50%;
             justify-content: center;
@@ -68,12 +68,13 @@ export const Folder = styled.div`
   }
 
   &.color{
-  border-color: #ebebeb !important;
+    border-color: #ebebeb !important;
     fill: ${props => props.theme.LiHover};
     background-color: ${props => props.theme.LiHover};
     -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.LiHover});
     filter: drop-shadow(1px 1px 6px ${props => props.theme.LiHover});
     text-align: center;
+
     & svg{
     animation: flashConfirm 1s steps(5, start) infinite;
     animation-delay: 3s;
@@ -95,11 +96,16 @@ export const Folder = styled.div`
     transition: 0.3s;
 
   }
+
+  .light, .dark{
+    fill: ${props => props.theme.panelColor} !important;
+  }
   .nextIcon, .modeIcon, .muteIcon, .ShowHideIcon, .ColorIcon{
-    fill: ${props => props.theme.panelColor};
+    fill: ${props => props.theme.panelColor} !important;
     overflow: visible;
   }
   .modeIcon{
+    fill: ${props => props.theme.panelColor} !important;
     stroke-width: 1px !important;
   }
   .ConfirmIcon,  .ResetIcon{
@@ -110,10 +116,12 @@ export const Folder = styled.div`
   }
 
   .PlayPauseIcon{
-    fill: ${props => props.theme.panelColor};
+    fill: ${props => props.theme.panelColor} !important;
     overflow: visible;
   }
   .DirectionIcon{
+    /* stroke: transparent !important; */
+    fill: ${props => props.theme.panelColor} !important;
     stroke-width: 1px !important;
     overflow: visible;
   }
@@ -163,7 +171,7 @@ export const Song = styled.p`
 export const Wheel = styled.div`
 @media only screen and (max-width: 768px) {
   & {
-   backdrop-filter: blur(4px);
+   backdrop-filter: blur(30px) !important;
   }
 }
    bottom: unset !important;
@@ -220,12 +228,14 @@ export const GlobalStyle = createGlobalStyle`
       width: var(--panelWidth);
       height: var(--panelHeight);
       scroll-snap-type: none;
-      backdrop-filter: blur(var(--blur));
-      -webkit-backdrop-filter: blur(var(--blur));
+        backdrop-filter: blur(30px) !important;
+      /* backdrop-filter: blur(var(--blur)); */
+      /* -webkit-backdrop-filter: blur(var(--blur)); */
       border: 1px solid ${props => props.theme.panelColor};
       color: ${props => props.theme.panelColor};
       border-radius: 185px;
       overflow: hidden;
+        /* backdrop-filter: blur(10px) !important; */
       
       & .li{
         border-radius: 250px 250px 500px 500px;
@@ -236,13 +246,13 @@ export const GlobalStyle = createGlobalStyle`
         & *{
             opacity: 0;
         }
-      fill: ${props => props.theme.panelColor} !important;
-      background-color: ${props => props.theme.panelColor} !important;
+      fill: ${props => props.theme.LiHover} !important;
+      background-color: ${props => props.theme.LiHover} !important;
       /* color: ${props => props.theme.bwElement} !important; */
       /* mix-blend-mode: ${props => props.theme.blend}; */
-      box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
-      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
-      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
+      box-shadow: 0 8px 32px 0 ${props => props.theme.LiHover};
+      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
+      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
       /* transition: 1s; */
       /* animation: pulseItem 2s infinite; */
     }

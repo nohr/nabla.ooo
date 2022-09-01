@@ -351,7 +351,7 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
         minPolarAngle={clip.mobile ? -3 : Math.PI / 3}
         maxPolarAngle={clip.mobile ? Math.PI / 2 : Math.PI / 2}
         autoRotate={!clip.mobile}
-        autoRotateSpeed={clip.UILoading ? -5 : 1}
+        autoRotateSpeed={clip.UILoading ? -50 : 0}
         minDistance={20}
         maxDistance={clip.mobile ? 40 : 36}
         enabled={clip.mobile ? !clip.drag : !state.canvasPaused}

@@ -18,7 +18,7 @@ function Projects({ headwidth, select, open, close }) {
   const offset = getPosPro(snap, vWidth, vHeight);
   const firstStyle = snap.direction ? { height: "75px" } : { height: "87px" };
   const secondStyle = snap.direction ? { height: "133px" } : { height: "161px" };
-  const layout = snap.direction ? !state.prtSwitched ? "grid-template-rows: 10% 0.9fr 10% 1.5fr; padding-left: 45px;padding-right: 40px;" : "grid-template-rows: 10% 1fr 10% 1fr; padding-left: 40px;padding-right: 45px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 12% 1fr; padding: 80px 12px 26px;";
+  const layout = snap.direction ? !state.prtSwitched ? "grid-template-rows: 10% 0.9fr 10% 1.5fr; padding-left: 45px;padding-right: 40px;" : "grid-template-rows: 10% 1fr 10% 1fr; padding-left: 40px;padding-right: 45px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 15% 1fr; padding: 80px 12px 26px;";
   const top = snap.direction ? "padding-top: 7px;" : snap.prtSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
   const firstHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
   const secondHeader = snap.direction ? { width: "110%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
@@ -57,8 +57,14 @@ function Projects({ headwidth, select, open, close }) {
           id="clienthead"
         >Client</p>
         <div className="client" style={secondStyle}
-          onMouseEnter={() => { document.getElementById("clienthead").style.width = headwidth.second.max }}
-          onMouseLeave={() => { document.getElementById("clienthead").style.width = !snap.isOpt ? headwidth.second.min : !snap.direction ? headwidth.second.min : '123%' }}
+          onMouseEnter={() => {
+            document.getElementById("clienthead").style.width = headwidth.second.max;
+            document.getElementById("clienthead").style.background = `${snap.theme = 'light' ? snap.light.panelColor : snap.dark.panelColor}`;
+          }}
+          onMouseLeave={() => {
+            document.getElementById("clienthead").style.width = !snap.isOpt ? headwidth.second.min : !snap.direction ? headwidth.second.min : '123%';
+            document.getElementById("clienthead").style.background = `none`;
+          }}
         >
           {clip.clients && clip.clients.map((work) => (
             <NavLink onClick={select} style={snap.direction ? { width: '70%' } : { width: '100%' }} className="li w" to={`/${work.id}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
@@ -116,7 +122,8 @@ const Project = styled.div`
     flex-wrap: nowrap;
     align-items: center;
     overflow-y: scroll;
-    padding: 2px 10px 0px 10px;
+    overflow-x: visible;
+    padding: 2px 2px 0px 10px;
     width: 90%;
 
   .li{

@@ -21,8 +21,7 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
     const [modal, setModal] = useState(false);
     const [offset, setOffset] = useState('-80px');
     const [changing, setChanging] = useState(false);
-    let currentSong;
-    currentSong = document.querySelectorAll('audio')[0];
+    let currentSong = document.querySelectorAll('audio')[0];
     let search = (modal && modal.indexOf("search") > -1);
     let options = (modal && modal.indexOf("options") > -1);
 
@@ -61,7 +60,6 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
             navWrap.current.addEventListener("touchmove", (e) => { e.preventDefault(); }, false);
         }
     });
-
 
     // Rotate reset button
     useEffect(() => {
@@ -211,7 +209,6 @@ transition: 0.9s;
     width: 100px;
     stroke: ${props => props.theme.panelColor};
     fill: ${props => props.theme.panelColor};
-    fill-opacity: 0% !important;
     stroke-width: 1px !important;
     transition: 1.3s;
   }
@@ -267,7 +264,7 @@ transition: 0.9s;
 `
 const NavButton = styled.div`
     pointer-events: all !important;
-  backdrop-filter: blur(3px);
+   backdrop-filter: blur(30px) !important;
 display: flex;
 flex-direction: column;
 justify-content: space-around;

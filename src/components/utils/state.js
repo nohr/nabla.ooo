@@ -31,7 +31,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     dragged: false,
     prtSwitched: false,
     setSwitched: false,
-    direction: true,
+    direction: false,
     navPosition: { x: 0, y: 0 },
     proPosition: { x: 0, y: 0 },
     optPosition: { x: 0, y: 0 },

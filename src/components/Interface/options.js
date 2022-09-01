@@ -14,8 +14,6 @@ function Options({ setSong, select, headwidth, open, close }) {
     const colorLink = useRef(null)
     const snap = useSnapshot(state);
     const clip = useSnapshot(cloud);
-    let optLink = document.querySelector(".optLink")
-    if (cloud.selectedImg) { optLink.classList.remove("folderActive") }
 
     // Toggle Music
     const currentSong = audio.current;
@@ -213,19 +211,21 @@ const Option = styled.div`
     text-align: center;
     border-bottom: 1px solid ${props => props.theme.panelColor};
     transition: 0.9s;
-  }
-  svg:not(.ShowHideIcon):not(.light):not(.dark){
-    fill: none !important;
-    stroke: ${props => props.theme.panelColor};
     stroke-width: 1px !important;
   }
 
-  .dark{
+  @media screen and (min-height: 768px) {  
+  svg:not(.ShowHideIcon):not(.light):not(.dark){
+    fill: none !important;
+    stroke: ${props => props.theme.panelColor};
+}
+    .dark{
     fill: none !important;
     stroke: ${props => props.theme.panelColor};
     stroke-width: 12px !important;
   }
-  
+    }
+
   .nextIcon, .modeIcon, .muteIcon, .ShowHideIcon{
     position: absolute;
     right: 6px;

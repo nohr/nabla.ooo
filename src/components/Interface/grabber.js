@@ -15,11 +15,11 @@ export function Grabber({ handle, reset, navWrap }) {
             state.dragged = true;
             navWrap.current.style.overFlowX = 'visible';
             // navWrap.current.setAttribute("style", "transition: 0s !important;");
-            handle.current.setAttribute("style", `fill-opacity: 100% !important; stroke-width: 0px !important; transition: 0s !important; cursor:grab !important;`);
+            handle.current.setAttribute("style", `fill-opacity: 20% !important; stroke-width: 1px !important; transition: 0s !important; cursor:grab !important;`);
         } else if (e.type === "mouseenter" || e.type === "touchstart") {
-            handle.current.setAttribute("style", "fill-opacity: 20% !important; stroke-width: 1px !important; transition: 0.3s !important; stroke-opacity: 50%; cursor:grab !important;");
+            handle.current.setAttribute("style", "fill-opacity: 0% !important; stroke-width: 1px !important; transition: 0.3s !important; stroke-opacity: 50%; cursor:grab !important;");
         } else if (e.type === "mouseleave" || e.type === "touchend") {
-            handle.current.setAttribute("style", "fill-opacity: 0% !important; stroke-width: 1px !important; transition: 0.3s; stroke-opacity: 100%; cursor:grab;");
+            handle.current.setAttribute("style", "fill-opacity: 100% !important; stroke-width: 1px !important; transition: 0.3s; stroke-opacity: 100%; cursor:grab;");
         }
     }
 

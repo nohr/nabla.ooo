@@ -145,7 +145,6 @@ justify-content: space-around;
 position: relative;
 overflow: hidden;
 transition:0s !important;
-resize: horizontal;
 
     @media screen and (max-width: 768px) {
       height: 100%;
@@ -252,7 +251,7 @@ const TrayWrapper = styled.div`
   /* overflow-x: scroll; */
     /* overflow-y: hidden; */
   display: grid;
-  grid-template-columns: 50ch 1fr;    
+  grid-template-columns: 40ch 1fr;    
   grid-template-rows: 100%;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -440,6 +439,7 @@ const InfoCard = styled.div`
     border: 1px solid  ${props => props.theme.backdrop};
     backdrop-filter: blur(var(--blur));
     -webkit-backdrop-filter: blur(var(--blur));
+resize: horizontal;
 
     /* @media screen and (min-width:768px) {
       position: absolute;

@@ -95,102 +95,104 @@ function Navigator({ nabla, dong, confirm, select, reset, song, setSong, handle,
   }
 
   return (
-    <div className="skewed">
-      <Draggable nodeRef={nav} handle=".grabber" bounds="html"
-        position={state.navPosition}
-        onStop={onControlledStop}
-        onDrag={onControlledDrag} >
-        <Nav ref={nav} className="Panel nav">
-          <Header style={focused ? { borderBottomColor: "#EBEBEB" } : null}
-            width={(snap.isOpt || snap.isPro) ? "100%" : "90%"}
-          >
-            <HomeButton nabla={nabla} dong={dong} clear={clear} query={query} />
-            {<Quote text={text} setText={setText} />}
-          </Header>
-          <div className="grid">
-            {navigator.onLine && <Search query={query} clear={clear} refine={refine} setFocused={setFocused} />}
-            <div className="iconTray">
-              <ResetPosButton
-                resetButton={resetButton}
-                reset={reset}
-                nav={nav} />
+    <>
+      <div className="skewed">
+        <Draggable nodeRef={nav} handle=".grabber" bounds="html"
+          position={state.navPosition}
+          onStop={onControlledStop}
+          onDrag={onControlledDrag} >
+          <Nav ref={nav} className="Panel nav">
+            <Header style={focused ? { borderBottomColor: "#EBEBEB" } : null}
+              width={(snap.isOpt || snap.isPro) ? "100%" : "90%"}
+            >
+              <HomeButton nabla={nabla} dong={dong} clear={clear} query={query} />
+              {<Quote text={text} setText={setText} />}
+            </Header>
+            <div className="grid">
+              {navigator.onLine && <Search query={query} clear={clear} refine={refine} setFocused={setFocused} />}
+              <div className="iconTray">
+                <ResetPosButton
+                  resetButton={resetButton}
+                  reset={reset}
+                  nav={nav} />
+              </div>
+              {!snap.colorWheel &&
+                <>
+                  <NavLink onClick={() => { clear(); select(); }} className="li w" to="/info"
+                    style={{ justifySelf: "flex-end" }}
+                  >
+                    Info
+                  </NavLink>
+                  <NavLink onClick={() => { clear(); select(); }} className="li w3" to="/store"
+                    style={{ justifySelf: "flex-start" }}>
+                    Store
+                  </NavLink >
+                  <Folder className={`li folder proLink ${state.isPro ? "folderActive" : null}`} tabIndex={-1}
+                    style={{ justifySelf: "flex-end" }}
+                  >
+                    Projects
+                    {snap.isPro ? <SideArrow /> : <Arrow />}
+                  </Folder>
+                  <Folder className={`li folder optLink ${state.isOpt ? "folderActive" : null}`} tabIndex={-1}
+                    style={{ justifySelf: "flex-start" }}
+                  >
+                    Options
+                    {snap.isOpt ? <SideArrow /> : <Arrow />}
+                  </Folder>
+                </>}
+              {snap.colorWheel &&
+                <>
+                  <Folder onClick={() => { state.monochrome = !state.monochrome; select(); }} className={`li w mono ${snap.monochrome ? "glow" : null}`} style={{ color: snap.monochrome ? snap.theme == 'light' ? snap.light.sky : snap.dark.sky : null }}
+                  >Monochrome</Folder>
+                  <Folder onClick={() => { closeWheel(); confirm(); }} className="li w Color">Confirm</Folder>
+                  <Folder onClick={() => { resetWheel(); reset(); }} className="li w Reset">Reset</Folder>
+                </>
+              }
+              {/* force reload */}
+              {clip.playMusic}
             </div>
-            {!snap.colorWheel &&
-              <>
-                <NavLink onClick={() => { clear(); select(); }} className="li w" to="/info"
-                  style={{ justifySelf: "flex-end" }}
-                >
-                  Info
-                </NavLink>
-                <NavLink onClick={() => { clear(); select(); }} className="li w3" to="/store"
-                  style={{ justifySelf: "flex-start" }}>
-                  Store
-                </NavLink >
-                <Folder className={`li folder proLink ${state.isPro ? "folderActive" : null}`} tabIndex={-1}
-                  style={{ justifySelf: "flex-end" }}
-                >
-                  Projects
-                  {snap.isPro ? <SideArrow /> : <Arrow />}
-                </Folder>
-                <Folder className={`li folder optLink ${state.isOpt ? "folderActive" : null}`} tabIndex={-1}
-                  style={{ justifySelf: "flex-start" }}
-                >
-                  Options
-                  {snap.isOpt ? <SideArrow /> : <Arrow />}
-                </Folder>
-              </>}
-            {snap.colorWheel &&
-              <>
-                <Folder onClick={() => { state.monochrome = !state.monochrome; select(); }} className={`li w mono ${snap.monochrome ? "glow" : null}`} style={{ color: snap.monochrome ? snap.theme == 'light' ? snap.light.sky : snap.dark.sky : null }}
-                >Monochrome</Folder>
-                <Folder onClick={() => { closeWheel(); confirm(); }} className="li w Color">Confirm</Folder>
-                <Folder onClick={() => { resetWheel(); reset(); }} className="li w Reset">Reset</Folder>
-              </>
-            }
-            {/* force reload */}
-            {clip.playMusic}
-          </div>
-          <Song ref={title} position={` left: 48%;`}
-            className="bend song" style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true }} tabIndex="0">
-            {song}
-          </Song>
-          {/* {(clip.UILoading || clip.CanvasLoading) ? <Spinner /> : */}
-          {/* {(!snap.colorWheel && */}
-          <Grabber nav={nav} reset={reset} handle={handle} />
-          {/* )} */}
-          {/* } */}
-        </Nav>
-      </Draggable>
-      <Projects
-        open={open}
-        close={close}
-        headwidth={headwidth}
-        select={select} />
-      <Options
-        open={open}
-        close={close}
-        headwidth={headwidth}
-        colorWheel={colorWheel}
-        setColorWheel={setColorWheel}
-        setSong={setSong}
-        select={select} />
-      <Draggable position={snap.navPosition}>
-        <Wheel
-          opacity={snap.colorWheel ? "1" : "0"}
-          pointerEvents={snap.colorWheel ? "all" : "none"}
-          transition={snap.colorWheel ? "0.3s" : "0s"}
-          ref={wheel}
-          onClick={() => { state.colorChanged = true; }}
-        >
-          {!snap.monochrome && <ColorWheel
-            size={"310px"}
-            borderColor={`${props => props.theme.panelColor}`}
-            value={color}
-            onChange={setColor}
-            onChangeEnd={setColor} />}
-        </Wheel>
-      </Draggable>
-    </div>
+            <Song ref={title} position={` left: 48%;`}
+              className="bend song" style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true }} tabIndex="0">
+              {song}
+            </Song>
+            {/* {(clip.UILoading || clip.CanvasLoading) ? <Spinner /> : */}
+            {/* {(!snap.colorWheel && */}
+            <Grabber nav={nav} reset={reset} handle={handle} />
+            {/* )} */}
+            {/* } */}
+          </Nav>
+        </Draggable>
+        <Projects
+          open={open}
+          close={close}
+          headwidth={headwidth}
+          select={select} />
+        <Options
+          open={open}
+          close={close}
+          headwidth={headwidth}
+          colorWheel={colorWheel}
+          setColorWheel={setColorWheel}
+          setSong={setSong}
+          select={select} />
+        <Draggable position={snap.navPosition}>
+          <Wheel
+            opacity={snap.colorWheel ? "1" : "0"}
+            pointerEvents={snap.colorWheel ? "all" : "none"}
+            transition={snap.colorWheel ? "0.3s" : "0s"}
+            ref={wheel}
+            onClick={() => { state.colorChanged = true; }}
+          >
+            {!snap.monochrome && <ColorWheel
+              size={"310px"}
+              borderColor={`${props => props.theme.panelColor}`}
+              value={color}
+              onChange={setColor}
+              onChangeEnd={setColor} />}
+          </Wheel>
+        </Draggable>
+      </div>
+    </>
   )
 }
 
@@ -558,7 +560,7 @@ const SearchBar = styled.input`
   border: none !important;
   width: 100%;
   height: 20px;
-  /* margin: 3px 0; */
+   backdrop-filter: blur(30px) !important;
   display: flex;
   border-radius: 250px 250px 500px 500px;
   background-color: transparent;

@@ -117,7 +117,7 @@ height: 70px !important;
   column-gap: 10px !important;
 
     & .li, & .folder{
-        backdrop-filter: blur(3px);
+   backdrop-filter: blur(30px) !important;
       border: 1px solid ${props => props.theme.panelColor};
       border-radius: 50%;
         display:flex;
@@ -172,7 +172,7 @@ const SearchBar = styled.input`
   padding: 6px 19px 6px 20px;
   font-size: 15px;
   -webkit-appearance: none !important;
-  backdrop-filter: blur(3px);
+   backdrop-filter: blur(30px) !important;
   text-align: center;
 
   &::placeholder{

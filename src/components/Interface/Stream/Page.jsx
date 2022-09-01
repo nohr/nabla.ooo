@@ -31,6 +31,11 @@ export function Page(id) {
         : `padding-left: 300px !important; `
       : ``;
 
+  useEffect(() => {
+    state.selectedImg = null;
+    state.selectedDesc = null;
+  }, [id.id]);
+
   // Manage modals
   useEffect(() => {
     function handleKeyPress(e) {
