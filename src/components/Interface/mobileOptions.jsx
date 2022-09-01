@@ -251,6 +251,13 @@ const OptionsWrapper = styled.div`
       & svg {
         width: 24px !important;
       }
+      &.resetPos {
+        & svg {
+          stroke: ${(props) => props.theme.panelColor};
+          width: 32px !important;
+          stroke-width: 3px;
+        }
+      }
       &.MuteIcon svg {
         width: 16px !important;
         fill: transparent;
@@ -276,7 +283,7 @@ const OptionsWrapper = styled.div`
       }
       & .modeIcon {
         stroke: ${(props) => props.theme.panelColor};
-        fill: transparent !important;
+        fill: ${(props) => props.theme.panelColor}!important;
         height: 20px !important;
       }
     }

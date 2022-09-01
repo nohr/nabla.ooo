@@ -105,7 +105,6 @@ export const Folder = styled.div`
     overflow: visible;
   }
   .modeIcon{
-    fill: ${props => props.theme.panelColor} !important;
     stroke-width: 1px !important;
   }
   .ConfirmIcon,  .ResetIcon{
