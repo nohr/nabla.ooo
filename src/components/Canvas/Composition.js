@@ -307,7 +307,7 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
     <Canvas dpr={[1, 2]} gl={{ alpha: true, stencil: false, depth: true, antialias: false, physicallyCorrectLight: true }} className='r3fCanvas' frameloop={clip.mobile ? "always" : "demand"}>
       {/* CAMERA */}
       <Suspense fallback={<Spinner />}>
-        <PerspectiveCamera makeDefault ref={camera} target={clip.mobile ? target : [0, 2, 0]} zoom={1} position={clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition} far={80} near={.1} fov={clip.mobile ? 30 : 20} aspect={vWidth / vHeight} />
+        <PerspectiveCamera makeDefault ref={camera} target={clip.mobile ? target : [0, 2, 0]} zoom={1} position={clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition} far={80} near={.1} fov={clip.mobile ? 35 : 20} aspect={vWidth / vHeight} />
         {/* FOG */}
         <fog attach="fog" args={[snap.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, clip.mobile ? snap.theme === 'light' ? 45 : 50 : 30]} />
         <Lights />
@@ -375,7 +375,7 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
   );
 }
 
-export default memo(Composition)
+export default Composition
 
 
   // < Debug color = { "light"} scale = { 1.03} >

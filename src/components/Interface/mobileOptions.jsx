@@ -179,8 +179,7 @@ export function Options({
               // style={{ marginBottom: "20px" }}
               onTouchEnd={() => {
                 select();
-                getGyro(!snap.gyro);
-                state.gyro = !snap.gyro;
+                getGyro();
               }}
               className="li w"
             >
@@ -190,7 +189,7 @@ export function Options({
           </div>
         </OptionsWrapper>
       </Draggable>
-      {/* <Stats showPanel={0} className="stats" /> */}
+      <Stats showPanel={0} className="stats" />
     </>
   );
 }

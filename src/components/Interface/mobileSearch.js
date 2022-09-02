@@ -6,6 +6,7 @@ import { cloud, state } from '../utils/state';
 import { Folder, offset } from '../utils/common';
 import Draggable from 'react-draggable';
 import { } from './mobileNavigator';
+import { useLocation } from 'wouter';
 
 export function Search({
     Bar, options,
@@ -14,9 +15,11 @@ export function Search({
     const searchWrap = useRef(null);
     const snap = useSnapshot(state);
     const clip = useSnapshot(cloud);
+    const [location, setLocation] = useLocation();
 
     function handleChange(e) {
         if (e.target.value) {
+            setLocation('/');
             refine(e.target.value);
         } else {
             clear();
@@ -26,7 +29,7 @@ export function Search({
     useEffect(() => {
         Bar.current.focus();
         if (navWrap.current) { navWrap.current.style.overflowX = "clip" };
-        if (!clip.dragged) {
+        if (!snap.dragged) {
             state.mobileNavPosition.y = state.mobileNavPosition.y + (offset);
         } else {
             // state.searchPosition.x = 0;
@@ -35,7 +38,6 @@ export function Search({
             // state.optionsPosition = { x: 0, y: 0 };
             // state.grabberPosition = { x: 0, y: 0 };
             state.mobileNavPosition = { x: 0, y: options ? (offset * 2) : offset };
-            cloud.dragged = false;
             setTimeout(() => {
                 navWrap.current.style.transition = "0.1s";
             }, "1300");
@@ -60,7 +62,7 @@ export function Search({
                 Bar.current.removeEventListener("keydown", handleKeyPress);
             }
             if (navWrap.current) { navWrap.current.style.overflowX = "visible" };
-            if (!clip.dragged) {
+            if (!snap.dragged) {
                 state.mobileNavPosition.y = state.mobileNavPosition.y - offset;
             }
         }
@@ -80,7 +82,7 @@ export function Search({
                     navWrap.current.style.overflowX = "clip";
                     navWrap.current.style.transition = "1.3s";
                     state.mobileNavPosition = { x: 0, y: options ? (offset * 2) : offset };
-                    // cloud.dragged = false;
+                    // state.dragged = false;
                     setTimeout(() => {
                         navWrap.current.style.transition = "0.1s";
                     }, "1300");

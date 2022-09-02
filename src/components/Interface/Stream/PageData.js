@@ -154,7 +154,8 @@ transition:0s !important;
       row-gap: 0px;
   }
     @media screen and (max-width: 768px) {
-      height: 650px !important;
+      height: 100% !important;
+      grid-template-rows: 30% 80%;
       row-gap: 0px;
   }
 & .lot{
@@ -268,8 +269,9 @@ const TrayWrapper = styled.div`
         margin-bottom: 1px;
 
     @media screen and (max-width: 768px) {
-  grid-template-rows: 200px 1fr;    
-  grid-template-columns: 100%;
+      display: grid;
+      grid-template-columns: 100%;
+      grid-template-rows: 40vh 100%;
   }
 
     ::-webkit-scrollbar {
@@ -452,7 +454,6 @@ const InfoCard = styled.div`
 
     @media screen and (max-width:768px) {
       width: 100% !important;
-      /* height: 40%; */
     }
     
     & {

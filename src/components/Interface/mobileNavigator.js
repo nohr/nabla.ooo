@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, memo } from 'react'
 import { useSnapshot } from 'valtio';
 import { cloud, state } from '../utils/state';
 import { Folder, Wheel, resetWheel, toggleModal, Song } from '../utils/common';
@@ -150,7 +150,7 @@ function MobileNavigator({ audio, nabla, dong, open, close, select, confirm, res
     )
 }
 
-export default MobileNavigator
+export default memo(MobileNavigator)
 
 const NavWrapper = styled.div`
 pointer-events: none;

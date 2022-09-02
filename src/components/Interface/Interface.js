@@ -135,34 +135,36 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
         setColorWheel={setColorWheel}
         container={container}
       />
-      : <Navigator
-        audio={audio}
-        nabla={nabla}
-        dong={dong}
-        open={open}
-        close={close}
-        select={select}
-        confirm={confirm}
-        reset={reset}
-        query={query}
-        refine={refine}
-        clear={clear}
-        handle={handle}
-        resetButton={resetButton}
-        song={song}
-        setSong={setSong}
-        text={text}
-        setText={setText}
-        color={color}
-        setColor={setColor}
-        colorWheel={colorWheel}
-        setColorWheel={setColorWheel}
-        container={container}
-        hovered={hovered}
-        setHovered={setHovered}
-      />
+      : <>
+        <Navigator
+          audio={audio}
+          nabla={nabla}
+          dong={dong}
+          open={open}
+          close={close}
+          select={select}
+          confirm={confirm}
+          reset={reset}
+          query={query}
+          refine={refine}
+          clear={clear}
+          handle={handle}
+          resetButton={resetButton}
+          song={song}
+          setSong={setSong}
+          text={text}
+          setText={setText}
+          color={color}
+          setColor={setColor}
+          colorWheel={colorWheel}
+          setColorWheel={setColorWheel}
+          container={container}
+          hovered={hovered}
+          setHovered={setHovered}
+        />
+        <Results select={select} />
+      </>
     }
-    <Results select={select} />
     <audio ref={audio} loop>
       <source src={null}></source>
     </audio>
@@ -191,4 +193,4 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
   </ThemeProvider>
 }
 
-export default memo(Interface);
+export default Interface;

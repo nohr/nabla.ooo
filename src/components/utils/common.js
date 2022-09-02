@@ -1040,18 +1040,18 @@ export function resetPos(setModal, reset, search, navWrap, snap) {
         console.log("transition returned");
     }, "1300");
 }
-export function getGyro(gyro) {
+export function getGyro() {
     function requestPermission() {
         DeviceMotionEvent && DeviceMotionEvent.requestPermission().then(response => {
             if (response === 'granted') {
                 window.addEventListener('deviceorientation', (event) => {
                     if (window.matchMedia("(orientation: portrait)").matches) {
-                        cloud.leftright = Math.floor(event.gamma / 6);
-                        cloud.frontback = (Math.floor(event.beta / 8) - 6);
+                        cloud.leftright = Math.floor(event.gamma / 4);
+                        cloud.frontback = (Math.floor(event.beta / 4));
                     }
                     if (window.matchMedia("(orientation: landscape)").matches) {
-                        cloud.leftright = Math.floor(event.beta / 6);
-                        cloud.frontback = (Math.floor(event.gamma / 8) + 6);
+                        cloud.leftright = Math.floor(event.beta / 4);
+                        cloud.frontback = (Math.floor(event.gamma / 4));
                     }
                 });
             } else {
@@ -1062,12 +1062,12 @@ export function getGyro(gyro) {
         // console.log(state.gyro);
     };
 
-    if (gyro) {
-        requestPermission();
-    } else {
-        state.gyro = false;
-        return;
-    }
+    // if (gyro) {
+    requestPermission();
+    // } else {
+    //     state.gyro = false;
+    //     return;
+    // }
 };
 
 // MISC.
