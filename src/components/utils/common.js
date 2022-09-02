@@ -774,11 +774,11 @@ export function unActiveTap(nabla, svg) {
     // cloud.mobileCameraRotation !== [0, 0, 0] ||
     // cloud.mobileCameraQuaternion !== [0, 0, 0] ||
     {
-        cloud.target = target;
-        cloud.mobileCameraPosition = [0, 20, 25];
+        // cloud.target = target;
+        // cloud.mobileCameraPosition = [0, 20, 25];
         // cloud.mobileCameraRotation = [0, 0, 0];
         // cloud.mobileCameraQuaternion = [0, 0, 0];
-        cloud.selected = false;
+        // cloud.selected = false;
     }
     nabla.current && nabla.current.setAttribute("style", `
         background-color: transparent !important;

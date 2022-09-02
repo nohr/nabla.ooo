@@ -2,7 +2,7 @@ import { useSphere } from '@react-three/cannon';
 import { useSelect, useTexture } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 // import { invalidate, useFrame } from '@react-three/fiber';
-import React, { useEffect, useRef } from 'react';
+import React, { memo, useEffect, useRef } from 'react';
 import * as THREE from "three";
 import { useSnapshot } from 'valtio';
 import { useLocation } from 'wouter';
@@ -26,7 +26,7 @@ function Node({ select, confirm, clear, hit, index, ...props }) {
         if (Ref && selected[0] && (selected[0].id === Ref.current.id)) {
             // TODO fix this
             // state.camera.lookAt(pos.current);
-            // cloud.target = pos.current;
+            cloud.target = pos.current;
             // state.camera.position.lerp(vec.set(xPosition, Position, Position), .01);
             // state.camera.updateProjectionMatrix();
             state.camera.zoom = 1 - (snap.grabberPosition.x / 300);
@@ -112,7 +112,7 @@ function Node({ select, confirm, clear, hit, index, ...props }) {
 //     )
 // }
 
-export function Nodes({ ...props }) {
+export const Nodes = memo(function Nodes({ ...props }) {
     useEffect(() => {
         cloud.CanvasLoading = false;
     }, []);
@@ -122,3 +122,4 @@ export function Nodes({ ...props }) {
             <Node hit={hit} key={index} index={index}{...props} />))}
     </>
 }
+)

@@ -1,4 +1,4 @@
-import React, { useState, Suspense, useEffect, useLayoutEffect, useRef } from 'react'
+import React, { useState, Suspense, useEffect, useLayoutEffect, useRef, memo } from 'react'
 import "../../App.css"
 import { cloud, state } from '../utils/state'
 import { useSnapshot } from 'valtio'
@@ -89,7 +89,7 @@ function Wall() {
   )
 }
 
-function Reflector() {
+const Reflector = memo(function Reflector() {
   const snap = useSnapshot(state);
   const textures = useTexture([
     "/images/reflector/Ice_OCC.jpg",
@@ -129,7 +129,7 @@ function Reflector() {
     envMapIntensity={1}
     bumpMap={height}
   />
-}
+})
 function Floor() {
 
   return <Suspense fallback={<Spinner />}>
@@ -375,7 +375,7 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
   );
 }
 
-export default Composition
+export default memo(Composition)
 
 
   // < Debug color = { "light"} scale = { 1.03} >
