@@ -178,3 +178,19 @@ export function SFXVolumeButtons({ }) {
         />
     </Folder >
 }
+
+export function SongInfo({ song }) {
+    // const clip = useSnapshot(cloud);
+    // const snap = useSnapshot(state);
+
+    // // Rotate reset button
+    // useEffect(() => {
+    //     Rotate(resetButton, clip, snap);
+    // }, [state.grabberPosition, state.navPosition]);
+
+    return <Folder className="songinfo li">
+        {/* <p>Song {state.songIndex + 1}/{cloud.songs.length}</p> */}
+        <textarea readOnly type="text" value={`${state.songIndex + 1}/${cloud.songs.length} > ${song}`} onSelect={() => { navigator.clipboard.writeText(song); }}>
+        </textarea>
+    </Folder >
+}

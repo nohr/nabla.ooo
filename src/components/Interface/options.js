@@ -3,12 +3,13 @@ import React, { useEffect, useRef } from "react"
 import { cloud, state } from "../utils/state"
 import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
-import { Folder } from "../utils/common"
+import { Folder, styleHeaders } from "../utils/common"
 import styled from "styled-components"
 import { ColorIcon, DirectionIcon, ModeIcon, MuteIcon, NextIcon, PlayPauseIcon, ShowHideIcon } from "../utils/svg"
 import { useWindowDimensions, getPosOpt, NextSong, OpenWheel, ToggleMusic, togglePause, toggleTheme } from "../utils/common"
+import { SongInfo } from "./panelTools"
 
-function Options({ select, headwidth, open, close }) {
+function Options({ song, setSong, select, headwidth, open, close }) {
     const opt = useRef(null);
     const colorLink = useRef(null)
     const snap = useSnapshot(state);
@@ -35,21 +36,10 @@ function Options({ select, headwidth, open, close }) {
                 //Show Canvas
                 state.canvasVisible = true;
                 canvas.style.display = "block";
-                if (!snap.canvasPaused) {
-                    state.canvasPaused = false;
-                } else if (snap.canvasPaused) {
-                    state.canvasPaused = true;
-                }
             } else if (snap.canvasVisible) {
                 //Hide Canvas
                 state.canvasVisible = false;
                 canvas.style.display = "none";
-                if (!snap.canvasPaused) {
-                    state.canvasPaused = true;
-                    state.CDRotationY = 0;
-                    state.CDRotationZ = 0;
-                    state.autoRotateSpeed = 0;
-                }
             }
         }
     }
@@ -63,7 +53,7 @@ function Options({ select, headwidth, open, close }) {
     const layout = snap.direction ? "grid-template-rows: 10% 1fr 10% 1fr; padding-left: 45px;padding-right: 40px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 15% 1fr; padding: 80px 12px 26px;";
     const top = snap.direction ? "padding-top: 7px;" : snap.setSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
     const firstHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
-    const secondHeader = snap.direction ? { width: "110%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
+    const secondHeader = snap.direction ? { width: "115%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
     const hide = snap.isOpt ? "opacity: 1; pointer-events: all; transition: 0.4s; " : "opacity: 0; pointer-events: none; transition: 0s;";
 
     useEffect(() => {
@@ -72,8 +62,10 @@ function Options({ select, headwidth, open, close }) {
 
     useEffect(() => {
         if (snap.isPro && snap.direction) {
+            document.getElementById("audiohead").style.width = "100%";
             document.getElementById("displayhead").style.width = '123%';
         } else {
+            document.getElementById("audiohead").style.width = headwidth.first.min;
             document.getElementById("displayhead").style.width = headwidth.second.min;
         }
     }, [state.isPro])
@@ -84,10 +76,11 @@ function Options({ select, headwidth, open, close }) {
                     className={cloud.drag ? "Panel opt glow" : "Panel opt"}>
                     <p style={firstHeader} id="audiohead">Audio</p>
                     <div className="audio" style={firstStyle}
-                        onMouseEnter={() => { document.getElementById("audiohead").style.width = headwidth.first.max }}
-                        onMouseLeave={() => { document.getElementById("audiohead").style.width = headwidth.first.min }}
+                        onMouseEnter={() => { styleHeaders(headwidth, 1, "audiohead", true); }}
+                        onMouseLeave={() => { styleHeaders(headwidth, 1, "audiohead", false); }}
                     >
                         <Folder id="muteunmute" className="li" onClick={() => { select(); snap.muted ? state.muted = false : state.muted = true; }} ><MuteIcon />{!snap.muted ? snap.direction ? "Mute SFX" : "Mute" : snap.direction ? "Unmute SFX" : "Unmute"}</Folder>
+                        <SongInfo song={song} />
                         {/* <Folder id="playstop" className="li" onClick={() => ToggleMusic()}><PlayPauseIcon arg={1} />{!clip.playMusic ? "Music" : "Pause"}</Folder>
                         <Folder onClick={() => {
                             select(); NextSong(setSong);
@@ -95,8 +88,8 @@ function Options({ select, headwidth, open, close }) {
                     </div>
                     <p style={secondHeader} id="displayhead">Display</p>
                     <div className="display" style={secondStyle}
-                        onMouseEnter={() => { document.getElementById("displayhead").style.width = headwidth.second.max }}
-                        onMouseLeave={() => { document.getElementById("displayhead").style.width = !snap.isPro ? headwidth.second.min : !snap.direction ? headwidth.second.min : '123%' }}
+                        onMouseEnter={() => styleHeaders(headwidth, 2, "displayhead", true)}
+                        onMouseLeave={() => styleHeaders(headwidth, 2, "displayhead", false)}
                     >
                         {/* {state.canvasVisible &&
                             <Folder onClick={() => { togglePause(); select(); }} width={snap.direction ? "80%" : "60%"} className="li w"><PlayPauseIcon arg={2} />{snap.canvasPaused ? "Play" : "Pause"}</Folder>} */}
@@ -144,7 +137,7 @@ const Option = styled.div`
         }
         ::-webkit-scrollbar-thumb {
             border: 1px solid;
-          border-color:${props => props.theme.panelColor};
+          border-color: ${props => props.theme.panelColor};
           border-radius: 4px;
           transition: 0.3s;
         }
@@ -158,6 +151,7 @@ const Option = styled.div`
     }
 
        #audiohead, #displayhead{
+          border-radius: 10px;
         text-transform: uppercase !important;
         font-size: 10px !important;
         padding-bottom: 6px;
@@ -192,12 +186,13 @@ const Option = styled.div`
   p{
     margin: 3px auto 5px auto;
     text-align: center;
-    border-bottom: 1px solid ${props => props.theme.panelColor};
+    border: 1px solid;
+    border-color: transparent transparent ${props => props.theme.panelColor} transparent;
     transition: 0.9s;
     stroke-width: 1px !important;
   }
 
-  @media screen and (min-height: 768px) {  
+  @media screen and (min-height: 768px) {
   svg:not(.ShowHideIcon):not(.light):not(.dark){
     fill: none !important;
     stroke: ${props => props.theme.panelColor};

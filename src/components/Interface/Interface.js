@@ -23,7 +23,9 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
   const handle = useRef();
   const nabla = useRef(null);
   const resetButton = useRef(null);
+  const container = useRef(null);
   const { query, refine, clear } = useSearchBox();
+  const [hovered, setHovered] = useState(false);
   const [song, setSong] = useState(`${clip.songs[state.songIndex].artist} - ${cloud.songs[state.songIndex].name}`);
   const [text, setText] = useState(state.quotes);
   const [dong] = useSound(home, { volume: snap.sfxVolume, soundEnabled: !snap.muted, playbackRate: clip.playRate, interrupt: false });
@@ -131,6 +133,7 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
         setColor={setColor}
         colorWheel={colorWheel}
         setColorWheel={setColorWheel}
+        container={container}
       />
       : <Navigator
         audio={audio}
@@ -154,23 +157,32 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
         setColor={setColor}
         colorWheel={colorWheel}
         setColorWheel={setColorWheel}
+        container={container}
+        hovered={hovered}
+        setHovered={setHovered}
       />
     }
-    <Results
-      select={select} />
+    <Results select={select} />
     <audio ref={audio} loop>
       <source src={null}></source>
     </audio>
     <Routes>
-      <Route path="/" element={<Page title={"Nabla"} id={"Home"} />} />
-      <Route path="/store" element={<Page title={"Nabla Store"} id={"Store"} />} />
-      <Route path="/blog" element={<Page title={"Nabla Blog"} id={"Blog"} />} />
-      <Route path="/info" element={<Page title={"Nabla Info"} id={"Info"} />} />
-      <Route path="/contrast" element={<Page title={"Contrast"} id={"Contrast"} />} />
+      <Route path="/" element={<Page
+        hovered={hovered} container={container} title={"Nabla"} id={"Home"} />} />
+      <Route path="/store" element={<Page
+        hovered={hovered} container={container} title={"Nabla Store"} id={"Store"} />} />
+      <Route path="/blog" element={<Page
+        hovered={hovered} container={container} title={"Nabla Blog"} id={"Blog"} />} />
+      <Route path="/info" element={<Page
+        hovered={hovered} container={container} title={"Nabla Info"} id={"Info"} />} />
+      <Route path="/contrast" element={<Page
+        hovered={hovered} container={container} title={"Contrast"} id={"Contrast"} />} />
       {clip.projectGroups.map((work) => (
-        <Route key={`${work.name}`} path={`/${work.id}`} element={<Page title={`Nabla`} id={`${work.id}`} />} />
+        <Route key={`${work.name}`} path={`/${work.id}`} element={<Page
+          hovered={hovered} container={container} title={`Nabla`} id={`${work.id}`} />} />
       ))}
-      <Route path="*" element={<Page title={"Nabla not found"} id={"NotFound"} />} />
+      <Route path="*" element={<Page
+        hovered={hovered} container={container} title={"Nabla not found"} id={"NotFound"} />} />
       {/* <Route
         path="*"
         element={<Navigate to="/404" replace />}

@@ -5,7 +5,7 @@ import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
 import { NavLink } from "react-router-dom"
 import styled from "styled-components"
-import { getPosPro, useWindowDimensions } from "../utils/common"
+import { getPosPro, styleHeaders, useWindowDimensions } from "../utils/common"
 
 function Projects({ headwidth, select, open, close }) {
   const pro = useRef(null);
@@ -21,7 +21,7 @@ function Projects({ headwidth, select, open, close }) {
   const layout = snap.direction ? !state.prtSwitched ? "grid-template-rows: 10% 0.9fr 10% 1.5fr; padding-left: 45px;padding-right: 40px;" : "grid-template-rows: 10% 1fr 10% 1fr; padding-left: 40px;padding-right: 45px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 15% 1fr; padding: 80px 12px 26px;";
   const top = snap.direction ? "padding-top: 7px;" : snap.prtSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
   const firstHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
-  const secondHeader = snap.direction ? { width: "110%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
+  const secondHeader = snap.direction ? { width: "115%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
   const hide = snap.isPro ? "opacity: 1; pointer-events: all; transition: 0.2s; " : "opacity: 0; pointer-events: none; transition: 0s;";
 
   useEffect(() => {
@@ -31,8 +31,10 @@ function Projects({ headwidth, select, open, close }) {
 
   useEffect(() => {
     if (snap.isOpt && snap.direction) {
+      document.getElementById("selfhead").style.width = '100%';
       document.getElementById("clienthead").style.width = '123%';
     } else {
+      document.getElementById("selfhead").style.width = headwidth.first.min;
       document.getElementById("clienthead").style.width = headwidth.second.min;
     }
   }, [state.isOpt])
@@ -46,8 +48,8 @@ function Projects({ headwidth, select, open, close }) {
           id="selfhead"
         >Self-Initiate</p>
         <div className="self" style={firstStyle}
-          onMouseEnter={() => { document.getElementById("selfhead").style.width = headwidth.first.max }}
-          onMouseLeave={() => { document.getElementById("selfhead").style.width = headwidth.first.min }}
+          onMouseEnter={() => styleHeaders(headwidth, 1, "selfhead", true)}
+          onMouseLeave={() => styleHeaders(headwidth, 1, "selfhead", false)}
         >
           {clip.selfs && clip.selfs.map((work) => (
             <NavLink onClick={select} style={snap.direction ? { width: '70%' } : { width: '100%' }} className="li w" to={`/${work.id}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
@@ -57,14 +59,8 @@ function Projects({ headwidth, select, open, close }) {
           id="clienthead"
         >Client</p>
         <div className="client" style={secondStyle}
-          onMouseEnter={() => {
-            document.getElementById("clienthead").style.width = headwidth.second.max;
-            document.getElementById("clienthead").style.background = `${snap.theme = 'light' ? snap.light.panelColor : snap.dark.panelColor}`;
-          }}
-          onMouseLeave={() => {
-            document.getElementById("clienthead").style.width = !snap.isOpt ? headwidth.second.min : !snap.direction ? headwidth.second.min : '123%';
-            document.getElementById("clienthead").style.background = `none`;
-          }}
+          onMouseEnter={() => styleHeaders(headwidth, 2, "clienthead", true)}
+          onMouseLeave={() => styleHeaders(headwidth, 2, "clienthead", false)}
         >
           {clip.clients && clip.clients.map((work) => (
             <NavLink onClick={select} style={snap.direction ? { width: '70%' } : { width: '100%' }} className="li w" to={`/${work.id}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
@@ -103,7 +99,7 @@ const Project = styled.div`
   }
   
   * .li{
-   backdrop-filter: blur(30px) !important;
+   backdrop-filter: blur(20px) !important;
     margin: 0 0 4px 0;
     width: 70%;
     transition: 0.9s !important;
@@ -113,7 +109,8 @@ const Project = styled.div`
     margin: 3px auto 5px auto;
     overflow: visible;
     text-align: center;
-    border-bottom: 1px solid ${props => props.theme.panelColor};
+    border: 1px solid;
+    border-color: transparent transparent ${props => props.theme.panelColor} transparent;
     transition: 0.9s;
   }
 
@@ -153,6 +150,7 @@ const Project = styled.div`
   }
 
   #selfhead, #clienthead{
+          border-radius: 10px;
         text-transform: uppercase !important;
         font-size: 10px !important;
         padding-bottom: 6px;

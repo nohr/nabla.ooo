@@ -12,7 +12,7 @@ import { EffectComposer, Noise } from '@react-three/postprocessing'
 import { Debug, Physics, usePlane } from '@react-three/cannon';
 import { Router } from 'wouter'
 import { useInfiniteHits } from 'react-instantsearch-hooks-web'
-import { transformItems } from '../utils/common'
+import { target, transformItems } from '../utils/common'
 
 // Spinner
 const Spinner = () => {
@@ -89,7 +89,7 @@ function Wall() {
   )
 }
 
-function Floor() {
+function Reflector() {
   const snap = useSnapshot(state);
   const textures = useTexture([
     "/images/reflector/Ice_OCC.jpg",
@@ -106,8 +106,48 @@ function Floor() {
       )
     );
   }, [textures]);
+  return <MeshReflectorMaterial
+    debug={2}
+    side={THREE.DoubleSide}
+    resolution={1024}
+    mirror={state.theme === "light" ? 0.15 : 0.28}
+    blur={[250, 250]}
+    mixBlur={14}
+    distortion={0}
+    mixStrength={1}
+    minDepthThreshold={0.9}
+    maxDepthThreshold={1.1}
+    depthScale={2}
+    depthToBlurRatioBias={0.2}
+    color={state.theme === 'light' ? snap.light.Surface : snap.dark.Surface}
+    metalness={0}
+    roughness={snap.theme === 'light' ? snap.light.SurfaceRough : snap.dark.SurfaceRough}
+    roughnessMap={roughness}
+    aoMap={ao}
+    normalMap={normal}
+    normalScale={[1, 1]}
+    envMapIntensity={1}
+    bumpMap={height}
+  />
+}
+function Floor() {
+
+  return <Suspense fallback={<Spinner />}>
+    <mesh
+      rotation={[-Math.PI / 2, 0, 0]}
+      position={[0, 0, 0]}
+    >
+      <planeGeometry
+        args={[70, 70]}
+      />
+      <Reflector />
+    </mesh>
+  </Suspense>
+}
+
+function PhysicsFloor() {
   const [ref, api] = usePlane(() => ({ rotation: [-Math.PI / 2, 0, 0], position: [0, 0, 0] }));
-  const collision = useRef(null);
+  // const collision = useRef(null);
   useEffect(() => {
     console.log(api);
   }, [])
@@ -117,32 +157,6 @@ function Floor() {
   //   const unsubscribe = api.collisionResponse.subscribe((v) => collision.current = v);
   //   return unsubscribe;
   // });
-
-  function Reflector() {
-    return <MeshReflectorMaterial
-      debug={2}
-      side={THREE.DoubleSide}
-      resolution={1024}
-      mirror={state.theme === "light" ? 0.15 : 0.28}
-      blur={[250, 250]}
-      mixBlur={14}
-      distortion={0}
-      mixStrength={1}
-      minDepthThreshold={0.9}
-      maxDepthThreshold={1.1}
-      depthScale={2}
-      depthToBlurRatioBias={0.2}
-      color={state.theme === 'light' ? snap.light.Surface : snap.dark.Surface}
-      metalness={0}
-      roughness={snap.theme === 'light' ? snap.light.SurfaceRough : snap.dark.SurfaceRough}
-      roughnessMap={roughness}
-      aoMap={ao}
-      normalMap={normal}
-      normalScale={[1, 1]}
-      envMapIntensity={1}
-      bumpMap={height}
-    />
-  }
 
   return <Suspense fallback={<Spinner />}>
     <mesh
@@ -293,19 +307,16 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
     <Canvas dpr={[1, 2]} gl={{ alpha: true, stencil: false, depth: true, antialias: false, physicallyCorrectLight: true }} className='r3fCanvas' frameloop={clip.mobile ? "always" : "demand"}>
       {/* CAMERA */}
       <Suspense fallback={<Spinner />}>
-        <PerspectiveCamera makeDefault ref={camera} target={clip.mobile ? clip.target : [0, 2, 0]} zoom={1} position={clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition} far={80} near={.1} fov={clip.mobile ? 30 : 20} aspect={vWidth / vHeight} />
+        <PerspectiveCamera makeDefault ref={camera} target={clip.mobile ? target : [0, 2, 0]} zoom={1} position={clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition} far={80} near={.1} fov={clip.mobile ? 30 : 20} aspect={vWidth / vHeight} />
         {/* FOG */}
         <fog attach="fog" args={[snap.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, clip.mobile ? snap.theme === 'light' ? 45 : 50 : 30]} />
         <Lights />
       </Suspense>
-      <Physics
-        gravity={[clip.leftright, -9.8, clip.frontback]}
-        isPaused={snap.canvasPaused}>
-        {
-          !clip.mobile &&
-          <Wall />}
-        <Floor />
-        {clip.mobile ?
+      {clip.mobile ?
+        // Mobile
+        <Physics
+          gravity={[clip.leftright, -9.8, clip.frontback]}>
+          <PhysicsFloor />
           <Router path="/">
             <Suspense fallback={<Spinner />}>
               <Select onChange={setSelected}>
@@ -315,19 +326,23 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
             <Bounds />
             {/* <ContactShadows frames={1} position={[0, -0.5, 0]} scale={10} opacity={0.4} far={1} blur={2} /> */}
             {/* <CD position={[0, 10, -20]} rotation={[Math.PI / -2.5, 0, 0]} /> */}
-          </Router> : <CD rotation={[-Math.PI / 2, Math.PI / 2, Math.PI / 2]} />}
-      </Physics>
-      {/* <Suspense fallback={<Spinner />}>
-        {
-          !clip.mobile &&
-          <EffectComposer>
-            <Noise
-              opacity={snap.theme === 'light' ? clip.mobile ? 0.05 : snap.light.noise : clip.mobile ? 0.09 : snap.dark.noise}
-            // premultiply={(state.theme === "light")}
-            />
-          </EffectComposer>
-        }
-      </Suspense> */}
+          </Router>
+        </Physics>
+        :// Not Mobile 
+        <>
+          <Wall />
+          <CD rotation={[-Math.PI / 2, Math.PI / 2, Math.PI / 2]} />
+          <Floor />
+          <Suspense fallback={<Spinner />}>
+            <EffectComposer>
+              <Noise
+                opacity={snap.theme === 'light' ? clip.mobile ? 0.05 : snap.light.noise : clip.mobile ? 0.09 : snap.dark.noise}
+              // premultiply={(state.theme === "light")}
+              />
+            </EffectComposer>
+          </Suspense>
+        </>
+      }
       <OrbitControls
         target={clip.mobile ? clip.target : [0, 2, 0]}
         onEnd={(e) => {
@@ -354,7 +369,7 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
         autoRotateSpeed={clip.UILoading ? -50 : 0}
         minDistance={20}
         maxDistance={clip.mobile ? 40 : 36}
-        enabled={clip.mobile ? !clip.drag : !state.canvasPaused}
+        enabled={clip.mobile ? !clip.drag : true}
       />
     </Canvas >
   );

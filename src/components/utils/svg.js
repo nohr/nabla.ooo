@@ -506,7 +506,7 @@ const Eko = styled.svg`
         transition: 2.3s;
         -webkit-filter: drop-shadow( 1px 1px 10px ${props => props.theme.LiHover});
         filter: drop-shadow( 1px 1px 10px ${props => props.theme.LiHover});
-        /* filter: blur(30px); */
+        /* filter: blur(20px); */
         `
 export function EkoThumb() {
   return (

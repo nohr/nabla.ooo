@@ -7,7 +7,8 @@ const NotFound = (props) => {
     return (
         <>
             <Header id="404" />
-            <Container className="container notfound"
+            <Container
+                ref={props.container} className="container notfound"
                 opacity={props.opacity}
                 pointerEvents={props.pointerEvents}
                 transition={props.transition}

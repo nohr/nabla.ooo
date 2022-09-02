@@ -16,14 +16,14 @@ import NotFound from "./NotFound";
 import { useSearchBox } from "react-instantsearch-hooks-web";
 import { useDocumentTitle } from "../../utils/common";
 
-export function Page(id) {
-  useDocumentTitle(id.title);
+export function Page({ id, title, container, hovered }) {
+  useDocumentTitle(title);
   const { query } = useSearchBox();
   const clip = useSnapshot(cloud);
   const snap = useSnapshot(state);
-  let opacity = query.length > 0 ? "0" : "1";
-  let pointerEvents = query.length ? "none" : "all";
-  let transition = query.length ? "0.3s" : "unset";
+  let opacity = query.length > 0 ? "0" : clip.drag || hovered ? 0.3 : "1";
+  let pointerEvents = query.length ? "none" : hovered ? "none" : "all";
+  let transition = query.length ? "0.3s" : hovered ? "0.3s" : "unset";
   let margin =
     clip.sectors.length > 0
       ? snap.direction
@@ -32,9 +32,9 @@ export function Page(id) {
       : ``;
 
   useEffect(() => {
-    state.selectedImg = null;
-    state.selectedDesc = null;
-  }, [id.id]);
+    cloud.selectedImg = null;
+    cloud.selectedDesc = null;
+  }, [id]);
 
   // Manage modals
   useEffect(() => {
@@ -79,43 +79,55 @@ export function Page(id) {
 
   //Toggle active panel buttons
   useEffect(() => {});
-  if (id.id === "Home") {
-    return <Home />;
-  } else if (id.id === "Info") {
+  if (id === "Home") {
+    return (
+      <Home
+        container={container}
+        opacity={opacity}
+        pointerEvents={pointerEvents}
+        transition={transition}
+      />
+    );
+  } else if (id === "Info") {
     return (
       <Info
+        container={container}
         opacity={opacity}
         pointerEvents={pointerEvents}
         transition={transition}
       />
     );
-  } else if (id.id === "Store") {
+  } else if (id === "Store") {
     return (
       <Store
+        container={container}
         opacity={opacity}
         pointerEvents={pointerEvents}
         transition={transition}
       />
     );
-  } else if (id.id === "Blog") {
+  } else if (id === "Blog") {
     return (
       <Blog
+        container={container}
         opacity={opacity}
         pointerEvents={pointerEvents}
         transition={transition}
       />
     );
-  } else if (id.id === "Contrast") {
+  } else if (id === "Contrast") {
     return (
       <Contrast
+        container={container}
         opacity={opacity}
         pointerEvents={pointerEvents}
         transition={transition}
       />
     );
-  } else if (id.id === "NotFound") {
+  } else if (id === "NotFound") {
     return (
       <NotFound
+        container={container}
         opacity={opacity}
         pointerEvents={pointerEvents}
         transition={transition}
@@ -124,16 +136,17 @@ export function Page(id) {
   } else {
     return (
       <>
-        <Header id={id.id} />
+        <Header id={id} />
         <Container
+          ref={container}
           className="container"
           opacity={opacity}
           pointerEvents={pointerEvents}
           transition={transition}
           margin={!clip.mobile ? margin : `padding-top: 100px !important; `}
         >
-          <PageData id={id.id} />
-          {clip.selectedImg ? <Modal /> : null}
+          <PageData id={id} />
+          {clip.selectedImg ? <Modal container={container} /> : null}
         </Container>
       </>
     );
@@ -171,11 +184,10 @@ export function Prev() {
   }
 }
 
-const Modal = memo(function Modal() {
+const Modal = memo(function Modal({ container }) {
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
   const nodeRef = useRef(null);
-  const descRef = useRef(null);
   // Get enxtentions of files
   const types = new Map([
     ["jpg", "img"],
@@ -268,7 +280,7 @@ const Modal = memo(function Modal() {
   }
 
   return (
-    <>
+    <div className="modalWrapper" ref={container}>
       <Controls />
       <motion.div
         className="backdrop"
@@ -277,16 +289,9 @@ const Modal = memo(function Modal() {
         animate={{ opacity: 1 }}
       >
         {clip.selectedDesc && (
-          <Draggable
-            nodeRef={descRef}
-            bounds="body"
-            position={snap.modalPosition}
-            onDrag={onControlledDrag}
-          >
-            <div className="description" ref={descRef}>
-              <p>{clip.selectedDesc}</p>
-            </div>
-          </Draggable>
+          <div className="description">
+            <p>{clip.selectedDesc}</p>
+          </div>
         )}
         {element === "video" ? (
           Video()
@@ -308,7 +313,7 @@ const Modal = memo(function Modal() {
           </Draggable>
         )}
       </motion.div>
-    </>
+    </div>
   );
 });
 
@@ -333,6 +338,9 @@ export const Container = styled.div`
   pointer-events: ${(props) => props.pointerEvents};
   opacity: ${(props) => props.opacity};
 
+  .modalWrapper {
+    position: absolute;
+  }
   &.hom {
     pointer-events: none;
     width: 100vw;
@@ -362,7 +370,7 @@ export const Container = styled.div`
       backdrop-filter: blur(10px);
 
       & .icons {
-        backdrop-filter: blur(30px);
+        backdrop-filter: blur(20px);
         border-radius: 40px;
         flex-wrap: wrap;
         flex-direction: row-reverse;
@@ -475,7 +483,7 @@ export const Container = styled.div`
     right: 0;
     z-index: 6000;
   }
-  & .backdrop {
+  & .modalWrapper .backdrop {
     cursor: alias;
     position: fixed;
     z-index: 50;
@@ -488,7 +496,7 @@ export const Container = styled.div`
     justify-content: center;
   }
 
-  & .backdrop object {
+  & .modalWrapper .backdrop object {
     display: block;
     max-width: 80%;
     max-height: 90%;
@@ -508,24 +516,30 @@ export const Container = styled.div`
   }
 
   @media screen and (max-width: 768px) {
-    & .backdrop video {
+    & .modalWrapper .backdrop video {
       max-width: 75%;
       max-height: 80% !important;
     }
   }
-  & .backdrop .description {
+
+  & .modalWrapper .backdrop .description {
     border: 1px solid ${(props) => props.theme.panelColor};
     border-radius: 10px;
     position: absolute;
     bottom: 20px;
     left: 20px;
+    @media screen and (max-width: 768px) {
+      left: 50%;
+      transform: translateX(-50%);
+    }
     z-index: 500;
     padding: 10px;
     white-space: break-spaces;
     line-height: 25px;
     text-align: justify;
-    width: 60ch;
+    width: 40ch;
     overflow-x: hidden;
+    overflow-y: scroll;
     opacity: ${(props) => props.opacity};
     transition: 0.3s;
     backdrop-filter: blur(4px);
@@ -537,11 +551,11 @@ export const Container = styled.div`
     }
   }
 
-  & .backdrop object:hover {
+  & .modalWrapper .backdrop object:hover {
     cursor: grab;
   }
 
-  & .backdrop .landscape {
+  & .modalWrapper .backdrop .landscape {
     width: 60% !important;
   }
 
@@ -549,7 +563,7 @@ export const Container = styled.div`
     margin-bottom: 60%;
   } */
 
-  &:last-child():not(.backdrop) {
+  & .modalWrapper:last-child():not(.backdrop) {
     height: 90%;
   }
 

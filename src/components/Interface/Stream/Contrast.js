@@ -40,7 +40,8 @@ function Contrast(props) {
   // const nodeRef = useRef(null);
   return (
     <>
-      <Container className="container"
+      <Container
+        ref={props.container} className="container"
         opacity={props.opacity}
         pointerEvents={props.pointerEvents}
         transition={props.transition}

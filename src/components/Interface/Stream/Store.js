@@ -18,7 +18,9 @@ function Store(props) {
 
   return (<>
     <Header id={"store"} />
-    <Container overflow='hidden' className="container"
+    <Container
+      ref={props.container}
+      overflow='hidden' className="container"
       opacity={props.opacity}
       pointerEvents={props.pointerEvents}
       transition={props.transition}

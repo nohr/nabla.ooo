@@ -76,13 +76,6 @@ const ImgGrid = ({ work }) => {
   // const clip = useSnapshot(cloud);
   return (
     <TrayWrapper>
-      <InfoCard>
-        {/* {work.link && <Links link={work.link} />} */}
-        {work.program && <Program size={'40px'} program={work.program} />}
-        <Scroller animation='none'>
-          {work.by ? (work.statement && <p>{`"${work.statement}" -`} {work.by === 'AA' && <CreatorMedal name={'AA'} />}</p>) : (work.statement && <p>{`${work.statement}`}</p>)}
-        </Scroller>
-      </InfoCard>
       <ImgWrapper key={`${Math.random()}`} className="imgWrapper" ref={refWrapper}>
         <>
           {work.images && work.images.map((url) => (
@@ -90,6 +83,13 @@ const ImgGrid = ({ work }) => {
           ))}
         </>
       </ImgWrapper>
+      <InfoCard>
+        {/* {work.link && <Links link={work.link} />} */}
+        {work.program && <Program size={'40px'} program={work.program} />}
+        <Scroller animation='none'>
+          {work.by ? (work.statement && <p>{`"${work.statement}" -`} {work.by === 'AA' && <CreatorMedal name={'AA'} />}</p>) : (work.statement && <p>{`${work.statement}`}</p>)}
+        </Scroller>
+      </InfoCard>
     </TrayWrapper>
   )
 }
@@ -136,21 +136,27 @@ const Sector = styled.div`
 /* border: solid 1px; */
 /* border-color: ${props => props.theme.panelColor}; */
 /* border-radius: 10px; */
-display: flex;
-min-height: 650px !important;
+display: grid;
+grid-template-columns: 100%;
+grid-template-rows: 20% 80%;
+height: 60vh !important;
+width: fit-content;
 flex-direction: column;
-row-gap: 30px;
-padding: 0px;
+row-gap: 10px;
+/* padding: 0px; */
 justify-content: space-around;
 position: relative;
 overflow: hidden;
 transition:0s !important;
 
-    @media screen and (max-width: 768px) {
-      height: 100%;
+    @media screen and (min-height: 800px) {
+      height: 70vh !important;
       row-gap: 0px;
   }
-
+    @media screen and (max-width: 768px) {
+      height: 650px !important;
+      row-gap: 0px;
+  }
 & .lot{
   color: ${props => props.theme.panelColor};
   transition: 1.3s;
@@ -250,13 +256,13 @@ const TextWrapper = styled.div`
 const TrayWrapper = styled.div`
   /* overflow-x: scroll; */
     /* overflow-y: hidden; */
-  display: grid;
-  grid-template-columns: 40ch 1fr;    
-  grid-template-rows: 100%;
+  display: flex;
+  /* grid-template-columns: 1fr 40ch;     */
+  /* grid-template-rows: 100%; */
   flex-direction: row;
   flex-wrap: nowrap;
-  width: 100%;
-  height: 70%;
+  /* width: 100%; */
+  /* height: 70%; */
     /* padding: 0 20px 20px 20px; */
     gap: 10px;
         margin-bottom: 1px;
@@ -288,7 +294,7 @@ const TrayWrapper = styled.div`
 const ImgWrapper = styled.div`
     position: relative;
     height: 100%;
-    width: 100%;
+    /* width: 100%; */
     display: flex;
     /* overflow-y: hidden; */
     overflow-x: scroll;
@@ -434,12 +440,11 @@ const InfoCard = styled.div`
     white-space: break-spaces;
     line-height: 20px;   
     height: 100%;
-    width: 100% !important;
+    width: 45ch !important;
     text-align: justify;
     border: 1px solid  ${props => props.theme.backdrop};
     backdrop-filter: blur(var(--blur));
     -webkit-backdrop-filter: blur(var(--blur));
-resize: horizontal;
 
     /* @media screen and (min-width:768px) {
       position: absolute;

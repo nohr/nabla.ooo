@@ -14,12 +14,13 @@ import { Grabber, NextButton, PlayButton, ResetPosButton } from "./panelTools"
 import CircleType from "circletype"
 import { ColorWheel } from '@react-spectrum/color';
 
-function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, handle, query, clear, refine, text, setText, resetButton, colorWheel, setColorWheel, color, setColor, open, close }) {
+function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, handle, query, clear, refine, text, setText, resetButton, colorWheel, setColorWheel, color, setColor, open, close, setHovered, container }) {
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
   const nav = useRef(null);
   const wheel = useRef();
   const [focused, setFocused] = useState(false);
+  const [track, setTrack] = useState(`${snap.songIndex + 1}/${clip.songs.length}`);
 
   const headwidth = {
     first: {
@@ -27,8 +28,8 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
       min: snap.direction ? "62%" : "62%",
     },
     second: {
-      max: snap.direction ? "62%" : "100%",
-      min: snap.direction ? "110%" : "62%",
+      max: snap.direction ? "115%" : "62%",
+      min: snap.direction ? "62%" : "100%",
     },
   };
 
@@ -72,10 +73,13 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
       if (bent) {
         bent.destroy();
       } else {
-        bent = new CircleType(title.current).radius(140);
+        bent = new CircleType(title.current).radius(135);
       }
     }
-  }, [song]);
+    return () => {
+      bent = null;
+    }
+  }, [state.songIndex]);
 
 
   const onControlledDrag = (e, position) => {
@@ -86,17 +90,22 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
     cloud.drag = true;
     state.dragged = true;
     nav.current.classList.add("glow");
+    container.current.style.display = "none";
   };
 
   const onControlledStop = (e, position) => {
     let { x, y } = position;
     state.navPosition = { x, y };
     cloud.drag = false;
+    container.current.style.display = "flex";
   }
 
   return (
     <>
-      <div className="skewed">
+      <div
+        onMouseOver={() => setHovered(true)}
+        onMouseOut={() => setHovered(false)}
+        className="skewed">
         <Draggable nodeRef={nav} handle=".grabber" bounds="html"
           position={state.navPosition}
           onStop={onControlledStop}
@@ -162,7 +171,7 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
             </div>
             <Song ref={title} position={` left: 48%;`}
               className="bend song" style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true }} tabIndex="0">
-              {song}
+              {/* {snap.songIndex + 1}/{clip.songs.length} */}
             </Song>
             {/* {(clip.UILoading || clip.CanvasLoading) ? <Spinner /> : */}
             {/* {(!snap.colorWheel && */}
@@ -177,6 +186,8 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
           headwidth={headwidth}
           select={select} />
         <Options
+          song={song}
+          setSong={setSong}
           open={open}
           close={close}
           headwidth={headwidth}
@@ -359,7 +370,7 @@ const Nav = styled.div`
     }
 
     & .li{
-   backdrop-filter: blur(30px) !important;
+   backdrop-filter: blur(20px) !important;
     width: 80%;
     align-self: center;
     transition: 0.3s;
@@ -569,7 +580,7 @@ const SearchBar = styled.input`
   border: none !important;
   width: 100%;
   height: 20px;
-   backdrop-filter: blur(30px) !important;
+   backdrop-filter: blur(20px) !important;
   display: flex;
   border-radius: 250px 250px 500px 500px;
   background-color: transparent;

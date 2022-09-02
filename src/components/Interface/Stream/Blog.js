@@ -37,7 +37,9 @@ function Blog(props) {
     return (
         <>
             <Header id='blog' />
-            <Container className="container"
+            <Container
+                ref={props.container}
+                className="container"
                 opacity={props.opacity}
                 pointerEvents={props.pointerEvents}
                 transition={props.transition}

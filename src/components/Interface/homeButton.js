@@ -65,7 +65,7 @@ const Homer = styled(NavLink)`
   display: flex;
   justify-content: center;
   /* margin: 10px 0 0px 0; */
-  backdrop-filter: blur(30px) !important;
+  backdrop-filter: blur(20px) !important;
   padding-top: 5px;
   padding-bottom: 3px;
   border-radius: 75% 75% 50px 50px;

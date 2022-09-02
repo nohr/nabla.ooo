@@ -23,7 +23,7 @@ export const Folder = styled.div`
   align-items: center;
   border-color: ${props => props.theme.panelColor};
    ${props => props.border};
-   backdrop-filter: blur(30px) !important;
+   backdrop-filter: blur(20px) !important;
 
    &.trayIcon{
     border-radius: 50% !important;
@@ -139,6 +139,47 @@ export const Folder = styled.div`
     stroke-width: 1px !important;
     overflow: visible;
   }
+
+  &.songinfo{
+    cursor: text;
+    user-select: text !important;
+    -ms-user-select: text !important;
+    -moz-user-select: text !important;
+    -webkit-user-select: text !important;
+    border-radius: 10px !important;
+    background: inherit !important;
+    padding: 3px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin: 0 0 4px 15px !important;
+    width: 100% !important;
+    height: 50px !important;
+
+    & textarea{
+        padding: 0 !important;
+        border: none !important;
+        background-color: transparent !important;
+        width: 95% !important;
+        height: inherit;
+        /* height: fit-content !important; */
+        resize: none;
+        color: ${props => props.theme.panelColor} !important;
+        ::-webkit-scrollbar{
+            display: none !important;
+        }
+        &:active{
+            border: 1px solid ${props => props.theme.panelColor} !important;
+
+        }
+    }
+    &:hover{
+        background-color: ${props => props.theme.layerBG} !important;
+        box-shadow: inherit !important;
+        color: inherit !important;
+    }
+
+  }
 `
 export const Song = styled.p`
     position: absolute;
@@ -185,7 +226,7 @@ export const Song = styled.p`
 export const Wheel = styled.div`
 @media only screen and (max-width: 768px) {
   & {
-   backdrop-filter: blur(30px) !important;
+   backdrop-filter: blur(20px) !important;
   }
 }
    bottom: unset !important;
@@ -219,12 +260,29 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     *::selection{
-      color: inherit;
-      background-color: #00000020;
+      color:  ${props => props.theme.textHover};
+      background-color:  ${props => props.theme.LiHover};
     }
     *{
       /* filter:contrast(1.1) ; */
       animation-delay: 0s;
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 5px;
+    display: flex;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: ${(props) => props.theme.panelColor};
+    border-radius: 4px;
+    /* transition: 0.3s; */
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: ${(props) => props.theme.panelColor};
+    box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
+    -webkit-box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
+    -moz-box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
+    /* transition: 0.3s; */
+  }
     }
 
           .gugmu9vdpaw div {
@@ -242,7 +300,7 @@ export const GlobalStyle = createGlobalStyle`
       width: var(--panelWidth);
       height: var(--panelHeight);
       scroll-snap-type: none;
-        backdrop-filter: blur(30px) !important;
+        backdrop-filter: blur(20px) !important;
       /* backdrop-filter: blur(var(--blur)); */
       /* -webkit-backdrop-filter: blur(var(--blur)); */
       border: 1px solid ${props => props.theme.panelColor};
@@ -250,10 +308,12 @@ export const GlobalStyle = createGlobalStyle`
       border-radius: 185px;
       overflow: hidden;
         /* backdrop-filter: blur(10px) !important; */
-      
+      & *{
+
+        -webkit-user-drag: none;
+      }
       & .li{
         border-radius: 250px 250px 500px 500px;
-        -webkit-user-drag: none;
       }
     }
 
@@ -898,6 +958,26 @@ export function getPosOpt(snap, vWidth, vHeight) {
         }
     }
 };
+export function styleHeaders(headwidth, level, type, enter) {
+    if (enter) {
+        if (level === 1) {
+            document.getElementById(type).style.width = headwidth.first.max;
+            document.getElementById(type).style.boxShadow = `0 30px 50px ${state.theme === 'light' ? state.light.panelColor : state.dark.panelColor}`;
+        } else if (level === 2) {
+            document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.max : "115%";
+            document.getElementById(type).style.boxShadow = `0 30px 50px ${state.theme === 'light' ? state.light.panelColor : state.dark.panelColor}`;
+        }
+    } else if (!enter) {
+        if (level === 1) {
+            document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.first.min : !state.direction ? headwidth.first.min : '100%';
+            document.getElementById(type).style.boxShadow = `none`;
+
+        } else if (level === 2) {
+            document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.min : !state.direction ? headwidth.second.min : '123%';
+            document.getElementById(type).style.boxShadow = `none`;
+        }
+    }
+}
 
 // MOBILE
 export const offset = 70;

@@ -6,7 +6,7 @@ import { useSnapshot } from "valtio";
 import { Program } from "../../utils/svg";
 import { CreatorMedal, InfoBox, Scroller } from "./Results";
 
-function Home() {
+function Home(props) {
     const clip = useSnapshot(cloud);
 
     function Preview({ statement, program, by, projectName }) {
@@ -33,7 +33,11 @@ function Home() {
 
     return (
         <>
-            <Container className="hom container">
+            <Container className="hom container"
+                ref={props.container}
+                opacity={props.opacity}
+                pointerEvents={props.pointerEvents}
+                transition={props.transition}>
                 {clip.mobile && clip.preview.map((value, key) => (<Preview key={key} by={value.by} statement={value.statement} program={value.program} projectName={value.projectName} />))}
             </Container>
         </>

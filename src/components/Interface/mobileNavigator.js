@@ -247,7 +247,7 @@ transition: 0.9s;
 `
 const NavButton = styled.div`
     pointer-events: all !important;
-   backdrop-filter: blur(30px) !important;
+   backdrop-filter: blur(20px) !important;
 display: flex;
 flex-direction: column;
 justify-content: space-around;

@@ -80,6 +80,7 @@ function Info(props) {
     <>
       <Header id='info' />
       <Container className="container info"
+        ref={props.container}
         opacity={props.opacity}
         pointerEvents={props.pointerEvents}
         transition={props.transition}
