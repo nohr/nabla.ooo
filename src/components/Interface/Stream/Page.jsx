@@ -197,124 +197,126 @@ const Modal = memo(function Modal({ container }) {
     ["mp4", "video"],
     ["svg", "svg"],
   ]);
-  const link = new URL(`${clip.selectedImg}`);
-  const extension = link.pathname.split(".");
-  const element = types.get(extension[extension.length - 1].toLowerCase());
+  if (clip.selectedImg) {
+    const link = new URL(`${clip.selectedImg}`);
+    const extension = link.pathname.split(".");
+    const element = types.get(extension[extension.length - 1].toLowerCase());
 
-  const handleClick = (e) => {
-    if (e.target.classList.contains("backdrop")) {
-      cloud.selectedImg = null;
-      cloud.selectedDesc = null;
+    const handleClick = (e) => {
+      if (e.target.classList.contains("backdrop")) {
+        cloud.selectedImg = null;
+        cloud.selectedDesc = null;
+      }
+    };
+    const onControlledDrag = (e, position) => {
+      let { x, y } = position;
+      state.modalPosition = { x, y };
+    };
+
+    function Video() {
+      if (clip.work.orientation === "portrait") {
+        return (
+          <motion.video
+            style={{
+              height: "100%",
+            }}
+            key={`${Math.random()}`}
+            autoPlay={true}
+            playsInline
+            preload={"none"}
+            poster={`${clip.work.poster}`}
+            loop={true}
+            muted={true}
+            src={`${clip.selectedImg}`}
+          >
+            {"portrait"}
+          </motion.video>
+        );
+      } else if (clip.work.orientation === "landscape") {
+        return (
+          <motion.video
+            className={"landscape"}
+            key={`${Math.random()}`}
+            autoPlay={true}
+            playsInline
+            controls
+            preload={"none"}
+            poster={clip.work.poster ? `${clip.work.poster}` : false}
+            loop={true}
+            muted={false}
+            src={`${clip.selectedImg}`}
+          >
+            {"landscape"}
+          </motion.video>
+        );
+      }
     }
-  };
-  const onControlledDrag = (e, position) => {
-    let { x, y } = position;
-    state.modalPosition = { x, y };
-  };
 
-  function Video() {
-    if (clip.work.orientation === "portrait") {
+    function Controls() {
+      num = clip.work.images.indexOf(clip.selectedImg);
       return (
-        <motion.video
-          style={{
-            height: "100%",
-          }}
-          key={`${Math.random()}`}
-          autoPlay={true}
-          playsInline
-          preload={"none"}
-          poster={`${clip.work.poster}`}
-          loop={true}
-          muted={true}
-          src={`${clip.selectedImg}`}
-        >
-          {"portrait"}
-        </motion.video>
-      );
-    } else if (clip.work.orientation === "landscape") {
-      return (
-        <motion.video
-          className={"landscape"}
-          key={`${Math.random()}`}
-          autoPlay={true}
-          playsInline
-          controls
-          preload={"none"}
-          poster={clip.work.poster ? `${clip.work.poster}` : false}
-          loop={true}
-          muted={false}
-          src={`${clip.selectedImg}`}
-        >
-          {"landscape"}
-        </motion.video>
+        <>
+          {clip.work.images[num - 1] && (
+            <Control
+              left="20px"
+              onClick={() => {
+                Prev();
+              }}
+            >
+              prev
+            </Control>
+          )}
+          {clip.work.images[num + 1] && (
+            <Control
+              right="20px"
+              onClick={() => {
+                Next();
+              }}
+            >
+              next
+            </Control>
+          )}
+        </>
       );
     }
-  }
 
-  function Controls() {
-    num = clip.work.images.indexOf(clip.selectedImg);
     return (
-      <>
-        {clip.work.images[num - 1] && (
-          <Control
-            left="20px"
-            onClick={() => {
-              Prev();
-            }}
-          >
-            prev
-          </Control>
-        )}
-        {clip.work.images[num + 1] && (
-          <Control
-            right="20px"
-            onClick={() => {
-              Next();
-            }}
-          >
-            next
-          </Control>
-        )}
-      </>
+      <div className="modalWrapper" ref={container}>
+        <Controls />
+        <motion.div
+          className="backdrop"
+          onClick={handleClick}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        >
+          {clip.selectedDesc && (
+            <div className="description">
+              <p>{clip.selectedDesc}</p>
+            </div>
+          )}
+          {element === "video" ? (
+            Video()
+          ) : (
+            //Image
+            <Draggable
+              nodeRef={nodeRef}
+              bounds="body"
+              position={snap.modalPosition}
+              onDrag={onControlledDrag}
+            >
+              <motion.object
+                ref={nodeRef}
+                data={clip.selectedImg}
+                alt="full content"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              ></motion.object>
+            </Draggable>
+          )}
+        </motion.div>
+      </div>
     );
   }
-
-  return (
-    <div className="modalWrapper" ref={container}>
-      <Controls />
-      <motion.div
-        className="backdrop"
-        onClick={handleClick}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-      >
-        {clip.selectedDesc && (
-          <div className="description">
-            <p>{clip.selectedDesc}</p>
-          </div>
-        )}
-        {element === "video" ? (
-          Video()
-        ) : (
-          //Image
-          <Draggable
-            nodeRef={nodeRef}
-            bounds="body"
-            position={snap.modalPosition}
-            onDrag={onControlledDrag}
-          >
-            <motion.object
-              ref={nodeRef}
-              data={clip.selectedImg}
-              alt="full content"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            ></motion.object>
-          </Draggable>
-        )}
-      </motion.div>
-    </div>
-  );
 });
 
 export const Container = styled.div`
