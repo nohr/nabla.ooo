@@ -290,6 +290,8 @@ export const GlobalStyle = createGlobalStyle`
       }
 
       .gugmu9vdpaw p {
+        font-size: 64px;
+        font-weight: 800;
         color: ${props => props.theme.panelColor} !important;
         text-shadow: 0 1px 1 1 ${props => props.theme.panelColor} !important;
 

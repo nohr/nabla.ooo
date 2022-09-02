@@ -26,9 +26,10 @@ function Node({ select, confirm, clear, hit, index, ...props }) {
         if (Ref && selected[0] && (selected[0].id === Ref.current.id)) {
             // TODO fix this
             // state.camera.lookAt(pos.current);
+            // cloud.target = pos.current;
             // state.camera.position.lerp(vec.set(xPosition, Position, Position), .01);
             // state.camera.updateProjectionMatrix();
-        state.camera.zoom = 1 - (snap.grabberPosition.x / 300);
+            state.camera.zoom = 1 - (snap.grabberPosition.x / 300);
             const unsubscribe = api.position.subscribe((v) => {
                 pos.current = v;
             });
