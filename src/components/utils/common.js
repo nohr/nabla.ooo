@@ -25,6 +25,21 @@ export const Folder = styled.div`
    ${props => props.border};
    backdrop-filter: blur(30px) !important;
 
+   &.trayIcon{
+    border-radius: 50% !important;
+    justify-content: center;
+    width: 20px !important;
+    height: 20px !important;
+
+    &:hover > svg{
+        fill: ${props => props.theme.textHover} !important;
+    }
+    svg{
+        height: 12px !important;
+        width: 12px !important;
+    }
+   }
+
    &.mono{
     width: 60% !important;
     grid-area: 3/ 1/span 1/ span 2;
@@ -238,6 +253,7 @@ export const GlobalStyle = createGlobalStyle`
       
       & .li{
         border-radius: 250px 250px 500px 500px;
+        -webkit-user-drag: none;
       }
     }
 
@@ -430,63 +446,60 @@ a.active:not(.nablaWrapper){
 `
 
 //AUDIO
-function LoadSong(song) {
-    // const audio = useRef();
-    // const currentSong = audio.current;
-    let currentSong;
-    currentSong = document.querySelectorAll('audio')[0];
-
+function LoadSong(current, song) {
+    let audio = current.current;
     getDownloadURL(ref(storage, `gs://nabla7.appspot.com/assets/songs/${song.name}.mp3`))
         .then((url) => {
             cloud.songs[state.songIndex].url = url;
-            currentSong.setAttribute('src', url);
+            audio.setAttribute('src', url);
             cloud.playMusic = true;
-            currentSong.play();
+            audio.play();
         })
         .catch((error) => {
             console.log(error);
         });
 };
-export function ToggleMusic() {
-    // const audio = useRef();
-    // const currentSong = audio.current;
-    let currentSong;
-    currentSong = document.querySelectorAll('audio')[0];
+export function ToggleMusic(current, setSong) {
+    let audio = current.current;
     if (!cloud.songs[state.songIndex].url) {
-        LoadSong(cloud.songs[state.songIndex]);
+        LoadSong(current, cloud.songs[state.songIndex]);
     } else {
         if (cloud.playMusic === false) {
             cloud.playMusic = true;
-            currentSong.play();
+            audio.play();
         } else if (cloud.playMusic === true) {
             cloud.playMusic = false;
-            currentSong.pause();
+            audio.pause();
         }
     }
-    currentSong.onended = () => NextSong();
+    audio.onended = () => NextSong(current, setSong);
 };
-export function NextSong() {
-    // const audio = useRef();
-    // const currentSong = audio.current;
-    let currentSong;
-    currentSong = document.querySelectorAll('audio')[0];
+export function NextSong(current, setSong) {
 
-    cloud.playMusic = false;
-    currentSong.pause();
-    console.log(state.songIndex);
+    function next() {
+        let audio = current.current;
 
-    if (state.songIndex < cloud.songs.length - 1) {
-        state.songIndex += 1;
-    } else {
-        state.songIndex = 0;
+        cloud.playMusic = false;
+        audio.pause();
+        console.log(state.songIndex);
+
+        if (state.songIndex < cloud.songs.length - 1) {
+            state.songIndex += 1;
+        } else {
+            state.songIndex = 0;
+        }
+        if (!cloud.songs[state.songIndex].url) {
+            LoadSong(current, cloud.songs[state.songIndex]);
+        } else {
+            audio.setAttribute('src', cloud.songs[state.songIndex].url);
+            audio.play();
+        }
     }
-    if (!cloud.songs[state.songIndex].url) {
-        LoadSong(cloud.songs[state.songIndex]);
-    } else {
-        currentSong.setAttribute('src', cloud.songs[state.songIndex].url);
-        currentSong.play();
-    }
-
+    next();
+    setSong(
+        `${cloud.songs[state.songIndex].artist} - ${cloud.songs[state.songIndex].name
+        }`);
+    current.current.onEnded = () => next();
 };
 
 //DISPLAY

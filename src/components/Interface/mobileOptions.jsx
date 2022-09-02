@@ -24,6 +24,7 @@ import Draggable from "react-draggable";
 import { Stats } from "@react-three/drei";
 
 export function Options({
+  audio,
   search,
   resetButton,
   reset,
@@ -123,7 +124,7 @@ export function Options({
               className="li"
               // style={{ marginBottom: "20px" }}
               onTouchEnd={() => {
-                ToggleMusic();
+                ToggleMusic(audio, setSong);
               }}
             >
               <PlayPauseIcon arg={1} />
@@ -133,12 +134,7 @@ export function Options({
               // style={{ marginTop: "20px", marginBottom: "4px" }}
               onTouchEnd={() => {
                 select();
-                NextSong();
-                setSong(
-                  `${cloud.songs[state.songIndex].artist} - ${
-                    cloud.songs[state.songIndex].name
-                  }`
-                );
+                NextSong(audio, setSong);
               }}
               id="Next"
               className="li"

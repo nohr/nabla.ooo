@@ -3,18 +3,18 @@ import React, { useEffect, useRef, useState } from "react"
 import Projects from "./projects"
 import Options from "./options"
 import { cloud, state } from "../utils/state"
-import { Song, closeWheel, resetWheel, Folder, Wheel, toHslString } from "../utils/common"
-import { Arrow, SideArrow, SearchBarIcon, ClearIcon } from "../utils/svg"
+import { Song, closeWheel, resetWheel, Folder, Wheel } from "../utils/common"
+import { Arrow, SideArrow, SearchBarIcon, ClearIcon, PlayPauseIcon } from "../utils/svg"
 import { useSnapshot } from "valtio"
 import styled from "styled-components"
 import { NavLink } from "react-router-dom"
 import Draggable from "react-draggable"
 import { HomeButton, Quote } from './homeButton';
-import { Grabber, ResetPosButton } from "./grabber"
+import { Grabber, NextButton, PlayButton, ResetPosButton } from "./panelTools"
 import CircleType from "circletype"
 import { ColorWheel } from '@react-spectrum/color';
 
-function Navigator({ nabla, dong, confirm, select, reset, song, setSong, handle, query, clear, refine, text, setText, resetButton, colorWheel, setColorWheel, color, setColor, open, close }) {
+function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, handle, query, clear, refine, text, setText, resetButton, colorWheel, setColorWheel, color, setColor, open, close }) {
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
   const nav = useRef(null);
@@ -115,6 +115,15 @@ function Navigator({ nabla, dong, confirm, select, reset, song, setSong, handle,
                   resetButton={resetButton}
                   reset={reset}
                   nav={nav} />
+                <PlayButton
+                  audio={audio}
+                  setSong={setSong}
+                />
+                <NextButton
+                  audio={audio}
+                  setSong={setSong}
+                  select={select}
+                />
               </div>
               {!snap.colorWheel &&
                 <>
@@ -173,7 +182,6 @@ function Navigator({ nabla, dong, confirm, select, reset, song, setSong, handle,
           headwidth={headwidth}
           colorWheel={colorWheel}
           setColorWheel={setColorWheel}
-          setSong={setSong}
           select={select} />
         <Draggable position={snap.navPosition}>
           <Wheel
@@ -351,6 +359,7 @@ const Nav = styled.div`
     }
 
     & .li{
+   backdrop-filter: blur(30px) !important;
     width: 80%;
     align-self: center;
     transition: 0.3s;

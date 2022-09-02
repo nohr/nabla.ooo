@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from "react";
 import Draggable from "react-draggable";
 import { useSnapshot } from "valtio";
 import { cloud, state } from "../utils/state";
-import { Folder, offset } from "../utils/common";
-import { ResetIcon, ShowHideIcon } from "../utils/svg";
+import { Folder, NextSong, offset, ToggleMusic } from "../utils/common";
+import { NextIcon, PlayPauseIcon, ResetIcon, ShowHideIcon } from "../utils/svg";
 
 export function Grabber({ handle, reset, navWrap }) {
     const grab = useRef(null);
@@ -101,7 +101,7 @@ export function ResetPosButton({ resetButton, reset, nav }) {
         Rotate(resetButton, clip, snap);
     }, [state.grabberPosition, state.navPosition]);
 
-    if (!clip.mobile && snap.dragged) {
+    if (snap.dragged) {
         return <Folder
             ref={resetButton}
             onClick={() => {
@@ -118,7 +118,63 @@ export function ResetPosButton({ resetButton, reset, nav }) {
                     nav.current.style.transition = "0.1s";
                     console.log("transition returned");
                 }, "1300");
-            }} className="li resetPos w">{clip.mobile ? "reset" : <ShowHideIcon n={2} />}
+            }} className="li resetPos w">
+            <ShowHideIcon n={2} />
         </Folder>
     }
+}
+
+export function PlayButton({ audio, setSong }) {
+
+    return <Folder className="trayIcon li"
+        onClick={() => { ToggleMusic(audio, setSong); }}>
+        <PlayPauseIcon arg={1} />
+    </Folder >
+}
+
+export function NextButton({ audio, setSong, select }) {
+
+    return <Folder className="trayIcon li"
+        onClick={() => {
+            NextSong(audio, setSong);
+            select();
+        }}>
+        <NextIcon />
+    </Folder>
+}
+
+export function MusicVolumeButtons({ }) {
+    // const clip = useSnapshot(cloud);
+    // const snap = useSnapshot(state);
+
+    // // Rotate reset button
+    // useEffect(() => {
+    //     Rotate(resetButton, clip, snap);
+    // }, [state.grabberPosition, state.navPosition]);
+
+    return <Folder className="trayIcon li"
+    // onClick={() => NextSong()}
+    >
+        <NextIcon
+        // arg={1}
+        />
+    </Folder >
+}
+
+export function SFXVolumeButtons({ }) {
+    // const clip = useSnapshot(cloud);
+    // const snap = useSnapshot(state);
+
+    // // Rotate reset button
+    // useEffect(() => {
+    //     Rotate(resetButton, clip, snap);
+    // }, [state.grabberPosition, state.navPosition]);
+
+    return <Folder className="trayIcon li"
+    // onClick={() => NextSong()}
+    >
+        <NextIcon
+        // arg={1}
+        />
+    </Folder >
 }

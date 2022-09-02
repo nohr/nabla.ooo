@@ -19,6 +19,7 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
   const [colorWheel, setColorWheel] = useState(false);
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
+  const audio = useRef();
   const handle = useRef();
   const nabla = useRef(null);
   const resetButton = useRef(null);
@@ -35,6 +36,19 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
   useEffect(() => {
     state.hue = color.hue;
   }, [color])
+
+  // Toggle Music
+  const currentSong = audio.current;
+  useEffect(() => {
+    if (currentSong) {
+      currentSong.addEventListener("play", () => {
+        cloud.playMusic = true;
+      })
+      currentSong.addEventListener("pause", () => {
+        cloud.playMusic = false;
+      })
+    }
+  }, [clip.playMusic, snap.songIndex]);
 
   // PANELS
   //Toggle Projects panel
@@ -96,6 +110,7 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
     <GlobalStyle />
     {clip.mobile ?
       <MobileNavigator
+        audio={audio}
         nabla={nabla}
         dong={dong}
         open={open}
@@ -118,6 +133,7 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
         setColorWheel={setColorWheel}
       />
       : <Navigator
+        audio={audio}
         nabla={nabla}
         dong={dong}
         open={open}
@@ -142,6 +158,9 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
     }
     <Results
       select={select} />
+    <audio ref={audio} loop>
+      <source src={null}></source>
+    </audio>
     <Routes>
       <Route path="/" element={<Page title={"Nabla"} id={"Home"} />} />
       <Route path="/store" element={<Page title={"Nabla Store"} id={"Store"} />} />

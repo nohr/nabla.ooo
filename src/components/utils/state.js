@@ -31,7 +31,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     dragged: false,
     prtSwitched: false,
     setSwitched: false,
-    direction: false,
+    direction: true,
     navPosition: { x: 0, y: 0 },
     proPosition: { x: 0, y: 0 },
     optPosition: { x: 0, y: 0 },
@@ -140,7 +140,6 @@ export const cloud = proxy({
     playRate: 0.75,
     resetRate: (Math.random() * (1.15 - 0.30) + 0.30),
     selectRate: (Math.random() * (1.15 - 0.85) + 0.85),
-    // selectRate: 0.85,
     songs: [{
         name: 'cemetery d1',
         artist: 'nohri',
@@ -158,13 +157,13 @@ export const cloud = proxy({
         artist: 'nohri',
         tempo: 120
     }, {
-        name: 'see the sun',
-        artist: 'nohri',
-        tempo: 120
-    }, {
         name: '125_BAD ONE',
         artist: 'nohri',
         tempo: 125,
+    }, {
+        name: 'saturation estate',
+        artist: 'nohri',
+        tempo: 167
     }, {
         name: 'lysergic_72',
         artist: 'nohri ft. MELO-X',

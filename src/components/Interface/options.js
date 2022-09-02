@@ -8,26 +8,10 @@ import styled from "styled-components"
 import { ColorIcon, DirectionIcon, ModeIcon, MuteIcon, NextIcon, PlayPauseIcon, ShowHideIcon } from "../utils/svg"
 import { useWindowDimensions, getPosOpt, NextSong, OpenWheel, ToggleMusic, togglePause, toggleTheme } from "../utils/common"
 
-function Options({ setSong, select, headwidth, open, close }) {
+function Options({ select, headwidth, open, close }) {
     const opt = useRef(null);
-    const audio = useRef();
     const colorLink = useRef(null)
     const snap = useSnapshot(state);
-    const clip = useSnapshot(cloud);
-
-    // Toggle Music
-    const currentSong = audio.current;
-
-    useEffect(() => {
-        if (currentSong) {
-            currentSong.addEventListener("play", () => {
-                cloud.playMusic = true;
-            })
-            currentSong.addEventListener("pause", () => {
-                cloud.playMusic = false;
-            })
-        }
-    }, [cloud.playMusic, state.songIndex])
 
     //Toggles Panel Direction
     function toggleDirection() {
@@ -103,17 +87,19 @@ function Options({ setSong, select, headwidth, open, close }) {
                         onMouseEnter={() => { document.getElementById("audiohead").style.width = headwidth.first.max }}
                         onMouseLeave={() => { document.getElementById("audiohead").style.width = headwidth.first.min }}
                     >
-                        <Folder id="muteunmute" className="li" onClick={() => { select(); snap.muted ? state.muted = false : state.muted = true; }} ><MuteIcon />{!snap.muted ? "Mute" : "Unmute"}</Folder>
-                        <Folder id="playstop" className="li" onClick={() => ToggleMusic()}><PlayPauseIcon arg={1} />{!clip.playMusic ? "Music" : "Pause"}</Folder>
-                        <Folder onClick={() => { select(); NextSong(); setSong(`${cloud.songs[state.songIndex].artist} - ${cloud.songs[state.songIndex].name}`); }} id="Next" className="li"><NextIcon /> Next</Folder>
+                        <Folder id="muteunmute" className="li" onClick={() => { select(); snap.muted ? state.muted = false : state.muted = true; }} ><MuteIcon />{!snap.muted ? snap.direction ? "Mute SFX" : "Mute" : snap.direction ? "Unmute SFX" : "Unmute"}</Folder>
+                        {/* <Folder id="playstop" className="li" onClick={() => ToggleMusic()}><PlayPauseIcon arg={1} />{!clip.playMusic ? "Music" : "Pause"}</Folder>
+                        <Folder onClick={() => {
+                            select(); NextSong(setSong);
+                        }} id="Next" className="li"><NextIcon /> Next</Folder> */}
                     </div>
                     <p style={secondHeader} id="displayhead">Display</p>
                     <div className="display" style={secondStyle}
                         onMouseEnter={() => { document.getElementById("displayhead").style.width = headwidth.second.max }}
                         onMouseLeave={() => { document.getElementById("displayhead").style.width = !snap.isPro ? headwidth.second.min : !snap.direction ? headwidth.second.min : '123%' }}
                     >
-                        {state.canvasVisible &&
-                            <Folder onClick={() => { togglePause(); select(); }} width={snap.direction ? "80%" : "60%"} className="li w"><PlayPauseIcon arg={2} />{snap.canvasPaused ? "Play" : "Pause"}</Folder>}
+                        {/* {state.canvasVisible &&
+                            <Folder onClick={() => { togglePause(); select(); }} width={snap.direction ? "80%" : "60%"} className="li w"><PlayPauseIcon arg={2} />{snap.canvasPaused ? "Play" : "Pause"}</Folder>} */}
                         <Folder onClick={() => { ToggleCanvas(); select(); }} className="li w"><ShowHideIcon n={0} />{snap.canvasVisible ? "Hide" : "Show"}</Folder>
                         <Folder onClick={() => { toggleTheme(); select(); }} className="li w"><ModeIcon /><span>{snap.theme === "light" ? "Dark" : "Light"}</span></Folder>
                         <Folder ref={colorLink} onClick={() => { OpenWheel(); select(); }} className="li w"><ColorIcon />{!snap.colorWheel ? "Color" : "Choose"}</Folder>
@@ -121,9 +107,6 @@ function Options({ setSong, select, headwidth, open, close }) {
                     </div>
                     {snap.isPro}
                     {cloud.playMusic}
-                    <audio ref={audio} loop>
-                        <source src={null}></source>
-                    </audio>
                 </Option>
             </Draggable >
         </>

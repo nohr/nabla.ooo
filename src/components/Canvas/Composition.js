@@ -244,41 +244,41 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
   // }, [])
 
   // Toggle Canvas Visibility
-  let canvas;
-  useEffect(() => {
-    canvas = document.getElementsByTagName("canvas")[0];
-    if (canvas) {
-      if (snap.canvasVisible) {
-        //Show Canvas
-        canvas.style.display = "block";
-        // if (!snap.canvasPaused) {
-        //   state.canvasPaused = false;
-        // } else if (snap.canvasPaused) {
-        //   state.canvasPaused = true;
-        // }
-        // console.log(state.canvasPaused);
-      } else if (!snap.canvasVisible) {
-        //Hide Canvas
-        canvas.style.display = "none";
-        if (!snap.canvasPaused) {
-          state.canvasPaused = true;
-          state.CDRotationY = 0;
-          state.CDRotationZ = 0;
-          state.autoRotateSpeed = 0;
-        }
-      }
-    }
-    // canvas.addEventListener(
-    //   'webglcontextlost',
-    //   function (event) {
-    //     event.preventDefault();
-    //     setTimeout(function () {
-    //       renderer.forceContextRestore();
-    //     }, 1);
-    //   },
-    //   false
-    // );
-  }, [])
+  // let canvas;
+  // useEffect(() => {
+  //   canvas = document.getElementsByTagName("canvas")[0];
+  //   if (canvas) {
+  //     if (snap.canvasVisible) {
+  //       //Show Canvas
+  //       canvas.style.display = "block";
+  //       // if (!snap.canvasPaused) {
+  //       //   state.canvasPaused = false;
+  //       // } else if (snap.canvasPaused) {
+  //       //   state.canvasPaused = true;
+  //       // }
+  //       // console.log(state.canvasPaused);
+  //     } else if (!snap.canvasVisible) {
+  //       //Hide Canvas
+  //       canvas.style.display = "none";
+  //       if (!snap.canvasPaused) {
+  //         state.canvasPaused = true;
+  //         state.CDRotationY = 0;
+  //         state.CDRotationZ = 0;
+  //         state.autoRotateSpeed = 0;
+  //       }
+  //     }
+  //   }
+  //   // canvas.addEventListener(
+  //   //   'webglcontextlost',
+  //   //   function (event) {
+  //   //     event.preventDefault();
+  //   //     setTimeout(function () {
+  //   //       renderer.forceContextRestore();
+  //   //     }, 1);
+  //   //   },
+  //   //   false
+  //   // );
+  // }, [])
 
 
   useEffect(() => {
@@ -290,7 +290,7 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
   }, [])
 
   return (
-    <Canvas dpr={[1, 2]} gl={{ alpha: true, stencil: false, depth: true, antialias: false, physicallyCorrectLight: true }} className='r3fCanvas' frameloop={clip.mobile ? "always" : snap.canvasPaused ? "demand" : "always"}>
+    <Canvas dpr={[1, 2]} gl={{ alpha: true, stencil: false, depth: true, antialias: false, physicallyCorrectLight: true }} className='r3fCanvas' frameloop={clip.mobile ? "always" : "demand"}>
       {/* CAMERA */}
       <Suspense fallback={<Spinner />}>
         <PerspectiveCamera makeDefault ref={camera} target={clip.mobile ? clip.target : [0, 2, 0]} zoom={1} position={clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition} far={80} near={.1} fov={clip.mobile ? 30 : 20} aspect={vWidth / vHeight} />

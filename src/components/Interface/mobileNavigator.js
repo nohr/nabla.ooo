@@ -6,12 +6,12 @@ import { Search } from './mobileSearch';
 import { Options } from './mobileOptions';
 import { ConfirmIcon, ResetIcon } from '../utils/svg';
 import { HomeButton, Quote } from './homeButton';
-import { Grabber, Rotate } from './grabber';
+import { Grabber, Rotate } from './panelTools';
 import styled from 'styled-components';
 import { ColorWheel } from '@react-spectrum/color';
 import Draggable from 'react-draggable';
 
-function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, color, setColor, setSong, song, setColorWheel, colorWheel, query, refine, clear, handle, text, setText, resetButton }) {
+function MobileNavigator({ audio, nabla, dong, open, close, select, confirm, reset, color, setColor, setSong, song, setColorWheel, colorWheel, query, refine, clear, handle, text, setText, resetButton }) {
     const snap = useSnapshot(state);
     const clip = useSnapshot(cloud);
     const nav = useRef(null);
@@ -21,7 +21,6 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
     const [modal, setModal] = useState(false);
     const [offset, setOffset] = useState('-80px');
     const [changing, setChanging] = useState(false);
-    let currentSong = document.querySelectorAll('audio')[0];
     let search = (modal && modal.indexOf("search") > -1);
     let options = (modal && modal.indexOf("options") > -1);
 
@@ -32,17 +31,6 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
         wheel.current.style.bottom = "20px";
         wheel.current.style.borderRadius = "50%";
     };
-
-    useEffect(() => {
-        if (currentSong) {
-            currentSong.addEventListener("play", () => {
-                cloud.playMusic = true;
-            })
-            currentSong.addEventListener("pause", () => {
-                cloud.playMusic = false;
-            })
-        }
-    }, [clip.playMusic, snap.songIndex]);
 
     const onControlledDrag = (e, position) => {
         cloud.drag = true;
@@ -67,103 +55,98 @@ function MobileNavigator({ nabla, dong, open, close, select, confirm, reset, col
     }, [state.grabberPosition, state.navPosition]);
 
     return (
-        <>
-            <Draggable nodeRef={navWrap} handle=".GrabberWrap" bounds=".container" position={snap.mobileNavPosition} axis="y" onStop={onControlledStop} onDrag={onControlledDrag} >
-                <NavWrapper className='mobileNavWrap' ref={navWrap} onTouchStart={() => cloud.selected = false}>
-                    {/* Mobile Nav */}
-                    <MobileNav className="mobileNav" ref={nav} >
-                        {/* Reset */}
-                        {!changing && colorWheel && <Folder
-                            border="border: 1px solid;"
-                            onTouchEnd={() => {
-                                cloud.resetRate = (Math.random() * (0.85 - 0.65) + 0.65);
-                                reset();
-                                setModal(false);
-                                resetWheel();
-                                setColorWheel(false);
-                            }} className="circleButton li w reset"
-                            style={{ position: "fixed", left: "6vw", pointerEvents: "all" }}
-                        ><ResetIcon /></Folder>}
-                        {!colorWheel &&
-                            <>
-                                {/* SEARCH BAR */}
-                                {search && <Search options={options} reset={reset} Bar={Bar} navWrap={navWrap} query={query}
-                                    refine={refine} clear={clear}
-                                    setModal={setModal} select={select} modal={modal} />}
-                                {/* Song Title */}
-                                <Song position={`position: unset; margin: 8px 0 7px 0 !important;`}
-                                    style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} tabIndex="0">
-                                    {song}
-                                </Song>
-                                <div className="mainRow">
-                                    {/* Search Button */}
-                                    {(!clip.CanvasLoading) && <NavButton
-                                        className={`${(search || query.length > 0) && "active"} li w`}
-                                        onTouchEnd={() => toggleModal("search", modal, setModal, setOffset, open, close)}>
-                                        {svg["search"]}
-                                    </NavButton>}
-                                    {/* Home Button */}
-                                    <HomeButton nabla={nabla} dong={dong} clear={clear} query={query} />
-                                    {/* Options Button */}
-                                    {(!clip.CanvasLoading) && <NavButton
-                                        className={`${options && "active"} li w`}
-                                        onTouchEnd={() => toggleModal("options", modal, setModal, setOffset, open, close)} >
-                                        {svg["options"]}
-                                    </NavButton>}
-                                </div>
-                                {/* OPTIONS  */}
-                                {options && <Options search={search} handle={handle} resetButton={resetButton} reset={reset} navWrap={navWrap} setModal={setModal} setSong={setSong} select={select} modal={modal} colorWheel={colorWheel} setColorWheel={setColorWheel} />}
-                            </>}
-                        {/* QUOTE */}
-                        {(!colorWheel && !clip.CanvasLoading && !clip.UILoading) && <Quote text={text} setText={setText} />}
-                        {/* GRABBER */}
-                        {(!colorWheel && !clip.CanvasLoading) && <Grabber resetButton={resetButton} setModal={setModal} navWrap={navWrap} reset={reset} options={options} handle={handle} />}
-                        {/* ColorWheel */}
-                        {!state.monochrome && <Wheel
-                            style={{ overflowX: "hidden" }}
-                            opacity={colorWheel ? "1" : "0"}
-                            pointerEvents={colorWheel ? "all" : "none"}
-                            transition={colorWheel ? "0.3s" : "0s"}
-                            ref={wheel}
-                            onTouchStart={() => setChanging(true)}
-                            onTouchEnd={() => {
-                                setChanging(false);
-                                state.colorChanged = true;
-                            }}
-                        >
-                            <ColorWheel
-                                size={"200px"}
-                                borderColor={`${props => props.theme.panelColor}`}
-                                value={color}
-                                onChange={setColor}
-                                onChangeEnd={setColor}
-                            />
-                        </Wheel>}
-                        {/* Mono */}
-                        {!changing && colorWheel && <Folder onTouchEnd={() => { state.monochrome = !state.monochrome; select(); }} className={`li w mono ${snap.monochrome ? "glow" : null}`}
-                            style={{
-                                color: snap.monochrome ? snap.theme == 'light' ? snap.light.sky : snap.dark.sky : null,
-                                position: "absolute", bottom: "-60px", height: "30px", pointerEvents: "all", display: "flex",
-                                justifyContent: "center"
-                            }}
-                        >Monochrome</Folder>}
-                        {/* Confirm */}
-                        {!changing && colorWheel && <Folder
-                            border="border: 1px solid;"
-                            onTouchEnd={() => {
-                                confirm();
-                                setModal(false);
-                                setColorWheel(false);
-                            }} className="circleButton color li w"
-                            style={{ position: "fixed", right: "6vw", pointerEvents: "all" }}
-                        ><ConfirmIcon /></Folder>}
-                    </MobileNav>
-                </NavWrapper >
-            </Draggable >
-            <audio >
-                <source src={null}></source>
-            </audio>
-        </>
+        <Draggable nodeRef={navWrap} handle=".GrabberWrap" bounds=".container" position={snap.mobileNavPosition} axis="y" onStop={onControlledStop} onDrag={onControlledDrag} >
+            <NavWrapper className='mobileNavWrap' ref={navWrap} onTouchStart={() => cloud.selected = false}>
+                {/* Mobile Nav */}
+                <MobileNav className="mobileNav" ref={nav} >
+                    {/* Reset */}
+                    {!changing && colorWheel && <Folder
+                        border="border: 1px solid;"
+                        onTouchEnd={() => {
+                            cloud.resetRate = (Math.random() * (0.85 - 0.65) + 0.65);
+                            reset();
+                            setModal(false);
+                            resetWheel();
+                            setColorWheel(false);
+                        }} className="circleButton li w reset"
+                        style={{ position: "fixed", left: "6vw", pointerEvents: "all" }}
+                    ><ResetIcon /></Folder>}
+                    {!colorWheel &&
+                        <>
+                            {/* SEARCH BAR */}
+                            {search && <Search options={options} reset={reset} Bar={Bar} navWrap={navWrap} query={query}
+                                refine={refine} clear={clear}
+                                setModal={setModal} select={select} modal={modal} />}
+                            {/* Song Title */}
+                            <Song position={`position: unset; margin: 8px 0 7px 0 !important;`}
+                                style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} tabIndex="0">
+                                {song}
+                            </Song>
+                            <div className="mainRow">
+                                {/* Search Button */}
+                                {(!clip.CanvasLoading) && <NavButton
+                                    className={`${(search || query.length > 0) && "active"} li w`}
+                                    onTouchEnd={() => toggleModal("search", modal, setModal, setOffset, open, close)}>
+                                    {svg["search"]}
+                                </NavButton>}
+                                {/* Home Button */}
+                                <HomeButton nabla={nabla} dong={dong} clear={clear} query={query} />
+                                {/* Options Button */}
+                                {(!clip.CanvasLoading) && <NavButton
+                                    className={`${options && "active"} li w`}
+                                    onTouchEnd={() => toggleModal("options", modal, setModal, setOffset, open, close)} >
+                                    {svg["options"]}
+                                </NavButton>}
+                            </div>
+                            {/* OPTIONS  */}
+                            {options && <Options search={search} handle={handle} resetButton={resetButton} reset={reset} navWrap={navWrap} setModal={setModal} setSong={setSong} select={select} modal={modal} colorWheel={colorWheel} setColorWheel={setColorWheel} audio={audio} />}
+                        </>}
+                    {/* QUOTE */}
+                    {(!colorWheel && !clip.CanvasLoading && !clip.UILoading) && <Quote text={text} setText={setText} />}
+                    {/* GRABBER */}
+                    {(!colorWheel && !clip.CanvasLoading) && <Grabber resetButton={resetButton} setModal={setModal} navWrap={navWrap} reset={reset} options={options} handle={handle} />}
+                    {/* ColorWheel */}
+                    {!state.monochrome && <Wheel
+                        style={{ overflowX: "hidden" }}
+                        opacity={colorWheel ? "1" : "0"}
+                        pointerEvents={colorWheel ? "all" : "none"}
+                        transition={colorWheel ? "0.3s" : "0s"}
+                        ref={wheel}
+                        onTouchStart={() => setChanging(true)}
+                        onTouchEnd={() => {
+                            setChanging(false);
+                            state.colorChanged = true;
+                        }}
+                    >
+                        <ColorWheel
+                            size={"200px"}
+                            borderColor={`${props => props.theme.panelColor}`}
+                            value={color}
+                            onChange={setColor}
+                            onChangeEnd={setColor}
+                        />
+                    </Wheel>}
+                    {/* Mono */}
+                    {!changing && colorWheel && <Folder onTouchEnd={() => { state.monochrome = !state.monochrome; select(); }} className={`li w mono ${snap.monochrome ? "glow" : null}`}
+                        style={{
+                            color: snap.monochrome ? snap.theme == 'light' ? snap.light.sky : snap.dark.sky : null,
+                            position: "absolute", bottom: "-60px", height: "30px", pointerEvents: "all", display: "flex",
+                            justifyContent: "center"
+                        }}
+                    >Monochrome</Folder>}
+                    {/* Confirm */}
+                    {!changing && colorWheel && <Folder
+                        border="border: 1px solid;"
+                        onTouchEnd={() => {
+                            confirm();
+                            setModal(false);
+                            setColorWheel(false);
+                        }} className="circleButton color li w"
+                        style={{ position: "fixed", right: "6vw", pointerEvents: "all" }}
+                    ><ConfirmIcon /></Folder>}
+                </MobileNav>
+            </NavWrapper >
+        </Draggable >
     )
 }
 
@@ -300,11 +283,11 @@ const svg = {
         </NavButtonIcon>
     ),
     options: (<NavButtonIcon
-        data-name="Layer 1"
-        viewBox="0 0 513.34 466.67"
-        size="height: 18px;"
+        viewBox="0 0 475.982 464.973"
+        size="height: 22px;"
     >
-        <path d="M513.34 46.664v46.668H280V46.664h233.34zM280 420.004h233.33v-46.668H280v46.668zM93.34 46.664H.004v46.668h93.332V140h140l.004-140h-140v46.664zm0 326.67H.004v46.668h93.332v46.668h140v-140l-140-.004.004 46.668zm326.66-210H280v140h140v-46.668h93.332v-46.668H420v-46.664zM0 256.666h233.33v-46.668L0 210.002v46.664z"></path>
+        <path d="M467.711 253.458h-.002l-45.586-30.688a6.27 6.27 0 01-2.742-4.426c-1.512-13.328-4.535-26.543-8.902-39.199-.617-1.734-.391-3.586.504-5.207l27.719-47.434c3.863-6.609 3.246-15.062-1.512-21l-24.641-30.91c-4.762-5.992-12.879-8.457-20.16-6.16l-52.414 16.52c-1.734.559-3.641.336-5.152-.672a184.573 184.573 0 00-36.23-17.473c-1.68-.617-3.078-1.902-3.695-3.641l-19.77-51.238C272.386 4.817 265.386 0 257.769 0h-39.594c-7.617 0-14.617 4.816-17.359 11.93l-19.77 51.238a6.254 6.254 0 01-3.695 3.641c-12.656 4.426-24.809 10.305-36.23 17.473-1.512.953-3.414 1.176-5.152.672l-52.414-16.52c-7.281-2.297-15.398.168-20.16 6.16l-24.641 30.91c-4.762 5.992-5.375 14.449-1.512 21l27.719 47.434c.953 1.566 1.121 3.473.504 5.207-4.426 12.656-7.391 25.816-8.902 39.199-.223 1.793-1.176 3.414-2.742 4.426L8.235 253.458C1.907 257.716-1.23 265.61.45 273.06l8.793 38.586c1.68 7.449 7.953 13.215 15.512 14.281l54.375 7.894c1.793.281 3.414 1.289 4.367 2.801 7.168 11.312 15.566 21.895 25.031 31.359 1.289 1.289 1.902 3.078 1.793 4.871l-4.426 54.824c-.617 7.617 3.586 14.953 10.473 18.258l35.672 17.191c6.887 3.305 15.23 2.016 20.832-3.191l40.098-37.633a6.43 6.43 0 014.93-1.68c6.609.727 13.383 1.121 20.105 1.121s13.441-.391 20.105-1.121c1.793-.223 3.586.391 4.93 1.68l40.098 37.633a18.673 18.673 0 0012.77 5.039c2.742 0 5.488-.617 8.062-1.848l35.672-17.191c6.887-3.305 11.09-10.641 10.473-18.258l-4.426-54.824c-.168-1.848.504-3.641 1.793-4.871 9.465-9.519 17.922-20.047 25.031-31.359.953-1.512 2.574-2.574 4.367-2.801l54.375-7.895c7.559-1.121 13.777-6.832 15.512-14.281l8.793-38.586c1.613-7.449-1.465-15.289-7.848-19.602zm-106.02-20.918c0 68.207-55.496 123.65-123.7 123.65s-123.7-55.496-123.7-123.7 55.496-123.65 123.7-123.65 123.7 55.496 123.7 123.7z"></path>
+
     </NavButtonIcon>
     )
 }
