@@ -10,100 +10,100 @@ import { useWindowDimensions, getPosOpt, NextSong, OpenWheel, ToggleMusic, toggl
 import { SongInfo } from "./panelTools"
 
 function Options({ song, setSong, select, headwidth, open, close }) {
-    const opt = useRef(null);
-    const colorLink = useRef(null)
-    const snap = useSnapshot(state);
+  const opt = useRef(null);
+  const colorLink = useRef(null);
+  const snap = useSnapshot(state);
 
-    //Toggles Panel Direction
-    function toggleDirection() {
-        if (snap.direction) {
-            //Row Direction
-            state.direction = false;
+  //Toggles Panel Direction
+  function toggleDirection() {
+    if (snap.direction) {
+      //Row Direction
+      state.direction = false;
 
-        } else if (!snap.direction) {
-            //Column Direction
-            state.direction = true;
-        }
+    } else if (!snap.direction) {
+      //Column Direction
+      state.direction = true;
     }
+  }
 
-    // Toggle Canvas Visibility
-    function ToggleCanvas() {
-        let canvas;
-        canvas = document.getElementsByTagName("canvas")[0];
+  // Toggle Canvas Visibility
+  function ToggleCanvas() {
+    let canvas;
+    canvas = document.getElementsByTagName("canvas")[0];
 
-        if (canvas) {
-            if (!snap.canvasVisible) {
-                //Show Canvas
-                state.canvasVisible = true;
-                canvas.style.display = "block";
-            } else if (snap.canvasVisible) {
-                //Hide Canvas
-                state.canvasVisible = false;
-                canvas.style.display = "none";
-            }
-        }
+    if (canvas) {
+      if (!snap.canvasVisible) {
+        //Show Canvas
+        state.canvasVisible = true;
+        canvas.style.display = "block";
+      } else if (snap.canvasVisible) {
+        //Hide Canvas
+        state.canvasVisible = false;
+        canvas.style.display = "none";
+      }
     }
+  }
 
-    let vWidth = useWindowDimensions().width;
-    let vHeight = useWindowDimensions().height;
+  let vWidth = useWindowDimensions().width;
+  let vHeight = useWindowDimensions().height;
 
-    const offset = getPosOpt(snap, vWidth, vHeight);
-    const firstStyle = snap.direction ? { height: "75px" } : { height: "87px" };
-    const secondStyle = snap.direction ? { height: "133px" } : { height: "161px" };
-    const layout = snap.direction ? "grid-template-rows: 10% 1fr 10% 1fr; padding-left: 45px;padding-right: 40px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 15% 1fr; padding: 80px 12px 26px;";
-    const top = snap.direction ? "padding-top: 7px;" : snap.setSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
-    const firstHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
-    const secondHeader = snap.direction ? { width: "115%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
-    const hide = snap.isOpt ? "opacity: 1; pointer-events: all; transition: 0.4s; " : "opacity: 0; pointer-events: none; transition: 0s;";
+  const offset = getPosOpt(snap, vWidth, vHeight);
+  const firstStyle = snap.direction ? { height: "75px" } : { height: "87px" };
+  const secondStyle = snap.direction ? { height: "133px" } : { height: "161px" };
+  const layout = snap.direction ? "grid-template-rows: 10% 1fr 10% 1fr; padding-left: 45px;padding-right: 40px;" : "grid-template-columns: 1fr 1fr; grid-template-rows: 15% 1fr; padding: 80px 12px 26px;";
+  const top = snap.direction ? "padding-top: 7px;" : snap.setSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
+  const firstHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 }
+  const secondHeader = snap.direction ? { width: "115%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 }
+  const hide = snap.isOpt ? "opacity: 1; pointer-events: all; transition: 0.4s; " : "opacity: 0; pointer-events: none; transition: 0s;";
 
-    useEffect(() => {
-        !snap.isOpt ? close() : open();
-    }, [snap.isOpt])
+  useEffect(() => {
+    !snap.isOpt ? close() : open();
+  }, [snap.isOpt])
 
-    useEffect(() => {
-        if (snap.isPro && snap.direction) {
-            document.getElementById("audiohead").style.width = "100%";
-            document.getElementById("displayhead").style.width = '123%';
-        } else {
-            document.getElementById("audiohead").style.width = headwidth.first.min;
-            document.getElementById("displayhead").style.width = headwidth.second.min;
-        }
-    }, [state.isPro])
-    return (
-        <>
-            <Draggable nodeRef={opt} position={snap.optPosition} positionOffset={offset} onStart={() => false}>
-                <Option hide={hide} layout={layout} top={top} ref={opt}
-                    className={cloud.drag ? "Panel opt glow" : "Panel opt"}>
-                    <p style={firstHeader} id="audiohead">Audio</p>
-                    <div className="audio" style={firstStyle}
-                        onMouseEnter={() => { styleHeaders(headwidth, 1, "audiohead", true); }}
-                        onMouseLeave={() => { styleHeaders(headwidth, 1, "audiohead", false); }}
-                    >
-                        <Folder id="muteunmute" className="li" onClick={() => { select(); snap.muted ? state.muted = false : state.muted = true; }} ><MuteIcon />{!snap.muted ? snap.direction ? "Mute SFX" : "Mute" : snap.direction ? "Unmute SFX" : "Unmute"}</Folder>
-                        <SongInfo song={song} />
-                        {/* <Folder id="playstop" className="li" onClick={() => ToggleMusic()}><PlayPauseIcon arg={1} />{!clip.playMusic ? "Music" : "Pause"}</Folder>
+  useEffect(() => {
+    if (snap.isPro && snap.direction) {
+      document.getElementById("audiohead").style.width = "100%";
+      document.getElementById("displayhead").style.width = '123%';
+    } else {
+      document.getElementById("audiohead").style.width = headwidth.first.min;
+      document.getElementById("displayhead").style.width = headwidth.second.min;
+    }
+  }, [state.isPro])
+  return (
+    <>
+      <Draggable nodeRef={opt} position={snap.optPosition} positionOffset={offset} onStart={() => false}>
+        <Option hide={hide} layout={layout} top={top} ref={opt}
+          className={cloud.drag ? "Panel opt glow" : "Panel opt"}>
+          <p style={firstHeader} id="audiohead">Audio</p>
+          <div className="audio" style={firstStyle}
+            onMouseEnter={() => { styleHeaders(headwidth, 1, "audiohead", true); }}
+            onMouseLeave={() => { styleHeaders(headwidth, 1, "audiohead", false); }}
+          >
+            <Folder id="muteunmute" className="li" onClick={() => { select(); snap.muted ? state.muted = false : state.muted = true; }} ><MuteIcon />{!snap.muted ? snap.direction ? "Mute SFX" : "Mute" : snap.direction ? "Unmute SFX" : "Unmute"}</Folder>
+            <SongInfo song={song} />
+            {/* <Folder id="playstop" className="li" onClick={() => ToggleMusic()}><PlayPauseIcon arg={1} />{!clip.playMusic ? "Music" : "Pause"}</Folder>
                         <Folder onClick={() => {
                             select(); NextSong(setSong);
                         }} id="Next" className="li"><NextIcon /> Next</Folder> */}
-                    </div>
-                    <p style={secondHeader} id="displayhead">Display</p>
-                    <div className="display" style={secondStyle}
-                        onMouseEnter={() => styleHeaders(headwidth, 2, "displayhead", true)}
-                        onMouseLeave={() => styleHeaders(headwidth, 2, "displayhead", false)}
-                    >
-                        {/* {state.canvasVisible &&
+          </div>
+          <p style={secondHeader} id="displayhead">Display</p>
+          <div className="display" style={secondStyle}
+            onMouseEnter={() => styleHeaders(headwidth, 2, "displayhead", true)}
+            onMouseLeave={() => styleHeaders(headwidth, 2, "displayhead", false)}
+          >
+            {/* {state.canvasVisible &&
                             <Folder onClick={() => { togglePause(); select(); }} width={snap.direction ? "80%" : "60%"} className="li w"><PlayPauseIcon arg={2} />{snap.canvasPaused ? "Play" : "Pause"}</Folder>} */}
-                        <Folder onClick={() => { ToggleCanvas(); select(); }} className="li w"><ShowHideIcon n={0} />{snap.canvasVisible ? "Hide" : "Show"}</Folder>
-                        <Folder onClick={() => { toggleTheme(); select(); }} className="li w"><ModeIcon /><span>{snap.theme === "light" ? "Dark" : "Light"}</span></Folder>
-                        <Folder ref={colorLink} onClick={() => { OpenWheel(); select(); }} className="li w"><ColorIcon />{!snap.colorWheel ? "Color" : "Choose"}</Folder>
-                        <Folder id="rowcolumn" onClick={() => { toggleDirection(); select(); }} className="li w"><DirectionIcon />{snap.direction ? "Column" : "Row"}</Folder>
-                    </div>
-                    {snap.isPro}
-                    {cloud.playMusic}
-                </Option>
-            </Draggable >
-        </>
-    );
+            <Folder onClick={() => { ToggleCanvas(); select(); }} className="li w"><ShowHideIcon n={0} />{snap.canvasVisible ? "Hide" : "Show"}</Folder>
+            <Folder onClick={() => { toggleTheme(); select(); }} className="li w"><ModeIcon /><span>{snap.theme === "light" ? "Dark" : "Light"}</span></Folder>
+            <Folder ref={colorLink} onClick={() => { OpenWheel(); select(); }} className="li w"><ColorIcon />{!snap.colorWheel ? "Color" : "Choose"}</Folder>
+            <Folder id="rowcolumn" onClick={() => { toggleDirection(); select(); }} className="li w"><DirectionIcon />{snap.direction ? "Column" : "Row"}</Folder>
+          </div>
+          {snap.isPro}
+          {cloud.playMusic}
+        </Option>
+      </Draggable >
+    </>
+  );
 }
 
 export default Options

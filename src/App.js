@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './App.css'
 import { cloud, state } from './components/utils/state'
-import { getGyro, newQuote, toHslString, originalColors, useWindowDimensions } from './components/utils/common'
+import { getGyro, newQuote, originalColors, useWindowDimensions } from './components/utils/common'
 import { useSnapshot } from 'valtio';
 import Interface from './components/Interface/Interface';
 import Composition from './components/Canvas/Composition'
@@ -61,6 +61,10 @@ function App() {
     }
   }, []);
   // cloud.CanvasLoading = false;
+
+  document.addEventListener('gesturestart', (e) => { e.preventDefault(); document.body.style.zoom = 0.99; });
+  document.addEventListener('gesturechange', (e) => { e.preventDefault(); document.body.style.zoom = 0.99; });
+  document.addEventListener('gestureend', (e) => { e.preventDefault(); document.body.style.zoom = 0.99; });
 
   return <>
     <Interface color={color} setColor={setColor} firstColor={firstColor} select={select} confirm={confirm} open={open} close={close} useSound={useSound} />
