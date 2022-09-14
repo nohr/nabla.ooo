@@ -109,19 +109,18 @@ export const Folder = styled.div`
     filter: drop-shadow(1px 1px 6px ${props => props.theme.LiActiveBackground});
     text-align: center;
     transition: 0.3s;
-
   }
 
   .light, .dark{
-    fill: ${props => props.theme.panelColor} !important;
+    stroke-width: 1px !important;
   }
-  .nextIcon, .modeIcon, .muteIcon, .ShowHideIcon, .ColorIcon{
+  .nextIcon, .muteIcon, .ShowHideIcon, .ColorIcon{
     fill: ${props => props.theme.panelColor} !important;
     overflow: visible;
   }
-  .modeIcon{
+  /* .modeIcon{
     stroke-width: 1px !important;
-  }
+  } */
   .ConfirmIcon,  .ResetIcon{
     height: 80%;
   }

@@ -78,6 +78,7 @@ const Email = styled.div`
 function Info(props) {
   return (
     <>
+
       <Header id='info' />
       <Container className="container info"
         ref={props.container}

@@ -208,12 +208,12 @@ const Option = styled.div`
     position: absolute;
     right: 6px;
     width: 10px;
-    fill: ${props => props.theme.panelColor};
+    stroke: ${props => props.theme.panelColor};
+    stroke-width: 1px !important;
     overflow: visible;
     align-self: left;
     top: 50%;
     transform: translateY(-50%);
-    stroke-width: 1px !important;
   }
 
   .ColorIcon{

@@ -66,7 +66,6 @@ function Projects({ headwidth, select, open, close }) {
             <NavLink onClick={select} style={snap.direction ? { width: '70%' } : { width: '100%' }} className="li w" to={`/${work.id}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</NavLink>
           ))}
         </div>
-        {snap.isOpt}
       </Project>
     </Draggable >
   )
