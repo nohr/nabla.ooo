@@ -8,7 +8,7 @@ import { getPosPro, GetSectors, styleHeaders, useWindowDimensions } from "../uti
 import { NavLink } from "react-router-dom"
 // import { useInfiniteHits } from "react-instantsearch-hooks-web"
 
-function Projects({ headwidth, select, open, close, confirm }) {
+function Projects({ headwidth, select, open, close, confirm, reset }) {
   // const { hits } = useInfiniteHits({ transformItems });
   const [groupID, setGroupID] = useState(null);
   const pro = useRef(null);
@@ -60,7 +60,7 @@ function Projects({ headwidth, select, open, close, confirm }) {
     return (<p
       className="li"
       style={snap.direction ? { width: "115%" } : { width: "64%" }}
-      onClick={() => { setGroupID(null); cloud.sectors = []; }}
+      onClick={() => { reset(); setGroupID(null); cloud.sectors = []; }}
     >BACK
     </p>)
   }

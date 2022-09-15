@@ -39,7 +39,7 @@ function Store(props) {
                 <div className="desc">
                   <HashLink className="title w"
                     style={{ transform: 'translateZ(190px)' }}
-                    to="/nabla#EkoDigital">
+                    to={`/${item.lot}`}>
                     {item.productName}
                     <DiagonalArrow />
                   </HashLink>
