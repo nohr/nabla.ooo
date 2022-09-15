@@ -35,6 +35,8 @@ export function Options({
   select,
   setColorWheel,
   setModal,
+  hidden,
+  setHidden,
 }) {
   const snap = useSnapshot(state);
   const carousel = useRef(null);
@@ -64,7 +66,6 @@ export function Options({
     cloud.drag = false;
   };
 
-  const [hidden, setHidden] = useState(false);
   return (
     <>
       <Draggable
@@ -189,7 +190,7 @@ export function Options({
           </div>
         </OptionsWrapper>
       </Draggable>
-      <Stats showPanel={0} className="stats" />
+      {/* <Stats showPanel={0} className="stats" /> */}
     </>
   );
 }

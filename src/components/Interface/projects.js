@@ -5,7 +5,7 @@ import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
 import styled from "styled-components"
 import { getPosPro, GetSectors, styleHeaders, useWindowDimensions } from "../utils/common"
-import { NavLink } from "react-router-dom"
+import { Link } from "wouter"
 // import { useInfiniteHits } from "react-instantsearch-hooks-web"
 
 function Projects({ headwidth, select, open, close, confirm, reset }) {
@@ -50,7 +50,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
 
     return (<>
       {clip.sectors.map((work) => (
-        <NavLink onClick={() => { confirm(); }} style={snap.direction ? { width: '70%' } : { width: '100%' }} className="li w" to={`/${work.lot}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.projectName}</NavLink>
+        <Link onClick={() => { confirm(); }} style={snap.direction ? { width: '70%' } : { width: '100%' }} className="li w" to={`/${work.lot}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.projectName}</Link>
       ))}
     </>)
   }

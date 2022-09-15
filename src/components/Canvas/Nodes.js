@@ -5,7 +5,7 @@ import { useFrame } from '@react-three/fiber';
 import React, { memo, useEffect, useRef } from 'react';
 import * as THREE from "three";
 import { useSnapshot } from 'valtio';
-import { useLocation } from 'wouter';
+import { Route, useLocation } from 'wouter';
 import { cloud, state } from '../utils/state';
 
 function Node({ select, confirm, clear, hit, index, ...props }) {
@@ -117,9 +117,9 @@ export const Nodes = memo(function Nodes({ ...props }) {
         cloud.CanvasLoading = false;
     }, []);
 
-    return <>
+    return <Route path='/'>
         {props.hits.map((hit, index) => (
             <Node hit={hit} key={index} index={index}{...props} />))}
-    </>
+    </Route>
 }
 )

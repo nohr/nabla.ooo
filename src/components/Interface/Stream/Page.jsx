@@ -24,7 +24,9 @@ export function Page({ id, lot, title, container, hovered }) {
   let opacity = query.length > 0 ? "0" : clip.drag || hovered ? 0.3 : "1";
   let pointerEvents = query.length ? "none" : hovered ? "none" : "all";
   let transition = query.length ? "0.3s" : hovered ? "0.3s" : "unset";
-  let margin = snap.direction
+  let margin = clip.mobile
+    ? `padding-top: 50px !important; `
+    : snap.direction
     ? `padding-top: 300px !important; `
     : `padding-left: 300px !important; `;
 
@@ -140,7 +142,7 @@ export function Page({ id, lot, title, container, hovered }) {
           opacity={opacity}
           pointerEvents={pointerEvents}
           transition={transition}
-          margin={!clip.mobile ? margin : `padding-top: 100px !important; `}
+          margin={margin}
         >
           <PageData lot={lot} />
           {clip.selectedImg ? <Modal container={container} /> : null}
@@ -325,10 +327,11 @@ export const Container = styled.div`
   align-items: center;
   position: fixed;
   z-index: 470;
-  overflow-y: overlay;
-  overflow: ${(props) => props.overflow};
+  overflow-y: scroll;
+  overflow-x: hidden;
+  /* overflow: ${(props) => props.overflow}; */
   -webkit-overflow-scrolling: touch;
-  height: 100%;
+  height: 100vh;
   width: 100vw;
   padding: 20px 15px 20px 20px;
   font-size: 14px;
@@ -497,7 +500,7 @@ export const Container = styled.div`
 
   & .modalWrapper .backdrop object {
     display: block;
-    max-width: 80%;
+    max-width: 100%;
     max-height: 90%;
     width: auto;
     height: auto;

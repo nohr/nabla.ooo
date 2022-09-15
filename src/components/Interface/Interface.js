@@ -2,13 +2,13 @@
 import React, { useEffect, useState, useRef, memo } from "react"
 import { state, cloud } from "../utils/state"
 import { useSnapshot } from "valtio"
-import { GlobalStyle, toHslString, transformItems } from "../utils/common"
+import { GlobalStyle, toHslString } from "../utils/common"
 import Navigator from "./navigator"
 import { ThemeProvider } from "styled-components"
 import { Page } from "./Stream/Page"
-import { Routes, Route, Navigate } from "react-router-dom"
+import { Route } from "wouter"
 import MobileNavigator from "./mobileNavigator"
-import { useInfiniteHits, useSearchBox } from "react-instantsearch-hooks-web"
+import { useSearchBox } from "react-instantsearch-hooks-web"
 
 // Audio
 import home from "../Sounds/home.mp3"
@@ -30,7 +30,6 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
   const [text, setText] = useState(state.quotes);
   const [dong] = useSound(home, { volume: snap.sfxVolume, soundEnabled: !snap.muted, playbackRate: clip.playRate, interrupt: false });
   const [reset] = useSound(sound5, { soundEnabled: !snap.muted, playbackRate: clip.resetRate });
-  const { hits } = useInfiniteHits({ transformItems });
 
   useEffect(() => {
     toHslString(snap.hue);
@@ -169,28 +168,32 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
     <audio ref={audio} loop>
       <source src={null}></source>
     </audio>
-    <Routes>
-      <Route path="/" element={<Page
-        hovered={hovered} container={container} title={"Nabla"} id={"Home"} />} />
-      <Route path="/store" element={<Page
-        hovered={hovered} container={container} title={"Nabla Store"} id={"Store"} />} />
-      {/* <Route path="/blog" element={<Page
+    <Route path="/">
+      <Page hovered={hovered} container={container} title={"Nabla"} id={"Home"} />
+    </Route>
+    <Route path="/store">
+      <Page hovered={hovered} container={container} title={"Nabla Store"} id={"Store"} />
+    </Route>
+    {/* <Route path="/blog" element={<Page
         hovered={hovered} container={container} title={"Nabla Blog"} id={"Blog"} />} /> */}
-      <Route path="/info" element={<Page
-        hovered={hovered} container={container} title={"Nabla Info"} id={"Info"} />} />
-      <Route path="/contrast" element={<Page
-        hovered={hovered} container={container} title={"Contrast"} id={"Contrast"} />} />
-      {hits.map((work) => (
-        <Route key={`${work.lot}`} path={`/${work.lot}`} element={<Page
-          hovered={hovered} container={container} title={`${work.lot} @ Nabla`} id={`${work.at}`} lot={`${work.lot}`} />} />
-      ))}
-      <Route path="*" element={<Page
-        hovered={hovered} container={container} title={"Nabla not found"} id={"NotFound"} />} />
-      {/* <Route
+    <Route path="/info">
+      <Page hovered={hovered} container={container} title={"Nabla Info"} id={"Info"} />
+    </Route>
+    <Route path="/contrast">
+      <Page hovered={hovered} container={container} title={"Contrast"} id={"Contrast"} />
+    </Route>
+    {clip.projects.map((work) => (
+      <Route key={`${work.lot}`} path={`/${work.lot}`}>
+        <Page hovered={hovered} container={container} title={`${work.lot} @ Nabla`} id={`${work.at}`} lot={`${work.lot}`} />
+      </Route>
+    ))}
+    <Route path="*">
+      <Page hovered={hovered} container={container} title={"Nabla not found"} id={"NotFound"} />
+    </Route>
+    {/* <Route
         path="*"
         element={<Navigate to="/404" replace />}
       /> */}
-    </Routes>
   </ThemeProvider>
 }
 

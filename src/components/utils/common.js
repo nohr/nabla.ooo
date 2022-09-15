@@ -296,6 +296,63 @@ export const GlobalStyle = createGlobalStyle`
         text-shadow: 0 1px 1 1 ${props => props.theme.panelColor} !important;
 
       }
+      // LOGO
+      .nablaWrapper{
+         height: 70px;
+  width: 130px;
+  display: flex;
+  justify-content: center;
+  /* margin: 10px 0 0px 0; */
+  backdrop-filter: blur(20px) !important;
+  padding-top: 5px;
+  padding-bottom: 3px;
+  border-radius: 75% 75% 50px 50px;
+  border: 1px solid ${props => props.theme.panelColor};
+  overflow: visible;
+  background-color: transparent !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+  user-select:none ;
+  -ms-user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+
+  & svg{
+    ${props => props.fill}
+    align-self:center;
+    fill: ${props => props.theme.panelColor};
+    color: ${props => props.theme.panelColor};
+    transition: 2.3s;
+    pointer-events: none;
+  }
+
+  &:hover{
+    background-color: ${props => props.theme.LiHover} !important;
+    -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    transition: 0.6s;
+  }
+
+  @media only screen and (min-width: 768px) {
+    /* &:hover {
+    background-color: ${props => props.theme.LiHover} !important;
+    -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
+    transition: 0.6s;
+  } */
+      &:hover > svg{
+    fill: ${props => props.theme.textHover};
+    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
+    filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
+    transition: 1.0s;
+  }
+}
+      }
+
     //Panel
     .Panel {
       background-color: #00000000;

@@ -10,6 +10,7 @@ import { Grabber, Rotate } from './panelTools';
 import styled from 'styled-components';
 import { ColorWheel } from '@react-spectrum/color';
 import Draggable from 'react-draggable';
+import { useLocation } from 'wouter';
 
 function MobileNavigator({ audio, nabla, dong, open, close, select, confirm, reset, color, setColor, setSong, song, setColorWheel, colorWheel, query, refine, clear, handle, text, setText, resetButton }) {
     const snap = useSnapshot(state);
@@ -53,6 +54,20 @@ function MobileNavigator({ audio, nabla, dong, open, close, select, confirm, res
     useEffect(() => {
         Rotate(resetButton, clip, snap);
     }, [state.grabberPosition, state.navPosition]);
+
+    // TODO: Hide when changing routes
+    const [hidden, setHidden] = useState(false);
+    // const [location, setLocation] = useLocation();
+    // useEffect(() => {
+    //     if (location !== "/") {
+    //         // setHidden(true);
+    //         state.hideNav = true;
+    //         state.mobileNavPosition = {
+    //             x: 0,
+    //             y: -offset,
+    //         };
+    //     }
+    // }, [location]);
 
     return (
         <Draggable nodeRef={navWrap} handle=".GrabberWrap" bounds=".container" position={snap.mobileNavPosition} axis="y" onStop={onControlledStop} onDrag={onControlledDrag} >
@@ -99,7 +114,7 @@ function MobileNavigator({ audio, nabla, dong, open, close, select, confirm, res
                                 </NavButton>}
                             </div>
                             {/* OPTIONS  */}
-                            {options && <Options search={search} handle={handle} resetButton={resetButton} reset={reset} navWrap={navWrap} setModal={setModal} setSong={setSong} select={select} modal={modal} colorWheel={colorWheel} setColorWheel={setColorWheel} audio={audio} />}
+                            {options && <Options search={search} handle={handle} resetButton={resetButton} reset={reset} navWrap={navWrap} setModal={setModal} setSong={setSong} select={select} modal={modal} colorWheel={colorWheel} setColorWheel={setColorWheel} audio={audio} hidden={hidden} setHidden={setHidden} />}
                         </>}
                     {/* QUOTE */}
                     {(!colorWheel && !clip.CanvasLoading && !clip.UILoading) && <Quote text={text} setText={setText} />}

@@ -1157,8 +1157,13 @@ const Head = styled.div`
       }
 
         @media only screen and (max-width: 768px) {
+        margin-left: 0 !important;
           h1 {
-            font-size: 12vw;
+            font-size: 22vw;
+          }
+          & svg{
+            height: auto;
+            width: 90vw !important;
           }
           .HomeCD{
             margin-left: 0px !important;

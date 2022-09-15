@@ -3,12 +3,12 @@ import { state, cloud } from "../../utils/state";
 import { useSnapshot } from "valtio";
 import styled from "styled-components"
 import { Header, Program } from "../../utils/svg";
-import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 // Search Imports
 import { useHits, useRefinementList } from 'react-instantsearch-hooks-web';
 import { useSearchBox } from "react-instantsearch-hooks-web";
 import { useDocumentTitle } from "../../utils/common";
+import { Link } from "wouter";
 
 
 export function CreatorMedal({ name }) {
@@ -38,8 +38,8 @@ export function Results({ select }) {
     if (hit.images) {
       // Get enxtentions of files
       const types = new Map([["jpg", "img"], ["jpeg", "img"], ["png", "img"], ["gif", "img"], ["mp4", "video"], ["svg", "svg"]])
-      const link = new URL(hit.images[0])
-      const extension = link.pathname.split(".")
+      const url = new URL(hit.images[0])
+      const extension = url.pathname.split(".")
       const element = types.get(extension[extension.length - 1].toLowerCase())
 
       if (element === "video") {
@@ -233,13 +233,13 @@ export function Results({ select }) {
           <ResultsGroup>
             {filteredClients.length === 0 ? <h3>No Clients</h3> : <Number paddingLeft='30px' paddingRight='30px' right='15px'> Clients <h3>{filteredClients.length}</h3></Number>}
             {/* CLIENTS */}
-            <ClientsLayer>
+            {/* <ClientsLayer>
               {filteredClients.map(one => (
                 <Client key={Math.random()}
                   onClick={() => { select(); refine(''); }}
                   to={`/${one.id}`}>{one.name}</Client>
               ))}
-            </ClientsLayer>
+            </ClientsLayer> */}
             {/* PROJECTS */}
             <ItemsLayer display={'grid'} height={'min-content'} paddingBottom={'40px'} mask={`-webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0.1)))`}>
               {filteredProjects.length === 0 ? <h3>No Projects </h3> : <Number bottom='20px' right='25px'> Projects <h3>{filteredProjects.length}</h3></Number>}
@@ -263,7 +263,7 @@ export function Results({ select }) {
                     setBy(null)
                   }
                   }
-                  to={`${hit.at}#${hit.projectName.replace(/\s+/g, '').toLowerCase()}`}
+                  to={`/${hit.lot}`}
                 ><h3 className="queryBubbleText">
                     {hit.projectName}</h3>
                   {Block(hit)}
@@ -289,7 +289,7 @@ export function Results({ select }) {
                     setStatement('')
                     setBy(null)
                   }}
-                  to={`store#${hit.productName.replace(/\s+/g, '').toLowerCase()}`}
+                  to={`store#${hit.lot}`}
                 >
                   <h3 className="queryBubbleText">
                     {hit.productName}</h3>
@@ -380,38 +380,38 @@ const Number = styled.div`
   }
 
 `
-const Client = styled(Link)`
-  width: fit-content;
-  height: min-content;
-  font-size: 16px;
-  font-weight: 300;
-  white-space: nowrap;
-  /* text-decoration: underline; */
-  color: inherit;
-  background-color: ${props => props.theme.layerBG};
-  border-radius: 12px;
-  border: 1px solid transparent;
-  transition: 0.3s;
-  padding: 10px;
-  margin: 5px 10px;
-    -webkit-user-drag: none;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-  text-shadow: 1px 1px 3px ${props => props.theme.panelColor};
+// const Client = styled(Link)`
+//   width: fit-content;
+//   height: min-content;
+//   font-size: 16px;
+//   font-weight: 300;
+//   white-space: nowrap;
+//   /* text-decoration: underline; */
+//   color: inherit;
+//   background-color: ${props => props.theme.layerBG};
+//   border-radius: 12px;
+//   border: 1px solid transparent;
+//   transition: 0.3s;
+//   padding: 10px;
+//   margin: 5px 10px;
+//     -webkit-user-drag: none;
+//     user-select: none;
+//     -moz-user-select: none;
+//     -webkit-user-select: none;
+//     -ms-user-select: none;
+//   text-shadow: 1px 1px 3px ${props => props.theme.panelColor};
 
-  &:hover{
-      border: 1px solid ${props => props.theme.panelColor};
-      background-color: ${props => props.theme.LiHover};
-      -webkit-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
-      -moz-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
-      box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
-      color: ${props => props.theme.textHover};
-      text-shadow: 1px 1px 3px #ebebeb;
-  }
+//   &:hover{
+//       border: 1px solid ${props => props.theme.panelColor};
+//       background-color: ${props => props.theme.LiHover};
+//       -webkit-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
+//       -moz-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
+//       box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
+//       color: ${props => props.theme.textHover};
+//       text-shadow: 1px 1px 3px #ebebeb;
+//   }
 
-`
+// `
 const ClientsLayer = styled.div`
   margin-top: 0 !important;
   margin-bottom: 0 !important;
@@ -453,7 +453,7 @@ const ClientsLayer = styled.div`
           /* transition: 0.3s; */
     }
 `
-const Item = styled(HashLink)`
+const Item = styled(Link)`
   display: flex;
   justify-content: center;
   align-items: center;

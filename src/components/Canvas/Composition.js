@@ -239,7 +239,7 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
       const j = Math.floor(Math.random() * (i + 1));
       [hits[i], hits[j]] = [hits[j], hits[i]];
     }
-  }, [])
+  }, [hits])
 
   // Handle deselection
   // useEffect(() => {
@@ -304,7 +304,7 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
   }, [])
 
   return (
-    <Canvas dpr={[1, 2]} gl={{ alpha: true, stencil: false, depth: true, antialias: false, physicallyCorrectLight: true }} className='r3fCanvas' frameloop={clip.mobile ? "always" : "demand"}>
+    <Canvas dpr={[1, 2]} gl={{ alpha: true, stencil: false, depth: true, antialias: false, physicallyCorrectLight: true }} className='r3fCanvas' frameloop={"demand"}>
       {/* CAMERA */}
       <Suspense fallback={<Spinner />}>
         <PerspectiveCamera makeDefault ref={camera} target={clip.mobile ? target : [0, 2, 0]} zoom={1} position={clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition} far={80} near={.1} fov={clip.mobile ? 35 : 20} aspect={vWidth / vHeight} />
@@ -315,6 +315,8 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
       {clip.mobile ?
         // Mobile
         <Physics
+          allowSleep={false}
+          size={100}
           gravity={[clip.leftright, -9.8, clip.frontback]}>
           <PhysicsFloor />
           <Router path="/">

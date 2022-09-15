@@ -7,12 +7,12 @@ import { Song, closeWheel, resetWheel, Folder, Wheel } from "../utils/common"
 import { Arrow, SideArrow, SearchBarIcon, ClearIcon, PlayPauseIcon } from "../utils/svg"
 import { useSnapshot } from "valtio"
 import styled from "styled-components"
-import { NavLink } from "react-router-dom"
 import Draggable from "react-draggable"
 import { HomeButton, Quote } from './homeButton';
 import { Grabber, NextButton, PlayButton, ResetPosButton } from "./panelTools"
 import CircleType from "circletype"
 import { ColorWheel } from '@react-spectrum/color';
+import { Link } from "wouter"
 
 function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, handle, query, clear, refine, text, setText, resetButton, colorWheel, setColorWheel, color, setColor, open, close, setHovered, container }) {
   const snap = useSnapshot(state);
@@ -136,15 +136,15 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
               </div>
               {!snap.colorWheel &&
                 <>
-                  <NavLink onClick={() => { clear(); select(); }} className="li w" to="/info"
+                  <Link onClick={() => { clear(); select(); }} className="li w" to="/info"
                     style={{ justifySelf: "flex-end" }}
                   >
                     Info
-                  </NavLink>
-                  <NavLink onClick={() => { clear(); select(); }} className="li w3" to="/store"
+                  </Link>
+                  <Link onClick={() => { clear(); select(); }} className="li w3" to="/store"
                     style={{ justifySelf: "flex-start" }}>
                     Store
-                  </NavLink >
+                  </Link >
                   <Folder className={`li folder proLink ${state.isPro ? "folderActive" : null}`} tabIndex={-1}
                     style={{ justifySelf: "flex-end" }}
                   >

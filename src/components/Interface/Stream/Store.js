@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import "../../../App.css";
 import { Container } from "./Page";
-import { HashLink } from "react-router-hash-link";
 import styled from "styled-components";
 import Tilty from 'react-tilty';
 import { DiagonalArrow, EkoThumb, Header } from "../../utils/svg";
 import { cloud, state } from "../../utils/state";
 import { useSnapshot } from "valtio";
 import { GetStore } from "../../utils/common";
+import { Link } from "wouter";
 
 function Store(props) {
   const snap = useSnapshot(state);
@@ -33,16 +33,16 @@ function Store(props) {
               scale={1} perspective={700} reset={false}
             >
               <StoreItem
-                id={item.productName.replace(/\s+/g, '')}
+                id={item.lot}
                 className="item">
                 <EkoThumb />
                 <div className="desc">
-                  <HashLink className="title w"
+                  <Link className="title w"
                     style={{ transform: 'translateZ(190px)' }}
                     to={`/${item.lot}`}>
                     {item.productName}
                     <DiagonalArrow />
-                  </HashLink>
+                  </Link>
                   <p>{item.tagline[0]} <br />
                     <i style={{ opacity: ".5" }}>
                       {item.tagline[1]}
@@ -94,6 +94,11 @@ const StoreItem = styled.div`
       border-radius: 50%;
       overflow: visible;
       transition: 1.3s;
+
+       @media screen and (max-width: 768px) {
+      grid-template-rows: 40% 60%;
+        height: 50vh;
+       }
 
     &:hover{
   	animation: pulseItem 4s infinite;

@@ -98,8 +98,6 @@ function PageData({ lot }, setSelectedImg) {
   const clip = useSnapshot(cloud);
   GetSector(lot);
 
-
-
   return <>
     {clip.sector.map((work) => (
       <Sector
@@ -130,7 +128,7 @@ const Sector = styled.div`
 display: grid;
 grid-template-columns: 100%;
 grid-template-rows: 20% 80%;
-height: 60vh !important;
+height: 60vh ;
 width: fit-content;
 flex-direction: column;
 row-gap: 10px;
@@ -145,9 +143,10 @@ transition:0s !important;
       row-gap: 0px;
   }
     @media screen and (max-width: 768px) {
-      height: 100% !important;
-      grid-template-rows: 30% 80%;
-      row-gap: 0px;
+      height: max-content !important;
+      /* grid-template-rows: 30% 100%; */
+      display: flex;
+      /* row-gap: 0px; */
   }
 & .lot{
   color: ${props => props.theme.panelColor};
@@ -444,7 +443,13 @@ const InfoCard = styled.div`
     } */
 
     @media screen and (max-width:768px) {
+      overflow-y: unset !important;
+      height: unset !important;
       width: 100% !important;
+      & p{
+      height: 100% !important;
+      overflow-y: unset !important;
+      }
     }
     
     & {
