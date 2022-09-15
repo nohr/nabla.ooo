@@ -5,8 +5,8 @@ import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
 import { Folder, styleHeaders } from "../utils/common"
 import styled from "styled-components"
-import { ColorIcon, DirectionIcon, ModeIcon, MuteIcon, NextIcon, PlayPauseIcon, ShowHideIcon } from "../utils/svg"
-import { useWindowDimensions, getPosOpt, NextSong, OpenWheel, ToggleMusic, togglePause, toggleTheme } from "../utils/common"
+import { ColorIcon, DirectionIcon, ModeIcon, MuteIcon, ShowHideIcon } from "../utils/svg"
+import { useWindowDimensions, getPosOpt, OpenWheel, toggleTheme } from "../utils/common"
 import { SongInfo } from "./panelTools"
 
 function Options({ song, setSong, select, headwidth, open, close }) {

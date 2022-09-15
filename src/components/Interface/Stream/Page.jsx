@@ -16,7 +16,7 @@ import NotFound from "./NotFound";
 import { useSearchBox } from "react-instantsearch-hooks-web";
 import { useDocumentTitle } from "../../utils/common";
 
-export function Page({ id, title, container, hovered }) {
+export function Page({ id, lot, title, container, hovered }) {
   useDocumentTitle(title);
   const { query } = useSearchBox();
   const clip = useSnapshot(cloud);
@@ -24,12 +24,9 @@ export function Page({ id, title, container, hovered }) {
   let opacity = query.length > 0 ? "0" : clip.drag || hovered ? 0.3 : "1";
   let pointerEvents = query.length ? "none" : hovered ? "none" : "all";
   let transition = query.length ? "0.3s" : hovered ? "0.3s" : "unset";
-  let margin =
-    clip.sectors.length > 0
-      ? snap.direction
-        ? `padding-top: 300px !important; `
-        : `padding-left: 300px !important; `
-      : ``;
+  let margin = snap.direction
+    ? `padding-top: 300px !important; `
+    : `padding-left: 300px !important; `;
 
   useEffect(() => {
     cloud.selectedImg = null;
@@ -78,7 +75,7 @@ export function Page({ id, title, container, hovered }) {
   });
 
   //Toggle active panel buttons
-  useEffect(() => {});
+  // useEffect(() => {});
   if (id === "Home") {
     return (
       <Home
@@ -145,7 +142,7 @@ export function Page({ id, title, container, hovered }) {
           transition={transition}
           margin={!clip.mobile ? margin : `padding-top: 100px !important; `}
         >
-          <PageData id={id} />
+          <PageData lot={lot} />
           {clip.selectedImg ? <Modal container={container} /> : null}
         </Container>
       </>

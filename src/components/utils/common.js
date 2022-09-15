@@ -35,6 +35,7 @@ export const Folder = styled.div`
         fill: ${props => props.theme.textHover} !important;
     }
     svg{
+        overflow: visible;
         height: 12px !important;
         width: 12px !important;
     }
@@ -771,14 +772,14 @@ export function unActiveTap(nabla, svg) {
     // if (cloud.target !== target || cloud.mobileCameraPosition !== [0, 20, 25])
     // || cloud.selected) ||
     // cloud.mobileCameraRotation !== [0, 0, 0] ||
-    // cloud.mobileCameraQuaternion !== [0, 0, 0] ||
-    {
-        // cloud.target = target;
-        // cloud.mobileCameraPosition = [0, 20, 25];
-        // cloud.mobileCameraRotation = [0, 0, 0];
-        // cloud.mobileCameraQuaternion = [0, 0, 0];
-        // cloud.selected = false;
-    }
+    // // cloud.mobileCameraQuaternion !== [0, 0, 0] ||
+    // {
+    // cloud.target = target;
+    // cloud.mobileCameraPosition = [0, 20, 25];
+    // cloud.mobileCameraRotation = [0, 0, 0];
+    // cloud.mobileCameraQuaternion = [0, 0, 0];
+    // cloud.selected = false;
+    // }
     nabla.current && nabla.current.setAttribute("style", `
         background-color: transparent !important;
     -webkit-box-shadow: none !important;
@@ -1041,7 +1042,7 @@ export function resetPos(setModal, reset, search, navWrap, snap) {
 }
 export function getGyro() {
     function requestPermission() {
-        DeviceMotionEvent && DeviceMotionEvent.requestPermission().then(response => {
+        cloud.mobile && DeviceMotionEvent.requestPermission().then(response => {
             if (response === 'granted') {
                 window.addEventListener('deviceorientation', (event) => {
                     if (window.matchMedia("(orientation: portrait)").matches) {
@@ -1139,10 +1140,16 @@ export async function newQuote() {
 export async function GetSectors(id) {
     cloud.UILoading = true;
     const sectorRef = collection(db, "portfolio");
-    // TODO: update to look for generated LOT #
     const sectors = query(sectorRef, orderBy("projectYear", "desc"), where("at", "==", `${id}`));
     const sectorSnapshot = await getDocs(sectors);
     cloud.sectors = sectorSnapshot.docs.map(doc => doc.data());
+    cloud.UILoading = false;
+};
+export async function GetSector(lot) {
+    cloud.UILoading = true;
+    const sectorRef = collection(db, "portfolio");
+    const sectorSnapshot = await getDocs(query(sectorRef, orderBy("projectYear", "desc"), where("lot", "==", `${lot}`)));
+    cloud.sector = sectorSnapshot.docs.map(doc => doc.data());
     cloud.UILoading = false;
 };
 export async function GetStore() {

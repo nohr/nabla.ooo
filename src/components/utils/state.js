@@ -1,5 +1,5 @@
 import { proxy, subscribe } from "valtio"
-import { GetQuotes, originalColors, target } from "./common";
+import { originalColors, target } from "./common";
 
 const storedStateString = localStorage.getItem('state');
 const initialState = storedStateString ? JSON.parse(storedStateString) : {
@@ -123,11 +123,11 @@ export const cloud = proxy({
     selfs: [],
     clients: [],
     sectors: [],
+    sector: [],
     projects: [],
     //UI
     UILoading: true,
     preview: [],
-    selected: [],
     work: null,
     selectedImg: null,
     selectedDesc: null,

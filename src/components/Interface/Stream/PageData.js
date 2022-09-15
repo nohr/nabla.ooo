@@ -1,7 +1,7 @@
 import React, { useRef, memo } from 'react'
 import { cloud } from '../../utils/state'
 import { Links, Program } from '../../utils/svg'
-import { GetSectors } from '../../utils/common'
+import { GetSector, GetSectors } from '../../utils/common'
 import { useSnapshot } from 'valtio'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
@@ -94,28 +94,19 @@ const ImgGrid = ({ work }) => {
   )
 }
 
-function PageData({ id }, setSelectedImg) {
+function PageData({ lot }, setSelectedImg) {
   const clip = useSnapshot(cloud);
-  GetSectors(id);
+  GetSector(lot);
 
-  const makeLot = (work) => {
-    let lot = (
-      id.slice(0, 2))
-      + (work.projectYear.toDate().getFullYear().toString().slice(2, 5))
-      + (work.projectYear.toDate().getMonth() + 1)
-      + (work.projectName.slice(0, 2))
-      + (work.by.slice(0, 1));
-    lot = lot.toUpperCase();
-    return lot;
-  };
+
 
   return <>
-    {clip.sectors.map((work) => (
+    {clip.sector.map((work) => (
       <Sector
         key={`${Math.random()}`} id={work.projectName.replace(/\s+/g, '')} className="sector">
         <TextWrapper key={`${Math.random()}`} className="textWrapper">
           <div>
-            <span key={`${Math.random()}`} className="lot">{work.projectYear && makeLot(work)}</span>
+            <span key={`${Math.random()}`} className="lot">{work.projectYear && work.lot}</span>
           </div>
           <h2 key={`${work.projectName}`}>{work.projectName}</h2>
           <div className='metadata'>

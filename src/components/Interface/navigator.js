@@ -183,6 +183,7 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
         <Projects
           open={open}
           close={close}
+          confirm={confirm}
           headwidth={headwidth}
           select={select} />
         <Options

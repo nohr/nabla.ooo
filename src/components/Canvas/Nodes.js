@@ -64,7 +64,7 @@ function Node({ select, confirm, clear, hit, index, ...props }) {
             ref={Ref}
             onClick={() => {
                 if (Ref.current && selected[0] && (selected[0].id === Ref.current.id)) {
-                    setLocation(`${hit.at}#${hit.projectName.replace(/\s+/g, '').toLowerCase()}`);
+                    setLocation(`${hit.lot}`);
                     clear();
                     confirm();
                 } else {
