@@ -1078,19 +1078,19 @@ export function resetPos(setModal, reset, search, navWrap, snap) {
     cloud.resetRate = Math.random() * (0.85 - 0.65) + 0.65;
     reset();
     navWrap.current.style.transition = "1.3s";
-    if (snap.dragged) {
-        state.hideNav = false;
-        state.searchPosition = { x: 0, y: 0 };
-        state.optionsPosition = { x: 0, y: 0 };
-        state.grabberPosition = { x: 0, y: 0 };
-        state.mobileNavPosition = { x: 0, y: offset };
-    } else {
-        state.hideNav = true;
-        state.mobileNavPosition = {
-            x: 0,
-            y: search ? 0 : -offset,
-        };
-    }
+    // if (snap.dragged) {
+    // } else {
+    state.hideNav = false;
+    state.searchPosition = { x: 0, y: 0 };
+    state.optionsPosition = { x: 0, y: 0 };
+    state.grabberPosition = { x: 0, y: 0 };
+    state.mobileNavPosition = { x: 0, y: offset };
+    state.hideNav = true;
+    state.mobileNavPosition = {
+        x: 0,
+        y: search ? 0 : -offset,
+    };
+    // }
     state.dragged = false;
     setTimeout(() => {
         navWrap.current.style.transition = "0.1s";
