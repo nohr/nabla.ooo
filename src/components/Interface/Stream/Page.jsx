@@ -25,7 +25,7 @@ export function Page({ id, lot, title, container, hovered }) {
   let pointerEvents = query.length ? "none" : hovered ? "none" : "all";
   let transition = query.length ? "0.3s" : hovered ? "0.3s" : "unset";
   let margin = clip.mobile
-    ? `padding-top: 50px !important; `
+    ? `padding-top: 200px !important; `
     : snap.direction
     ? `padding-top: 300px !important; `
     : `padding-left: 300px !important; `;
