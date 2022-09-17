@@ -145,9 +145,7 @@ export function Options({
             {/* RESET */}
             <Folder
               ref={resetButton}
-              onTouchStart={() =>
-                resetPos(setModal, reset, search, navWrap, snap)
-              }
+              onTouchStart={() => resetPos(setModal, reset, search, navWrap)}
               className={`li resetPos w`}
             >
               <ShowHideIcon n={2} />
@@ -245,6 +243,7 @@ const OptionsWrapper = styled.div`
       }
 
       & svg {
+        overflow: visible;
         width: 24px !important;
       }
       &.resetPos {

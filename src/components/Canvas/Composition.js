@@ -317,7 +317,9 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
         <Physics
           allowSleep={false}
           size={100}
-          gravity={[clip.leftright, -9.8, clip.frontback]}>
+          gravity={[clip.leftright, -9.8, clip.frontback]}
+        >
+          {/* <Debug color="white" scale={1.1}> */}
           <PhysicsFloor />
           <Router path="/">
             <Suspense fallback={<Spinner />}>
@@ -326,9 +328,9 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
               </Select>
             </Suspense>
             <Bounds />
-            {/* <ContactShadows frames={1} position={[0, -0.5, 0]} scale={10} opacity={0.4} far={1} blur={2} /> */}
             {/* <CD position={[0, 10, -20]} rotation={[Math.PI / -2.5, 0, 0]} /> */}
           </Router>
+          {/* </Debug> */}
         </Physics>
         :// Not Mobile 
         <>

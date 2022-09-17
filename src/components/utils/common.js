@@ -92,11 +92,11 @@ export const Folder = styled.div`
     text-align: center;
 
     & svg{
-    animation: flashConfirm 1s steps(5, start) infinite;
-    animation-delay: 3s;
-    -webkit-filter:none;
-    filter:none ;
-    fill: #ebebeb;
+        animation: flashConfirm 1s steps(5, start) infinite;
+        animation-delay: 3s;
+        -webkit-filter:none;
+        filter:none ;
+        fill: #ebebeb;
     }
     transition: 0s;
     outline: 0px;
@@ -1073,24 +1073,21 @@ export function toggleModal(link, modal, setModal, setOffset, open, close) {
         }
     };
 };
-export function resetPos(setModal, reset, search, navWrap, snap) {
+export function resetPos(setModal, reset, search, navWrap) {
     setModal(false);
     cloud.resetRate = Math.random() * (0.85 - 0.65) + 0.65;
     reset();
     navWrap.current.style.transition = "1.3s";
-    // if (snap.dragged) {
-    // } else {
     state.hideNav = false;
     state.searchPosition = { x: 0, y: 0 };
     state.optionsPosition = { x: 0, y: 0 };
     state.grabberPosition = { x: 0, y: 0 };
-    state.mobileNavPosition = { x: 0, y: offset };
+    state.mobileNavPosition = { x: 0, y: -offset * 9 };
     state.hideNav = true;
     state.mobileNavPosition = {
         x: 0,
         y: search ? 0 : -offset,
     };
-    // }
     state.dragged = false;
     setTimeout(() => {
         navWrap.current.style.transition = "0.1s";

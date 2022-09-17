@@ -8,7 +8,7 @@ import { useSnapshot } from 'valtio';
 import { Route, useLocation } from 'wouter';
 import { cloud, state } from '../utils/state';
 
-function Node({ select, confirm, clear, hit, index, ...props }) {
+const Node = memo(function Node({ select, confirm, clear, hit, index, ...props }) {
     const snap = useSnapshot(state);
     const [location, setLocation] = useLocation();
     const types = new Map([["jpg", "img"], ["jpeg", "img"], ["png", "img"], ["gif", "img"], ["mp4", "video"], ["svg", "svg"]]);
@@ -16,17 +16,23 @@ function Node({ select, confirm, clear, hit, index, ...props }) {
     const extension = link.pathname.split(".");
     const element = types.get(extension[extension.length - 1].toLowerCase());
     const cover = useTexture(element === "img" ? hit.images[0] : hit.poster);
-
+    const selected = useSelect();
+    let radius = [1];
     // Handle node select
     const pos = useRef([0, 0, 0]);
-    const selected = useSelect();
-    const [Ref, api] = useSphere(() => ({ mass: 10, position: [Math.floor(Math.random() * -2), (index + 5), Math.floor(Math.random() * -3)], args: selected[0] ? [3] : [1], ...props }));
+    const [Ref, api] = useSphere(() => ({
+        mass: 10,
+        position: [Math.floor(Math.random() * -2), (index + 5), Math.floor(Math.random() * -3)],
+        args: radius,
+        ...props
+    }));
 
     useFrame(state => {
-        if (Ref && selected[0] && (selected[0].id === Ref.current.id)) {
-            // TODO fix this
-            // state.camera.lookAt(pos.current);
+        if (Ref.current && selected[0] && (selected[0].id === Ref.current.id)) {
             cloud.target = pos.current;
+            radius = [3];
+            // console.log(Ref.current.scale);
+            // Ref.current.scale.set  [3, 3, 3];
             // state.camera.position.lerp(vec.set(xPosition, Position, Position), .01);
             // state.camera.updateProjectionMatrix();
             state.camera.zoom = 1 - (snap.grabberPosition.x / 300);
@@ -38,6 +44,13 @@ function Node({ select, confirm, clear, hit, index, ...props }) {
         return null;
     });
 
+    // useFrame(() => {
+    //     api.wakeUp();
+    //     api.allowSleep.set(false);
+    // })
+
+
+    // Handle preview
     if (Ref && selected[0] && (selected[0].id === Ref.current.id)) {
         cloud.preview = [hit];
     }
@@ -81,7 +94,7 @@ function Node({ select, confirm, clear, hit, index, ...props }) {
             <meshPhysicalMaterial map={cover} reflectivity={1} clearcoat={0.8} metalness={0.2} />
         </mesh>
     )
-}
+})
 
 // function VideoMaterial({ img, Ref, frames }) {
 //     let cover = useTexture(img);
@@ -112,14 +125,15 @@ function Node({ select, confirm, clear, hit, index, ...props }) {
 //     )
 // }
 
-export const Nodes = memo(function Nodes({ ...props }) {
+export function Nodes({ ...props }) {
+    const [location, setLocation] = useLocation();
+
     useEffect(() => {
         cloud.CanvasLoading = false;
     }, []);
 
-    return <Route path='/'>
-        {props.hits.map((hit, index) => (
+    return <>
+        {(location === "/") && props.hits.map((hit, index) => (
             <Node hit={hit} key={index} index={index}{...props} />))}
-    </Route>
+    </>
 }
-)

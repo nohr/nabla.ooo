@@ -3,7 +3,7 @@
 ![nabla.ooo](./public/images/lightNabla.png)
 This is the homepage for digital studio, Nabla Ltd.
 
-## Update 2
+## Update 3
 
 ##### CD
 
@@ -30,7 +30,7 @@ This is the homepage for digital studio, Nabla Ltd.
 - [ ] Documentation for all projects
 - [x] Icons for programs used for all projects
 - [x] Links for projects
-- [ ] Router makes individual pages for projects
+- [x] Router makes individual pages for projects
 - [ ] &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; using cloud functions generated LOT#
 
 #### Search
@@ -48,7 +48,6 @@ This is the homepage for digital studio, Nabla Ltd.
 ## Links
 
 - [nabla.ooo/](https://nabla.ooo/)
-- [beta.nabla.ooo/](https://beta.nabla.ooo/)
 
 ## Etc.
 
