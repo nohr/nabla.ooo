@@ -4,7 +4,7 @@ import Projects from "./projects"
 import Options from "./options"
 import { cloud, state } from "../utils/state"
 import { Song, closeWheel, resetWheel, Folder, Wheel } from "../utils/common"
-import { Arrow, SideArrow, SearchBarIcon, ClearIcon, PlayPauseIcon } from "../utils/svg"
+import { Arrow, SideArrow, SearchBarIcon, ClearIcon } from "../utils/svg"
 import { useSnapshot } from "valtio"
 import styled from "styled-components"
 import Draggable from "react-draggable"
@@ -582,7 +582,7 @@ const SearchBar = styled.input`
   border: none !important;
   width: 100%;
   height: 20px;
-   backdrop-filter: blur(20px) !important;
+  backdrop-filter: blur(20px) !important;
   display: flex;
   border-radius: 250px 250px 500px 500px;
   background-color: transparent;

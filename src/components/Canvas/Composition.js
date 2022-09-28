@@ -337,16 +337,16 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
           <Wall />
           <CD rotation={[-Math.PI / 2, Math.PI / 2, Math.PI / 2]} />
           <Floor />
-          <Suspense fallback={<Spinner />}>
-            <EffectComposer>
-              <Noise
-                opacity={snap.theme === 'light' ? clip.mobile ? 0.05 : snap.light.noise : clip.mobile ? 0.09 : snap.dark.noise}
-              // premultiply={(state.theme === "light")}
-              />
-            </EffectComposer>
-          </Suspense>
         </>
       }
+      {!clip.mobile && <Suspense fallback={<Spinner />}>
+        <EffectComposer>
+          <Noise
+            opacity={snap.theme === 'light' ? clip.mobile ? 0.5 : snap.light.noise : clip.mobile ? 0.09 : snap.dark.noise}
+          // premultiply={(state.theme === "light")}
+          />
+        </EffectComposer>
+      </Suspense>}
       <OrbitControls
         target={clip.mobile ? clip.target : [0, 2, 0]}
         onEnd={(e) => {

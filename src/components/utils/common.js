@@ -667,17 +667,17 @@ export function toHslString(color) {
 };
 export const originalColors = {
     light: {
-        panelColor: 'hsl(205, 100%, 20%)',
-        LiHover: "hsla(205, 100%, 20%, 0.67)",
+        panelColor: 'hsl(181, 100%, 20%)',
+        LiHover: "hsla(181, 100%, 20%, 0.67)",
         CD: "hsla(14, 31%, 84%, 1)",
-        Surface: "hsla(205, 100%, 80%, 1)",
+        Surface: "hsla(181, 100%, 80%, 1)",
         spotlight: "#ffffff",
     },
     dark: {
-        panelColor: "hsl(205, 31%, 80%)",
-        LiHover: "hsla(205, 31%, 80%, 0.67)",
-        Surface: "hsla(205, 15%, 40%, 1)",
-        spotlight: "hsla(205, 31%, 70%, 1)",
+        panelColor: "hsl(181, 31%, 80%)",
+        LiHover: "hsla(181, 31%, 80%, 0.67)",
+        Surface: "hsla(181, 15%, 40%, 1)",
+        spotlight: "hsla(181, 31%, 70%, 1)",
     }
 };
 export function closeWheel() {
@@ -1021,10 +1021,10 @@ export function styleHeaders(headwidth, level, type, enter) {
     if (enter) {
         if (level === 1) {
             document.getElementById(type).style.width = headwidth.first.max;
-            document.getElementById(type).style.boxShadow = `0 30px 50px ${state.theme === 'light' ? state.light.panelColor : state.dark.panelColor}`;
+            document.getElementById(type).style.boxShadow = `0 30px 50px ${state.theme === 'light' ? state.light.LiHover : state.dark.LiHover}`;
         } else if (level === 2) {
             document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.max : "115%";
-            document.getElementById(type).style.boxShadow = `0 30px 50px ${state.theme === 'light' ? state.light.panelColor : state.dark.panelColor}`;
+            document.getElementById(type).style.boxShadow = `0 30px 50px ${state.theme === 'light' ? state.light.LiHover : state.dark.LiHover}`;
         }
     } else if (!enter) {
         if (level === 1) {
