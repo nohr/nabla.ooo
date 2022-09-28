@@ -20,7 +20,7 @@ export function CreatorMedal({ name }) {
   }
 }
 
-export function Results({ select }) {
+export function Results({ select, confirm }) {
   const snap = useSnapshot(state);
   const { query, refine } = useSearchBox();
   useDocumentTitle(`${query} - Search Results`);
@@ -248,7 +248,7 @@ export function Results({ select }) {
                 <Item
                   key={Math.random()}
                   size='300px'
-                  onClick={() => { select(); refine(''); }}
+                  onClick={() => { confirm(); refine(''); }}
                   className="bubbles"
                   onMouseOver={(e) => {
                     if (e.currentTarget.children[1] && (e.currentTarget.children[1].tagName === 'VIDEO')) {

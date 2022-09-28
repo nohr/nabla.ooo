@@ -162,7 +162,8 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
           hovered={hovered}
           setHovered={setHovered}
         />
-        <Results select={select} />
+        <Results select={select}
+          confirm={confirm} />
       </>
     }
     <audio ref={audio} loop>

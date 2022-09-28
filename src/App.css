@@ -94,9 +94,3 @@ body,
 .htmlSpinner {
   display: none !important;
 }
-
-.skewed{
-  transform: skew(3deg, 9deg);
-  position: absolute;
-  z-index: 5000;
-}

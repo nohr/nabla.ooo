@@ -686,7 +686,7 @@ export function closeWheel() {
 export function resetWheel() {
     state.colorWheel = false;
     state.monochrome = false;
-    state.hue = 205;
+    state.hue = 181;
     if (state.theme === 'light') {
         state.light.panelColor = originalColors.light.panelColor;
         state.light.placeholder = originalColors.light.panelColor;
@@ -806,6 +806,7 @@ export function handleClick(clip, query, dong, clear, nabla, svg) {
                 // debugger;
                 state.colorChanged = true;
                 cloud.talking = true;
+                cloud.skew = true;
                 // TODO: Trigger smile animation
                 // TODO: lengthen speech to amount of words spoken
                 newQuote();
