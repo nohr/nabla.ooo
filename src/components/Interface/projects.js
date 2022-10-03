@@ -91,6 +91,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
             ))}
           </div>
         </> : <ProjectsList />}
+        {snap.isOpt}
       </Project>
     </Draggable >
   )
