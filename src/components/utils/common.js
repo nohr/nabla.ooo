@@ -806,7 +806,7 @@ export function handleClick(clip, query, dong, clear, nabla, svg) {
                 // debugger;
                 state.colorChanged = true;
                 cloud.talking = true;
-                cloud.skew = true;
+                cloud.skew = !clip.skew;
                 // TODO: Trigger smile animation
                 // TODO: lengthen speech to amount of words spoken
                 newQuote();
