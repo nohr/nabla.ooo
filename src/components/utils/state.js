@@ -149,39 +149,41 @@ export const cloud = proxy({
         name: 'covenant',
         artist: 'nohri',
         tempo: 135,
-    }, {
-        name: '104_GHOST',
-        artist: 'nohri ft. chrismelh',
-        tempo: 104
-    }, {
-        name: 'shore',
-        artist: 'nohri',
-        tempo: 120
-    }, {
-        name: '125_BAD ONE',
-        artist: 'nohri',
-        tempo: 125,
-    }, {
-        name: 'saturation estate',
-        artist: 'nohri',
-        tempo: 167
-    }, {
-        name: 'lysergic_72',
-        artist: 'nohri ft. MELO-X',
-        tempo: 72
-    }, {
-        name: 'angel 2097',
-        artist: 'nohri ft. emly',
-        tempo: 120
-    }, {
-        name: 'silly!',
-        artist: 'nohri',
-        tempo: 160,
-    }, {
-        name: 'spo0ky action',
-        artist: 'nohri',
-        tempo: 120
-    },],
+    },
+        //     {
+        //     name: '104_GHOST',
+        //     artist: 'nohri ft. chrismelh',
+        //     tempo: 104
+        // }, {
+        //     name: 'shore',
+        //     artist: 'nohri',
+        //     tempo: 120
+        // }, {
+        //     name: '125_BAD ONE',
+        //     artist: 'nohri',
+        //     tempo: 125,
+        // }, {
+        //     name: 'saturation estate',
+        //     artist: 'nohri',
+        //     tempo: 167
+        // }, {
+        //     name: 'lysergic_72',
+        //     artist: 'nohri ft. MELO-X',
+        //     tempo: 72
+        // }, {
+        //     name: 'angel 2097',
+        //     artist: 'nohri ft. emly',
+        //     tempo: 120
+        // }, {
+        //     name: 'silly!',
+        //     artist: 'nohri',
+        //     tempo: 160,
+        // }, {
+        //     name: 'spo0ky action',
+        //     artist: 'nohri',
+        //     tempo: 120
+        //     },
+    ],
     // Accelerometer
     leftright: 0,
     frontback: 0,
