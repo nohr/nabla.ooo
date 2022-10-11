@@ -53,7 +53,7 @@ function Store(props) {
                     href={item.productURL}
                     target="_blank"
                     rel="noopener noreferrer">
-                    BUY ${`${item.price}`}
+                    {`${item.price}`}
                   </a>
                 </div>
               </StoreItem>
