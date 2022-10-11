@@ -1025,19 +1025,19 @@ export function getPosOpt(snap, vWidth, vHeight) {
 export function styleHeaders(headwidth, level, type, enter) {
     if (enter) {
         if (level === 1) {
-            document.getElementById(type).style.width = headwidth.first.max;
+            // document.getElementById(type).style.width = headwidth.first.max;
             document.getElementById(type).style.boxShadow = `0 30px 50px ${state.theme === 'light' ? state.light.LiHover : state.dark.LiHover}`;
         } else if (level === 2) {
-            document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.max : "115%";
+            // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.max : "115%";
             document.getElementById(type).style.boxShadow = `0 30px 50px ${state.theme === 'light' ? state.light.LiHover : state.dark.LiHover}`;
         }
     } else if (!enter) {
         if (level === 1) {
-            document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.first.min : !state.direction ? headwidth.first.min : '100%';
+            // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.first.min : !state.direction ? headwidth.first.min : '100%';
             document.getElementById(type).style.boxShadow = `none`;
 
         } else if (level === 2) {
-            document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.min : !state.direction ? headwidth.second.min : '123%';
+            // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.min : !state.direction ? headwidth.second.min : '123%';
             document.getElementById(type).style.boxShadow = `none`;
         }
     }

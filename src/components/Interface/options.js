@@ -60,15 +60,16 @@ function Options({ song, setSong, select, headwidth, open, close }) {
     !snap.isOpt ? close() : open();
   }, [snap.isOpt])
 
-  useEffect(() => {
-    if (snap.isPro && snap.direction) {
-      document.getElementById("audiohead").style.width = "100%";
-      document.getElementById("displayhead").style.width = '123%';
-    } else {
-      document.getElementById("audiohead").style.width = headwidth.first.min;
-      document.getElementById("displayhead").style.width = headwidth.second.min;
-    }
-  }, [state.isPro])
+  // useEffect(() => {
+  //   if (snap.isPro && snap.direction) {
+  //     document.getElementById("audiohead").style.width = "100%";
+  //     document.getElementById("displayhead").style.width = '123%';
+  //   } else {
+  //     document.getElementById("audiohead").style.width = headwidth.first.min;
+  //     document.getElementById("displayhead").style.width = headwidth.second.min;
+  //   }
+  // }, [state.isPro])
+
   return (
     <>
       <Draggable nodeRef={opt} position={snap.optPosition} positionOffset={offset} onStart={() => false}>

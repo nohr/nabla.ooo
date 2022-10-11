@@ -1,5 +1,5 @@
 //Projects -- Child of Panel
-import React, { useEffect, useRef, useState } from "react"
+import React, { memo, useEffect, useRef, useState } from "react"
 import { cloud, state } from "../utils/state"
 import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
@@ -37,15 +37,39 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
   }, [snap.isPro])
 
 
-  useEffect(() => {
-    if (snap.isOpt && snap.direction && !groupID) {
-      document.getElementById("selfhead").style.width = '100%';
-      document.getElementById("clienthead").style.width = '123%';
-    } else if (!groupID) {
-      document.getElementById("selfhead").style.width = headwidth.first.min;
-      document.getElementById("clienthead").style.width = headwidth.second.min;
-    }
-  }, [state.isOpt])
+  // useEffect(() => {
+  //   if (snap.isOpt && snap.direction && !groupID) {
+  //     document.getElementById("selfhead").style.width = '100%';
+  //     document.getElementById("clienthead").style.width = '123%';
+  //   } else if (!groupID) {
+  //     document.getElementById("selfhead").style.width = headwidth.first.min;
+  //     document.getElementById("clienthead").style.width = headwidth.second.min;
+  //   }
+  // }, [state.isOpt, snap.direction])
+
+  function GroupList() {
+
+    return (<>
+      <p style={firstHeader} id="selfhead">Self-Initiate</p>
+      <div className="self" style={firstStyle}
+        onMouseEnter={() => styleHeaders(headwidth, 1, "selfhead", true)}
+        onMouseLeave={() => styleHeaders(headwidth, 1, "selfhead", false)}
+      >
+        {clip.selfs && clip.selfs.map((work) => (
+          <div onClick={() => { select(); setGroupID(work.id); GetSectors(work.id); }} style={snap.direction ? { width: '70%' } : { width: '100%' }} className={`li w ${clip.sector[0] && (clip.sector[0].at === work.id) ? "active" : null}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</div>
+        ))}
+      </div>
+      <p style={secondHeader} id="clienthead">Client</p>
+      <div className="client" style={secondStyle}
+        onMouseEnter={() => styleHeaders(headwidth, 2, "clienthead", true)}
+        onMouseLeave={() => styleHeaders(headwidth, 2, "clienthead", false)}
+      >
+        {clip.clients && clip.clients.map((work) => (
+          <div onClick={() => { select(); setGroupID(work.id); GetSectors(work.id); }} style={snap.direction ? { width: '70%' } : { width: '100%' }} className={`li w ${clip.sector[0] && (clip.sector[0].at === work.id) ? "active" : null}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</div>
+        ))}
+      </div>
+    </>)
+  }
 
   function ProjectsList() {
 
@@ -71,15 +95,15 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
       <Project hide={hide} layout={groupID ? projectListLayout : layout} top={top} ref={pro}
         className={clip.drag ? "Panel pro glow" : "Panel pro"}
       >
-        {!groupID ? <p style={firstHeader} id="selfhead">Self-Initiate</p>
-          : <Back />}
+        {groupID && <Back />}
         {!groupID ? <>
+          <p style={firstHeader} id="selfhead">Self-Initiate</p>
           <div className="self" style={firstStyle}
             onMouseEnter={() => styleHeaders(headwidth, 1, "selfhead", true)}
             onMouseLeave={() => styleHeaders(headwidth, 1, "selfhead", false)}
           >
             {clip.selfs && clip.selfs.map((work) => (
-              <div onClick={() => { select(); setGroupID(work.id); GetSectors(work.id); }} style={snap.direction ? { width: '70%' } : { width: '100%' }} className="li w" tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</div>
+              <div onClick={() => { select(); setGroupID(work.id); GetSectors(work.id); }} style={snap.direction ? { width: '70%' } : { width: '100%' }} className={`li w ${clip.sector[0] && (clip.sector[0].at === work.id) ? "active" : null}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</div>
             ))}
           </div>
           <p style={secondHeader} id="clienthead">Client</p>
@@ -88,7 +112,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
             onMouseLeave={() => styleHeaders(headwidth, 2, "clienthead", false)}
           >
             {clip.clients && clip.clients.map((work) => (
-              <div onClick={() => { select(); setGroupID(work.id); GetSectors(work.id); }} style={snap.direction ? { width: '70%' } : { width: '100%' }} className="li w" tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</div>
+              <div onClick={() => { select(); setGroupID(work.id); GetSectors(work.id); }} style={snap.direction ? { width: '70%' } : { width: '100%' }} className={`li w ${clip.sector[0] && (clip.sector[0].at === work.id) ? "active" : null}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.name}</div>
             ))}
           </div>
         </> : <ProjectsList />}

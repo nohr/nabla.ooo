@@ -98,7 +98,7 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
     let { x, y } = position;
     state.navPosition = { x, y };
     cloud.drag = false;
-    container.current.style.display = "flex";
+    if (container.current) container.current.style.display = "flex";
   }
 
   return (

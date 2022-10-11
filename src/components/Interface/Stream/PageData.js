@@ -1,4 +1,4 @@
-import React, { useRef, memo } from 'react'
+import React, { useRef, memo, useEffect } from 'react'
 import { cloud } from '../../utils/state'
 import { Links, Program } from '../../utils/svg'
 import { GetSector, GetSectors } from '../../utils/common'
@@ -97,6 +97,12 @@ const ImgGrid = ({ work }) => {
 function PageData({ lot }, setSelectedImg) {
   const clip = useSnapshot(cloud);
   GetSector(lot);
+
+  useEffect(() => {
+    return () => {
+      cloud.sector = [];
+    }
+  }, [])
 
   return <>
     {clip.sector.map((work) => (
