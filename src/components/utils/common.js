@@ -322,13 +322,13 @@ export const GlobalStyle = createGlobalStyle`
   -moz-user-select: none;
   -webkit-user-select: none;
   -webkit-user-drag: none;
+    transition: 1s;
 
   & svg{
     ${props => props.fill}
     align-self:center;
     fill: ${props => props.theme.panelColor};
     color: ${props => props.theme.panelColor};
-    transition: 2.3s;
     pointer-events: none;
   }
 

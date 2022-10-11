@@ -309,7 +309,7 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
       <Suspense fallback={<Spinner />}>
         <PerspectiveCamera makeDefault ref={camera} target={clip.mobile ? target : [0, 2, 0]} zoom={1} position={clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition} far={80} near={.1} fov={clip.mobile ? 35 : 20} aspect={vWidth / vHeight} />
         {/* FOG */}
-        <fog attach="fog" args={[snap.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, clip.mobile ? snap.theme === 'light' ? 45 : 50 : 30]} />
+        <fog attach="fog" args={[snap.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, clip.mobile ? snap.theme === 'light' ? 45 : 50 : 50]} />
         <Lights />
       </Suspense>
       {clip.mobile ?
@@ -364,6 +364,7 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
               THREE.TOUCH.PAN,
           TWO: THREE.TOUCH.DOLLY_ROTATE
         }}
+
         enablePan={clip.mobile}
         enableDamping
         dampingFactor={1.8}

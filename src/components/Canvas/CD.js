@@ -1,6 +1,6 @@
 
 import { useFrame } from '@react-three/fiber';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import * as THREE from "three";
 import { useSnapshot } from 'valtio';
 import { cloud, state } from '../utils/state';
@@ -43,16 +43,23 @@ function Ball(props) {
 export function CD({ ...props }) {
   const cd = useRef();
   const clip = useSnapshot(cloud);
+  const snap = useSnapshot(state);
+
+  useEffect(() => {
+    if (cd.current) {
+      cd.current.rotation.x = -Math.PI / 2;
+      cd.current.rotation.y = Math.PI / 3.25;
+      cd.current.rotation.z = Math.PI / 2;
+    }
+  }, [])
 
   useFrame(() => {
-    if (clip.mobile) {
-      if (clip.talking) {
-        // console.log(cd.current);
-        cd.current.rotation.y += 0.05;
+    if (!clip.mobile) {
+      if ((clip.UILoading || clip.talking) && cd.current) {
+        cd.current.rotation.x += snap.loadSpeed;
+        cd.current.rotation.y += snap.loadSpeed;
+        cd.current.rotation.z += snap.loadSpeed;
       } else {
-        cd.current.rotation.x = Math.PI / -2.5;
-        cd.current.rotation.y = 0;
-        cd.current.rotation.z = 0;
       }
     }
   });

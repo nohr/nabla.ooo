@@ -361,10 +361,11 @@ const Nav = styled.div`
       padding: 0 5px;
       height: 100%;
       /* height: 26px; */
-      width: 90%;
+      width: 100%;
       position: relative;
       display: flex;
       justify-content: space-between;
+      justify-self: flex-start;
       /* overflow-x: scroll; */
       column-gap: 10px;
       border: 1px solid;
