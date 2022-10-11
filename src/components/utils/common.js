@@ -25,6 +25,10 @@ export const Folder = styled.div`
    ${props => props.border};
    backdrop-filter: blur(20px) !important;
 
+   &:hover > .ShowHideIcon{
+    fill: ${props => props.theme.textHover} !important;
+   }
+
    &.trayIcon{
     border-radius: 50% !important;
     justify-content: center;
@@ -59,20 +63,20 @@ export const Folder = styled.div`
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
-            /* border: 1px solid ${props => props.theme.panelColor}; */
-            border-radius: 50%;
-            justify-content: center;
-            display:flex;
-            height: 50px;
-            width: 50px;
-            flex-direction: column;
-            /* padding: 2px; */
+    /* border: 1px solid ${props => props.theme.panelColor}; */
+    border-radius: 50%;
+    justify-content: center;
+    display:flex;
+    height: 50px;
+    width: 50px;
+    flex-direction: column;
+    /* padding: 2px; */
 
-            & svg{
-                stroke:  ${props => props.theme.panelColor};
-            width: 28px !important;
-            stroke-width: 3px;
-            }
+    & svg{
+        stroke:  ${props => props.theme.panelColor};
+        width: 28px !important;
+        stroke-width: 3px;
+    }
    }
 
   &.circleButton{
@@ -480,7 +484,7 @@ a.active:not(.nablaWrapper){
       -webkit-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
       -moz-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
       box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
-      color: ${props => props.theme.textHover};
+      color: ${props => props.theme.textHover} !important;
       text-shadow: 1px 1px 3px #ebebeb;
       /* transition: 0.3s !important; */
     }
@@ -667,17 +671,17 @@ export function toHslString(color) {
 };
 export const originalColors = {
     light: {
-        panelColor: 'hsl(181, 100%, 20%)',
-        LiHover: "hsla(181, 100%, 20%, 0.67)",
+        panelColor: 'hsl(209, 100%, 20%)',
+        LiHover: "hsla(209, 100%, 20%, 0.67)",
         CD: "hsla(14, 31%, 84%, 1)",
-        Surface: "hsla(181, 100%, 80%, 1)",
+        Surface: "hsla(209, 100%, 80%, 1)",
         spotlight: "#ffffff",
     },
     dark: {
-        panelColor: "hsl(181, 31%, 80%)",
-        LiHover: "hsla(181, 31%, 80%, 0.67)",
-        Surface: "hsla(181, 15%, 40%, 1)",
-        spotlight: "hsla(181, 31%, 70%, 1)",
+        panelColor: "hsl(209, 31%, 80%)",
+        LiHover: "hsla(209, 31%, 80%, 0.67)",
+        Surface: "hsla(209, 15%, 40%, 1)",
+        spotlight: "hsla(209, 31%, 70%, 1)",
     }
 };
 export function closeWheel() {
@@ -686,7 +690,7 @@ export function closeWheel() {
 export function resetWheel() {
     state.colorWheel = false;
     state.monochrome = false;
-    state.hue = 181;
+    state.hue = 209;
     if (state.theme === 'light') {
         state.light.panelColor = originalColors.light.panelColor;
         state.light.placeholder = originalColors.light.panelColor;

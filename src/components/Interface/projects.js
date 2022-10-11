@@ -1,11 +1,11 @@
 //Projects -- Child of Panel
-import { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { cloud, state } from "../utils/state"
 import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
 import styled from "styled-components"
 import { getPosPro, GetSectors, styleHeaders, useWindowDimensions } from "../utils/common"
-import { Link } from "wouter"
+import { Link, useLocation } from "wouter"
 // import { useInfiniteHits } from "react-instantsearch-hooks-web"
 
 function Projects({ headwidth, select, open, close, confirm, reset }) {
@@ -14,6 +14,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
   const pro = useRef(null);
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
+  const [location, setLocation] = useLocation();
 
   // offset and direction of panel from nav
   let vWidth = useWindowDimensions().width;
@@ -50,7 +51,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
 
     return (<>
       {clip.sectors.map((work) => (
-        <Link onClick={() => { confirm(); }} style={snap.direction ? { width: '70%' } : { width: '100%' }} className="li w" to={`/${work.lot}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.projectName}</Link>
+        <Link onClick={() => { confirm(); }} style={snap.direction ? { width: '70%' } : { width: '100%' }} className={`li w ${location.substring(1) === work.lot ? "active" : null}`} to={`/${work.lot}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.projectName}</Link>
       ))}
     </>)
   }
@@ -101,98 +102,98 @@ export default Projects
 
 const Project = styled.div`
   padding: var(--panelPadding);
-  padding-bottom: 0;
-  position: absolute;
-  z-index: 4800;
-  left: var(--edge);
-  margin: 20px 0 0 0;
-  text-align: center;
-  /* overflow: scroll !important; */
-  display: grid;
-  justify-items: center;
-  align-items: start;
-  ${props => props.layout}
-  ${props => props.hide}
-  ${props => props.top}
-  -webkit-user-select: none;
+      padding-bottom: 0;
+      position: absolute;
+      z-index: 4800;
+      left: var(--edge);
+      margin: 20px 0 0 0;
+      text-align: center;
+      /* overflow: scroll !important; */
+      display: grid;
+      justify-items: center;
+      align-items: start;
+      ${props => props.layout}
+      ${props => props.hide}
+      ${props => props.top}
+      -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
 
-  &::-webkit-scrollbar{
-    display: none;
-  }
-  
-  * .li{
-    cursor: pointer;
-    backdrop-filter: blur(20px) !important;
-    margin: 0 0 4px 0;
-    width: 70%;
-    transition: 0.9s !important;
-  }
-  p{
-    /* position: fixed; */
-    margin: 3px auto 5px auto;
-    overflow: visible;
-    text-align: center;
-    border: 1px solid;
-    border-color: transparent transparent ${props => props.theme.panelColor} transparent;
-    transition: 0.9s;
+      &::-webkit-scrollbar{
+        display: none;
   }
 
-  .self, .client{
-    display: flex !important;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    align-items: center;
-    overflow-y: scroll;
-    overflow-x: visible;
-    padding: 2px 2px 0px 10px;
-    width: 90%;
-
-  .li{
-    transition: 0.3s !important;
+      * .li{
+        cursor: pointer;
+      backdrop-filter: blur(20px) !important;
+      margin: 0 0 4px 0;
+      width: 70%;
+      transition: 0.9s !important;
+  }
+      p{
+        /* position: fixed; */
+        margin: 3px auto 5px auto;
+      overflow: visible;
+      text-align: center;
+      border: 1px solid;
+      border-color: transparent transparent ${props => props.theme.panelColor} transparent;
+      transition: 0.9s;
   }
 
-    ::-webkit-scrollbar {
+      .self, .client{
+        display: flex !important;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      align-items: center;
+      overflow-y: scroll;
+      overflow-x: visible;
+      padding: 2px 2px 0px 10px;
+      width: 90%;
+
+      .li{
+        transition: 0.3s !important;
+  }
+
+      ::-webkit-scrollbar {
       -webkit-appearance: none;
       width: 5px;
       position: absolute;
     }
-    ::-webkit-scrollbar-thumb {
-      background-color: transparent;
+      ::-webkit-scrollbar-thumb {
+        background-color: transparent;
       border: 1px solid;
       border-color: ${props => props.theme.panelColor};
       border-radius: 4px;
       transition: 0.3s;
     }
-    ::-webkit-scrollbar-thumb:hover {
-      background-color: ${props => props.theme.panelColor};
-          box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-          -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-          -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-          transition: 0.3s;
+      ::-webkit-scrollbar-thumb:hover {
+        background-color: ${props => props.theme.panelColor};
+      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
+      transition: 0.3s;
     }
   }
 
-  #selfhead, #clienthead{
-          border-radius: 10px;
-        text-transform: uppercase !important;
-        font-size: 10px !important;
-        padding-bottom: 6px;
-  
-        @media screen and (min-height: 1087px) and (max-height:1300px) {
+      #selfhead, #clienthead{
+        border-radius: 10px;
+      text-transform: uppercase !important;
+      font-size: 10px !important;
+      padding-bottom: 6px;
+
+      @media screen and (min-height: 1087px) and (max-height:1300px) {
         font-size: 0.8vh !important;
         }
-        @media screen and (min-height:1300px) {
+      @media screen and (min-height:1300px) {
         font-size: 0.65vh !important;
         }
     }
 
-  .self{
-    padding-bottom: 0;
+      .self{
+        padding-bottom: 0;
   }
-  .client{
-    padding-bottom: 32px;
+      .client{
+        padding-bottom: 32px;
   }
-`
+      `

@@ -12,7 +12,7 @@ import { HomeButton, Quote } from './homeButton';
 import { Grabber, NextButton, PlayButton, ResetPosButton } from "./panelTools"
 import CircleType from "circletype"
 import { ColorWheel } from '@react-spectrum/color';
-import { Link } from "wouter"
+import { Link, useLocation } from "wouter"
 
 function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, handle, query, clear, refine, text, setText, resetButton, colorWheel, setColorWheel, color, setColor, open, close, setHovered, container }) {
   const snap = useSnapshot(state);
@@ -20,7 +20,8 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
   const nav = useRef(null);
   const wheel = useRef();
   const [focused, setFocused] = useState(false);
-  const [track, setTrack] = useState(`${snap.songIndex + 1}/${clip.songs.length}`);
+  const [location, setLocation] = useLocation();
+  // const [track, setTrack] = useState(`${snap.songIndex + 1}/${clip.songs.length}`);
 
   const headwidth = {
     first: {
@@ -136,12 +137,12 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
             </div>
             {!snap.colorWheel &&
               <>
-                <Link onClick={() => { clear(); select(); }} className="li w" to="/info"
+                <Link onClick={() => { clear(); select(); }} className={`li w ${location.substring(1) === "info" ? "active" : null}`} to="/info"
                   style={{ justifySelf: "flex-end" }}
                 >
                   Info
                 </Link>
-                <Link onClick={() => { clear(); select(); }} className="li w3" to="/store"
+                <Link onClick={() => { clear(); select(); }} className={`li w ${location.substring(1) === "store" ? "active" : null}`} to="/store"
                   style={{ justifySelf: "flex-start" }}>
                   Store
                 </Link >
@@ -357,11 +358,17 @@ const Nav = styled.div`
     }
 
     & .iconTray{
+      padding: 0 5px;
+      height: 100%;
+      /* height: 26px; */
       width: 90%;
       position: relative;
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
+      /* overflow-x: scroll; */
       column-gap: 10px;
+      border: 1px solid;
+       border-radius: 500px;
     }
   }
     .quote{
@@ -581,16 +588,19 @@ const Header = styled.div`
         flex-wrap: nowrap;
 `
 const SearchWrapper = styled.div`
+display: flex;
+align-items: center;
 position: relative;
 width: 100%;
 `
 const SearchBar = styled.input`
   border: none !important;
   width: 100%;
-  height: 20px;
+  height: 26px;
+  margin: auto 0;
   backdrop-filter: blur(20px) !important;
   display: flex;
-  border-radius: 250px 250px 500px 500px;
+  border-radius: 500px;
   background-color: transparent;
   box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
   -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
@@ -656,7 +666,7 @@ const SearchBar = styled.input`
 `
 export const BarIcon = styled.svg`
         position: absolute;
-        top: 43%;
+        top: 50%;
         left: 8px;
         transform: translateY( -57%);
         height: 12px;
@@ -672,7 +682,7 @@ export const BarIcon = styled.svg`
         `
 export const Clear = styled.svg`
         position: absolute;
-        top: 43%;
+        top: 52%;
         right: 15px;
         transform: translate(50%, -57%);
         height: 14px;
