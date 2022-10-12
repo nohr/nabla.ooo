@@ -4,7 +4,7 @@ import { cloud, state } from "../utils/state"
 import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
 import styled from "styled-components"
-import { getPosPro, GetSector, GetSectors, GetWorks, styleHeader, styleHeaders, useWindowDimensions } from "../utils/common"
+import { getPosPro, GetSector, GetSectors, useWindowDimensions } from "../utils/common"
 import { Link, useLocation } from "wouter"
 // import { useInfiniteHits } from "react-instantsearch-hooks-web"
 
@@ -22,8 +22,6 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
   let vWidth = useWindowDimensions().width;
   let vHeight = useWindowDimensions().height;
   const offset = getPosPro(snap, vWidth, vHeight);
-  const firstStyle = snap.direction ? { height: "75px" } : { height: "87px" };
-  const secondStyle = snap.direction ? { height: "133px" } : { height: "161px" };
   const layout = snap.direction ?
     !state.proSwitched ?
       `padding-left: 45px;padding-right: 40px; flex-direction: column; white-space: wrap;`
@@ -31,17 +29,15 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
     : `padding: 80px 12px 0px; flex-direction: row;`;
   const projectListLayout = "display: flex !important; flex-direction: column; align-items: flex-end; justify-content: center; overflow: scroll;";
   const top = snap.direction ? "padding-top: 10px;" : snap.proSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
-  const firstHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 };
   const secondHeader = snap.direction ? { width: "100%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 };
-  const headerstyle = hover ? { boxShadow: `0 30px 50px ${state.theme === 'light' ? state.light.LiHover : state.dark.LiHover}` } : null;
   const hide = snap.isPro ? "opacity: 1; pointer-events: all; transition: 0.2s; " : "opacity: 0; pointer-events: none; transition: 0s;";
 
   useEffect(() => {
     !snap.isPro ? close() : open();
     return () => {
-      setGroupID(null);
+      // setGroupID(null);
     }
-  }, [snap.isPro])
+  }, [snap.isPro, open, close])
 
   let groups = ["projectMedium", "type"]
   function handleGroups() { setGroupIndex(prev => (prev + 1) % groups.length); reset(); }
@@ -55,7 +51,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
 
     filter.sort((a, b) => a.length - b.length);
     // clip.types.reverse();
-    console.log(filter);
+    // console.log(filter);
     // Iterate over groups
     return <Group
       margin={snap.direction ? null : `
@@ -74,7 +70,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
           {groupIndex === 0 && clip.collection
             .filter((work) => work.projectMedium === title)
             .map((work) => <>
-              <Link onClick={() => { confirm(); }}
+              <Link onClick={() => { confirm(); setGroupID(work.id); GetSectors(work.id); }}
                 // style={snap.direction ? { width: '70%' } : { width: '100%' }}
                 className={`li w ${location.substring(1) === work.lot ? "active" : null}`}
                 to={`/${work.lot}`} tabIndex={state.isPro ? "0" : "-1"}
