@@ -4,7 +4,7 @@ import { cloud, state } from "../utils/state"
 import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
 import styled from "styled-components"
-import { getPosPro, GetSectors, GetWorks, styleHeader, styleHeaders, useWindowDimensions } from "../utils/common"
+import { getPosPro, GetSector, GetSectors, GetWorks, styleHeader, styleHeaders, useWindowDimensions } from "../utils/common"
 import { Link, useLocation } from "wouter"
 // import { useInfiniteHits } from "react-instantsearch-hooks-web"
 
@@ -30,7 +30,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
       : `padding-left: 40px;padding-right: 45px; flex-direction: column; white-space: wrap;`
     : `padding: 80px 12px 0px; flex-direction: row;`;
   const projectListLayout = "display: flex !important; flex-direction: column; align-items: flex-end; justify-content: center; overflow: scroll;";
-  const top = snap.direction ? "padding-top: 7px;" : snap.proSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
+  const top = snap.direction ? "padding-top: 10px;" : snap.proSwitched ? "padding-top: 50px !important;" : "padding-top: 80px;";
   const firstHeader = snap.direction ? { width: "62%" } : { width: "64%", gridColumnStart: 1, gridColumnEnd: 1, gridRowStart: 1, gridRowEnd: 1 };
   const secondHeader = snap.direction ? { width: "100%" } : { width: "64%", gridColumnStart: 2, gridColumnEnd: 2, gridRowStart: 1, gridRowEnd: 1 };
   const headerstyle = hover ? { boxShadow: `0 30px 50px ${state.theme === 'light' ? state.light.LiHover : state.dark.LiHover}` } : null;
@@ -53,6 +53,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
       && (filter.indexOf(work[groups[groupIndex]]) === -1)
       && filter.push(work[groups[groupIndex]]));
 
+    filter.sort((a, b) => a.length - b.length);
     // clip.types.reverse();
     console.log(filter);
     // Iterate over groups
@@ -77,7 +78,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
                 // style={snap.direction ? { width: '70%' } : { width: '100%' }}
                 className={`li w ${location.substring(1) === work.lot ? "active" : null}`}
                 to={`/${work.lot}`} tabIndex={state.isPro ? "0" : "-1"}
-                key={Math.random()}>{work.projectName}</Link>
+                key={work.lot}>{work.projectName}</Link>
             </>)}
           {groupIndex === 1 && clip.collection
             .filter((work) => work.type === title)
@@ -87,7 +88,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
                 style={clip.direction ? { width: '70%' } : { width: '80%' }}
                 className={`li w ${clip.sector[0] && (clip.sector[0].at === work.id) && "active"}`}
                 tabIndex={state.isPro ? "0" : "-1"}
-                key={Math.random()}>{work.name}</div>
+                key={work.lot}>{work.name}</div>
             </>)}
         </div>
       </TitleList>)}
@@ -98,7 +99,12 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
 
     return (<>
       {clip.sectors.map((work) => (
-        <Link onClick={() => { confirm(); }} style={snap.direction ? { width: '50%', margin: "0 auto" } : { width: '50%', margin: "0 auto" }} className={`li w ${location.substring(1) === work.lot ? "active" : null}`} to={`/${work.lot}`} tabIndex={state.isPro ? "0" : "-1"} key={Math.random()}>{work.projectName}</Link>
+        <Link onClick={() => { confirm(); GetSector(work.lot); }}
+          style={snap.direction ?
+            { width: '50%', margin: "0 auto" } : { width: '50%', margin: "0 auto" }}
+          className={`li w ${location.substring(1) === work.lot ? "active" : null}`}
+          to={`/${work.lot}`} tabIndex={state.isPro ? "0" : "-1"}
+          key={work.lot}>{work.projectName}</Link>
       ))}
     </>)
   }
@@ -158,7 +164,7 @@ const Project = styled.div`
         cursor: pointer;
       /* backdrop-filter: blur(10px) !important; */
       margin: 0 0 4px 0;
-      width: 70%;
+      width: 95%;
       transition: 0.9s !important;
   }
       p{

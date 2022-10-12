@@ -1220,7 +1220,8 @@ export async function GetSectors(id) {
 export async function GetSector(lot) {
     cloud.UILoading = true;
     const sectorRef = collection(db, "portfolio");
-    const sectorSnapshot = await getDocs(query(sectorRef, orderBy("projectYear", "desc"), where("lot", "==", `${lot}`)));
+    const sector = query(sectorRef, where("lot", "==", `${lot}`));
+    const sectorSnapshot = await getDocs(sector);
     cloud.sector = sectorSnapshot.docs.map(doc => doc.data());
     cloud.UILoading = false;
 };

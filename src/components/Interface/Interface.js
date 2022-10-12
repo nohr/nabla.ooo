@@ -185,7 +185,7 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
     </Route>
     {clip.projects.map((work) => (
       <Route key={`${work.lot}`} path={`/${work.lot}`}>
-        <Page hovered={hovered} setHovered={setHovered} container={container} title={`${work.lot} @ Nabla`} id={`${work.at}`} lot={`${work.lot}`} />
+        <Page hovered={hovered} setHovered={setHovered} container={container} title={`${work.projectName} @ Nabla`} id={`${work.at}`} lot={`${work.lot}`} />
       </Route>
     ))}
     <Route path="*">
