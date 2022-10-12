@@ -29,7 +29,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     isOpt: false,
     colorWheel: false,
     dragged: false,
-    prtSwitched: false,
+    proSwitched: false,
     setSwitched: false,
     direction: true,
     navPosition: { x: 0, y: 0 },
@@ -48,7 +48,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     CDRotationY: 0.002,
     CDRotationZ: 0.0001,
     loadSpeed: 0.15,
-    cameraPosition: [-20, 15, -1],
+    cameraPosition: [-20, 7, -1],
     //Theme
     auto: false,
     themeChanged: false,
@@ -120,12 +120,13 @@ subscribe(state, () => {
 // Short-term State
 export const cloud = proxy({
     // Firebase
-    projectGroups: [],
+    collection: [],
+    projects: [],
+    types: [],
     selfs: [],
     clients: [],
     sectors: [],
     sector: [],
-    projects: [],
     //UI
     skew: false,
     UILoading: true,

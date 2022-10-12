@@ -49,6 +49,7 @@ function Wall() {
           args={[70, 35]}
         />
         <meshPhongMaterial
+          color={snap.theme === "light" ? snap.light.sky : snap.dark.sky}
           opacity={0}
         />
       </mesh>
@@ -60,6 +61,7 @@ function Wall() {
           args={[70, 35]}
         />
         <meshPhongMaterial
+          color={snap.theme === "light" ? snap.light.sky : snap.dark.sky}
           opacity={0}
         />
       </mesh>
@@ -71,6 +73,7 @@ function Wall() {
           args={[70, 35]}
         />
         <meshPhongMaterial
+          color={snap.theme === "light" ? snap.light.sky : snap.dark.sky}
           opacity={0}
         />
       </mesh>
@@ -82,6 +85,7 @@ function Wall() {
           args={[70, 35]}
         />
         <meshPhongMaterial
+          color={snap.theme === "light" ? snap.light.sky : snap.dark.sky}
           opacity={0}
         />
       </mesh>

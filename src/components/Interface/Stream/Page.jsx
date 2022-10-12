@@ -16,7 +16,7 @@ import NotFound from "./NotFound";
 import { useSearchBox } from "react-instantsearch-hooks-web";
 import { useDocumentTitle } from "../../utils/common";
 
-export function Page({ id, lot, title, container, hovered }) {
+export function Page({ id, lot, title, container, hovered, setHovered }) {
   useDocumentTitle(title);
   const { query } = useSearchBox();
   const clip = useSnapshot(cloud);
@@ -29,6 +29,10 @@ export function Page({ id, lot, title, container, hovered }) {
     : snap.direction
     ? `padding-top: 300px !important; `
     : `padding-left: 300px !important; `;
+
+  useEffect(() => {
+    setHovered(false);
+  }, []);
 
   useEffect(() => {
     cloud.selectedImg = null;

@@ -23,7 +23,7 @@ export const Folder = styled.div`
   align-items: center;
   border-color: ${props => props.theme.panelColor};
    ${props => props.border};
-   backdrop-filter: blur(20px) !important;
+   /* backdrop-filter: blur(20px) !important; */
 
    &:hover > .ShowHideIcon{
     fill: ${props => props.theme.textHover} !important;
@@ -256,7 +256,7 @@ export const GlobalStyle = createGlobalStyle`
         --headOffset: 10px;
         --edge: 20px;
         --blur: 7px;
-        --transition:0.3s;
+        --transition:0.1s;
     }
     html, body, #root {
         /* isolation: isolate; */
@@ -322,7 +322,7 @@ export const GlobalStyle = createGlobalStyle`
   -moz-user-select: none;
   -webkit-user-select: none;
   -webkit-user-drag: none;
-    transition: 1s;
+    transition: 0.1s;
 
   & svg{
     ${props => props.fill}
@@ -887,21 +887,21 @@ export function getPosPro(snap, vWidth, vHeight) {
     if ((((state.direction ? vWidth : vHeight) - state.navWidth) - (state.dist * 2)) < (state.direction ? state.proPosition.x : state.proPosition.y)) {
         //goes over the right side
         //fix this
-        if (!state.prtSwitched) {
-            if (state.prtSwitched) {
-                state.prtSwitched = true;
+        if (!state.proSwitched) {
+            if (state.proSwitched) {
+                state.proSwitched = true;
                 console.log("my left");
                 return snap.direction ? left1 : up1
             } else {
-                state.prtSwitched = true;
+                state.proSwitched = true;
                 return snap.direction ? left1 : up1
             }
         } else {
-            if (state.prtSwitched) {
-                state.prtSwitched = true;
+            if (state.proSwitched) {
+                state.proSwitched = true;
                 return snap.direction ? left1 : up1
             } else {
-                state.prtSwitched = true;
+                state.proSwitched = true;
                 return snap.direction ? left1 : up1
             }
         }
@@ -909,20 +909,20 @@ export function getPosPro(snap, vWidth, vHeight) {
         return { x: 0, y: 0 }
     } else {
         //is normal
-        if (!state.prtSwitched) {
-            if (state.prtSwitched) {
-                state.prtSwitched = false;
+        if (!state.proSwitched) {
+            if (state.proSwitched) {
+                state.proSwitched = false;
                 return snap.direction ? right1 : down1
             } else {
-                state.prtSwitched = false;
+                state.proSwitched = false;
                 return snap.direction ? right1 : down1
             }
         } else {
-            if (state.prtSwitched) {
-                state.prtSwitched = false;
+            if (state.proSwitched) {
+                state.proSwitched = false;
                 return snap.direction ? right1 : down1
             } else {
-                state.prtSwitched = false;
+                state.proSwitched = false;
                 return snap.direction ? right1 : down1
             }
         }
@@ -943,7 +943,7 @@ export function getPosOpt(snap, vWidth, vHeight) {
         //goes over the right side
         if (state.setSwitched) {
             state.setSwitched = true;
-            if (!state.prtSwitched) {
+            if (!state.proSwitched) {
                 if (state.isPro) {
                     console.log("1");
                     return snap.direction ? left1 : up1;
@@ -964,7 +964,7 @@ export function getPosOpt(snap, vWidth, vHeight) {
             }
         } else {
             state.setSwitched = true;
-            if (!state.prtSwitched) {
+            if (!state.proSwitched) {
                 if (state.isPro) {
                     state.setSwitched = true;
                     console.log("5");
@@ -991,7 +991,7 @@ export function getPosOpt(snap, vWidth, vHeight) {
         //is normal
         if (state.setSwitched) {
             state.setSwitched = false;
-            if (!state.prtSwitched) {
+            if (!state.proSwitched) {
                 state.setSwitched = false;
                 if (state.isPro) {
                     return snap.direction ? left1 : up1;
@@ -1006,7 +1006,7 @@ export function getPosOpt(snap, vWidth, vHeight) {
                 }
             }
         } else {
-            if (!state.prtSwitched) {
+            if (!state.proSwitched) {
                 if (state.isPro) {
                     return snap.direction ? right2 : down2;
                 } else {
@@ -1041,8 +1041,27 @@ export function styleHeaders(headwidth, level, type, enter) {
             document.getElementById(type).style.boxShadow = `none`;
         }
     }
-}
+};
+export function styleHeader(headwidth, level, type, enter) {
+    if (enter) {
+        if (level === 1) {
+            // document.getElementById(type).style.width = headwidth.first.max;
+            type.current.style.boxShadow = `0 30px 50px ${state.theme === 'light' ? state.light.LiHover : state.dark.LiHover}`;
+        } else if (level === 2) {
+            // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.max : "115%";
+            type.current.style.boxShadow = `0 30px 50px ${state.theme === 'light' ? state.light.LiHover : state.dark.LiHover}`;
+        }
+    } else if (!enter) {
+        if (level === 1) {
+            // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.first.min : !state.direction ? headwidth.first.min : '100%';
+            type.current.style.boxShadow = `none`;
 
+        } else if (level === 2) {
+            // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.min : !state.direction ? headwidth.second.min : '123%';
+            type.current.style.boxShadow = `none`;
+        }
+    }
+}
 // MOBILE
 export const offset = 70;
 export function toggleModal(link, modal, setModal, setOffset, open, close) {
@@ -1160,26 +1179,20 @@ export async function GetWorks() {
     if (navigator.onLine) {
         cloud.UILoading = true;
         const colRef = collection(db, "portfolio");
-        const projects = query(colRef, orderBy("projectYear", "desc"), where("projectYear", "!=", null));
-        const selfs = query(colRef, orderBy("date", "desc"), where("type", "==", "self"));
-        const clients = query(colRef, orderBy("date", "desc"), where("type", "==", "client"));
+        const projects = query(colRef, orderBy("projectYear", "desc"));
+        const types = query(colRef, orderBy("date", "desc"));
 
+        const collectionSnapshot = await getDocs(colRef);
         const projectsSnapshot = await getDocs(projects);
-        const selfsSnapshot = await getDocs(selfs);
-        const clientsSnapshot = await getDocs(clients);
+        const typesSnapshot = await getDocs(types);
+
+        cloud.collection = collectionSnapshot.docs.map(doc => doc.data());
         cloud.projects = projectsSnapshot.docs.map(doc => doc.data());
-        cloud.selfs = selfsSnapshot.docs.map(doc => doc.data());
-        cloud.clients = clientsSnapshot.docs.map(doc => doc.data());
-
-        const projectGroupsRef = query(colRef, orderBy("name", "asc"), where("name", "!=", null))
-        const projectGroupsSnapshot = await getDocs(projectGroupsRef);
-        cloud.projectGroups = projectGroupsSnapshot.docs.map(doc => doc.data());
-
+        cloud.types = typesSnapshot.docs.map(doc => doc.data());
         cloud.UILoading = false;
     } else {
         return;
     }
-
 };
 export async function GetQuotes() {
     if (navigator.onLine) {

@@ -1,5 +1,5 @@
 import React, { useRef, memo, useEffect } from 'react'
-import { cloud } from '../../utils/state'
+import { cloud, state } from '../../utils/state'
 import { Links, Program } from '../../utils/svg'
 import { GetSector, GetSectors } from '../../utils/common'
 import { useSnapshot } from 'valtio'
@@ -99,6 +99,8 @@ function PageData({ lot }, setSelectedImg) {
   GetSector(lot);
 
   useEffect(() => {
+    state.isOpt = false;
+    state.isPro = false;
     return () => {
       cloud.sector = [];
     }

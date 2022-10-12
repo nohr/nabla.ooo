@@ -1,5 +1,5 @@
 //Navigator -- Child of <UI />
-import React, { useEffect, useRef, useState } from "react"
+import React, { memo, useEffect, useRef, useState } from "react"
 import Projects from "./projects"
 import Options from "./options"
 import { cloud, state } from "../utils/state"
@@ -120,7 +120,8 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
           </Header>
           <div className="grid">
             {navigator.onLine && <Search query={query} clear={clear} refine={refine} setFocused={setFocused} />}
-            <div className="iconTray">
+            <div className="iconTray"
+              style={clip.playMusic ? { borderColor: snap.theme === "light" ? snap.light.bwElement : snap.dark.bwElement } : null}>
               <ResetPosButton
                 resetButton={resetButton}
                 reset={reset}
@@ -317,7 +318,7 @@ function Search({ query, refine, clear, setFocused }) {
     </SearchWrapper>)
 }
 
-export default Navigator
+export default memo(Navigator)
 
 const Skew = styled.div`  
   transform: ${props => props.skew};

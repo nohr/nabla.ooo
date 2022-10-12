@@ -170,26 +170,26 @@ function Interface({ color, setColor, useSound, select, confirm, open, close }) 
       <source src={null}></source>
     </audio>
     <Route path="/">
-      <Page hovered={hovered} container={container} title={"Nabla"} id={"Home"} />
+      <Page hovered={hovered} setHovered={setHovered} container={container} title={"Nabla"} id={"Home"} />
     </Route>
     <Route path="/store">
-      <Page hovered={hovered} container={container} title={"Nabla Store"} id={"Store"} />
+      <Page hovered={hovered} setHovered={setHovered} container={container} title={"Nabla Store"} id={"Store"} />
     </Route>
     {/* <Route path="/blog" element={<Page
-        hovered={hovered} container={container} title={"Nabla Blog"} id={"Blog"} />} /> */}
+        hovered={hovered}setHovered={setHovered} container={container} title={"Nabla Blog"} id={"Blog"} />} /> */}
     <Route path="/info">
-      <Page hovered={hovered} container={container} title={"Nabla Info"} id={"Info"} />
+      <Page hovered={hovered} setHovered={setHovered} container={container} title={"Nabla Info"} id={"Info"} />
     </Route>
     <Route path="/contrast">
-      <Page hovered={hovered} container={container} title={"Contrast"} id={"Contrast"} />
+      <Page hovered={hovered} setHovered={setHovered} container={container} title={"Contrast"} id={"Contrast"} />
     </Route>
     {clip.projects.map((work) => (
       <Route key={`${work.lot}`} path={`/${work.lot}`}>
-        <Page hovered={hovered} container={container} title={`${work.lot} @ Nabla`} id={`${work.at}`} lot={`${work.lot}`} />
+        <Page hovered={hovered} setHovered={setHovered} container={container} title={`${work.lot} @ Nabla`} id={`${work.at}`} lot={`${work.lot}`} />
       </Route>
     ))}
     <Route path="*">
-      <Page hovered={hovered} container={container} title={"Nabla not found"} id={"NotFound"} />
+      <Page hovered={hovered} setHovered={setHovered} container={container} title={"Nabla not found"} id={"NotFound"} />
     </Route>
     {/* <Route
         path="*"
