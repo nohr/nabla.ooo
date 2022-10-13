@@ -231,9 +231,9 @@ export function Results({ select, confirm }) {
           </SideGroup>
           {window.matchMedia("(max-height: 1000px)").matches && <QuickInfo />}
           <ResultsGroup>
-            {filteredClients.length === 0 ? <h3>No Clients</h3> : <Number paddingLeft='30px' paddingRight='30px' right='15px'> Clients <h3>{filteredClients.length}</h3></Number>}
             {/* CLIENTS */}
-            {/* <ClientsLayer>
+            {/* {filteredClients.length === 0 ? <h3>No Clients</h3> : <Number paddingLeft='30px' paddingRight='30px' right='15px'> Clients <h3>{filteredClients.length}</h3></Number>}
+            <ClientsLayer>
               {filteredClients.map(one => (
                 <Client key={Math.random()}
                   onClick={() => { select(); refine(''); }}
