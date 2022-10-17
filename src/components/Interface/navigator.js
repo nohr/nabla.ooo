@@ -120,7 +120,7 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
           </Header>
           <div className="grid">
             {navigator.onLine && <Search query={query} clear={clear} refine={refine} setFocused={setFocused} />}
-            <div className="iconTray"
+            <TrayWrapper
               style={clip.playMusic ? { borderColor: snap.theme === "light" ? snap.light.bwElement : snap.dark.bwElement } : null}>
               <ResetPosButton
                 resetButton={resetButton}
@@ -135,7 +135,7 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
                 setSong={setSong}
                 select={select}
               />
-            </div>
+            </TrayWrapper>
             {!snap.colorWheel &&
               <>
                 <Link onClick={() => { clear(); select(); }} className={`li w ${location.substring(1) === "info" ? "active" : null}`} to="/info"
@@ -217,7 +217,6 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
     </Skew>
   )
 }
-
 
 function Search({ query, refine, clear, setFocused }) {
   const [placeholder, setPlaceholder] = useState("(alt + z)");
@@ -305,13 +304,13 @@ function Search({ query, refine, clear, setFocused }) {
       <SearchBarIcon />
       {query.length > 0 &&
         <div
+          id="clearIcon"
           onClick={
             () => {
               clear()
               Bar.current.focus()
             }
           }
-          id="clearIcon"
         >
           <ClearIcon />
         </div>}
@@ -326,7 +325,6 @@ const Skew = styled.div`
   position: absolute;
   z-index: 5000;
 `
-
 const Nav = styled.div`
   padding: 0 0 20px 0;
   position: absolute;
@@ -356,21 +354,6 @@ const Nav = styled.div`
 
     & .folder{
       width: 75%;
-    }
-
-    & .iconTray{
-      padding: 0 5px;
-      height: 100%;
-      /* height: 26px; */
-      width: 100%;
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      justify-self: flex-start;
-      /* overflow-x: scroll; */
-      column-gap: 10px;
-      border: 1px solid;
-       border-radius: 500px;
     }
   }
     .quote{
@@ -589,11 +572,27 @@ const Header = styled.div`
         flex-direction: column;
         flex-wrap: nowrap;
 `
+const TrayWrapper = styled.div`
+  transform: skewY(2deg);
+  padding: 0 5px;
+  height: 100%;
+  /* height: 26px; */
+  width: 100%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  justify-self: flex-start;
+  /* overflow-x: scroll; */
+  column-gap: 10px;
+  border: 1px solid;
+   border-radius: 500px;
+`
 const SearchWrapper = styled.div`
 display: flex;
 align-items: center;
 position: relative;
 width: 100%;
+transform: skewY(-2deg);
 `
 const SearchBar = styled.input`
   border: none !important;

@@ -1,5 +1,5 @@
 //Projects -- Child of Panel
-import React, { memo, useEffect, useRef, useState } from "react"
+import React, { memo, useEffect, useMemo, useRef, useState } from "react"
 import { cloud, state } from "../utils/state"
 import { useSnapshot } from "valtio"
 import Draggable from "react-draggable"
@@ -91,7 +91,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
     </Group>
   }
 
-  function ProjectsList() {
+  const ProjectsList = useMemo(function ProjectsList() {
 
     return (<>
       {clip.sectors.map((work) => (
@@ -103,7 +103,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
           key={work.lot}>{work.projectName}</Link>
       ))}
     </>)
-  }
+  })
 
   function Back() {
 
@@ -219,8 +219,7 @@ const Project = styled.div`
     }
   }
 
-      #selfhead, #clienthead{
-
+    #selfhead, #clienthead{
       @media screen and (min-height: 1087px) and (max-height:1300px) {
         font-size: 0.8vh !important;
         }
