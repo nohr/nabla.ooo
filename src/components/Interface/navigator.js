@@ -113,7 +113,8 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
         onDrag={onControlledDrag} >
         <Nav ref={nav} className="Panel nav">
           <Header style={focused ? { borderBottomColor: "#EBEBEB" } : null}
-            width={(snap.isOpt || snap.isPro) ? "100%" : "90%"}
+            // width={(snap.isOpt || snap.isPro) ? "100%" : "90%"}
+            width={"100%"}
           >
             <HomeButton nabla={nabla} dong={dong} clear={clear} query={query} />
             {<Quote text={text} setText={setText} />}
