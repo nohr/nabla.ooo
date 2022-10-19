@@ -48,7 +48,7 @@ const initialState = storedStateString ? JSON.parse(storedStateString) : {
     CDRotationY: 0.002,
     CDRotationZ: 0.0001,
     loadSpeed: 0.15,
-    cameraPosition: [-20, 7, -1],
+    cameraPosition: [-20, 3, -1],
     //Theme
     auto: false,
     themeChanged: false,

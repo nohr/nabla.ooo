@@ -91,7 +91,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
     </Group>
   }
 
-  const ProjectsList = useMemo(function ProjectsList() {
+  function ProjectsList() {
 
     return (<>
       {clip.sectors.map((work) => (
@@ -103,7 +103,7 @@ function Projects({ headwidth, select, open, close, confirm, reset }) {
           key={work.lot}>{work.projectName}</Link>
       ))}
     </>)
-  })
+  }
 
   function Back() {
 
