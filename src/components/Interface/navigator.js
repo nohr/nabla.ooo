@@ -163,7 +163,7 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
               </>}
             {snap.colorWheel &&
               <>
-                <Folder onClick={() => { state.monochrome = !state.monochrome; select(); }} className={`li w mono ${snap.monochrome ? "glow" : null}`} style={{ color: snap.monochrome ? snap.theme == 'light' ? snap.light.sky : snap.dark.sky : null }}
+                <Folder onClick={() => { state.monochrome = !state.monochrome; select(); }} className={`li w mono ${snap.monochrome ? "glow" : null}`} style={{ color: snap.monochrome ? snap.theme === 'light' ? snap.light.sky : snap.dark.sky : null }}
                 >Monochrome</Folder>
                 <Folder onClick={() => { closeWheel(); confirm(); }} className="li w Color">Confirm</Folder>
                 <Folder onClick={() => { resetWheel(); reset(); }} className="li w Reset">Reset</Folder>
