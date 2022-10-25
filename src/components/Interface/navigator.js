@@ -574,7 +574,7 @@ const Header = styled.div`
         flex-wrap: nowrap;
 `
 const TrayWrapper = styled.div`
-  transform: skewY(-2deg);
+  transform: skewY(2deg);
   padding: 0 5px;
   height: 100%;
   /* height: 26px; */
@@ -593,7 +593,7 @@ display: flex;
 align-items: center;
 position: relative;
 width: 100%;
-transform: skewY(2deg);
+transform: skewY(-2deg);
 `
 const SearchBar = styled.input`
   border: none !important;
