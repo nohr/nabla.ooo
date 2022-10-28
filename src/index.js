@@ -5,7 +5,6 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Configure, InstantSearch } from 'react-instantsearch-hooks-web';
 import { GetWorks, routing, Theme } from "./components/utils/common";
-import { cloud } from "./components/utils/state";
 import { Router, Switch } from "wouter";
 import { searchClient } from "./components/utils/api";
 

@@ -1,9 +1,7 @@
 //utils.js - global helper functions
 import { useRef, useState, useEffect } from 'react';
-import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDocs, orderBy, where, query } from "firebase/firestore/lite";
 import { getStorage, getDownloadURL, ref } from "firebase/storage";
-import algoliasearch from "algoliasearch";
 import { history } from 'instantsearch.js/es/lib/routers';
 import styled, { createGlobalStyle } from "styled-components";
 import { state, cloud } from "./state";

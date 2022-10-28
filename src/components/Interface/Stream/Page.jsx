@@ -32,7 +32,7 @@ export function Page({ id, lot, title, container, hovered, setHovered }) {
 
   useEffect(() => {
     setHovered(false);
-  }, []);
+  }, [setHovered]);
 
   useEffect(() => {
     cloud.selectedImg = null;
