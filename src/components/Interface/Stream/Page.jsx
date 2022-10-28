@@ -327,7 +327,7 @@ export const Container = styled.div`
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   position: fixed;
   z-index: 470;

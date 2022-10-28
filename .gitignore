@@ -37,3 +37,4 @@ Thumbs.db
 #src/firebase.js
 
 .dockerignore
+api.js

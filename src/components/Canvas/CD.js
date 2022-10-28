@@ -60,6 +60,7 @@ export function CD({ ...props }) {
         cd.current.rotation.y += snap.loadSpeed;
         cd.current.rotation.z += snap.loadSpeed;
       } else {
+        return;
       }
     }
   });

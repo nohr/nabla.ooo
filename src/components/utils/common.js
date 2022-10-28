@@ -7,6 +7,7 @@ import algoliasearch from "algoliasearch";
 import { history } from 'instantsearch.js/es/lib/routers';
 import styled, { createGlobalStyle } from "styled-components";
 import { state, cloud } from "./state";
+import { app } from './api';
 
 // CANVAS
 export const target = [0, 6, 3];
@@ -814,10 +815,13 @@ export function handleClick(clip, query, dong, clear, nabla, svg) {
                 // TODO: Trigger smile animation
                 // TODO: lengthen speech to amount of words spoken
                 newQuote();
+                const color = setInterval(() => {
+                    state.hue += factor;
+                }, 300);
+                setTimeout(() => { clearInterval(color) }, 400)
                 const loop = setInterval(() => {
                     // toggleTheme();
                     // document.getElementById("theme-color").style.transition = cloud.playRate * 500;
-                    state.hue += factor;
                     (state.hue + getRandom(50, 10) < 360) ? state.hue += getRandom(50, 10) : state.hue = 0;
                     cloud.playRate = (Math.random() * (1.00 - 0.65) + 0.65).toFixed(2);
                     dong();
@@ -1164,15 +1168,6 @@ export function useDocumentTitle(title, prevailOnUnmount = false) {
 };
 
 //FIREBASE
-const app = initializeApp({
-    apiKey: "AIzaSyCEs-MUh6kHufZ5aKwGV1shjq-t85PhYFk",
-    authDomain: "nabla7.firebaseapp.com",
-    projectId: "nabla7",
-    storageBucket: "nabla7.appspot.com",
-    messagingSenderId: "22669283456",
-    appId: "1:22669283456:web:ebd01b9cc2653ea9e7d665",
-    measurementId: "G-FQ3S1GMV92"
-});
 export const db = getFirestore(app);
 export const storage = getStorage(app);
 export async function GetWorks() {
@@ -1243,7 +1238,6 @@ export async function GetBlog() {
 };
 
 //ALGOLIA SEARCH
-export const searchClient = algoliasearch('QYRMFVSZ3U', 'a5bc9e2f6d2b720f636a828233179a8f');
 const indexName = 'projects';
 export const routing = {
     router: history(),
