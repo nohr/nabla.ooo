@@ -4,7 +4,7 @@ import { history } from "instantsearch.js/es/lib/routers";
 // Todo: regenerate
 export const searchClient = algoliasearch(
   "QYRMFVSZ3U",
-  process.env.REACT_APP_AlgoliaKey
+  `3cf41cfa3191ce46555826c7669e643f`
 );
 
 //ALGOLIA SEARCH
