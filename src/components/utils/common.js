@@ -1,628 +1,55 @@
 //utils.js - global helper functions
-import { useRef, useState, useEffect } from 'react';
-import { getFirestore, collection, getDocs, orderBy, where, query } from "firebase/firestore/lite";
-import { getStorage, getDownloadURL, ref } from "firebase/storage";
-import { history } from 'instantsearch.js/es/lib/routers';
-import styled, { createGlobalStyle } from "styled-components";
+import { useRef, useState, useEffect } from "react";
 import { state, cloud } from "./state";
-import { app } from './api';
+import { LoadSong, newQuote } from "./API/firebase.service";
 
 // CANVAS
 export const target = [0, 6, 3];
 
-// GLOBAL STYLING
-export const Folder = styled.div`
-  width: 100%;
-  margin: 3px 0;
-  padding: 2px 0;
-  display: block;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-color: ${props => props.theme.panelColor};
-   ${props => props.border};
-   /* backdrop-filter: blur(20px) !important; */
-
-   &:hover > .ShowHideIcon{
-    fill: ${props => props.theme.textHover} !important;
-   }
-
-   &.trayIcon{
-    border-radius: 50% !important;
-    justify-content: center;
-    width: 20px !important;
-    height: 20px !important;
-
-    &:hover > svg{
-        fill: ${props => props.theme.textHover} !important;
-    }
-    svg{
-        overflow: visible;
-        height: 12px !important;
-        width: 12px !important;
-    }
-   }
-
-   &.mono{
-    width: 60% !important;
-    grid-area: 3/ 1/span 1/ span 2;
-    text-align: center;
-     color: ${props => props.theme.bwElement};
-     border: 1px solid ${props => props.theme.bwElement};
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    user-select: none; /* Standard */
-   }
-
-   &.resetPos{
-    pointer-events: all;
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* IE10+/Edge */
-    user-select: none; /* Standard */
-    /* border: 1px solid ${props => props.theme.panelColor}; */
-    border-radius: 50%;
-    justify-content: center;
-    display:flex;
-    height: 50px;
-    width: 50px;
-    flex-direction: column;
-    /* padding: 2px; */
-
-    & svg{
-        stroke:  ${props => props.theme.panelColor};
-        width: 28px !important;
-        stroke-width: 3px;
-    }
-   }
-
-  &.circleButton{
-    border-radius: 50% !important;
-    width: 50px !important;
-    height: 50px !important;
-    display: flex !important;
-    justify-content: center !important;
-  }
-
-  &.color{
-    border-color: #ebebeb !important;
-    fill: ${props => props.theme.LiHover};
-    background-color: ${props => props.theme.LiHover};
-    -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.LiHover});
-    filter: drop-shadow(1px 1px 6px ${props => props.theme.LiHover});
-    text-align: center;
-
-    & svg{
-        animation: flashConfirm 1s steps(5, start) infinite;
-        animation-delay: 3s;
-        -webkit-filter:none;
-        filter:none ;
-        fill: #ebebeb;
-    }
-    transition: 0s;
-    outline: 0px;
-
-  }
-  &.reset{
-  border-color: #ebebeb !important;
-    color: #ebebeb;
-    background-color: ${props => props.theme.LiActiveBackground};
-    -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.LiActiveBackground});
-    filter: drop-shadow(1px 1px 6px ${props => props.theme.LiActiveBackground});
-    text-align: center;
-    transition: 0.3s;
-  }
-
-  .light, .dark{
-    stroke-width: 1px !important;
-  }
-  .nextIcon, .muteIcon, .ShowHideIcon, .ColorIcon{
-    fill: ${props => props.theme.panelColor} !important;
-    overflow: visible;
-  }
-  /* .modeIcon{
-    stroke-width: 1px !important;
-  } */
-  .ConfirmIcon,  .ResetIcon{
-    height: 80%;
-  }
-  .ResetIcon{
-    fill: #ebebeb;
-  }
-
-  .PlayPauseIcon{
-    fill: ${props => props.theme.panelColor} !important;
-    overflow: visible;
-  }
-  .DirectionIcon{
-    /* stroke: transparent !important; */
-    fill: ${props => props.theme.panelColor} !important;
-    stroke-width: 1px !important;
-    overflow: visible;
-  }
-
-  &.songinfo{
-    cursor: text;
-    user-select: text !important;
-    -ms-user-select: text !important;
-    -moz-user-select: text !important;
-    -webkit-user-select: text !important;
-    border-radius: 10px !important;
-    background: inherit !important;
-    padding: 3px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    margin: 0 0 4px 15px !important;
-    width: 100% !important;
-    height: 50px !important;
-
-    & textarea{
-        padding: 0 !important;
-        border: none !important;
-        background-color: transparent !important;
-        width: 95% !important;
-        height: inherit;
-        /* height: fit-content !important; */
-        resize: none;
-        color: ${props => props.theme.panelColor} !important;
-        ::-webkit-scrollbar{
-            display: none !important;
-        }
-        &:active{
-            border: 1px solid ${props => props.theme.panelColor} !important;
-
-        }
-    }
-    &:hover{
-        background-color: ${props => props.theme.layerBG} !important;
-        box-shadow: inherit !important;
-        color: inherit !important;
-    }
-
-  }
-`
-export const Song = styled.p`
-    position: absolute;
-     top: 6px;
-    /* margin: 0 auto; */
-    ${props => props.position}
-    margin: 0;
-    /* transform: translate(-30%, 0%) !important; */
-    border: none;
-    white-space: nowrap;
-    /* pointer-events: none;
-    opacity: 0; */
-    animation: flash 2s infinite;
-    transition: 1.3s;
-    cursor: pointer;
-    -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-
-    @media only screen and (min-width: 768px) {
-        & {
-            bottom: 10px;
-            top: unset;
-        }
-    }
-  
-  @keyframes flash {
-	0% {
-		color: ${props => props.theme.panelColor};
-	}
-
-	70% {
-		color: ${props => props.theme.sky};
-    -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
-    filter: drop-shadow(1px 1px 6px ${props => props.theme.sky});
-	}
-
-	100% {
-		color: ${props => props.theme.panelColor};
-	}
-}
-`
-export const Wheel = styled.div`
-@media only screen and (max-width: 768px) {
-  & {
-   backdrop-filter: blur(20px) !important;
-  }
-}
-   bottom: unset !important;
-  position: absolute;
-  z-index: 4900;
-  left: 0;
-  transition: 0.9s !important;
-  opacity: ${props => props.opacity};
-  pointer-events: ${props => props.pointerEvents} !important;
-  transition: ${props => props.transition};
-  &*{
-  border-width: 0px !important;
-  }
-
-`
-export const GlobalStyle = createGlobalStyle`
-    //App
-    :root{
-        --theme: ${props => props.theme.sky};
-        --panelWidth: 270px;
-        --panelHeight: 270px;
-        --panelPadding: 6px 42.5px;
-        --headOffset: 10px;
-        --edge: 20px;
-        --blur: 7px;
-        --transition:0.1s;
-    }
-    html, body, #root {
-        /* isolation: isolate; */
-        background-color: ${props => props.theme.sky};
-    }
-
-    *::selection{
-      color:  ${props => props.theme.textHover};
-      background-color:  ${props => props.theme.LiHover};
-    }
-    *{
-      /* filter:contrast(1.1) ; */
-      animation-delay: 0s;
-::-webkit-scrollbar {
-    -webkit-appearance: none;
-    width: 5px;
-    display: flex;
-  }
-  ::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.panelColor};
-    border-radius: 4px;
-    /* transition: 0.3s; */
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: ${(props) => props.theme.panelColor};
-    box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
-    -webkit-box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
-    -moz-box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
-    /* transition: 0.3s; */
-  }
-    }
-
-          .gugmu9vdpaw div {
-        box-shadow: 0 1.8px 0 0 ${props => props.theme.panelColor} !important;
-      }
-
-      .gugmu9vdpaw p {
-        font-size: 64px;
-        font-weight: 800;
-        color: ${props => props.theme.panelColor} !important;
-        text-shadow: 0 1px 1 1 ${props => props.theme.panelColor} !important;
-
-      }
-      // LOGO
-      .nablaWrapper{
-         height: 70px;
-  width: 130px;
-  display: flex;
-  justify-content: center;
-  /* margin: 10px 0 0px 0; */
-  backdrop-filter: blur(20px) !important;
-  padding-top: 5px;
-  padding-bottom: 3px;
-  border-radius: 75% 75% 50px 50px;
-  border: 1px solid ${props => props.theme.panelColor};
-  overflow: visible;
-  background-color: transparent !important;
-  -webkit-box-shadow: none !important;
-  -moz-box-shadow: none !important;
-  box-shadow: none !important;
-  user-select:none ;
-  -ms-user-select: none;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -webkit-user-drag: none;
-    transition: 0.1s;
-
-  & svg{
-    ${props => props.fill}
-    align-self:center;
-    fill: ${props => props.theme.panelColor};
-    color: ${props => props.theme.panelColor};
-    pointer-events: none;
-  }
-
-  &:hover{
-    background-color: ${props => props.theme.LiHover} !important;
-    -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    transition: 0.6s;
-  }
-
-  @media only screen and (min-width: 768px) {
-    /* &:hover {
-    background-color: ${props => props.theme.LiHover} !important;
-    -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    transition: 0.6s;
-  } */
-      &:hover > svg{
-    fill: ${props => props.theme.textHover};
-    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
-    filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
-    transition: 1.0s;
-  }
-}
-      }
-
-    //Panel
-    .Panel {
-      background-color: #00000000;
-      width: var(--panelWidth);
-      height: var(--panelHeight);
-      scroll-snap-type: none;
-        backdrop-filter: blur(20px) !important;
-      /* backdrop-filter: blur(var(--blur)); */
-      /* -webkit-backdrop-filter: blur(var(--blur)); */
-      border: 1px solid ${props => props.theme.panelColor};
-      color: ${props => props.theme.panelColor};
-      border-radius: 185px;
-      overflow: hidden;
-        /* backdrop-filter: blur(10px) !important; */
-      & *{
-
-        -webkit-user-drag: none;
-      }
-      & .li{
-        border-radius: 250px 250px 500px 500px;
-      }
-    }
-
-    .glow{
-        & *{
-            opacity: 0;
-        }
-      fill: ${props => props.theme.LiHover} !important;
-      background-color: ${props => props.theme.LiHover} !important;
-      /* color: ${props => props.theme.bwElement} !important; */
-      /* mix-blend-mode: ${props => props.theme.blend}; */
-      box-shadow: 0 8px 32px 0 ${props => props.theme.LiHover};
-      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
-      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.LiHover};
-      /* transition: 1s; */
-      /* animation: pulseItem 2s infinite; */
-    }
-
-// animation keyframes
-    @keyframes pulseItem {
-	0% {
-		text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
-      box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
-      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
-      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
-	}
-
-	50% {
-		text-shadow: 1px 1px 30px ${props => props.theme.LiHover};
-      box-shadow: 0 8px 12px 0 ${props => props.theme.panelColor};
-      -webkit-box-shadow:  0 8px 12px 0 ${props => props.theme.panelColor};
-      -moz-box-shadow:  0 8px 12px 0 ${props => props.theme.panelColor};
-	}
-
-	100% {
-		text-shadow: 1px 1px 10px ${props => props.theme.LiHover};
-      box-shadow: 0 8px 32px 0 ${props => props.theme.panelColor};
-      -webkit-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
-      -moz-box-shadow:  0 8px 32px 0 ${props => props.theme.panelColor};
-	}
-}
-    @keyframes flashConfirm {
-  to {
-    visibility: hidden;
-  }
-}
-
-    //Links
-    a{
-      text-decoration: none;
-      width: 100%;
-      margin: 3px 0;
-      padding: 2px 0;
-      display: block;
-}  
-a.active:not(.nablaWrapper){
-  background-color: ${props => props.theme.LiActiveBackground};
-  color:  ${props => props.theme.textHover};
-  -webkit-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
-  -moz-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
-  box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
-  text-shadow: 1px 1px 3px  ${props => props.theme.textHover};
-  /* font-style: italic; */
-}
-    .li{
-      border-radius: 12px;
-    }
-    .li, .folder {
-        color: ${props => props.theme.panelColor};
-        transition: 0.9s;
-    }
-    .folderActive {
-      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
-      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
-      -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
-      color:  ${props => props.theme.panelColor} !important;
-      font-style: italic !important;
-    }
-    .folderActive:hover{
-      box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
-      -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor} !important;
-      /* border: 1px solid ${props => props.theme.LiHover} ; */
-    }
-    .folderActive:after{
-      border-radius: 5px !important;
-    }
-      .active:not(.nablaWrapper){
-        border-color: #ebebeb;
-  background-color: ${props => props.theme.LiActiveBackground};
-  color:  ${props => props.theme.textHover};
-  -webkit-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
-  -moz-box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
-  box-shadow: 0px 2px 10px 1px  ${props => props.theme.LiActiveBackground};
-  text-shadow: 1px 1px 3px  ${props => props.theme.textHover};
-  /* font-style: italic; */
-
-   & svg{
-    fill: ${props => props.theme.textHover};
-    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});
-    filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover});  
-  }
-}
-    .li:hover {
-      background-color: ${props => props.theme.LiHover};
-      -webkit-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
-      -moz-box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
-      box-shadow: 0px 2px 10px 1px ${props => props.theme.LiHover};
-      color: ${props => props.theme.textHover} !important;
-      text-shadow: 1px 1px 3px #ebebeb;
-      /* transition: 0.3s !important; */
-    }
-    .arrow {
-      fill: ${props => props.theme.panelColor};
-      height: clamp(8px, 12px, 12px);
-      float: right;
-    }
-    .li svg{
-      transition: var(--transition);
-      pointer-events: none;
-    }
-    .li:hover > svg {
-      fill: ${props => props.theme.textHover};
-      stroke: ${props => props.theme.textHover} !important;
-      -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
-      filter: drop-shadow(1px 1px 6px ${props => props.theme.textHover});
-      /* transition: 0.3s !important; */
-    }
-
-    .li:hover > .ColorIcon{
-      stroke: inherit !important;
-      -webkit-filter: drop-shadow(1px 1px 6px inherit) !important;
-      filter: drop-shadow(1px 1px 6px inherit) !important;
-
-    }
-    .notfound {
-      width: 100vw;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-items: center;
-      justify-content: center;
-      flex-direction: column;
-    }
-
-//Not Mobile
-
-@media only screen and (min-width: 1920px) {
-  .sector{
-    height: 70%;
-  }
-}
-@media only screen and (min-width: 768px) {
-  .info{
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: space-between;
-    padding-bottom: 60px;
-  }
-  .info .text{
-    width: 590px;
-    /* margin: 0 30px; */
-  }
-
-}
-.spectrum-ColorWheel-gradient_31462a:before,
-.spectrum-ColorWheel-gradient_31462a:after{
-  border-color: ${props => props.theme.panelColor};
-}
-
-  .spectrum-ColorLoupe_c818a8.is-open_c818a8{
-    opacity: 0 !important;
-  }
-  .spectrum-ColorWheel_31462a .spectrum-ColorWheel-handle_31462a{
-    height: 120px;
-    width: 120px;
-    border-color: ${props => props.theme.panelColor} !important;
-    background-color:  ${props => props.theme.panelColor} !important;
-     @media screen and (min-width:768px) {
-        &{
-             height: 50px;
-            width: 50px;
-        }
-    }
-  }
-  .spectrum-ColorHandle-color_5a9f41{
-    border-color: ${props => props.theme.panelColor} !important;
-    background-color:  ${props => props.theme.panelColor} !important;
-  }
-`
-
 //AUDIO
-function LoadSong(current, song) {
-    let audio = current.current;
-    getDownloadURL(ref(storage, `gs://nabla7.appspot.com/assets/songs/${song.name}.mp3`))
-        .then((url) => {
-            cloud.songs[state.songIndex].url = url;
-            audio.setAttribute('src', url);
-            cloud.playMusic = true;
-            audio.play();
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-};
 export function ToggleMusic(current, setSong) {
-    let audio = current.current;
-    if (!cloud.songs[state.songIndex].url) {
-        LoadSong(current, cloud.songs[state.songIndex]);
-    } else {
-        if (cloud.playMusic === false) {
-            cloud.playMusic = true;
-            audio.play();
-        } else if (cloud.playMusic === true) {
-            cloud.playMusic = false;
-            audio.pause();
-        }
+  let audio = current.current;
+  if (!cloud.songs[state.songIndex].url) {
+    LoadSong(current, cloud.songs[state.songIndex]);
+  } else {
+    if (cloud.playMusic === false) {
+      cloud.playMusic = true;
+      audio.play();
+    } else if (cloud.playMusic === true) {
+      cloud.playMusic = false;
+      audio.pause();
     }
-    audio.onended = () => NextSong(current, setSong);
-};
+  }
+  audio.onended = () => NextSong(current, setSong);
+}
 export function NextSong(current, setSong) {
+  function next() {
+    let audio = current.current;
 
-    function next() {
-        let audio = current.current;
+    cloud.playMusic = false;
+    audio.pause();
+    console.log(state.songIndex);
 
-        cloud.playMusic = false;
-        audio.pause();
-        console.log(state.songIndex);
-
-        if (state.songIndex < cloud.songs.length - 1) {
-            state.songIndex += 1;
-        } else {
-            state.songIndex = 0;
-        }
-        if (!cloud.songs[state.songIndex].url) {
-            LoadSong(current, cloud.songs[state.songIndex]);
-        } else {
-            audio.setAttribute('src', cloud.songs[state.songIndex].url);
-            audio.play();
-        }
+    if (state.songIndex < cloud.songs.length - 1) {
+      state.songIndex += 1;
+    } else {
+      state.songIndex = 0;
     }
-    next();
-    setSong(
-        `${cloud.songs[state.songIndex].artist} - ${cloud.songs[state.songIndex].name
-        }`);
-    current.current.onEnded = () => next();
-};
+    if (!cloud.songs[state.songIndex].url) {
+      LoadSong(current, cloud.songs[state.songIndex]);
+    } else {
+      audio.setAttribute("src", cloud.songs[state.songIndex].url);
+      audio.play();
+    }
+  }
+  next();
+  setSong(
+    `${cloud.songs[state.songIndex].artist} - ${
+      cloud.songs[state.songIndex].name
+    }`
+  );
+  current.current.onEnded = () => next();
+}
 
 //DISPLAY
 let darkStringAlpha;
@@ -635,634 +62,650 @@ let cd;
 let fogLight = "hsl(360, 0%, 72%)";
 
 export function toHslString(color) {
-    if (state.monochrome) {
-        string = `hsl(0, 0%, 0%)`
-        darkString = `hsl(0, 100%, 100%)`
-        stringAlpha = `hsla(0, 100%, 0%, 0.67)`
-        darkStringAlpha = `hsla(0, 100%, 100%, 0.45)`
-        surface = `#fafafa`;
-        darkSurface = `#7a7a7a`;
-        cd = `hsla(0, 100%, 100%, 1)`;
-    } else {
-        string = `hsl(${color}, 100%, 20%)`
-        darkString = `hsl(${color}, 41%, 74%)`
-        stringAlpha = `hsla(${color}, 100%, 20%, 0.67)`
-        darkStringAlpha = `hsla(${color}, 51%, 64%, 0.67)`
-        surface = `hsla(${color}, 100%, 80%, 1)`;
-        darkSurface = `hsla(${color}, 15%, 40%, 1)`;
-        cd = `hsla(${color}, 31%, 84%, 1)`;
-    }
+  if (state.monochrome) {
+    string = `hsl(0, 0%, 0%)`;
+    darkString = `hsl(0, 100%, 100%)`;
+    stringAlpha = `hsla(0, 100%, 0%, 0.67)`;
+    darkStringAlpha = `hsla(0, 100%, 100%, 0.45)`;
+    surface = `#fafafa`;
+    darkSurface = `#7a7a7a`;
+    cd = `hsla(0, 100%, 100%, 1)`;
+  } else {
+    string = `hsl(${color}, 100%, 20%)`;
+    darkString = `hsl(${color}, 41%, 74%)`;
+    stringAlpha = `hsla(${color}, 100%, 20%, 0.67)`;
+    darkStringAlpha = `hsla(${color}, 51%, 64%, 0.67)`;
+    surface = `hsla(${color}, 100%, 80%, 1)`;
+    darkSurface = `hsla(${color}, 15%, 40%, 1)`;
+    cd = `hsla(${color}, 31%, 84%, 1)`;
+  }
 
-    if (state.theme === 'light') {
-        state.light.panelColor = string;
-        state.light.placeholder = string;
-        state.light.LiHover = stringAlpha;
-        state.light.CD = cd;
-        state.light.Surface = surface;
-        state.light.spotlight = fogLight;
-    } else if (state.theme === 'dark') {
-        state.dark.panelColor = darkString;
-        state.dark.placeholder = darkString;
-        state.dark.LiHover = darkStringAlpha;
-        state.dark.Surface = darkSurface;
-        state.dark.spotlight = darkString;
-    }
-};
+  if (state.theme === "light") {
+    state.light.panelColor = string;
+    state.light.placeholder = string;
+    state.light.LiHover = stringAlpha;
+    state.light.CD = cd;
+    state.light.Surface = surface;
+    state.light.spotlight = fogLight;
+  } else if (state.theme === "dark") {
+    state.dark.panelColor = darkString;
+    state.dark.placeholder = darkString;
+    state.dark.LiHover = darkStringAlpha;
+    state.dark.Surface = darkSurface;
+    state.dark.spotlight = darkString;
+  }
+}
 export const originalColors = {
-    light: {
-        panelColor: 'hsl(209, 100%, 20%)',
-        LiHover: "hsla(209, 100%, 20%, 0.67)",
-        CD: "hsla(14, 31%, 84%, 1)",
-        Surface: "hsla(209, 100%, 80%, 1)",
-        spotlight: "#ffffff",
-    },
-    dark: {
-        panelColor: "hsl(209, 31%, 80%)",
-        LiHover: "hsla(209, 31%, 80%, 0.67)",
-        Surface: "hsla(209, 15%, 40%, 1)",
-        spotlight: "hsla(209, 31%, 70%, 1)",
-    }
+  light: {
+    panelColor: "hsl(209, 100%, 20%)",
+    LiHover: "hsla(209, 100%, 20%, 0.67)",
+    CD: "hsla(14, 31%, 84%, 1)",
+    Surface: "hsla(209, 100%, 80%, 1)",
+    spotlight: "#ffffff",
+  },
+  dark: {
+    panelColor: "hsl(209, 31%, 80%)",
+    LiHover: "hsla(209, 31%, 80%, 0.67)",
+    Surface: "hsla(209, 15%, 40%, 1)",
+    spotlight: "hsla(209, 31%, 70%, 1)",
+  },
 };
 export function closeWheel() {
-    state.colorWheel = false;
-};
+  state.colorWheel = false;
+}
 export function resetWheel() {
-    state.colorWheel = false;
-    state.monochrome = false;
-    state.hue = 209;
-    if (state.theme === 'light') {
-        state.light.panelColor = originalColors.light.panelColor;
-        state.light.placeholder = originalColors.light.panelColor;
-        state.light.LiHover = originalColors.light.LiHover;
-        state.light.CD = originalColors.light.CD;
-        state.light.Surface = originalColors.light.Surface;
-        state.light.spotlight = originalColors.light.spotlight;
-    } else if (state.theme === 'dark') {
-        state.dark.panelColor = originalColors.dark.panelColor;
-        state.dark.placeholder = originalColors.dark.panelColor;
-        state.dark.LiHover = originalColors.dark.Surface;
-        state.dark.Surface = originalColors.dark.Surface;
-        state.dark.spotlight = originalColors.dark.spotlight;
-    }
-    state.colorChanged = false;
-};
+  state.colorWheel = false;
+  state.monochrome = false;
+  state.hue = 209;
+  if (state.theme === "light") {
+    state.light.panelColor = originalColors.light.panelColor;
+    state.light.placeholder = originalColors.light.panelColor;
+    state.light.LiHover = originalColors.light.LiHover;
+    state.light.CD = originalColors.light.CD;
+    state.light.Surface = originalColors.light.Surface;
+    state.light.spotlight = originalColors.light.spotlight;
+  } else if (state.theme === "dark") {
+    state.dark.panelColor = originalColors.dark.panelColor;
+    state.dark.placeholder = originalColors.dark.panelColor;
+    state.dark.LiHover = originalColors.dark.Surface;
+    state.dark.Surface = originalColors.dark.Surface;
+    state.dark.spotlight = originalColors.dark.spotlight;
+  }
+  state.colorChanged = false;
+}
 export function Theme() {
-    // Theme to prefrence and listen for changes if no cache
-    if (state.cached) {
-        document.getElementById("theme-color").setAttribute("media", "");
-        document.getElementById("theme-color").setAttribute("content", (state.theme === "light") ? state.light.sky : (state.dark.sky));
-    } else {
-        if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
-            document.getElementById("theme-color").setAttribute("media", "");
-            document.getElementById("theme-color").setAttribute("content", state.dark.sky);
-            state.theme = "dark";
-        } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
-            document.getElementById("theme-color").setAttribute("media", "");
-            document.getElementById("theme-color").setAttribute("content", state.light.sky);
-            state.theme = "light";
-        }
+  // Theme to prefrence and listen for changes if no cache
+  if (state.cached) {
+    document.getElementById("theme-color").setAttribute("media", "");
+    document
+      .getElementById("theme-color")
+      .setAttribute(
+        "content",
+        state.theme === "light" ? state.light.sky : state.dark.sky
+      );
+  } else {
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      document.getElementById("theme-color").setAttribute("media", "");
+      document
+        .getElementById("theme-color")
+        .setAttribute("content", state.dark.sky);
+      state.theme = "dark";
+    } else if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: light)").matches
+    ) {
+      document.getElementById("theme-color").setAttribute("media", "");
+      document
+        .getElementById("theme-color")
+        .setAttribute("content", state.light.sky);
+      state.theme = "light";
     }
+  }
 
-    // Themelistener
-    window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", e => {
-        document.getElementById("theme-color").setAttribute("content", (!e.matches) ? state.light.sky : state.dark.sky);
-        return e.matches ? (state.theme = "dark") : (state.theme = "light");
-    })
-};
+  // Themelistener
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", (e) => {
+      document
+        .getElementById("theme-color")
+        .setAttribute("content", !e.matches ? state.light.sky : state.dark.sky);
+      return e.matches ? (state.theme = "dark") : (state.theme = "light");
+    });
+}
 export const toggleTheme = () => {
-    state.themeChanged = true;
-    if (state.monochrome) {
-        toHslString(state.hue);
-    }
-    if (state.theme === "dark") {
-        document.getElementById("theme-color").setAttribute("media", "");
-        document.getElementById("theme-color").setAttribute("content", state.light.sky);
-        state.theme = "light";
-    } else {
-        document.getElementById("theme-color").setAttribute("media", "");
-        document.getElementById("theme-color").setAttribute("content", state.dark.sky);
-        state.theme = "dark";
-    };
+  state.themeChanged = true;
+  if (state.monochrome) {
+    toHslString(state.hue);
+  }
+  if (state.theme === "dark") {
+    document.getElementById("theme-color").setAttribute("media", "");
+    document
+      .getElementById("theme-color")
+      .setAttribute("content", state.light.sky);
+    state.theme = "light";
+  } else {
+    document.getElementById("theme-color").setAttribute("media", "");
+    document
+      .getElementById("theme-color")
+      .setAttribute("content", state.dark.sky);
+    state.theme = "dark";
+  }
 };
 export function OpenWheel() {
-    state.colorWheel = true;
-    state.isOpt = false;
-    state.isPro = false;
-};
+  state.colorWheel = true;
+  state.isOpt = false;
+  state.isPro = false;
+}
 export function togglePause() {
-    if (!state.canvasPaused) {
-        //Pause Canvas
-        state.canvasPaused = true;
-        state.autoRotateSpeed = 0;
-
-    } else if (state.canvasPaused) {
-        //Play Canvas
-        state.canvasPaused = false;
-        state.autoRotateSpeed = 0.09;
-    }
-};
+  if (!state.canvasPaused) {
+    //Pause Canvas
+    state.canvasPaused = true;
+    state.autoRotateSpeed = 0;
+  } else if (state.canvasPaused) {
+    //Play Canvas
+    state.canvasPaused = false;
+    state.autoRotateSpeed = 0.09;
+  }
+}
 export function useWindowDimensions() {
+  function getWindowDimensions() {
+    const { innerWidth: width, innerHeight: height } = window;
+    return {
+      width,
+      height,
+    };
+  }
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
+  );
 
-    function getWindowDimensions() {
-        const { innerWidth: width, innerHeight: height } = window;
-        return {
-            width,
-            height,
-        };
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
     }
-    const [windowDimensions, setWindowDimensions] = useState(
-        getWindowDimensions()
-    );
 
-    useEffect(() => {
-        function handleResize() {
-            setWindowDimensions(getWindowDimensions());
-        }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
-    return windowDimensions;
-};
+  return windowDimensions;
+}
 
 //PANEL
 let taps = 0;
 let factor = 4;
 export function handleClick(clip, query, dong, clear, nabla, svg) {
-    function getRandom(max, min) {
-        return Math.floor(Math.random() * (max - min) + min);
-    };
-    const amount = getRandom(6, 4);
-    const speed = getRandom(250, 85);
-    const time = getRandom(2000, 1000);
-    const required = getRandom(2000, 1500);
-    if (!clip.talking) {
-        cloud.playRate = (Math.random() * (0.45 - 0.15) + 0.15).toFixed(2);
-        cloud.selected = false;
-        if (query.length > 0) { clear(); };
-        dong();
-        taps += 1;
-        setTimeout(() => {
-            //  CD SPEECH
-            if (taps >= amount && taps <= (amount + 4)) {
-                // debugger;
-                state.colorChanged = true;
-                cloud.talking = true;
-                cloud.skew = !clip.skew;
-                // TODO: Trigger smile animation
-                // TODO: lengthen speech to amount of words spoken
-                newQuote();
-                const color = setInterval(() => {
-                    state.hue += factor;
-                }, 300);
-                setTimeout(() => { clearInterval(color) }, 400)
-                const loop = setInterval(() => {
-                    // toggleTheme();
-                    // document.getElementById("theme-color").style.transition = cloud.playRate * 500;
-                    (state.hue + getRandom(50, 10) < 360) ? state.hue += getRandom(50, 10) : state.hue = 0;
-                    cloud.playRate = (Math.random() * (1.00 - 0.65) + 0.65).toFixed(2);
-                    dong();
-                    activeTap(nabla, svg);
-                }, speed);
-                setTimeout(() => { clearInterval(loop); cloud.talking = false; cloud.UILoading = false; }, time);
-                console.log(taps, amount, speed, time, state.hue);
-            }
-            taps = 0;
-        }, required);
+  function getRandom(max, min) {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+  const amount = getRandom(6, 4);
+  const speed = getRandom(250, 85);
+  const time = getRandom(2000, 1000);
+  const required = getRandom(2000, 1500);
+  if (!clip.talking) {
+    cloud.playRate = (Math.random() * (0.45 - 0.15) + 0.15).toFixed(2);
+    cloud.selected = false;
+    if (query.length > 0) {
+      clear();
     }
-};
+    dong();
+    taps += 1;
+    setTimeout(() => {
+      //  CD SPEECH
+      if (taps >= amount && taps <= amount + 4) {
+        // debugger;
+        state.colorChanged = true;
+        cloud.talking = true;
+        cloud.skew = !clip.skew;
+        // TODO: Trigger smile animation
+        // TODO: lengthen speech to amount of words spoken
+        newQuote();
+        const color = setInterval(() => {
+          state.hue += factor;
+        }, 300);
+        setTimeout(() => {
+          clearInterval(color);
+        }, 400);
+        const loop = setInterval(() => {
+          // toggleTheme();
+          // document.getElementById("theme-color").style.transition = cloud.playRate * 500;
+          state.hue + getRandom(50, 10) < 360
+            ? (state.hue += getRandom(50, 10))
+            : (state.hue = 0);
+          cloud.playRate = (Math.random() * (1.0 - 0.65) + 0.65).toFixed(2);
+          dong();
+          activeTap(nabla, svg);
+        }, speed);
+        setTimeout(() => {
+          clearInterval(loop);
+          cloud.talking = false;
+          cloud.UILoading = false;
+        }, time);
+        console.log(taps, amount, speed, time, state.hue);
+      }
+      taps = 0;
+    }, required);
+  }
+}
 export function unActiveTap(nabla, svg) {
-    // if (cloud.target !== target || cloud.mobileCameraPosition !== [0, 20, 25])
-    // || cloud.selected) ||
-    // cloud.mobileCameraRotation !== [0, 0, 0] ||
-    // // cloud.mobileCameraQuaternion !== [0, 0, 0] ||
-    // {
-    // cloud.target = target;
-    // cloud.mobileCameraPosition = [0, 20, 25];
-    // cloud.mobileCameraRotation = [0, 0, 0];
-    // cloud.mobileCameraQuaternion = [0, 0, 0];
-    // cloud.selected = false;
-    // }
-    nabla.current && nabla.current.setAttribute("style", `
+  // if (cloud.target !== target || cloud.mobileCameraPosition !== [0, 20, 25])
+  // || cloud.selected) ||
+  // cloud.mobileCameraRotation !== [0, 0, 0] ||
+  // // cloud.mobileCameraQuaternion !== [0, 0, 0] ||
+  // {
+  // cloud.target = target;
+  // cloud.mobileCameraPosition = [0, 20, 25];
+  // cloud.mobileCameraRotation = [0, 0, 0];
+  // cloud.mobileCameraQuaternion = [0, 0, 0];
+  // cloud.selected = false;
+  // }
+  nabla.current &&
+    nabla.current.setAttribute(
+      "style",
+      `
         background-color: transparent !important;
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
     box-shadow: none !important;
-    transition:  ${(Math.random() * (0.45 - 0.15) + 0.15).toFixed(2) * 0.3}s !important;
-    `);
-    svg.current.style.fill = `${props => props.theme.panelColor}`;
-    svg.current && svg.current.setAttribute("style", `
+    transition:  ${
+      (Math.random() * (0.45 - 0.15) + 0.15).toFixed(2) * 0.3
+    }s !important;
+    `
+    );
+  svg.current.style.fill = `${(props) => props.theme.panelColor}`;
+  svg.current &&
+    svg.current.setAttribute(
+      "style",
+      `
     -webkit-filter: none !important;
     filter: none !important;
-    transition:  ${(Math.random() * (0.45 - 0.15) + 0.15).toFixed(2) * 0.3}s !important;
-        `);
-};
+    transition:  ${
+      (Math.random() * (0.45 - 0.15) + 0.15).toFixed(2) * 0.3
+    }s !important;
+        `
+    );
+}
 export function activeTap(nabla, svg) {
-    nabla.current && nabla.current.setAttribute("style", `
-        background-color: ${props => props.theme.LiHover} !important;
-        border-color: ${props => props.theme.LiHover} !important;
-    -webkit-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    -moz-box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    box-shadow: 0px 3px 10px 1px ${props => props.theme.LiHover}  !important;
-    transition: ${(Math.random() * (0.45 - 0.15) + 0.15).toFixed(2) * 0.3}s !important;
-    `);
+  nabla.current &&
+    nabla.current.setAttribute(
+      "style",
+      `
+        background-color: ${(props) => props.theme.LiHover} !important;
+        border-color: ${(props) => props.theme.LiHover} !important;
+    -webkit-box-shadow: 0px 3px 10px 1px ${(props) =>
+      props.theme.LiHover}  !important;
+    -moz-box-shadow: 0px 3px 10px 1px ${(props) =>
+      props.theme.LiHover}  !important;
+    box-shadow: 0px 3px 10px 1px ${(props) => props.theme.LiHover}  !important;
+    transition: ${
+      (Math.random() * (0.45 - 0.15) + 0.15).toFixed(2) * 0.3
+    }s !important;
+    `
+    );
 
-    svg.current && svg.current.setAttribute("style", `
+  svg.current &&
+    svg.current.setAttribute(
+      "style",
+      `
     fill: #ebebeb;
-    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover}) !important;
-    filter: drop-shadow(1px 1px 3px ${props => props.theme.textHover}) !important;
-    transition:   ${(Math.random() * (0.45 - 0.15) + 0.15).toFixed(2) * 0.3}s !important;
-        `);
-    if (cloud.talking) {
-        setTimeout(() => unActiveTap(nabla, svg), (cloud.playRate * 500))
-    }
-};
-export const characters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '.', '!', '?', ' ', ' ', ' ', ' ', ' '];
+    -webkit-filter: drop-shadow(1px 1px 3px ${(props) =>
+      props.theme.textHover}) !important;
+    filter: drop-shadow(1px 1px 3px ${(props) =>
+      props.theme.textHover}) !important;
+    transition:   ${
+      (Math.random() * (0.45 - 0.15) + 0.15).toFixed(2) * 0.3
+    }s !important;
+        `
+    );
+  if (cloud.talking) {
+    setTimeout(() => unActiveTap(nabla, svg), cloud.playRate * 500);
+  }
+}
+export const characters = [
+  "a",
+  "b",
+  "c",
+  "d",
+  "e",
+  "f",
+  "g",
+  "h",
+  "i",
+  "j",
+  "k",
+  "l",
+  "m",
+  "n",
+  "o",
+  "p",
+  "q",
+  "r",
+  "s",
+  "t",
+  "u",
+  "v",
+  "w",
+  "x",
+  "y",
+  "z",
+  ".",
+  "!",
+  "?",
+  " ",
+  " ",
+  " ",
+  " ",
+  " ",
+];
 export function getPosPro(snap, vWidth, vHeight) {
-    const left1 = { x: -state.navWidth + state.dist, y: 0 };
-    const right1 = { x: state.navWidth - (state.dist), y: 0 };
-    const up1 = { x: 0, y: (-state.navWidth) - (-state.dist) };
-    const down1 = { x: 0, y: state.navWidth - state.dist };
-    // const 
+  const left1 = { x: -state.navWidth + state.dist, y: 0 };
+  const right1 = { x: state.navWidth - state.dist, y: 0 };
+  const up1 = { x: 0, y: -state.navWidth - -state.dist };
+  const down1 = { x: 0, y: state.navWidth - state.dist };
+  // const
 
-    if ((((state.direction ? vWidth : vHeight) - state.navWidth) - (state.dist * 2)) < (state.direction ? state.proPosition.x : state.proPosition.y)) {
-        //goes over the right side
-        //fix this
-        if (!state.proSwitched) {
-            if (state.proSwitched) {
-                state.proSwitched = true;
-                console.log("my left");
-                return snap.direction ? left1 : up1
-            } else {
-                state.proSwitched = true;
-                return snap.direction ? left1 : up1
-            }
-        } else {
-            if (state.proSwitched) {
-                state.proSwitched = true;
-                return snap.direction ? left1 : up1
-            } else {
-                state.proSwitched = true;
-                return snap.direction ? left1 : up1
-            }
-        }
-    } else if (!state.isPro) {
-        return { x: 0, y: 0 }
+  if (
+    (state.direction ? vWidth : vHeight) - state.navWidth - state.dist * 2 <
+    (state.direction ? state.proPosition.x : state.proPosition.y)
+  ) {
+    //goes over the right side
+    //fix this
+    if (!state.proSwitched) {
+      if (state.proSwitched) {
+        state.proSwitched = true;
+        console.log("my left");
+        return snap.direction ? left1 : up1;
+      } else {
+        state.proSwitched = true;
+        return snap.direction ? left1 : up1;
+      }
     } else {
-        //is normal
-        if (!state.proSwitched) {
-            if (state.proSwitched) {
-                state.proSwitched = false;
-                return snap.direction ? right1 : down1
-            } else {
-                state.proSwitched = false;
-                return snap.direction ? right1 : down1
-            }
-        } else {
-            if (state.proSwitched) {
-                state.proSwitched = false;
-                return snap.direction ? right1 : down1
-            } else {
-                state.proSwitched = false;
-                return snap.direction ? right1 : down1
-            }
-        }
+      if (state.proSwitched) {
+        state.proSwitched = true;
+        return snap.direction ? left1 : up1;
+      } else {
+        state.proSwitched = true;
+        return snap.direction ? left1 : up1;
+      }
     }
-};
+  } else if (!state.isPro) {
+    return { x: 0, y: 0 };
+  } else {
+    //is normal
+    if (!state.proSwitched) {
+      if (state.proSwitched) {
+        state.proSwitched = false;
+        return snap.direction ? right1 : down1;
+      } else {
+        state.proSwitched = false;
+        return snap.direction ? right1 : down1;
+      }
+    } else {
+      if (state.proSwitched) {
+        state.proSwitched = false;
+        return snap.direction ? right1 : down1;
+      } else {
+        state.proSwitched = false;
+        return snap.direction ? right1 : down1;
+      }
+    }
+  }
+}
 export function getPosOpt(snap, vWidth, vHeight) {
-    const left1 = { x: -state.navWidth + state.dist, y: 0 };
-    const left2 = { x: (state.navWidth * -2) - (state.dist * -2), y: 0 };
-    const right1 = { x: state.navWidth - (state.dist), y: 0 };
-    const right2 = { x: (state.navWidth * 2) - (state.dist * 2), y: 0 };
-    const up1 = { x: 0, y: (-state.navWidth) - (-state.dist) }
-    const up2 = { x: 0, y: (state.navWidth * -2) - (state.dist * -2) }
-    const down1 = { x: 0, y: state.navWidth - state.dist };
-    const down2 = { x: 0, y: (state.navWidth * 2) - (state.dist * 2) };
+  const left1 = { x: -state.navWidth + state.dist, y: 0 };
+  const left2 = { x: state.navWidth * -2 - state.dist * -2, y: 0 };
+  const right1 = { x: state.navWidth - state.dist, y: 0 };
+  const right2 = { x: state.navWidth * 2 - state.dist * 2, y: 0 };
+  const up1 = { x: 0, y: -state.navWidth - -state.dist };
+  const up2 = { x: 0, y: state.navWidth * -2 - state.dist * -2 };
+  const down1 = { x: 0, y: state.navWidth - state.dist };
+  const down2 = { x: 0, y: state.navWidth * 2 - state.dist * 2 };
 
-    //Row
-    if (((state.direction ? vWidth : vHeight) - (state.navWidth * 2) - state.dist + 30) < (state.direction ? state.optPosition.x : state.optPosition.y) && state.isOpt) {
-        //goes over the right side
-        if (state.setSwitched) {
-            state.setSwitched = true;
-            if (!state.proSwitched) {
-                if (state.isPro) {
-                    console.log("1");
-                    return snap.direction ? left1 : up1;
-                } else {
-                    state.setSwitched = true;
-                    console.log("2");
-                    return snap.direction ? right1 : down1;
-                }
-            } else {
-                if (state.isPro) {
-                    console.log("3");
-                    return snap.direction ? left2 : up2;
-                } else {
-                    state.setSwitched = true;
-                    console.log("4");
-                    return snap.direction ? left1 : up1;
-                }
-            }
+  //Row
+  if (
+    (state.direction ? vWidth : vHeight) -
+      state.navWidth * 2 -
+      state.dist +
+      30 <
+      (state.direction ? state.optPosition.x : state.optPosition.y) &&
+    state.isOpt
+  ) {
+    //goes over the right side
+    if (state.setSwitched) {
+      state.setSwitched = true;
+      if (!state.proSwitched) {
+        if (state.isPro) {
+          console.log("1");
+          return snap.direction ? left1 : up1;
         } else {
-            state.setSwitched = true;
-            if (!state.proSwitched) {
-                if (state.isPro) {
-                    state.setSwitched = true;
-                    console.log("5");
-                    return snap.direction ? left1 : up1;
-                } else {
-                    state.setSwitched = true;
-                    console.log("6");
-                    return snap.direction ? right1 : down1;
-                }
-            } else {
-                if (state.isPro) {
-                    console.log("7");
-                    return snap.direction ? left2 : up2;
-                } else {
-                    state.setSwitched = true;
-                    console.log("8");
-                    return snap.direction ? left1 : up1;
-                }
-            }
+          state.setSwitched = true;
+          console.log("2");
+          return snap.direction ? right1 : down1;
         }
-    } else if (!state.isOpt) {
-        return { x: 0, y: 0 }
+      } else {
+        if (state.isPro) {
+          console.log("3");
+          return snap.direction ? left2 : up2;
+        } else {
+          state.setSwitched = true;
+          console.log("4");
+          return snap.direction ? left1 : up1;
+        }
+      }
     } else {
-        //is normal
-        if (state.setSwitched) {
-            state.setSwitched = false;
-            if (!state.proSwitched) {
-                state.setSwitched = false;
-                if (state.isPro) {
-                    return snap.direction ? left1 : up1;
-                } else {
-                    return snap.direction ? left2 : up2;
-                }
-            } else {
-                if (state.isPro) {
-                    return snap.direction ? right1 : down1;
-                } else {
-                    return snap.direction ? right2 : down2;
-                }
-            }
+      state.setSwitched = true;
+      if (!state.proSwitched) {
+        if (state.isPro) {
+          state.setSwitched = true;
+          console.log("5");
+          return snap.direction ? left1 : up1;
         } else {
-            if (!state.proSwitched) {
-                if (state.isPro) {
-                    return snap.direction ? right2 : down2;
-                } else {
-                    return snap.direction ? right1 : down1;
-                }
-            } else {
-                if (state.isPro) {
-                    return snap.direction ? left2 : up2;
-                } else {
-                    return snap.direction ? left1 : up1;
-                }
-            }
+          state.setSwitched = true;
+          console.log("6");
+          return snap.direction ? right1 : down1;
         }
+      } else {
+        if (state.isPro) {
+          console.log("7");
+          return snap.direction ? left2 : up2;
+        } else {
+          state.setSwitched = true;
+          console.log("8");
+          return snap.direction ? left1 : up1;
+        }
+      }
     }
-};
+  } else if (!state.isOpt) {
+    return { x: 0, y: 0 };
+  } else {
+    //is normal
+    if (state.setSwitched) {
+      state.setSwitched = false;
+      if (!state.proSwitched) {
+        state.setSwitched = false;
+        if (state.isPro) {
+          return snap.direction ? left1 : up1;
+        } else {
+          return snap.direction ? left2 : up2;
+        }
+      } else {
+        if (state.isPro) {
+          return snap.direction ? right1 : down1;
+        } else {
+          return snap.direction ? right2 : down2;
+        }
+      }
+    } else {
+      if (!state.proSwitched) {
+        if (state.isPro) {
+          return snap.direction ? right2 : down2;
+        } else {
+          return snap.direction ? right1 : down1;
+        }
+      } else {
+        if (state.isPro) {
+          return snap.direction ? left2 : up2;
+        } else {
+          return snap.direction ? left1 : up1;
+        }
+      }
+    }
+  }
+}
 export function styleHeaders(headwidth, level, type, enter) {
-    if (enter) {
-        if (level === 1) {
-            // document.getElementById(type).style.width = headwidth.first.max;
-            document.getElementById(type).style.boxShadow = `0 30px 50px ${state.theme === 'light' ? state.light.LiHover : state.dark.LiHover}`;
-        } else if (level === 2) {
-            // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.max : "115%";
-            document.getElementById(type).style.boxShadow = `0 30px 50px ${state.theme === 'light' ? state.light.LiHover : state.dark.LiHover}`;
-        }
-    } else if (!enter) {
-        if (level === 1) {
-            // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.first.min : !state.direction ? headwidth.first.min : '100%';
-            document.getElementById(type).style.boxShadow = `none`;
-
-        } else if (level === 2) {
-            // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.min : !state.direction ? headwidth.second.min : '123%';
-            document.getElementById(type).style.boxShadow = `none`;
-        }
+  if (enter) {
+    if (level === 1) {
+      // document.getElementById(type).style.width = headwidth.first.max;
+      document.getElementById(type).style.boxShadow = `0 30px 50px ${
+        state.theme === "light" ? state.light.LiHover : state.dark.LiHover
+      }`;
+    } else if (level === 2) {
+      // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.max : "115%";
+      document.getElementById(type).style.boxShadow = `0 30px 50px ${
+        state.theme === "light" ? state.light.LiHover : state.dark.LiHover
+      }`;
     }
-};
+  } else if (!enter) {
+    if (level === 1) {
+      // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.first.min : !state.direction ? headwidth.first.min : '100%';
+      document.getElementById(type).style.boxShadow = `none`;
+    } else if (level === 2) {
+      // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.min : !state.direction ? headwidth.second.min : '123%';
+      document.getElementById(type).style.boxShadow = `none`;
+    }
+  }
+}
 export function styleHeader(headwidth, level, type, enter) {
-    if (enter) {
-        if (level === 1) {
-            // document.getElementById(type).style.width = headwidth.first.max;
-            type.current.style.boxShadow = `0 30px 50px ${state.theme === 'light' ? state.light.LiHover : state.dark.LiHover}`;
-        } else if (level === 2) {
-            // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.max : "115%";
-            type.current.style.boxShadow = `0 30px 50px ${state.theme === 'light' ? state.light.LiHover : state.dark.LiHover}`;
-        }
-    } else if (!enter) {
-        if (level === 1) {
-            // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.first.min : !state.direction ? headwidth.first.min : '100%';
-            type.current.style.boxShadow = `none`;
-
-        } else if (level === 2) {
-            // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.min : !state.direction ? headwidth.second.min : '123%';
-            type.current.style.boxShadow = `none`;
-        }
+  if (enter) {
+    if (level === 1) {
+      // document.getElementById(type).style.width = headwidth.first.max;
+      type.current.style.boxShadow = `0 30px 50px ${
+        state.theme === "light" ? state.light.LiHover : state.dark.LiHover
+      }`;
+    } else if (level === 2) {
+      // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.max : "115%";
+      type.current.style.boxShadow = `0 30px 50px ${
+        state.theme === "light" ? state.light.LiHover : state.dark.LiHover
+      }`;
     }
+  } else if (!enter) {
+    if (level === 1) {
+      // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.first.min : !state.direction ? headwidth.first.min : '100%';
+      type.current.style.boxShadow = `none`;
+    } else if (level === 2) {
+      // document.getElementById(type).style.width = !(state.isOpt && state.isPro) ? headwidth.second.min : !state.direction ? headwidth.second.min : '123%';
+      type.current.style.boxShadow = `none`;
+    }
+  }
 }
 // MOBILE
 export const offset = 70;
 export function toggleModal(link, modal, setModal, setOffset, open, close) {
-    let index;
+  let index;
 
-    if (modal && modal.indexOf(link)) {
-        index = modal.indexOf(link);
+  if (modal && modal.indexOf(link)) {
+    index = modal.indexOf(link);
+  }
+
+  if (!modal) {
+    // open the modal if its closed
+    setModal([link]);
+    setOffset("10px");
+    open();
+  } else if (modal.length === 1) {
+    if (index !== -1) {
+      // close the only section
+      setModal(false);
+      setOffset("-80px");
+      close();
+    } else if (index === -1) {
+      // open the section thats not already open
+      modal.push(link);
+      setOffset("150px");
+      open();
     }
-
-    if (!modal) {
-        // open the modal if its closed
-        setModal([link]);
-        setOffset('10px');
-        open();
-    } else if (modal.length === 1) {
-        if (index !== -1) {
-            // close the only section
-            setModal(false);
-            setOffset('-80px');
-            close();
-        } else if (index === -1) {
-            // open the section thats not already open
-            modal.push(link);
-            setOffset('150px');
-            open();
-        }
-    } else if (modal.length === 2) {
-        if (index !== -1) {
-            // close only the selected section 
-            setOffset('10px');
-            modal.splice(index, 1);
-            close();
-        }
-    };
-};
+  } else if (modal.length === 2) {
+    if (index !== -1) {
+      // close only the selected section
+      setOffset("10px");
+      modal.splice(index, 1);
+      close();
+    }
+  }
+}
 export function resetPos(setModal, reset, search, navWrap) {
-    setModal(false);
-    cloud.resetRate = Math.random() * (0.85 - 0.65) + 0.65;
-    reset();
-    navWrap.current.style.transition = "1.3s";
-    state.hideNav = false;
-    state.searchPosition = { x: 0, y: 0 };
-    state.optionsPosition = { x: 0, y: 0 };
-    state.grabberPosition = { x: 0, y: 0 };
-    state.mobileNavPosition = { x: 0, y: -offset * 9 };
-    state.hideNav = true;
-    state.mobileNavPosition = {
-        x: 0,
-        y: search ? 0 : -offset,
-    };
-    state.dragged = false;
-    setTimeout(() => {
-        navWrap.current.style.transition = "0.1s";
-        console.log("transition returned");
-    }, "1300");
+  setModal(false);
+  cloud.resetRate = Math.random() * (0.85 - 0.65) + 0.65;
+  reset();
+  navWrap.current.style.transition = "1.3s";
+  state.hideNav = false;
+  state.searchPosition = { x: 0, y: 0 };
+  state.optionsPosition = { x: 0, y: 0 };
+  state.grabberPosition = { x: 0, y: 0 };
+  state.mobileNavPosition = { x: 0, y: -offset * 9 };
+  state.hideNav = true;
+  state.mobileNavPosition = {
+    x: 0,
+    y: search ? 0 : -offset,
+  };
+  state.dragged = false;
+  setTimeout(() => {
+    navWrap.current.style.transition = "0.1s";
+    console.log("transition returned");
+  }, "1300");
 }
 export function getGyro() {
-    function requestPermission() {
-        cloud.mobile && DeviceMotionEvent.requestPermission().then(response => {
-            if (response === 'granted') {
-                window.addEventListener('deviceorientation', (event) => {
-                    if (window.matchMedia("(orientation: portrait)").matches) {
-                        cloud.leftright = Math.floor(event.gamma / 4);
-                        cloud.frontback = (Math.floor(event.beta / 4));
-                    }
-                    if (window.matchMedia("(orientation: landscape)").matches) {
-                        cloud.leftright = Math.floor(event.beta / 4);
-                        cloud.frontback = (Math.floor(event.gamma / 4));
-                    }
-                });
-            } else {
-                // console.log("ttrun off");
+  function requestPermission() {
+    cloud.mobile &&
+      DeviceMotionEvent.requestPermission().then((response) => {
+        if (response === "granted") {
+          window.addEventListener("deviceorientation", (event) => {
+            if (window.matchMedia("(orientation: portrait)").matches) {
+              cloud.leftright = Math.floor(event.gamma / 4);
+              cloud.frontback = Math.floor(event.beta / 4);
             }
-            // console.log(response);
-        });
-        // console.log(state.gyro);
-    };
+            if (window.matchMedia("(orientation: landscape)").matches) {
+              cloud.leftright = Math.floor(event.beta / 4);
+              cloud.frontback = Math.floor(event.gamma / 4);
+            }
+          });
+        } else {
+          // console.log("ttrun off");
+        }
+        // console.log(response);
+      });
+    // console.log(state.gyro);
+  }
 
-    // if (gyro) {
-    requestPermission();
-    // } else {
-    //     state.gyro = false;
-    //     return;
-    // }
-};
+  // if (gyro) {
+  requestPermission();
+  // } else {
+  //     state.gyro = false;
+  //     return;
+  // }
+}
 
 // MISC.
 export function useDocumentTitle(title, prevailOnUnmount = false) {
-    const defaultTitle = useRef(document.title);
+  const defaultTitle = useRef(document.title);
 
-    useEffect(() => {
-        document.title = title;
-    }, [title]);
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
 
-    useEffect(() => () => {
-        if (!prevailOnUnmount) {
-            document.title = defaultTitle.current;
-        }
-    }, [prevailOnUnmount])
-};
-
-//FIREBASE
-export const db = getFirestore(app);
-export const storage = getStorage(app);
-export async function GetWorks() {
-    if (navigator.onLine) {
-        cloud.UILoading = true;
-        const colRef = collection(db, "portfolio");
-        const projects = query(colRef, orderBy("projectYear", "desc"));
-        const types = query(colRef, orderBy("date", "desc"));
-
-        const collectionSnapshot = await getDocs(colRef);
-        const projectsSnapshot = await getDocs(projects);
-        const typesSnapshot = await getDocs(types);
-
-        cloud.collection = collectionSnapshot.docs.map(doc => doc.data());
-        cloud.projects = projectsSnapshot.docs.map(doc => doc.data());
-        cloud.types = typesSnapshot.docs.map(doc => doc.data());
-        cloud.UILoading = false;
-    } else {
-        return;
-    }
-};
-export async function GetQuotes() {
-    if (navigator.onLine) {
-        const siteRef = collection(db, "siteinfo");
-        const siteinfoSnapshot = await getDocs(siteRef);
-        let quotes = siteinfoSnapshot.docs.map(doc => doc.data())[0].quotes;
-        // Randomize Quotes
-        const random = Math.floor(Math.random() * quotes.length);
-        return quotes[random];
-    }
-};
-export async function newQuote() {
-    GetQuotes().then(res => {
-        state.quotes = res;
-    });
-};
-export async function GetSectors(id) {
-    cloud.UILoading = true;
-    const sectorRef = collection(db, "portfolio");
-    const sectors = query(sectorRef, orderBy("projectYear", "desc"), where("at", "==", `${id}`));
-    const sectorSnapshot = await getDocs(sectors);
-    cloud.sectors = sectorSnapshot.docs.map(doc => doc.data());
-    cloud.UILoading = false;
-};
-export async function GetSector(lot) {
-    cloud.UILoading = true;
-    const sectorRef = collection(db, "portfolio");
-    const sector = query(sectorRef, where("lot", "==", `${lot}`));
-    const sectorSnapshot = await getDocs(sector);
-    cloud.sector = sectorSnapshot.docs.map(doc => doc.data());
-    cloud.UILoading = false;
-};
-export async function GetStore() {
-    cloud.UILoading = true;
-    const storeRef = collection(db, "portfolio");
-    const items = query(storeRef, orderBy("productName", "desc"), where("productName", '!=', null));
-    const storeSnapshot = await getDocs(items);
-    state.store = storeSnapshot.docs.map(doc => doc.data());
-    cloud.UILoading = false;
-};
-export async function GetBlog() {
-    cloud.UILoading = true;
-    const blogRef = collection(db, "blog");
-    const blogs = query(blogRef, orderBy("created", "desc"), where("status", "==", "LIVE"));
-    const blogSnashot = await getDocs(blogs);
-    state.blog = blogSnashot.docs.map(doc => doc.data());
-    cloud.UILoading = false;
-};
-
-//ALGOLIA SEARCH
-const indexName = 'projects';
-export const routing = {
-    router: history(),
-    stateMapping: {
-        stateToRoute(uiState) {
-            const indexUiState = uiState[indexName];
-            return {
-                query: indexUiState.query,
-                // categories: indexUiState.menu?.categories,
-                // brand: indexUiState.refinementList?.refinementList.brand,
-                // page: indexUiState.page,
-            };
-        },
-        routeToState(routeState) {
-            return {
-                [indexName]: {
-                    query: routeState.query,
-                    // menu: {
-                    //   categories: routeState.categories,
-                    // },
-                    // refinementList: {
-                    //   brand: routeState.brand,
-                    // },
-                    // page: routeState.page,
-                },
-            };
-        },
+  useEffect(
+    () => () => {
+      if (!prevailOnUnmount) {
+        document.title = defaultTitle.current;
+      }
     },
+    [prevailOnUnmount]
+  );
+}
+
+export const transformItems = (items) => {
+  return items.filter((item) => item.images && { ...item });
 };
-export const transformItems = (items) => { return items.filter(item => item.images && ({ ...item })); };

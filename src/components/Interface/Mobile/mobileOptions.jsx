@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import {
   ColorIcon,
   GyroIcon,
@@ -7,21 +7,21 @@ import {
   NextIcon,
   PlayPauseIcon,
   ShowHideIcon,
-} from "../utils/svg";
+} from "../../utils/svg";
 import styled from "styled-components";
 import { useSnapshot } from "valtio";
-import { cloud, state } from "../utils/state";
+import { cloud, state } from "../../utils/state";
 import {
-  Folder,
   offset,
   NextSong,
   ToggleMusic,
   toggleTheme,
   getGyro,
   resetPos,
-} from "../utils/common";
+} from "../../utils/common";
 import Draggable from "react-draggable";
-import { Stats } from "@react-three/drei";
+import { Folder } from "../../utils/style";
+// import { Stats } from "@react-three/drei";
 
 export function Options({
   audio,
@@ -53,7 +53,7 @@ export function Options({
         state.mobileNavPosition.y = state.mobileNavPosition.y - offset;
       }
     };
-  }, []);
+  }, [snap.dragged]);
 
   const onControlledDrag = (e, position) => {
     // let { x, y } = position;
@@ -61,7 +61,7 @@ export function Options({
   };
 
   const onControlledStop = (e, position) => {
-    let { x, y } = position;
+    let { x } = position;
     state.searchPosition = { x, y: 0 };
     cloud.drag = false;
   };

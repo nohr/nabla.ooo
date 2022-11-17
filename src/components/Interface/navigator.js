@@ -1,26 +1,57 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 //Navigator -- Child of <UI />
-import React, { memo, useEffect, useRef, useState } from "react"
-import Projects from "./projects"
-import Options from "./options"
-import { cloud, state } from "../utils/state"
-import { Song, closeWheel, resetWheel, Folder, Wheel } from "../utils/common"
-import { Arrow, SideArrow, SearchBarIcon, ClearIcon } from "../utils/svg"
-import { useSnapshot } from "valtio"
-import styled from "styled-components"
-import Draggable from "react-draggable"
-import { HomeButton, Quote } from './homeButton';
-import { Grabber, NextButton, PlayButton, ResetPosButton } from "./panelTools"
-import CircleType from "circletype"
-import { ColorWheel } from '@react-spectrum/color';
-import { Link, useLocation } from "wouter"
+import React, { memo, useEffect, useRef, useState } from "react";
+import Projects from "./projects";
+import Options from "./options";
+import { cloud, state } from "../utils/state";
+import { closeWheel, resetWheel } from "../utils/common";
+import { Arrow, SideArrow, SearchBarIcon, ClearIcon } from "../utils/svg";
+import { useSnapshot } from "valtio";
+import styled from "styled-components";
+import Draggable from "react-draggable";
+import { HomeButton, Quote } from "./homeButton";
+import {
+  Grabber,
+  NextButton,
+  PlayButton,
+  ResetPosButton,
+} from "../utils/panelTools";
+import CircleType from "circletype";
+import { ColorWheel } from "@react-spectrum/color";
+import { Link, useLocation } from "wouter";
+import { Folder, Song, Wheel } from "../utils/style";
 
-function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, handle, query, clear, refine, text, setText, resetButton, colorWheel, setColorWheel, color, setColor, open, close, setHovered, container }) {
+function Navigator({
+  audio,
+  nabla,
+  dong,
+  confirm,
+  select,
+  reset,
+  song,
+  setSong,
+  handle,
+  query,
+  clear,
+  refine,
+  text,
+  setText,
+  resetButton,
+  colorWheel,
+  setColorWheel,
+  color,
+  setColor,
+  open,
+  close,
+  setHovered,
+  container,
+}) {
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
   const nav = useRef(null);
   const wheel = useRef();
   const [focused, setFocused] = useState(false);
-  const [location, setLocation] = useLocation();
+  const [location] = useLocation();
   // const [track, setTrack] = useState(`${snap.songIndex + 1}/${clip.songs.length}`);
 
   const headwidth = {
@@ -39,8 +70,8 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
   let opt;
 
   useEffect(() => {
-    pro = document.querySelector('.pro');
-    opt = document.querySelector('.opt');
+    pro = document.querySelector(".pro");
+    opt = document.querySelector(".opt");
     if (nav.current) {
       // Glow on Shift
       window.addEventListener("keydown", (e) => {
@@ -52,7 +83,7 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
         } else {
           return;
         }
-      })
+      });
       window.addEventListener("keyup", (e) => {
         if (e.key === "Shift") {
           e.preventDefault();
@@ -62,8 +93,8 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
         } else {
           return;
         }
-      })
-    };
+      });
+    }
   }, []);
 
   // CircleType
@@ -79,9 +110,8 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
     }
     return () => {
       bent = null;
-    }
+    };
   }, [state.songIndex]);
-
 
   const onControlledDrag = (e, position) => {
     let { x, y } = position;
@@ -99,7 +129,7 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
     state.navPosition = { x, y };
     cloud.drag = false;
     if (container.current) container.current.style.display = "flex";
-  }
+  };
 
   return (
     <Skew
@@ -107,12 +137,17 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
       onMouseOut={() => setHovered(false)}
       skew={clip.skew ? `skew(3deg, 9deg)` : `skew(0deg, 0deg)`}
     >
-      <Draggable nodeRef={nav} handle=".grabber" bounds="html"
+      <Draggable
+        nodeRef={nav}
+        handle=".grabber"
+        bounds="html"
         position={state.navPosition}
         onStop={onControlledStop}
-        onDrag={onControlledDrag} >
+        onDrag={onControlledDrag}
+      >
         <Nav ref={nav} className="Panel nav">
-          <Header style={focused ? { borderBottomColor: "#EBEBEB" } : null}
+          <Header
+            style={focused ? { borderBottomColor: "#EBEBEB" } : null}
             // width={(snap.isOpt || snap.isPro) ? "100%" : "90%"}
             width={"100%"}
           >
@@ -120,60 +155,139 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
             {<Quote text={text} setText={setText} />}
           </Header>
           <div className="grid">
-            {navigator.onLine && <Search query={query} clear={clear} refine={refine} setFocused={setFocused} />}
+            {navigator.onLine && (
+              <Search
+                query={query}
+                clear={clear}
+                refine={refine}
+                setFocused={setFocused}
+              />
+            )}
             <TrayWrapper
-              style={clip.playMusic ? { borderColor: snap.theme === "light" ? snap.light.bwElement : snap.dark.bwElement } : null}>
+              style={
+                clip.playMusic
+                  ? {
+                      borderColor:
+                        snap.theme === "light"
+                          ? snap.light.bwElement
+                          : snap.dark.bwElement,
+                    }
+                  : null
+              }
+            >
               <ResetPosButton
                 resetButton={resetButton}
                 reset={reset}
-                nav={nav} />
-              <PlayButton
-                audio={audio}
-                setSong={setSong}
+                nav={nav}
               />
-              <NextButton
-                audio={audio}
-                setSong={setSong}
-                select={select}
-              />
+              <PlayButton audio={audio} setSong={setSong} />
+              <NextButton audio={audio} setSong={setSong} select={select} />
             </TrayWrapper>
-            {!snap.colorWheel &&
+            {!snap.colorWheel && (
               <>
-                <Link onClick={() => { clear(); select(); }} className={`li w ${location.substring(1) === "info" ? "active" : null}`} to="/info"
+                <Link
+                  onClick={() => {
+                    clear();
+                    select();
+                  }}
+                  className={`li w ${
+                    location.substring(1) === "info" ? "active" : null
+                  }`}
+                  to="/info"
                   style={{ justifySelf: "flex-end" }}
                 >
                   Info
                 </Link>
-                <Link onClick={() => { clear(); select(); }} className={`li w ${location.substring(1) === "store" ? "active" : null}`} to="/store"
-                  style={{ justifySelf: "flex-start" }}>
+                <Link
+                  onClick={() => {
+                    clear();
+                    select();
+                  }}
+                  className={`li w ${
+                    location.substring(1) === "store" ? "active" : null
+                  }`}
+                  to="/store"
+                  style={{ justifySelf: "flex-start" }}
+                >
                   Store
-                </Link >
-                <Folder className={`li folder proLink ${state.isPro ? "folderActive" : null}`} tabIndex={-1}
+                </Link>
+                <Folder
+                  className={`li folder proLink ${
+                    state.isPro ? "folderActive" : null
+                  }`}
+                  tabIndex={-1}
                   style={{ justifySelf: "flex-end" }}
                 >
                   Projects
                   {snap.isPro ? <SideArrow /> : <Arrow />}
                 </Folder>
-                <Folder className={`li folder optLink ${state.isOpt ? "folderActive" : null}`} tabIndex={-1}
+                <Folder
+                  className={`li folder optLink ${
+                    state.isOpt ? "folderActive" : null
+                  }`}
+                  tabIndex={-1}
                   style={{ justifySelf: "flex-start" }}
                 >
                   Options
                   {snap.isOpt ? <SideArrow /> : <Arrow />}
                 </Folder>
-              </>}
-            {snap.colorWheel &&
-              <>
-                <Folder onClick={() => { state.monochrome = !state.monochrome; select(); }} className={`li w mono ${snap.monochrome ? "glow" : null}`} style={{ color: snap.monochrome ? snap.theme === 'light' ? snap.light.sky : snap.dark.sky : null }}
-                >Monochrome</Folder>
-                <Folder onClick={() => { closeWheel(); confirm(); }} className="li w Color">Confirm</Folder>
-                <Folder onClick={() => { resetWheel(); reset(); }} className="li w Reset">Reset</Folder>
               </>
-            }
+            )}
+            {snap.colorWheel && (
+              <>
+                <Folder
+                  onClick={() => {
+                    state.monochrome = !state.monochrome;
+                    select();
+                  }}
+                  className={`li w mono ${snap.monochrome ? "glow" : null}`}
+                  style={{
+                    color: snap.monochrome
+                      ? snap.theme === "light"
+                        ? snap.light.sky
+                        : snap.dark.sky
+                      : null,
+                  }}
+                >
+                  Monochrome
+                </Folder>
+                <Folder
+                  onClick={() => {
+                    closeWheel();
+                    confirm();
+                  }}
+                  className="li w Color"
+                >
+                  Confirm
+                </Folder>
+                <Folder
+                  onClick={() => {
+                    resetWheel();
+                    reset();
+                  }}
+                  className="li w Reset"
+                >
+                  Reset
+                </Folder>
+              </>
+            )}
             {/* force reload */}
             {clip.playMusic}
           </div>
-          <Song ref={title} position={` left: 48%;`}
-            className="bend song" style={clip.playMusic ? { opacity: 1, pointerEvents: "all" } : { opacity: 0, pointerEvents: "none" }} onClick={() => { state.isOpt = true }} tabIndex="0">
+          <Song
+            ref={title}
+            position={` left: 48%;`}
+            className="bend song"
+            style={
+              clip.playMusic
+                ? { opacity: 1, pointerEvents: "all" }
+                : { opacity: 0, pointerEvents: "none" }
+            }
+            onClick={() => {
+              state.isOpt = true;
+            }}
+            tabIndex="0"
+          >
             {/* {snap.songIndex + 1}/{clip.songs.length} */}
           </Song>
           {/* {(clip.UILoading || clip.CanvasLoading) ? <Spinner /> : */}
@@ -189,7 +303,8 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
         reset={reset}
         confirm={confirm}
         headwidth={headwidth}
-        select={select} />
+        select={select}
+      />
       <Options
         song={song}
         setSong={setSong}
@@ -198,25 +313,31 @@ function Navigator({ audio, nabla, dong, confirm, select, reset, song, setSong, 
         headwidth={headwidth}
         colorWheel={colorWheel}
         setColorWheel={setColorWheel}
-        select={select} />
+        select={select}
+      />
       <Draggable position={snap.navPosition}>
         <Wheel
           opacity={snap.colorWheel ? "1" : "0"}
           pointerEvents={snap.colorWheel ? "all" : "none"}
           transition={snap.colorWheel ? "0.3s" : "0s"}
           ref={wheel}
-          onClick={() => { state.colorChanged = true; }}
+          onClick={() => {
+            state.colorChanged = true;
+          }}
         >
-          {!snap.monochrome && <ColorWheel
-            size={"310px"}
-            borderColor={`${props => props.theme.panelColor}`}
-            value={color}
-            onChange={setColor}
-            onChangeEnd={setColor} />}
+          {!snap.monochrome && (
+            <ColorWheel
+              size={"310px"}
+              borderColor={`${(props) => props.theme.panelColor}`}
+              value={color}
+              onChange={setColor}
+              onChangeEnd={setColor}
+            />
+          )}
         </Wheel>
       </Draggable>
     </Skew>
-  )
+  );
 }
 
 function Search({ query, refine, clear, setFocused }) {
@@ -243,12 +364,21 @@ function Search({ query, refine, clear, setFocused }) {
       if (e.key === "Escape") {
         clear();
         Bar.current.blur();
-        setPlaceholder("(alt + z)")
+        setPlaceholder("(alt + z)");
         // setFocused(false);
         return;
       }
       // Do nothing when these are pressed
-      if (e.key === "Enter" || e.key === "Shift" || e.key === "CapsLock" || e.key === "ArrowUp" || e.key === "ArrowLeft" || e.key === "ArrowDown" || e.key === "ArrowRight" || e.key === "Alt") {
+      if (
+        e.key === "Enter" ||
+        e.key === "Shift" ||
+        e.key === "CapsLock" ||
+        e.key === "ArrowUp" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowDown" ||
+        e.key === "ArrowRight" ||
+        e.key === "Alt"
+      ) {
         return;
       }
     }
@@ -256,13 +386,13 @@ function Search({ query, refine, clear, setFocused }) {
     function handleCommandPress(e) {
       // Alt + f to focus search
       let { keyCode, type } = e || Event;
-      const isKeyDown = (type === "keydown");
+      const isKeyDown = type === "keydown";
       keys[keyCode] = isKeyDown;
-      if (isKeyDown && (e.altKey === true) && keys[90]) {
+      if (isKeyDown && e.altKey === true && keys[90]) {
         e.preventDefault();
         keys = {};
         Bar.current.focus();
-        setPlaceholder("(esc)")
+        setPlaceholder("(esc)");
         setFocused(true);
       } else {
         return;
@@ -280,8 +410,8 @@ function Search({ query, refine, clear, setFocused }) {
       }
       window.removeEventListener("click", handleClick);
       window.removeEventListener("keydown", handleCommandPress);
-    }
-  }, [query, refine])
+    };
+  }, [query, refine]);
 
   function handleChange(e) {
     if (e.target.value) {
@@ -289,7 +419,7 @@ function Search({ query, refine, clear, setFocused }) {
     } else {
       clear();
     }
-  };
+  }
 
   return (
     <SearchWrapper>
@@ -299,33 +429,32 @@ function Search({ query, refine, clear, setFocused }) {
         value={query}
         onChange={(e) => handleChange(e)}
         ref={Bar}
-      >
-      </SearchBar>
+      ></SearchBar>
       {cloud.chatMode}
       <SearchBarIcon />
-      {query.length > 0 &&
+      {query.length > 0 && (
         <div
           id="clearIcon"
-          onClick={
-            () => {
-              clear()
-              Bar.current.focus()
-            }
-          }
+          onClick={() => {
+            clear();
+            Bar.current.focus();
+          }}
         >
           <ClearIcon />
-        </div>}
-    </SearchWrapper>)
+        </div>
+      )}
+    </SearchWrapper>
+  );
 }
 
-export default memo(Navigator)
+export default memo(Navigator);
 
-const Skew = styled.div`  
-  transform: ${props => props.skew};
+const Skew = styled.div`
+  transform: ${(props) => props.skew};
   transition: 0.1s;
   position: absolute;
   z-index: 5000;
-`
+`;
 const Nav = styled.div`
   padding: 0 0 20px 0;
   position: absolute;
@@ -338,7 +467,7 @@ const Nav = styled.div`
   justify-content: flex-start;
   align-items: center;
 
-  .grid{
+  .grid {
     position: relative;
     padding: 0 15px;
     display: grid;
@@ -349,43 +478,43 @@ const Nav = styled.div`
     column-gap: 10px;
     row-gap: 5px;
 
-    & a{
-      width:90%;
+    & a {
+      width: 90%;
     }
 
-    & .folder{
+    & .folder {
       width: 75%;
     }
   }
-    .quote{
-      text-align: center;
+  .quote {
+    text-align: center;
     white-space: nowrap;
-      text-indent: 0 !important;
-      padding: 4px 0 4px;
-      font-size: 10px;
-      height: 20.5px !important;
+    text-indent: 0 !important;
+    padding: 4px 0 4px;
+    font-size: 10px;
+    height: 20.5px !important;
     -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 
-    & .li{
-   backdrop-filter: blur(20px) !important;
+  & .li {
+    backdrop-filter: blur(20px) !important;
     width: 80%;
     align-self: center;
     transition: 0.3s;
     -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 
-    .folder{
-      padding-right: 2px;
-    }
+  .folder {
+    padding-right: 2px;
+  }
 
-  & .speaker{
+  & .speaker {
     cursor: pointer;
     position: absolute;
     z-index: 500;
@@ -395,13 +524,13 @@ const Nav = styled.div`
     transform: translate(-50%, 0);
   }
 
-  & .GrabberWrap{
+  & .GrabberWrap {
     display: flex;
     justify-content: center;
     pointer-events: none;
   }
 
-  & .grabber{
+  & .grabber {
     pointer-events: all;
     cursor: grab;
     width: 50px;
@@ -411,66 +540,66 @@ const Nav = styled.div`
     /* left: 50%; */
     /* top: 10px; */
     /* transform: translate(-50%, 0); */
-    stroke: ${props => props.theme.panelColor};
-    fill: ${props => props.theme.panelColor};
-    fill-opacity: 100% !important; 
+    stroke: ${(props) => props.theme.panelColor};
+    fill: ${(props) => props.theme.panelColor};
+    fill-opacity: 100% !important;
     stroke-width: 1px !important;
     transition: 1.3s;
   }
 
-  & .resetPos{
+  & .resetPos {
     border-radius: 50%;
     width: 20px;
     height: 20px;
-    border-color:  ${props => props.theme.panelColor};
-    /* background-color: ${props => props.theme.LiHover}; */
+    border-color: ${(props) => props.theme.panelColor};
+    /* background-color: ${(props) => props.theme.LiHover}; */
 
-    & svg path{
-      fill:  ${props => props.theme.panelColor};
+    & svg path {
+      fill: ${(props) => props.theme.panelColor};
     }
 
-    &:hover{
-      border-color: ${props => props.theme.sky};
+    &:hover {
+      border-color: ${(props) => props.theme.sky};
     }
 
-    &:hover >  svg path{
-      fill: ${props => props.theme.LiActiveBackground} !important;
+    &:hover > svg path {
+      fill: ${(props) => props.theme.LiActiveBackground} !important;
     }
   }
 
-  & .speaker{
-    fill: ${props => props.theme.panelColor};
+  & .speaker {
+    fill: ${(props) => props.theme.panelColor};
     /* TODO: Make this pulse to tempo of current track */
-  	animation: pulse ${state.songIndex === 1 ? '1.7778s' : '2s'} infinite;
+    animation: pulse ${state.songIndex === 1 ? "1.7778s" : "2s"} infinite;
     transition: 1.3s;
-}
+  }
 
-@keyframes pulse {
-	0% {
-		transform: scale(0.8);
-		fill: ${props => props.theme.panelColor};
-	}
+  @keyframes pulse {
+    0% {
+      transform: scale(0.8);
+      fill: ${(props) => props.theme.panelColor};
+    }
 
-	70% {
-		transform: scale(1);
-		fill: ${props => props.theme.textHover};
-	}
+    70% {
+      transform: scale(1);
+      fill: ${(props) => props.theme.textHover};
+    }
 
-	100% {
-		transform: scale(0.8);
-		fill: ${props => props.theme.panelColor};
-	}
-}
+    100% {
+      transform: scale(0.8);
+      fill: ${(props) => props.theme.panelColor};
+    }
+  }
 
   & .speaker:hover {
-    fill: ${props => props.theme.LiHover};
-    -webkit-filter: drop-shadow(1px 1px 3px ${props => props.theme.LiHover});
-    filter: drop-shadow(1px 1px 3px ${props => props.theme.LiHover});
+    fill: ${(props) => props.theme.LiHover};
+    -webkit-filter: drop-shadow(1px 1px 3px ${(props) => props.theme.LiHover});
+    filter: drop-shadow(1px 1px 3px ${(props) => props.theme.LiHover});
     transition: 0.3s;
   }
 
-  & .grabber:not(:hover){
-    fill-opacity: 0% !important; 
+  & .grabber:not(:hover) {
+    fill-opacity: 0% !important;
     stroke-width: 1px !important;
   }
 
@@ -485,94 +614,98 @@ const Nav = styled.div`
     bottom: 5%;
     transform: translate(-50%, 0);
   }
-  .spinner path{
-    fill: ${props => props.theme.panelColor};
+  .spinner path {
+    fill: ${(props) => props.theme.panelColor};
   }
 
-  .Color{
+  .Color {
     grid-row: 2;
     display: flex;
     flex-wrap: nowrap;
     justify-content: center;
     text-indent: 0;
     color: #ebebeb !important;
-		background-color: ${props => props.theme.LiHover};
-    -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.LiHover});
-    filter: drop-shadow(1px 1px 6px ${props => props.theme.LiHover});
+    background-color: ${(props) => props.theme.LiHover};
+    -webkit-filter: drop-shadow(1px 1px 6px ${(props) => props.theme.LiHover});
+    filter: drop-shadow(1px 1px 6px ${(props) => props.theme.LiHover});
     text-align: center;
     animation: flashConfirm 0.6s infinite;
     transition: 0.3s;
     outline: 0px;
 
-    &:hover{
-      color: ${props => props.theme.panelColor} !important;
+    &:hover {
+      color: ${(props) => props.theme.panelColor} !important;
       text-shadow: none;
-      background-color:  transparent !important;
-      outline: 1px solid ${props => props.theme.panelColor};
+      background-color: transparent !important;
+      outline: 1px solid ${(props) => props.theme.panelColor};
     }
 
     @keyframes flashConfirm {
-	0% {
-    color: #ebebeb;
-		background-color: ${props => props.theme.LiHover};
-    box-shadow: 0px 0px 0px ${props => props.theme.LiHover};
-	}
+      0% {
+        color: #ebebeb;
+        background-color: ${(props) => props.theme.LiHover};
+        box-shadow: 0px 0px 0px ${(props) => props.theme.LiHover};
+      }
 
-	70% {
-    color: ${props => props.theme.sky};
-		background-color: ${props => props.theme.LiHover};
-    box-shadow: 1px 1px 6px ${props => props.theme.LiHover};
-	}
+      70% {
+        color: ${(props) => props.theme.sky};
+        background-color: ${(props) => props.theme.LiHover};
+        box-shadow: 1px 1px 6px ${(props) => props.theme.LiHover};
+      }
 
-	100% {
-    color: #ebebeb;
-		background-color: ${props => props.theme.LiHover};
-    box-shadow: 0px 0px 0px ${props => props.theme.LiHover};
-	}
-}
+      100% {
+        color: #ebebeb;
+        background-color: ${(props) => props.theme.LiHover};
+        box-shadow: 0px 0px 0px ${(props) => props.theme.LiHover};
+      }
+    }
   }
 
-  .Reset{
+  .Reset {
     grid-row: 2;
     display: flex;
     flex-wrap: nowrap;
     justify-content: center;
     text-indent: 0;
     color: #ebebeb !important;
-		background-color: ${props => props.theme.LiActiveBackground};
-    -webkit-filter: drop-shadow(1px 1px 6px ${props => props.theme.LiActiveBackground});
-    filter: drop-shadow(1px 1px 6px ${props => props.theme.LiActiveBackground});
+    background-color: ${(props) => props.theme.LiActiveBackground};
+    -webkit-filter: drop-shadow(
+      1px 1px 6px ${(props) => props.theme.LiActiveBackground}
+    );
+    filter: drop-shadow(
+      1px 1px 6px ${(props) => props.theme.LiActiveBackground}
+    );
     text-align: center;
     transition: 0.3s;
     outline: 0px;
 
-    &:hover{
-      color: ${props => props.theme.panelColor} !important;
+    &:hover {
+      color: ${(props) => props.theme.panelColor} !important;
       text-shadow: none;
-      background-color:  transparent !important;
-      outline: 1px solid ${props => props.theme.panelColor};
+      background-color: transparent !important;
+      outline: 1px solid ${(props) => props.theme.panelColor};
     }
   }
 
-  & .song{
+  & .song {
     position: absolute;
     top: 06px;
     left: 48%;
   }
-`
+`;
 const Header = styled.div`
-      height: 130px;
-      width: ${props => props.width};
-        border-bottom: 1px solid ${props => props.theme.panelColor};
-        margin: 0 0 8px 0;
-        padding: 25px 0px 0px;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        row-gap: 2px !important;
-        flex-direction: column;
-        flex-wrap: nowrap;
-`
+  height: 130px;
+  width: ${(props) => props.width};
+  border-bottom: 1px solid ${(props) => props.theme.panelColor};
+  margin: 0 0 8px 0;
+  padding: 25px 0px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  row-gap: 2px !important;
+  flex-direction: column;
+  flex-wrap: nowrap;
+`;
 const TrayWrapper = styled.div`
   transform: skewY(2deg);
   padding: 0 5px;
@@ -586,15 +719,15 @@ const TrayWrapper = styled.div`
   /* overflow-x: scroll; */
   column-gap: 10px;
   border: 1px solid;
-   border-radius: 500px;
-`
+  border-radius: 500px;
+`;
 const SearchWrapper = styled.div`
-display: flex;
-align-items: center;
-position: relative;
-width: 100%;
-transform: skewY(-2deg);
-`
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  transform: skewY(-2deg);
+`;
 const SearchBar = styled.input`
   border: none !important;
   width: 100%;
@@ -604,10 +737,10 @@ const SearchBar = styled.input`
   display: flex;
   border-radius: 500px;
   background-color: transparent;
-  box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-  -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
-  -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
-  color:  ${props => props.theme.panelColor};
+  box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
+  -webkit-box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
+  -moz-box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
+  color: ${(props) => props.theme.panelColor};
   padding: 2px 25px 2px 25px;
   user-select: text;
   -moz-user-select: text;
@@ -615,84 +748,86 @@ const SearchBar = styled.input`
   font-size: 13px;
   cursor: pointer;
 
-  #searchIcon{
+  #searchIcon {
     position: absolute;
     top: 0 !important;
     left: 0 !important;
   }
 
-  &::placeholder{
+  &::placeholder {
     text-align: center;
-    color: ${props => props.theme.panelColor};
+    color: ${(props) => props.theme.panelColor};
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* IE10+/Edge */
     user-select: none; /* Standard */
   }
 
-  &:hover::placeholder{
-    color: ${props => props.theme.textHover};
+  &:hover::placeholder {
+    color: ${(props) => props.theme.textHover};
     transition: 0.3s;
   }
-  &:hover{
-    color: ${props => props.theme.textHover};
-    background-color:${props => props.theme.LiHover};
-    outline: 1px solid ${props => props.theme.textHover};
-    box-shadow: 0 0 0 1px  ${props => props.theme.panelColor};
-    -webkit-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
-    -moz-box-shadow: 0 0 0 1px  ${props => props.theme.panelColor}; 
+  &:hover {
+    color: ${(props) => props.theme.textHover};
+    background-color: ${(props) => props.theme.LiHover};
+    outline: 1px solid ${(props) => props.theme.textHover};
+    box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
+    -webkit-box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
+    -moz-box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
     transition: 0.3s;
   }
-  &:focus::placeholder{
-    color: ${props => props.theme.textHover};
+  &:focus::placeholder {
+    color: ${(props) => props.theme.textHover};
     transition: 0.3s;
   }
-  &:focus{
-    color: ${props => props.theme.textHover};
-    background-color:${props => props.theme.LiHover};
-    outline: 1px solid ${props => props.theme.textHover};
-    box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
-    -webkit-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
-    -moz-box-shadow: 0 0 50px 50px  ${props => props.theme.LiHover};
+  &:focus {
+    color: ${(props) => props.theme.textHover};
+    background-color: ${(props) => props.theme.LiHover};
+    outline: 1px solid ${(props) => props.theme.textHover};
+    box-shadow: 0 0 50px 50px ${(props) => props.theme.LiHover};
+    -webkit-box-shadow: 0 0 50px 50px ${(props) => props.theme.LiHover};
+    -moz-box-shadow: 0 0 50px 50px ${(props) => props.theme.LiHover};
     transition: 0.3s;
   }
 
-  &:focus ~ #searchIcon, &:hover ~ #searchIcon{
-    fill: ${props => props.theme.textHover} !important;
+  &:focus ~ #searchIcon,
+  &:hover ~ #searchIcon {
+    fill: ${(props) => props.theme.textHover} !important;
     transition: 0.3s;
   }
-  &:focus ~ #clearIcon svg, &:hover ~ #clearIcon svg{
-    fill: ${props => props.theme.textHover} !important;
+  &:focus ~ #clearIcon svg,
+  &:hover ~ #clearIcon svg {
+    fill: ${(props) => props.theme.textHover} !important;
     transition: 0.3s;
-  } 
-`
+  }
+`;
 export const BarIcon = styled.svg`
-        position: absolute;
-        top: 50%;
-        left: 8px;
-        transform: translateY( -57%);
-        height: 12px;
-        fill: ${props => props.colorfill};
-        stroke: ${props => props.colorstroke};
-        cursor: pointer;
-        stroke-width: 1px;
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  transform: translateY(-57%);
+  height: 12px;
+  fill: ${(props) => props.colorfill};
+  stroke: ${(props) => props.colorstroke};
+  cursor: pointer;
+  stroke-width: 1px;
 
-        &:hover{
-          opacity: 50%;
-        pointer-events: painted;
-    }
-        `
+  &:hover {
+    opacity: 50%;
+    pointer-events: painted;
+  }
+`;
 export const Clear = styled.svg`
-        position: absolute;
-        top: 52%;
-        right: 15px;
-        transform: translate(50%, -57%);
-        height: 14px;
-        fill: ${props => props.theme.panelColor};
-        cursor: pointer;
+  position: absolute;
+  top: 52%;
+  right: 15px;
+  transform: translate(50%, -57%);
+  height: 14px;
+  fill: ${(props) => props.theme.panelColor};
+  cursor: pointer;
 
-        &:hover{
-          opacity: 50%;
-        pointer-events: painted;
-    }
-        `
+  &:hover {
+    opacity: 50%;
+    pointer-events: painted;
+  }
+`;

@@ -35,6 +35,4 @@ Thumbs.db
 
 # Firebase API key #
 #src/firebase.js
-
-.dockerignore
 api.js
