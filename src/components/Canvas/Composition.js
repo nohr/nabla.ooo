@@ -249,7 +249,6 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
   const [selected, setSelected] = useState([]);
   const camera = useRef(null);
   const { hits } = useInfiniteHits({ transformItems });
-  console.log(hits);
 
   // Randomize mobile Hits
   useEffect(() => {

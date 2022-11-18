@@ -2,33 +2,9 @@ import { cloud, state } from "../../utils/state";
 
 // MOBILE
 export const offset = 70;
-export function toggleModal(link, modal, setModal) {
-  let index;
-
-  if (modal && modal.indexOf(link)) {
-    index = modal.indexOf(link);
-  }
-
-  if (!modal) {
-    // open the modal if its closed
-    setModal([link]);
-  } else if (modal.length === 1) {
-    if (index !== -1) {
-      // close the only section
-      setModal(false);
-    } else if (index === -1) {
-      // open the section thats not already open
-      modal.push(link);
-    }
-  } else if (modal.length === 2) {
-    if (index !== -1) {
-      // close only the selected section
-      modal.splice(index, 1);
-    }
-  }
-}
-export function resetPos(setModal, reset, search, navWrap) {
-  setModal(false);
+export function resetPos(reset, search, navWrap) {
+  cloud.mobileOptions = false;
+  cloud.mobileSearch = false;
   cloud.resetRate = Math.random() * (0.85 - 0.65) + 0.65;
   reset();
   navWrap.current.style.transition = "1.3s";

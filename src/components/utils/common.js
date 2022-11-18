@@ -623,3 +623,15 @@ export function useDocumentTitle(title, prevailOnUnmount = false) {
 export const transformItems = (items) => {
   return items.filter((item) => item.images && { ...item });
 };
+
+// search through the items and return the ones that match the search term in all fields
+export const searchItems = (items, searchTerm) => {
+  if (searchTerm === "") {
+    return items;
+  }
+
+  return items.filter((item) => {
+    const values = Object.values(item).join("").toLowerCase();
+    return values.indexOf(searchTerm.toLowerCase()) > -1;
+  });
+};

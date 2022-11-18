@@ -206,5 +206,6 @@ export const cloud = proxy({
   // Mobile
   mobile: window.matchMedia("(max-width: 768px)").matches,
   orientation: true,
-  opt: false,
+  mobileOptions: false,
+  mobileSearch: false,
 });

@@ -16,15 +16,14 @@ export function Search({
   clear,
   navWrap,
   query,
-  setModal,
   select,
   reset,
-  modal,
   open,
   close,
 }) {
   const searchWrap = useRef(null);
   const snap = useSnapshot(state);
+  const clip = useSnapshot(cloud);
   const [location, setLocation] = useLocation();
 
   // handle audio
@@ -67,7 +66,8 @@ export function Search({
     function handleKeyPress(e) {
       if (e.key === "Enter") {
         Bar.current.blur();
-        setModal(false);
+        cloud.mobileOptions = false;
+        cloud.mobileSearch = false;
         select();
         return;
       }
@@ -101,9 +101,9 @@ export function Search({
         ref={searchWrap}
         id="search"
         className="modalContent"
-        opacity={modal !== "search" ? "0" : "1"}
-        pointerEvents={modal !== "search" ? "none" : "all"}
-        transition={modal !== "search" ? "0.3s" : "unset"}
+        opacity={!clip.mobileSearch ? "0" : "1"}
+        pointerEvents={!clip.mobileSearch ? "none" : "all"}
+        transition={!clip.mobileSearch ? "0.3s" : "unset"}
       >
         <SearchBar
           onTouchEnd={(e) => {

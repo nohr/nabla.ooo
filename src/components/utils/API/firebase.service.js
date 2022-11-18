@@ -29,6 +29,7 @@ export async function GetWorks() {
     const typesSnapshot = await getDocs(types);
 
     cloud.collection = collectionSnapshot.docs.map((doc) => doc.data());
+    console.log(cloud.collection);
     cloud.projects = projectsSnapshot.docs.map((doc) => doc.data());
     cloud.types = typesSnapshot.docs.map((doc) => doc.data());
     cloud.UILoading = false;

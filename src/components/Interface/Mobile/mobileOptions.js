@@ -25,16 +25,15 @@ export function Options({
   navWrap,
   handle,
   setSong,
-  modal,
   select,
   setColorWheel,
-  setModal,
   hidden,
   setHidden,
   open,
   close,
 }) {
   const snap = useSnapshot(state);
+  const clip = useSnapshot(cloud);
   const carousel = useRef(null);
 
   // handle audio
@@ -49,10 +48,7 @@ export function Options({
     if (!snap.dragged) {
       state.mobileNavPosition.y = state.mobileNavPosition.y + offset;
     }
-
-    cloud.opt = true;
     return () => {
-      cloud.opt = false;
       if (!snap.dragged) {
         state.mobileNavPosition.y = state.mobileNavPosition.y - offset;
       }
@@ -83,9 +79,9 @@ export function Options({
         <OptionsWrapper
           ref={carousel}
           className="modalContent"
-          opacity={modal !== "options" ? "0" : "1"}
-          pointerEvents={modal !== "options" ? "none" : "all"}
-          transition={modal !== "options" ? "0.3s" : "unset"}
+          opacity={!clip.mobileOptions ? "0" : "1"}
+          pointerEvents={!clip.mobileOptions ? "none" : "all"}
+          transition={!clip.mobileOptions ? "0.3s" : "unset"}
         >
           <div
             style={{
@@ -109,10 +105,11 @@ export function Options({
             }}
             onTouchEnd={() => {
               setHidden(false);
-              handle.current.setAttribute(
-                `style`,
-                `fill-opacity: 0% !important; stroke-width: 1px !important; transition: 0.3s;`
-              );
+              handle &&
+                handle.current.setAttribute(
+                  `style`,
+                  `fill-opacity: 0% !important; stroke-width: 1px !important; transition: 0.3s;`
+                );
             }}
           >
             {/* MUTE */}
@@ -149,7 +146,7 @@ export function Options({
             {/* RESET */}
             <Folder
               ref={resetButton}
-              onTouchStart={() => resetPos(setModal, reset, search, navWrap)}
+              onTouchStart={() => resetPos(reset, search, navWrap)}
               className={`li resetPos w`}
             >
               <ShowHideIcon n={2} />
@@ -172,6 +169,8 @@ export function Options({
                 select();
                 setColorWheel(true);
                 state.canvasPaused = false;
+                cloud.mobileOptions = false;
+                cloud.mobileSearch = false;
               }}
               className="li w"
             >

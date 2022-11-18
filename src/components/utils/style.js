@@ -69,9 +69,10 @@ export const Folder = styled.div`
   }
 
   &.circleButton {
+    z-index: 6000;
     border-radius: 50% !important;
-    width: 50px !important;
-    height: 50px !important;
+    width: 70px !important;
+    height: 70px !important;
     display: flex !important;
     justify-content: center !important;
   }

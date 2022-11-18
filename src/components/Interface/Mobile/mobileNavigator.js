@@ -11,7 +11,6 @@ import { ColorWheel } from "@react-spectrum/color";
 import Draggable from "react-draggable";
 import { Folder, Song, Wheel } from "../../utils/style";
 import { resetWheel } from "../../utils/common";
-import { toggleModal } from "./common";
 // import { useLocation } from 'wouter';
 
 function MobileNavigator({
@@ -43,11 +42,8 @@ function MobileNavigator({
   const navWrap = useRef(null);
   const Bar = useRef(null);
   const wheel = useRef(null);
-  const [modal, setModal] = useState(false);
   // const [offset, setOffset] = useState("-80px");
   const [changing, setChanging] = useState(false);
-  let search = modal && modal.indexOf("search") > -1;
-  let options = modal && modal.indexOf("options") > -1;
 
   if (wheel.current) {
     wheel.current.style.position = "absolute";
@@ -123,7 +119,8 @@ function MobileNavigator({
               onTouchEnd={() => {
                 cloud.resetRate = Math.random() * (0.85 - 0.65) + 0.65;
                 reset();
-                setModal(false);
+                cloud.mobileOptions = false;
+                cloud.mobileSearch = false;
                 resetWheel();
                 setColorWheel(false);
               }}
@@ -133,21 +130,19 @@ function MobileNavigator({
               <ResetIcon />
             </Folder>
           )}
-          {!colorWheel && (
+          {
             <>
               {/* SEARCH BAR */}
-              {search && (
+              {clip.mobileSearch && (
                 <Search
-                  options={options}
+                  options={clip.mobileOptions}
                   reset={reset}
                   Bar={Bar}
                   navWrap={navWrap}
                   query={query}
                   refine={refine}
                   clear={clear}
-                  setModal={setModal}
                   select={select}
-                  modal={modal}
                   open={open}
                   close={close}
                 />
@@ -169,18 +164,9 @@ function MobileNavigator({
                 {!clip.CanvasLoading && (
                   <NavButton
                     className={`${
-                      (search || query.length > 0) && "active"
+                      (clip.mobileSearch || query.length > 0) && "active"
                     } li w`}
-                    onTouchEnd={() =>
-                      toggleModal(
-                        "search",
-                        modal,
-                        setModal,
-                        // setOffset,
-                        open,
-                        close
-                      )
-                    }
+                    onTouchEnd={() => (cloud.mobileSearch = !clip.mobileSearch)}
                   >
                     {svg["search"]}
                   </NavButton>
@@ -195,16 +181,9 @@ function MobileNavigator({
                 {/* Options Button */}
                 {!clip.CanvasLoading && (
                   <NavButton
-                    className={`${options && "active"} li w`}
+                    className={`${clip.mobileOptions && "active"} li w`}
                     onTouchEnd={() =>
-                      toggleModal(
-                        "options",
-                        modal,
-                        setModal,
-                        // setOffset,
-                        open,
-                        close
-                      )
+                      (cloud.mobileOptions = !clip.mobileOptions)
                     }
                   >
                     {svg["options"]}
@@ -212,17 +191,15 @@ function MobileNavigator({
                 )}
               </div>
               {/* OPTIONS  */}
-              {options && (
+              {clip.mobileOptions && (
                 <Options
-                  search={search}
+                  search={clip.mobileSearch}
                   handle={handle}
                   resetButton={resetButton}
                   reset={reset}
                   navWrap={navWrap}
-                  setModal={setModal}
                   setSong={setSong}
                   select={select}
-                  modal={modal}
                   colorWheel={colorWheel}
                   setColorWheel={setColorWheel}
                   audio={audio}
@@ -233,26 +210,25 @@ function MobileNavigator({
                 />
               )}
             </>
-          )}
+          }
           {/* QUOTE */}
-          {!colorWheel && !clip.CanvasLoading && !clip.UILoading && (
+          {!clip.CanvasLoading && !clip.UILoading && (
             <Quote text={text} setText={setText} />
           )}
           {/* GRABBER */}
           {!colorWheel && !clip.CanvasLoading && (
             <Grabber
               resetButton={resetButton}
-              setModal={setModal}
               navWrap={navWrap}
               reset={reset}
-              options={options}
+              options={clip.mobileOptions}
               handle={handle}
             />
           )}
           {/* ColorWheel */}
           {!state.monochrome && (
             <Wheel
-              style={{ overflowX: "hidden" }}
+              style={{ overflow: "hidden" }}
               opacity={colorWheel ? "1" : "0"}
               pointerEvents={colorWheel ? "all" : "none"}
               transition={colorWheel ? "0.3s" : "0s"}
@@ -303,7 +279,8 @@ function MobileNavigator({
               border="border: 1px solid;"
               onTouchEnd={() => {
                 confirm();
-                setModal(false);
+                cloud.mobileOptions = false;
+                cloud.mobileSearch = false;
                 setColorWheel(false);
               }}
               className="circleButton color li w"
