@@ -1,18 +1,36 @@
-import React, { useState, Suspense, useEffect, useLayoutEffect, useRef, memo } from 'react'
-import "../../App.css"
-import { cloud, state } from '../utils/state'
-import { useSnapshot } from 'valtio'
-import { CD } from './CD'
-import { Nodes } from './Nodes'
-import * as THREE from 'three'
-import { Canvas } from '@react-three/fiber'
-import { useTexture, MeshReflectorMaterial, softShadows, PerspectiveCamera, OrbitControls, Html, useProgress, ContactShadows, Select, useSelect } from '@react-three/drei'
-import { EffectComposer, Noise } from '@react-three/postprocessing'
+import React, {
+  useState,
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  memo,
+} from "react";
+import "../../App.css";
+import { cloud, state } from "../utils/state";
+import { useSnapshot } from "valtio";
+import { CD } from "./CD";
+import { Nodes } from "./Nodes";
+import * as THREE from "three";
+import { Canvas } from "@react-three/fiber";
+import {
+  useTexture,
+  MeshReflectorMaterial,
+  softShadows,
+  PerspectiveCamera,
+  OrbitControls,
+  Html,
+  useProgress,
+  ContactShadows,
+  Select,
+  useSelect,
+} from "@react-three/drei";
+import { EffectComposer, Noise } from "@react-three/postprocessing";
 // import { ShaderMaterial } from 'three'
-import { Debug, Physics, usePlane } from '@react-three/cannon';
-import { Router } from 'wouter'
-import { useInfiniteHits } from 'react-instantsearch-hooks-web'
-import { target, transformItems } from '../utils/common'
+import { Debug, Physics, usePlane } from "@react-three/cannon";
+import { Router } from "wouter";
+import { useInfiniteHits } from "react-instantsearch-hooks-web";
+import { target, transformItems } from "../utils/common";
 
 // Spinner
 const Spinner = () => {
@@ -23,8 +41,8 @@ const Spinner = () => {
 
     return () => {
       cloud.CanvasLoading = false;
-    }
-  })
+    };
+  });
 
   return (
     <Html fullscreen>
@@ -32,8 +50,8 @@ const Spinner = () => {
         <p>{`${Math.floor(progress)}`}</p>
       </div>
     </Html>
-  )
-}
+  );
+};
 // Canvas
 softShadows();
 
@@ -41,56 +59,36 @@ function Wall() {
   const snap = useSnapshot(state);
   return (
     <>
-      <mesh
-        rotation={[0, -Math.PI / 2, 0]}
-        position={[30, 17, 0]}
-      >
-        <planeGeometry
-          args={[70, 35]}
-        />
+      <mesh rotation={[0, -Math.PI / 2, 0]} position={[30, 17, 0]}>
+        <planeGeometry args={[70, 35]} />
         <meshPhongMaterial
           color={snap.theme === "light" ? snap.light.sky : snap.dark.sky}
           opacity={0}
         />
       </mesh>
-      <mesh
-        rotation={[0, Math.PI / 2, 0]}
-        position={[-30, 17, 0]}
-      >
-        <planeGeometry
-          args={[70, 35]}
-        />
+      <mesh rotation={[0, Math.PI / 2, 0]} position={[-30, 17, 0]}>
+        <planeGeometry args={[70, 35]} />
         <meshPhongMaterial
           color={snap.theme === "light" ? snap.light.sky : snap.dark.sky}
           opacity={0}
         />
       </mesh>
-      <mesh
-        rotation={[0, -Math.PI, 0]}
-        position={[0, 17, 30]}
-      >
-        <planeGeometry
-          args={[70, 35]}
-        />
+      <mesh rotation={[0, -Math.PI, 0]} position={[0, 17, 30]}>
+        <planeGeometry args={[70, 35]} />
         <meshPhongMaterial
           color={snap.theme === "light" ? snap.light.sky : snap.dark.sky}
           opacity={0}
         />
       </mesh>
-      <mesh
-        rotation={[0, 0, 0]}
-        position={[0, 17, -30]}
-      >
-        <planeGeometry
-          args={[70, 35]}
-        />
+      <mesh rotation={[0, 0, 0]} position={[0, 17, -30]}>
+        <planeGeometry args={[70, 35]} />
         <meshPhongMaterial
           color={snap.theme === "light" ? snap.light.sky : snap.dark.sky}
           opacity={0}
         />
       </mesh>
     </>
-  )
+  );
 }
 
 const Reflector = memo(function Reflector() {
@@ -99,7 +97,7 @@ const Reflector = memo(function Reflector() {
     "/images/reflector/Ice_OCC.jpg",
     "/images/reflector/Ice_NORM.jpg",
     "/images/reflector/Ice_DISP.png",
-    "/images/reflector/floor_rough.jpeg"
+    "/images/reflector/floor_rough.jpeg",
   ]);
   const [ao, normal, height, roughness] = textures;
   useLayoutEffect(() => {
@@ -110,51 +108,56 @@ const Reflector = memo(function Reflector() {
       )
     );
   }, [textures]);
-  return <MeshReflectorMaterial
-    debug={2}
-    side={THREE.DoubleSide}
-    resolution={1024}
-    mirror={state.theme === "light" ? 0.15 : 0.28}
-    blur={[250, 250]}
-    mixBlur={14}
-    distortion={0}
-    mixStrength={1}
-    minDepthThreshold={0.9}
-    maxDepthThreshold={1.1}
-    depthScale={2}
-    depthToBlurRatioBias={0.2}
-    color={state.theme === 'light' ? snap.light.Surface : snap.dark.Surface}
-    metalness={0}
-    roughness={snap.theme === 'light' ? snap.light.SurfaceRough : snap.dark.SurfaceRough}
-    roughnessMap={roughness}
-    aoMap={ao}
-    normalMap={normal}
-    normalScale={[1, 1]}
-    envMapIntensity={1}
-    bumpMap={height}
-  />
-})
+  return (
+    <MeshReflectorMaterial
+      debug={2}
+      side={THREE.DoubleSide}
+      resolution={1024}
+      mirror={state.theme === "light" ? 0.15 : 0.28}
+      blur={[250, 250]}
+      mixBlur={14}
+      distortion={0}
+      mixStrength={1}
+      minDepthThreshold={0.9}
+      maxDepthThreshold={1.1}
+      depthScale={2}
+      depthToBlurRatioBias={0.2}
+      color={state.theme === "light" ? snap.light.Surface : snap.dark.Surface}
+      metalness={0}
+      roughness={
+        snap.theme === "light"
+          ? snap.light.SurfaceRough
+          : snap.dark.SurfaceRough
+      }
+      roughnessMap={roughness}
+      aoMap={ao}
+      normalMap={normal}
+      normalScale={[1, 1]}
+      envMapIntensity={1}
+      bumpMap={height}
+    />
+  );
+});
 function Floor() {
-
-  return <Suspense fallback={<Spinner />}>
-    <mesh
-      rotation={[-Math.PI / 2, 0, 0]}
-      position={[0, 0, 0]}
-    >
-      <planeGeometry
-        args={[70, 70]}
-      />
-      <Reflector />
-    </mesh>
-  </Suspense>
+  return (
+    <Suspense fallback={<Spinner />}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+        <planeGeometry args={[70, 70]} />
+        <Reflector />
+      </mesh>
+    </Suspense>
+  );
 }
 
 function PhysicsFloor() {
-  const [ref, api] = usePlane(() => ({ rotation: [-Math.PI / 2, 0, 0], position: [0, 0, 0] }));
+  const [ref, api] = usePlane(() => ({
+    rotation: [-Math.PI / 2, 0, 0],
+    position: [0, 0, 0],
+  }));
   // const collision = useRef(null);
   useEffect(() => {
     console.log(api);
-  }, [])
+  }, []);
 
   // useFrame(() => {
   //   console.log(collision.current);
@@ -162,71 +165,81 @@ function PhysicsFloor() {
   //   return unsubscribe;
   // });
 
-  return <Suspense fallback={<Spinner />}>
-    <mesh
-      rotation={[-Math.PI / 2, 0, 0]}
-      position={[0, 0, 0]}
-      ref={ref}
-    >
-      <planeGeometry
-        args={[70, 70]}
-      />
-      <Reflector />
-    </mesh>
-  </Suspense>
+  return (
+    <Suspense fallback={<Spinner />}>
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} ref={ref}>
+        <planeGeometry args={[70, 70]} />
+        <Reflector />
+      </mesh>
+    </Suspense>
+  );
 }
 
 function Bounds() {
   function Bound(props) {
     const [ref] = usePlane(() => ({ ...props }));
     return (
-      <mesh
-        ref={ref}>
-        <planeGeometry
-          args={[10, 10]}
-        />
-        <meshBasicMaterial
-          transparent
-          opacity={0}
-        />
+      <mesh ref={ref}>
+        <planeGeometry args={[10, 10]} />
+        <meshBasicMaterial transparent opacity={0} />
       </mesh>
     );
   }
 
-  return <>
-    <Bound
-      rotation={[Math.PI, 0, 0]}
-      position={[0, 0, 7]}
-    />
-    <Bound
-      rotation={[Math.PI, Math.PI, 0]}
-      position={[0, 0, -7]}
-    />
-    <Bound
-      rotation={[Math.PI, -Math.PI / 2, 0]}
-      position={[4, 0, 0]}
-    />
-    <Bound
-      rotation={[Math.PI, Math.PI / 2, 0]}
-      position={[-4, 0, 0]}
-    /></>
+  return (
+    <>
+      <Bound rotation={[Math.PI, 0, 0]} position={[0, 0, 7]} />
+      <Bound rotation={[Math.PI, Math.PI, 0]} position={[0, 0, -7]} />
+      <Bound rotation={[Math.PI, -Math.PI / 2, 0]} position={[4, 0, 0]} />
+      <Bound rotation={[Math.PI, Math.PI / 2, 0]} position={[-4, 0, 0]} />
+    </>
+  );
 }
 
 function Lights() {
   const snap = useSnapshot(state);
-  return <>
-    {/* SPOTLIGHT */}
-    <spotLight intensity={snap.theme === 'light' ? snap.light.spotIntensity : snap.dark.spotIntensity}
-      decay={2}
-      angle={Math.PI / 2}
-      color={snap.theme === 'light' ? snap.light.spotlight : snap.dark.spotlight}
-      position={[90, 60, -50]} />
-    {/* RECT LIGHT */}
-    <rectAreaLight intensity={snap.theme === 'light' ? snap.light.rectIntensity : snap.dark.rectIntensity}
-      args={[(snap.theme === 'light' ? snap.light.panelColor : snap.dark.panelColor), 20, 20, 20]} position={[0, -1, 0]} rotation-x={-Math.PI / 2} />
-    {/* AMBIENT LIGHT */}
-    <ambientLight intensity={snap.theme === 'light' ? snap.light.ambIntensity : snap.dark.ambIntensity} />
-  </>
+  return (
+    <>
+      {/* SPOTLIGHT */}
+      <spotLight
+        intensity={
+          snap.theme === "light"
+            ? snap.light.spotIntensity
+            : snap.dark.spotIntensity
+        }
+        decay={2}
+        angle={Math.PI / 2}
+        color={
+          snap.theme === "light" ? snap.light.spotlight : snap.dark.spotlight
+        }
+        position={[90, 60, -50]}
+      />
+      {/* RECT LIGHT */}
+      <rectAreaLight
+        intensity={
+          snap.theme === "light"
+            ? snap.light.rectIntensity
+            : snap.dark.rectIntensity
+        }
+        args={[
+          snap.theme === "light" ? snap.light.panelColor : snap.dark.panelColor,
+          20,
+          20,
+          20,
+        ]}
+        position={[0, -1, 0]}
+        rotation-x={-Math.PI / 2}
+      />
+      {/* AMBIENT LIGHT */}
+      <ambientLight
+        intensity={
+          snap.theme === "light"
+            ? snap.light.ambIntensity
+            : snap.dark.ambIntensity
+        }
+      />
+    </>
+  );
 }
 
 // Composition
@@ -236,6 +249,7 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
   const [selected, setSelected] = useState([]);
   const camera = useRef(null);
   const { hits } = useInfiniteHits({ transformItems });
+  console.log(hits);
 
   // Randomize mobile Hits
   useEffect(() => {
@@ -243,7 +257,7 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
       const j = Math.floor(Math.random() * (i + 1));
       [hits[i], hits[j]] = [hits[j], hits[i]];
     }
-  }, [hits])
+  }, [hits]);
 
   // Handle deselection
   // useEffect(() => {
@@ -298,25 +312,54 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
   //   // );
   // }, [])
 
-
   useEffect(() => {
     cloud.CanvasLoading = false;
 
     return () => {
       cloud.CanvasLoading = true;
-    }
-  }, [])
+    };
+  }, []);
 
   return (
-    <Canvas dpr={[1, 2]} gl={{ alpha: true, stencil: false, depth: true, antialias: false, physicallyCorrectLight: true }} className='r3fCanvas' frameloop={"demand"}>
+    <Canvas
+      dpr={[1, 2]}
+      gl={{
+        alpha: true,
+        stencil: false,
+        depth: true,
+        antialias: false,
+        physicallyCorrectLight: true,
+      }}
+      className="r3fCanvas"
+      frameloop={"demand"}
+    >
       {/* CAMERA */}
       <Suspense fallback={<Spinner />}>
-        <PerspectiveCamera makeDefault ref={camera} target={clip.mobile ? target : [0, 2, 0]} zoom={1} position={clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition} far={80} near={.1} fov={clip.mobile ? 35 : 20} aspect={vWidth / vHeight} />
+        <PerspectiveCamera
+          makeDefault
+          ref={camera}
+          target={clip.mobile ? target : [0, 2, 0]}
+          zoom={1}
+          position={
+            clip.mobile ? clip.mobileCameraPosition : snap.cameraPosition
+          }
+          far={80}
+          near={0.1}
+          fov={clip.mobile ? 35 : 20}
+          aspect={vWidth / vHeight}
+        />
         {/* FOG */}
-        <fog attach="fog" args={[snap.theme === 'light' ? snap.light.fog : snap.dark.fog, 10, clip.mobile ? snap.theme === 'light' ? 45 : 50 : 50]} />
+        <fog
+          attach="fog"
+          args={[
+            snap.theme === "light" ? snap.light.fog : snap.dark.fog,
+            10,
+            clip.mobile ? (snap.theme === "light" ? 45 : 50) : 50,
+          ]}
+        />
         <Lights />
       </Suspense>
-      {clip.mobile ?
+      {clip.mobile ? (
         // Mobile
         <Physics
           allowSleep={false}
@@ -328,7 +371,12 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
           <Router path="/">
             <Suspense fallback={<Spinner />}>
               <Select onChange={setSelected}>
-                <Nodes select={select} confirm={confirm} hits={hits} clear={clear} />
+                <Nodes
+                  select={select}
+                  confirm={confirm}
+                  hits={hits}
+                  clear={clear}
+                />
               </Select>
             </Suspense>
             <Bounds />
@@ -336,21 +384,32 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
           </Router>
           {/* </Debug> */}
         </Physics>
-        :// Not Mobile 
+      ) : (
+        // Not Mobile
         <>
           <Wall />
           <CD rotation={[-Math.PI / 2, Math.PI / 2, Math.PI / 2]} />
           <Floor />
         </>
-      }
-      {!clip.mobile && <Suspense fallback={<Spinner />}>
-        <EffectComposer>
-          <Noise
-            opacity={snap.theme === 'light' ? clip.mobile ? 0.5 : snap.light.noise : clip.mobile ? 0.09 : snap.dark.noise}
-          // premultiply={(state.theme === "light")}
-          />
-        </EffectComposer>
-      </Suspense>}
+      )}
+      {!clip.mobile && (
+        <Suspense fallback={<Spinner />}>
+          <EffectComposer>
+            <Noise
+              opacity={
+                snap.theme === "light"
+                  ? clip.mobile
+                    ? 0.5
+                    : snap.light.noise
+                  : clip.mobile
+                  ? 0.09
+                  : snap.dark.noise
+              }
+              // premultiply={(state.theme === "light")}
+            />
+          </EffectComposer>
+        </Suspense>
+      )}
       <OrbitControls
         target={clip.mobile ? clip.target : [0, 2, 0]}
         onEnd={(e) => {
@@ -363,12 +422,9 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
           }
         }}
         touches={{
-          ONE:
-            selected[0] ? THREE.TOUCH.ROTATE :
-              THREE.TOUCH.PAN,
-          TWO: THREE.TOUCH.DOLLY_ROTATE
+          ONE: selected[0] ? THREE.TOUCH.ROTATE : THREE.TOUCH.PAN,
+          TWO: THREE.TOUCH.DOLLY_ROTATE,
         }}
-
         enablePan={clip.mobile}
         enableDamping
         dampingFactor={1.8}
@@ -380,11 +436,10 @@ function Composition({ select, confirm, query, clear, vWidth, vHeight }) {
         maxDistance={clip.mobile ? 40 : 36}
         enabled={clip.mobile ? !clip.drag : true}
       />
-    </Canvas >
+    </Canvas>
   );
 }
 
-export default Composition
+export default Composition;
 
-
-  // < Debug color = { "light"} scale = { 1.03} >
+// < Debug color = { "light"} scale = { 1.03} >

@@ -1,7 +1,6 @@
 import React, { useRef, useEffect, useState, memo } from "react";
 import { useSnapshot } from "valtio";
 import { cloud, state } from "../../utils/state";
-import { resetWheel, toggleModal } from "../../utils/common";
 import { Search } from "./mobileSearch";
 import { Options } from "./mobileOptions";
 import { ConfirmIcon, ResetIcon } from "../../utils/svg";
@@ -11,6 +10,8 @@ import styled from "styled-components";
 import { ColorWheel } from "@react-spectrum/color";
 import Draggable from "react-draggable";
 import { Folder, Song, Wheel } from "../../utils/style";
+import { resetWheel } from "../../utils/common";
+import { toggleModal } from "./common";
 // import { useLocation } from 'wouter';
 
 function MobileNavigator({
@@ -147,6 +148,8 @@ function MobileNavigator({
                   setModal={setModal}
                   select={select}
                   modal={modal}
+                  open={open}
+                  close={close}
                 />
               )}
               {/* Song Title */}
@@ -225,6 +228,8 @@ function MobileNavigator({
                   audio={audio}
                   hidden={hidden}
                   setHidden={setHidden}
+                  open={open}
+                  close={close}
                 />
               )}
             </>

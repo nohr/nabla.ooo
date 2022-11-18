@@ -2,9 +2,10 @@ import React, { useEffect, useRef } from "react";
 import Draggable from "react-draggable";
 import { useSnapshot } from "valtio";
 import { cloud, state } from "./state";
-import { NextSong, offset, ToggleMusic } from "./common";
+import { NextSong, ToggleMusic } from "./common";
 import { NextIcon, PlayPauseIcon, ResetIcon, ShowHideIcon } from "./svg";
 import { Folder } from "./style";
+import { offset } from "../Interface/Mobile/common";
 
 export function Grabber({ handle, reset, navWrap }) {
   const grab = useRef(null);
@@ -138,6 +139,7 @@ export function Rotate(resetButton, clip, snap) {
     resetButton.current.style.transform = `rotate(${deg}deg)`;
   }
 }
+
 export function ResetPosButton({ resetButton, reset, nav }) {
   const clip = useSnapshot(cloud);
   const snap = useSnapshot(state);

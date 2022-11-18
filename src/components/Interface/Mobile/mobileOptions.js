@@ -11,16 +11,10 @@ import {
 import styled from "styled-components";
 import { useSnapshot } from "valtio";
 import { cloud, state } from "../../utils/state";
-import {
-  offset,
-  NextSong,
-  ToggleMusic,
-  toggleTheme,
-  getGyro,
-  resetPos,
-} from "../../utils/common";
 import Draggable from "react-draggable";
 import { Folder } from "../../utils/style";
+import { getGyro, offset, resetPos } from "./common";
+import { NextSong, ToggleMusic, toggleTheme } from "../../utils/common";
 // import { Stats } from "@react-three/drei";
 
 export function Options({
@@ -37,9 +31,19 @@ export function Options({
   setModal,
   hidden,
   setHidden,
+  open,
+  close,
 }) {
   const snap = useSnapshot(state);
   const carousel = useRef(null);
+
+  // handle audio
+  useEffect(() => {
+    open();
+    return () => {
+      close();
+    };
+  }, [open, close]);
 
   useEffect(() => {
     if (!snap.dragged) {

@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
 import { cloud, state } from "./components/utils/state";
-import {
-  getGyro,
-  originalColors,
-  useWindowDimensions,
-} from "./components/utils/common";
+import { originalColors, useWindowDimensions } from "./components/utils/common";
 import { useSnapshot } from "valtio";
 import Interface from "./components/Interface/Interface";
 import Composition from "./components/Canvas/Composition";
 import { getGPUTier } from "detect-gpu";
 import { parseColor } from "@react-stately/color";
+import { newQuote } from "./components/utils/API/firebase.service";
+import { getGyro } from "./components/Interface/Mobile/common";
 
 // Search Imports
 import { useSearchBox } from "react-instantsearch-hooks-web";
@@ -22,7 +20,6 @@ import sound5 from "./components/Sounds/select2.mp3";
 import sound2 from "./components/Sounds/open.mp3";
 import sound3 from "./components/Sounds/close.mp3";
 import sound4 from "./components/Sounds/confirm.mp3";
-import { newQuote } from "./components/utils/API/firebase.service";
 
 let firstColor;
 //App

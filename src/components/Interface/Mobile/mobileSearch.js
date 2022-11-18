@@ -4,11 +4,10 @@ import { ClearIcon } from "../../utils/svg";
 import styled from "styled-components";
 import { useSnapshot } from "valtio";
 import { cloud, state } from "../../utils/state";
-import { offset } from "../../utils/common";
 import Draggable from "react-draggable";
-import {} from "./mobileNavigator";
 import { useLocation } from "wouter";
 import { Folder } from "../../utils/style";
+import { offset } from "./common";
 
 export function Search({
   Bar,
@@ -21,11 +20,20 @@ export function Search({
   select,
   reset,
   modal,
+  open,
+  close,
 }) {
   const searchWrap = useRef(null);
   const snap = useSnapshot(state);
-  // const clip = useSnapshot(cloud);
-  const [setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
+
+  // handle audio
+  useEffect(() => {
+    open();
+    return () => {
+      close();
+    };
+  }, [open, close]);
 
   function handleChange(e) {
     if (e.target.value) {
