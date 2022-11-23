@@ -1,32 +1,33 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
-import { cloud, state } from "./components/utils/state";
-import { originalColors, useWindowDimensions } from "./components/utils/common";
+import { cloud, state } from "./common/state";
+import {
+  originalColors,
+  useWindowDimensions,
+} from "./common/utils";
 import { useSnapshot } from "valtio";
-import Interface from "./components/Interface/Interface";
-import Composition from "./components/Canvas/Composition";
 import { getGPUTier } from "detect-gpu";
 import { parseColor } from "@react-stately/color";
-import { newQuote } from "./components/utils/API/firebase.service";
-import { getGyro } from "./components/Interface/Mobile/common";
-
-// Search Imports
-import { useSearchBox } from "react-instantsearch-hooks-web";
+import { newQuote } from "./common/api/firebase.service";
+import { getGyro } from "./components/interface/mobile/utils";
+import Interface from "./components/interface/interface";
+import Composition from "./components/canvas/composition";
+import { handleGetData } from "./common/api/firebase.editor";
 
 //Audio Imports
 import useSound from "use-sound";
-import sound1 from "./components/Sounds/select.mp3";
-import sound5 from "./components/Sounds/select2.mp3";
-import sound2 from "./components/Sounds/open.mp3";
-import sound3 from "./components/Sounds/close.mp3";
-import sound4 from "./components/Sounds/confirm.mp3";
+import sound1 from "./components/sounds/select.mp3";
+import sound5 from "./components/sounds/select2.mp3";
+import sound2 from "./components/sounds/open.mp3";
+import sound3 from "./components/sounds/close.mp3";
+import sound4 from "./components/sounds/confirm.mp3";
+import sound6 from "./components/sounds/admin.mp3";
 
 let firstColor;
 //App
 function App() {
   const snap = useSnapshot(state);
   const clip = useSnapshot(cloud);
-  const { query, clear } = useSearchBox();
   const [select] = useSound(sound1, {
     volume: snap.sfxVolume,
     soundEnabled: !snap.muted,
@@ -49,16 +50,25 @@ function App() {
     volume: snap.sfxVolume,
     soundEnabled: !snap.muted,
   });
+  const [admin] = useSound(sound6, {
+    volume: snap.sfxVolume,
+    soundEnabled: !snap.muted,
+  });
+
   snap.cached
     ? snap.theme === "light"
       ? (firstColor = snap.light.panelColor)
       : (firstColor = snap.dark.panelColor)
     : snap.theme === "light"
-    ? (firstColor = originalColors.light.panelColor)
-    : (firstColor = originalColors.dark.panelColor);
+      ? (firstColor = originalColors.light.panelColor)
+      : (firstColor = originalColors.dark.panelColor);
   const [color, setColor] = useState(parseColor(firstColor));
   let vWidth = useWindowDimensions().width;
   let vHeight = useWindowDimensions().height;
+
+  useEffect(() => {
+    handleGetData();
+  }, []);
 
   useEffect(() => {
     newQuote();
@@ -103,6 +113,8 @@ function App() {
   return (
     <>
       <Interface
+        vWidth={vWidth}
+        vHeight={vHeight}
         color={color}
         setColor={setColor}
         firstColor={firstColor}
@@ -110,13 +122,12 @@ function App() {
         confirm={confirm}
         open={open}
         close={close}
+        admin={admin}
         useSound={useSound}
       />
       <Composition
         vWidth={vWidth}
         vHeight={vHeight}
-        query={query}
-        clear={clear}
         select={select2}
         confirm={confirm}
       />

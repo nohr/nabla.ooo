@@ -7,7 +7,7 @@ This is the homepage for digital studio, Nabla Ltd.
 
 ##### CD
 
-- [ ] Conversation and auth
+- [x] Conversation and auth
 - [x] Greeting quote from CD
 - [ ] Loading animation
 

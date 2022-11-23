@@ -10,6 +10,28 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+:root {
+  --main-bg-color: #181a1b;
+  --main-text-color: #aea9ab;
+  --main-hover-color: #00c49a;
+  --main-hover-color-alpha: #00c49aaa;
+  --contrast: var(--offwhite);
+  --bgPrimary: var(--black);
+  --bgSecondary: var(--offblack);
+  --white: #ffffff;
+  --whitealpha: #ffffff67;
+  --grey: #707070;
+  --greyalpha: #70707067;
+  --offblack: #181a1b;
+  --black: #0e0f0f;
+  --offwhite: #f6f6f6;
+  --red: #dd4444;
+  --redalpha: #dd4444aa;
+  --border-weight: 1px;
+  --margin: 35px;
+  --transition: 0.3s;
+}
+
 html {
   overflow: hidden;
   height: 100%;
