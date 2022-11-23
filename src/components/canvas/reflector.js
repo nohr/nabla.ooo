@@ -56,12 +56,12 @@ const Reflector = memo(function Reflector() {
 
 export function Floor() {
     return (
-        <Suspense fallback={<Spinner />}>
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
-                <planeGeometry args={[70, 70]} />
-                <Reflector />
-            </mesh>
-        </Suspense>
+        // <Suspense fallback={<Spinner />}>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]}>
+            <planeGeometry args={[70, 70]} />
+            <Reflector />
+        </mesh>
+        // </Suspense>
     );
 }
 
@@ -82,11 +82,11 @@ export function PhysicsFloor() {
     // });
 
     return (
-        <Suspense fallback={<Spinner />}>
-            <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} ref={ref}>
-                <planeGeometry args={[70, 70]} />
-                <Reflector />
-            </mesh>
-        </Suspense>
+        // <Suspense fallback={<Spinner />}>
+        <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} ref={ref}>
+            <planeGeometry args={[70, 70]} />
+            <Reflector />
+        </mesh>
+        // </Suspense>
     );
 }

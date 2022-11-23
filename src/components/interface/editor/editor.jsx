@@ -20,7 +20,7 @@ export default function Editor({ user, container }) {
           ref={container}
           style={{ paddingTop: "200px", paddingBottom: "60px" }}
         >
-          <h1>Editor</h1>
+          <h1>Be excused</h1>
           <button style={{ width: "unset" }} onClick={() => setEditor(!editor)}>
             {!editor ? "Edit Info" : "Edit Projects"}
           </button>

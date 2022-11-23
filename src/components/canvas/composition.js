@@ -176,16 +176,16 @@ function Composition({ select, confirm, vWidth, vHeight }) {
           gravity={[clip.leftright, -9.8, clip.frontback]}
         >
           {/* <Debug color="white" scale={1.1}> */}
-          <PhysicsFloor />
-          <Router path="/">
-            <Suspense fallback={<Spinner />}>
+          <Suspense fallback={<Spinner />}>
+            <PhysicsFloor />
+            <Router path="/">
               <Select onChange={setSelected}>
                 <Nodes clip={clip} select={select} confirm={confirm} />
               </Select>
-            </Suspense>
-            <Bounds />
-            {/* <CD position={[0, 10, -20]} rotation={[Math.PI / -2.5, 0, 0]} /> */}
-          </Router>
+              <Bounds />
+              {/* <CD position={[0, 10, -20]} rotation={[Math.PI / -2.5, 0, 0]} /> */}
+            </Router>
+          </Suspense>
           {/* </Debug> */}
         </Physics>
         : <DesktopComp CD={CD} clip={clip} snap={snap} />

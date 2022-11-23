@@ -9,8 +9,8 @@ export function DesktopComp({ clip, snap }) {
     return <>
         <Wall />
         <CD rotation={[-Math.PI / 2, Math.PI / 3.25, Math.PI / 2]} />
-        <Floor />
         <Suspense fallback={<Spinner />}>
+            <Floor />
             <EffectComposer>
                 <Noise
                     opacity={

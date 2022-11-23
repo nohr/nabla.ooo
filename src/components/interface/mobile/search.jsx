@@ -103,13 +103,7 @@ export function Search({
     }
   }
 
-  if (chatText.includes("excuse me")) {
-    handleChat(chatText, setLocation, setChatText, admin, user);
-    Bar.current.blur();
-    cloud.mobileOptions = false;
-    cloud.mobileSearch = false;
-    admin();
-  }
+  handleChat(chatText, setLocation, setChatText, admin, user);
 
   return (
     <Draggable
