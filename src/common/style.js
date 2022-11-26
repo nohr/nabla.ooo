@@ -379,6 +379,7 @@ export const GlobalStyle = createGlobalStyle`
         -webkit-user-drag: none;
       }
       & .li{
+        font-weight: 800;
         border-radius: 250px 250px 500px 500px;
       }
     }

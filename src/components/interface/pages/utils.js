@@ -52,32 +52,22 @@ export function handleKeyPress(e) {
   }
 }
 // Modal
-export function Next(num) {
-  if (cloud.work) {
-    num = cloud.work.content.url.indexOf(cloud.selectedImg);
-    if (cloud.work.content.url[num + 1]) {
-      if (num !== -1) {
-        num += 1;
-        cloud.selectedImg = cloud.work.content.url[num];
-        if (cloud.work.description) {
-          cloud.selectedDesc = cloud.work.description[num];
-        }
-      }
+export function Next() {
+  let num = cloud.work.content.indexOf(cloud.selectedImg);
+  if (cloud.work.content[num + 1]) {
+    if (num !== -1) {
+      num += 1;
+      cloud.selectedImg = cloud.work.content[num];
     }
   }
 }
 
-export function Prev(num) {
-  if (cloud.work) {
-    num = cloud.work.content.url.indexOf(cloud.selectedImg);
-    if (cloud.work.content.url[num - 1]) {
-      if (num !== -1) {
-        num -= 1;
-        cloud.selectedImg = cloud.work.content.url[num];
-        if (cloud.work.description) {
-          cloud.selectedDesc = cloud.work.description[num];
-        }
-      }
+export function Prev() {
+  let num = cloud.work.content.indexOf(cloud.selectedImg);
+  if (cloud.work.content[num - 1]) {
+    if (num !== -1) {
+      num -= 1;
+      cloud.selectedImg = cloud.work.content[num];
     }
   }
 }

@@ -15,12 +15,11 @@ import {
 } from "./pageData.style";
 
 const ImgGrid = ({ work }) => {
-  const { content } = work;
   const refWrapper = useRef(null);
   function setSelectedImg(selected) {
     cloud.selectedImg = selected;
-    if (content.caption !== "") {
-      cloud.selectedDesc = content.caption;
+    if (selected.caption !== "") {
+      cloud.selectedDesc = selected.caption;
     }
     setTimeout(() => {
       state.isPro = false;
@@ -34,40 +33,36 @@ const ImgGrid = ({ work }) => {
       // detect video resolution
       if (item.orientation === "landscape") {
         return (
-          <div
-            key={Math.random()}
-            className="Lvideo"
+          <video
+            className="Lvideo landscape"
             // onClick={() => {
             //   setSelectedImg(item.url);
             //   cloud.work = work;
             // }}
+            key={`${item.id}`}
+            autoPlay={false}
+            playsInline
+            preload={"metadata"}
+            // poster={item.poster ? `${item.poster}` : false}
+            loop={false}
+            muted={false}
+            // controls={true}
+            src={`${item.url}`}
           >
-            {/* <p className="playText">PLAY</p> */}
-            <video
-              className={"landscape"}
-              key={`${item.id}`}
-              autoPlay={false}
-              playsInline
-              preload={"metadata"}
-              // poster={item.poster ? `${item.poster}` : false}
-              loop={false}
-              muted={false}
-              controls={true}
-              src={`${item.url}`}
-            >{`${item.name}`}</video>
-          </div>
+            {`${item.name}`}
+          </video>
         );
       } else if (item.orientation === "portrait") {
         return (
           <video
-            // onClick={() => {
-            //   setSelectedImg(item.url);
-            //   cloud.work = work;
-            // }}
+            onClick={() => {
+              setSelectedImg(item);
+              cloud.work = work;
+            }}
             style={{
               height: "100%",
             }}
-            key={item.name}
+            key={item.id}
             autoPlay={true}
             playsInline
             preload={"none"}
@@ -75,6 +70,7 @@ const ImgGrid = ({ work }) => {
             loop={true}
             muted={true}
             src={item.url}
+            className="portrait"
           >
             {item.name}
           </video>
@@ -87,14 +83,21 @@ const ImgGrid = ({ work }) => {
           layout
           whileHover={{ opacity: 1 }}
           onClick={() => {
-            setSelectedImg(item.url);
+            setSelectedImg(item);
             cloud.work = work;
           }}
+          style={{
+            backgroundImage: `url(${item.url})`,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+          }}
         >
-          <object
+          {/* <object
             key={`${Math.random()}`}
             data={`${item.url}`}
-          >{`${item.name}`}</object>
+          >{`${item.name}`}</object> */}
+          {item.caption && item.caption !== "" && <p>{item.caption}</p>}
         </motion.div>
       );
     }

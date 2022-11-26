@@ -183,8 +183,8 @@ export const Container = styled.div`
   & .modalWrapper .backdrop object {
     display: block;
     max-width: 100%;
-    max-height: 90%;
-    width: auto;
+    max-height: 100%;
+    width: 70%;
     height: auto;
     align-self: center;
     /* box-shadow: 3px 5px 7px rgba(0,0,0,0.5); */

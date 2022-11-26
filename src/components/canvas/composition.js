@@ -60,67 +60,7 @@ function Composition({ select, confirm, vWidth, vHeight }) {
   const clip = useSnapshot(cloud);
   const [selected, setSelected] = useState([]);
   const camera = useRef(null);
-
-  // Randomize mobile Hits
-  // useEffect(() => {
-  //   for (let i = hits.length - 1; i > 0; i--) {
-  //     const j = Math.floor(Math.random() * (i + 1));
-  //     [hits[i], hits[j]] = [hits[j], hits[i]];
-  //   }
-  // }, [hits]);
-
-  // Handle deselection
-  // useEffect(() => {
-  //   if (nabla.current) {
-  //     nabla.current.addEventListener("click", () => {
-  //       setSelected([]);
-  //       console.log(selected);
-  //     });
-  //   }
-
-  //   // return () => {
-  //   //   if (nabla.current) {
-  //   //     nabla.current.removeEventListener("click", () => setSelected({}));
-  //   //   }
-  //   // }
-  // }, [])
-
-  // Toggle Canvas Visibility
-  // let canvas;
-  // useEffect(() => {
-  //   canvas = document.getElementsByTagName("canvas")[0];
-  //   if (canvas) {
-  //     if (snap.canvasVisible) {
-  //       //Show Canvas
-  //       canvas.style.display = "block";
-  //       // if (!snap.canvasPaused) {
-  //       //   state.canvasPaused = false;
-  //       // } else if (snap.canvasPaused) {
-  //       //   state.canvasPaused = true;
-  //       // }
-  //       // console.log(state.canvasPaused);
-  //     } else if (!snap.canvasVisible) {
-  //       //Hide Canvas
-  //       canvas.style.display = "none";
-  //       if (!snap.canvasPaused) {
-  //         state.canvasPaused = true;
-  //         state.CDRotationY = 0;
-  //         state.CDRotationZ = 0;
-  //         state.autoRotateSpeed = 0;
-  //       }
-  //     }
-  //   }
-  //   // canvas.addEventListener(
-  //   //   'webglcontextlost',
-  //   //   function (event) {
-  //   //     event.preventDefault();
-  //   //     setTimeout(function () {
-  //   //       renderer.forceContextRestore();
-  //   //     }, 1);
-  //   //   },
-  //   //   false
-  //   // );
-  // }, [])
+  const [location] = useLocation();
 
   useEffect(() => {
     cloud.CanvasLoading = false;
@@ -180,7 +120,7 @@ function Composition({ select, confirm, vWidth, vHeight }) {
             <PhysicsFloor />
             <Router path="/">
               <Select onChange={setSelected}>
-                <Nodes clip={clip} select={select} confirm={confirm} />
+                <Nodes clip={clip} select={select} confirm={confirm} location={location} />
               </Select>
               <Bounds />
               {/* <CD position={[0, 10, -20]} rotation={[Math.PI / -2.5, 0, 0]} /> */}
@@ -220,12 +160,12 @@ function Composition({ select, confirm, vWidth, vHeight }) {
   );
 }
 
-export default memo(Composition);
+export default Composition;
 
 // < Debug color = { "light"} scale = { 1.03} >
 
-const Nodes = memo(function Nodes({ clip, select, confirm }) {
-  const [location] = useLocation();
+const Nodes = memo(function Nodes({ clip, select, confirm, location }) {
+
   let hits = [];
   if (clip.query.length > 0) {
     hits = clip.data.filter(

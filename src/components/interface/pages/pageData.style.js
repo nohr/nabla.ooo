@@ -1,69 +1,48 @@
 import styled from "styled-components";
 
 export const Sector = styled.div`
-  /* border: solid 1px; */
-  /* border-color: ${(props) => props.theme.panelColor}; */
-  /* border-radius: 10px; */
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: 20% 80%;
-  height: 60%;
+  height: 90%;
   width: fit-content;
   flex-direction: column;
   row-gap: 10px;
-  /* padding: 0px; */
   justify-content: space-around;
   position: relative;
   overflow: hidden;
   transition: 0s !important;
 
-  @media screen and (min-height: 800px) {
-    height: 70vh !important;
-    row-gap: 0px;
-  }
   @media screen and (max-width: 768px) {
     height: max-content !important;
     /* grid-template-rows: 30% 100%; */
     display: flex;
     /* row-gap: 0px; */
   }
-  & .lot {
-    color: ${(props) => props.theme.panelColor};
-    transition: 1.3s;
-  }
-  @media screen and (min-width: 1440px) {
-    & {
-      /* width: 80%; */
-      height: 80%;
-    }
-  }
-  @media screen and (max-width: 940px) {
-    & {
-      /* width: 100%; */
-      height: 100%;
-    }
-  }
-  @media screen and (max-height: 1040px) {
-    & {
-      /* width: 80%; */
-      height: 100%;
-    }
-  }
 `;
 export const TextWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
   height: min-content;
+  width: fit-content;
   flex-wrap: nowrap;
   color: ${(props) => props.theme.panelColor};
   font-size: 14px;
   text-align: left;
   align-self: center;
-  padding: 0 20px;
+  padding: 20px;
   transition: 1.3s;
   white-space: break-spaces;
-  /* line-height: 25px; */
+  background-color: ${(props) => props.theme.backdrop};
+  border-radius: 10px;
+  border: solid 1px;
+  border-color: ${(props) => props.theme.layerBG};
+
+  @media screen and (min-width: 768px) {
+    & {
+      margin-left: 280px;
+    }
+  }
 
   & h2 {
     margin: 20px 0;
@@ -124,16 +103,9 @@ export const TextWrapper = styled.div`
   }
 `;
 export const TrayWrapper = styled.div`
-  /* overflow-x: scroll; */
-  /* overflow-y: hidden; */
   display: flex;
-  /* grid-template-columns: 1fr 40ch;     */
-  /* grid-template-rows: 100%; */
-  flex-direction: row;
+  flex-direction: row-reverse;
   flex-wrap: nowrap;
-  /* width: 100%; */
-  /* height: 70%; */
-  /* padding: 0 20px 20px 20px; */
   gap: 10px;
   margin-bottom: 1px;
 
@@ -164,15 +136,17 @@ export const TrayWrapper = styled.div`
 `;
 export const ImgWrapper = styled.div`
   position: relative;
-  height: 100%;
-  /* width: 100%; */
+  height: 100% !important;
   display: flex;
-  /* overflow-y: hidden; */
+  grid-auto-flow: column;
+  grid-template-rows: 100%;
   overflow-x: scroll;
+  min-height: fit-content !important;
   flex-direction: row;
   flex-wrap: nowrap;
   gap: 20px;
-  padding-bottom: 5px;
+  padding-bottom: 15px;
+  overscroll-behavior-inline: contain;
 
   @media screen and (max-width: 768px) {
     & {
@@ -186,19 +160,41 @@ export const ImgWrapper = styled.div`
   }
 
   .img-thumb {
-    height: 100%;
-    overflow: hidden;
-    width: 0px;
-    padding: 0 280px;
+    height: auto;
+    width: 40vw;
+    aspect-ratio: 1/1 !important;
+    display: flex;
+    flex-direction: column;
+    justify-content:flex-end;
+    align-items: center;
+    /* overflow: hidden; */
+    /* padding: 0 280px; */
     position: relative;
     opacity: 1;
     pointer-events: all;
     filter: grayscale(0);
     transition: 0.3s;
 
+    .portrait, .landscape {
+      height: min-content !important;
+      width: auto !important;
+    }
+
+  .landscape {
+    height: 100% !important;
+    width: auto !important;
+  }
+    p{
+      background-color: ${(props) => props.theme.panelColor};
+      color: ${(props) => props.theme.sky};
+      padding: 5px;
+      width: 100%;
+      margin: 0;
+    }
+
     @media screen and (max-width: 768px) {
       & {
-        padding: 0 80px;
+        /* padding: 0 80px; */
       }
     }
 
@@ -239,7 +235,7 @@ export const ImgWrapper = styled.div`
     -webkit-user-select: none;
     -ms-user-select: none;
     opacity: 1;
-    object-fit: contain;
+    /* object-fit: contain; */
     margin: 0;
     padding: 0;
     transition: 0.3s;
@@ -264,16 +260,14 @@ export const ImgWrapper = styled.div`
     opacity: 1 !important;
   }
   .Lvideo:hover {
-    opacity: 0.7 !important;
+    /* opacity: 0.7 !important; */
     transition: 1.3s;
   }
 
-  .landscape {
-    height: 100% !important;
-    width: auto !important;
-  }
+
   video:hover,
   .landscape:hover {
+    backdrop-filter: grayscale(1) !important;
     transition: 0.3s;
     cursor: pointer;
     border: solid 1px;
@@ -287,23 +281,26 @@ export const ImgWrapper = styled.div`
     transition: 0.3s;
   }
   ::-webkit-scrollbar {
-    -webkit-appearance: none;
-    height: 5px;
-    position: absolute;
-  }
-  ::-webkit-scrollbar-thumb {
-    outline: 1px solid ${(props) => props.theme.panelColor};
-    border-radius: 4px;
-    background-color: transparent;
-    transition: 0.3s;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background-color: ${(props) => props.theme.panelColor};
-    box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
-    -webkit-box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
-    -moz-box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
-    transition: 0.3s;
-  }
+      -webkit-appearance: none;
+      width: 15px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background-color: 1px solid ${(props) => props.theme.panelColor} !important;
+      border-radius: 4px;
+      outline: transparent !important;;
+      transition: 0.3s;
+    }
+    ::-webkit-scrollbar-track {
+      background-color: ${(props) => props.theme.sky} !important;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background-color: ${(props) => props.theme.LiHover} !important;
+      outline: ${(props) => props.theme.layerBG} !important;
+      box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
+      -webkit-box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
+      -moz-box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
+      transition: 0.3s;
+    }
 `;
 export const InfoCard = styled.div`
   row-gap: 10px;
@@ -312,12 +309,17 @@ export const InfoCard = styled.div`
   flex-direction: column;
   white-space: break-spaces;
   line-height: 20px;
-  height: 100%;
-  width: 45ch !important;
+  height: min-content;
+  width: 69ch !important;
   text-align: justify;
-  border: 1px solid ${(props) => props.theme.backdrop};
+  border: 1px solid ${(props) => props.theme.layerBG};
   backdrop-filter: blur(var(--blur));
   -webkit-backdrop-filter: blur(var(--blur));
+  padding: 10px;
+  border-radius: 10px;
+  /* display: inline; */
+  background-color: ${(props) => props.theme.backdrop};
+  /* text-indent: 3em; */
 
   /* @media screen and (min-width:768px) {
       position: absolute;
@@ -334,11 +336,6 @@ export const InfoCard = styled.div`
   }
 
   & {
-    padding: 10px;
-    border-radius: 10px;
-    /* display: inline; */
-    background-color: ${(props) => props.theme.layerBG};
-    /* text-indent: 3em; */
 
     & p {
       height: min-content;
@@ -347,17 +344,17 @@ export const InfoCard = styled.div`
 
     ::-webkit-scrollbar {
       -webkit-appearance: none;
-      width: 5px;
-      position: absolute;
+      width: 15px;
     }
     ::-webkit-scrollbar-thumb {
-      outline: 1px solid ${(props) => props.theme.panelColor};
+      background-color: 1px solid ${(props) => props.theme.panelColor} !important;
       border-radius: 4px;
-      background-color: transparent;
+      outline: transparent !important;;
       transition: 0.3s;
     }
     ::-webkit-scrollbar-thumb:hover {
-      background-color: ${(props) => props.theme.panelColor};
+      background-color: ${(props) => props.theme.LiHover} !important;
+      outline: ${(props) => props.theme.layerBG} !important;
       box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
       -webkit-box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};
       -moz-box-shadow: 0 0 0 1px ${(props) => props.theme.panelColor};

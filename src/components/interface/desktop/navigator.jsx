@@ -27,9 +27,6 @@ function Navigator({
   song,
   setSong,
   handle,
-  query,
-  clear,
-  refine,
   text,
   setText,
   resetButton,
@@ -124,17 +121,11 @@ function Navigator({
       >
         <Nav ref={nav} className="Panel nav">
           <Header width={"100%"}>
-            <HomeButton nabla={nabla} dong={dong} clear={clear} query={query} />
+            <HomeButton nabla={nabla} dong={dong} />
             {<Quote text={text} setText={setText} />}
           </Header>
           <div className="grid">
-            <Search
-              query={query}
-              clear={clear}
-              refine={refine}
-              admin={admin}
-              user={user}
-            />
+            <Search admin={admin} user={user} />
             <TrayWrapper
               style={
                 clip.playMusic
@@ -159,7 +150,6 @@ function Navigator({
               <>
                 <Link
                   onClick={() => {
-                    clear();
                     select();
                   }}
                   className={`li w ${
@@ -172,7 +162,6 @@ function Navigator({
                 </Link>
                 <Link
                   onClick={() => {
-                    clear();
                     select();
                   }}
                   className={`li w ${
